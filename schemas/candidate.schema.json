@@ -1,0 +1,138 @@
+{
+  "$defs": {
+    "ExpectedSignature": {
+      "additionalProperties": false,
+      "properties": {
+        "improve": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Improve",
+          "type": "array"
+        },
+        "unchanged": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Unchanged",
+          "type": "array"
+        }
+      },
+      "required": [
+        "improve"
+      ],
+      "title": "ExpectedSignature",
+      "type": "object"
+    },
+    "MutationType": {
+      "enum": [
+        "mechanism_mutation",
+        "representation_mutation",
+        "failure_directed_mutation",
+        "control_mutation",
+        "simplification",
+        "cross_family",
+        "restart"
+      ],
+      "title": "MutationType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "candidate_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{1,127}$",
+      "title": "Candidate Id",
+      "type": "string"
+    },
+    "editable_files": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Editable Files",
+      "type": "array"
+    },
+    "estimated_cost_tier": {
+      "maximum": 5,
+      "minimum": 0,
+      "title": "Estimated Cost Tier",
+      "type": "integer"
+    },
+    "expected_signature": {
+      "$ref": "#/$defs/ExpectedSignature"
+    },
+    "falsifier": {
+      "minLength": 8,
+      "title": "Falsifier",
+      "type": "string"
+    },
+    "family": {
+      "title": "Family",
+      "type": "string"
+    },
+    "hypothesis": {
+      "minLength": 12,
+      "title": "Hypothesis",
+      "type": "string"
+    },
+    "intervention": {
+      "minLength": 8,
+      "title": "Intervention",
+      "type": "string"
+    },
+    "island": {
+      "title": "Island",
+      "type": "string"
+    },
+    "mutation_type": {
+      "$ref": "#/$defs/MutationType"
+    },
+    "parent_ids": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Parent Ids",
+      "type": "array"
+    },
+    "reopen_condition_claims": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Reopen Condition Claims",
+      "type": "array"
+    },
+    "required_controls": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Required Controls",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "candidate_id",
+    "parent_ids",
+    "island",
+    "family",
+    "mutation_type",
+    "hypothesis",
+    "intervention",
+    "expected_signature",
+    "falsifier",
+    "required_controls",
+    "editable_files",
+    "estimated_cost_tier"
+  ],
+  "title": "CandidateGenome",
+  "type": "object"
+}

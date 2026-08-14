@@ -1,0 +1,32 @@
+schema_version: "1.0"
+closures:
+  - closure_id: CLOSE_QPLANE
+    family: query_local_ray_plane
+    status: VALID_NEGATIVE
+    evidence:
+      - BLINDASSIST_AG_DEPTH_POSE_ANALYTIC_OBSTACLE_RESULT_2026-08-13
+    prohibited_mutations: []
+    reopen_conditions:
+      - NEW_SOURCE_NATIVE_OBSTACLE_SUPERVISION
+      - MATERIAL_DIFFERENT_DEPTH_SCALE_PLANE_REPRESENTATION
+    reopen_policy: any
+    scope: BlindAssist obstacle-to-task research only
+    observed_failure:
+      - worse_than_global_scale
+      - right_band_regression
+      - long_horizon_regression
+      - wrong_gravity_not_worse
+  - closure_id: CLOSE_GENERIC_SCALE_CORRECTION
+    family: generic_scale_correction*
+    status: CLOSED
+    evidence:
+      - CURRENT_OBSTACLE_TASK_ROUTE_CLOSED
+    prohibited_mutations: []
+    reopen_conditions:
+      - NEW_SOURCE_NATIVE_OBSTACLE_SUPERVISION
+      - MATERIAL_DIFFERENT_DEPTH_SCALE_PLANE_REPRESENTATION
+    reopen_policy: any
+    scope: BlindAssist obstacle-to-task research only
+    observed_failure:
+      - zero_of_six_safe_threshold_folds
+

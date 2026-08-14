@@ -1,0 +1,142 @@
+{
+  "$defs": {
+    "ArchiveClass": {
+      "enum": [
+        "ELITE",
+        "STEPPING_STONE",
+        "VALID_NEGATIVE",
+        "PAUSED_NOT_EVALUABLE",
+        "INVALID"
+      ],
+      "title": "ArchiveClass",
+      "type": "string"
+    },
+    "ConstraintCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "max": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max"
+        },
+        "metric": {
+          "title": "Metric",
+          "type": "string"
+        },
+        "min": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Min"
+        },
+        "passed": {
+          "title": "Passed",
+          "type": "boolean"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "metric",
+        "value",
+        "passed",
+        "reason"
+      ],
+      "title": "ConstraintCheck",
+      "type": "object"
+    },
+    "GateDecision": {
+      "enum": [
+        "ADMIT",
+        "MUTATE",
+        "KILL",
+        "PAUSE_NOT_EVALUABLE",
+        "REPAIR_IMPLEMENTATION",
+        "INVALID_PROTOCOL_TAMPERING"
+      ],
+      "title": "GateDecision",
+      "type": "string"
+    },
+    "ScientificOutcome": {
+      "enum": [
+        "POSITIVE_HEADROOM",
+        "VALID_NEGATIVE",
+        "NOT_EVALUABLE_DATA",
+        "INVALID_MECHANICS_OR_ADAPTER"
+      ],
+      "title": "ScientificOutcome",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "archive_class": {
+      "$ref": "#/$defs/ArchiveClass"
+    },
+    "constraint_checks": {
+      "additionalProperties": {
+        "$ref": "#/$defs/ConstraintCheck"
+      },
+      "title": "Constraint Checks",
+      "type": "object"
+    },
+    "controls_complete": {
+      "title": "Controls Complete",
+      "type": "boolean"
+    },
+    "decision": {
+      "$ref": "#/$defs/GateDecision"
+    },
+    "protocol_valid": {
+      "title": "Protocol Valid",
+      "type": "boolean"
+    },
+    "reasons": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Reasons",
+      "type": "array"
+    },
+    "scientific_outcome": {
+      "$ref": "#/$defs/ScientificOutcome"
+    }
+  },
+  "required": [
+    "decision",
+    "archive_class",
+    "scientific_outcome",
+    "reasons",
+    "controls_complete",
+    "protocol_valid"
+  ],
+  "title": "GateVerdict",
+  "type": "object"
+}

@@ -1,0 +1,9 @@
+{
+  "manifest_id": "synthetic-dev-a-r0",
+  "grade": "A",
+  "provenance": "deterministic harness fixture",
+  "samples": [
+    {"sample_id": "canary-001", "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}
+  ]
+}
+

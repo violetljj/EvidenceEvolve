@@ -1,0 +1,50 @@
+schema_version: "1.0"
+campaign:
+  id: synthetic_canary_r0
+  base_commit: HEAD
+  research_question: Can the harness reject protocol, closure, evidence, and safety traps deterministically?
+  claim_scope: harness_mechanics_only
+authority:
+  protocol_mutable: false
+  evaluator_mutable: false
+  confirmation_visible_to_agents: false
+  final_merge_requires_human: true
+editable_scope:
+  allow:
+    - tasks/synthetic_canary/candidates/**
+  deny:
+    - evidence_evolve/**
+    - tasks/synthetic_canary/evaluator.py
+    - research/**
+    - confirmation/**
+evidence_sources:
+  - source_id: synthetic-dev-a-r0
+    grade: A
+    path: research/evidence_policies/synthetic_dev_manifest.json
+    permissions: [TRAIN, DEV, CONFIRM, CLAIM]
+frozen_assets:
+  - asset_id: synthetic-evaluator-r0
+    kind: evaluator
+    path: tasks/synthetic_canary/evaluator.py
+  - asset_id: closure-registry-r0
+    kind: protocol
+    path: research/closures/closure_registry.yaml
+  - asset_id: hidden-confirmation-manifest-r0
+    kind: confirmation
+    path: confirmation/synthetic_hidden_manifest.json
+metrics:
+  hard_constraints:
+    false_block_delta_pp:
+      max: 0.0
+  pareto_objectives:
+    clearance_mae_delta: minimize
+    false_block_delta_pp: minimize
+budgets:
+  proposal_calls: 5
+  implementations: 0
+  mechanics_runs: 5
+  proxy_runs: 0
+  confirmation_runs: 0
+  device_runs: 0
+closure_registry: research/closures/closure_registry.yaml
+

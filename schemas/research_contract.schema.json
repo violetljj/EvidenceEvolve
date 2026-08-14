@@ -1,0 +1,402 @@
+{
+  "$defs": {
+    "Authority": {
+      "additionalProperties": false,
+      "properties": {
+        "confirmation_visible_to_agents": {
+          "const": false,
+          "default": false,
+          "title": "Confirmation Visible To Agents",
+          "type": "boolean"
+        },
+        "evaluator_mutable": {
+          "const": false,
+          "default": false,
+          "title": "Evaluator Mutable",
+          "type": "boolean"
+        },
+        "final_merge_requires_human": {
+          "default": true,
+          "title": "Final Merge Requires Human",
+          "type": "boolean"
+        },
+        "protocol_mutable": {
+          "const": false,
+          "default": false,
+          "title": "Protocol Mutable",
+          "type": "boolean"
+        }
+      },
+      "title": "Authority",
+      "type": "object"
+    },
+    "Budgets": {
+      "additionalProperties": false,
+      "properties": {
+        "confirmation_runs": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Confirmation Runs",
+          "type": "integer"
+        },
+        "device_runs": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Device Runs",
+          "type": "integer"
+        },
+        "implementations": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Implementations",
+          "type": "integer"
+        },
+        "mechanics_runs": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Mechanics Runs",
+          "type": "integer"
+        },
+        "proposal_calls": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Proposal Calls",
+          "type": "integer"
+        },
+        "proxy_runs": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Proxy Runs",
+          "type": "integer"
+        }
+      },
+      "title": "Budgets",
+      "type": "object"
+    },
+    "Campaign": {
+      "additionalProperties": false,
+      "properties": {
+        "base_commit": {
+          "title": "Base Commit",
+          "type": "string"
+        },
+        "claim_scope": {
+          "minLength": 3,
+          "title": "Claim Scope",
+          "type": "string"
+        },
+        "id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{1,127}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "research_question": {
+          "minLength": 12,
+          "title": "Research Question",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "base_commit",
+        "research_question",
+        "claim_scope"
+      ],
+      "title": "Campaign",
+      "type": "object"
+    },
+    "ContractLock": {
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": {
+          "const": "sha256",
+          "default": "sha256",
+          "title": "Algorithm",
+          "type": "string"
+        },
+        "content_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Content Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "content_sha256"
+      ],
+      "title": "ContractLock",
+      "type": "object"
+    },
+    "EditableScope": {
+      "additionalProperties": false,
+      "properties": {
+        "allow": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Allow",
+          "type": "array"
+        },
+        "deny": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Deny",
+          "type": "array"
+        }
+      },
+      "required": [
+        "allow",
+        "deny"
+      ],
+      "title": "EditableScope",
+      "type": "object"
+    },
+    "EvidenceGrade": {
+      "enum": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "title": "EvidenceGrade",
+      "type": "string"
+    },
+    "EvidencePermission": {
+      "enum": [
+        "TRAIN",
+        "DEV",
+        "CONFIRM",
+        "CLAIM",
+        "CANDIDATE_MINING"
+      ],
+      "title": "EvidencePermission",
+      "type": "string"
+    },
+    "EvidenceSource": {
+      "additionalProperties": false,
+      "properties": {
+        "grade": {
+          "$ref": "#/$defs/EvidenceGrade"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "permissions": {
+          "items": {
+            "$ref": "#/$defs/EvidencePermission"
+          },
+          "title": "Permissions",
+          "type": "array",
+          "uniqueItems": true
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-fA-F]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sha256"
+        },
+        "source_id": {
+          "title": "Source Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_id",
+        "grade",
+        "path",
+        "permissions"
+      ],
+      "title": "EvidenceSource",
+      "type": "object"
+    },
+    "FrozenAsset": {
+      "additionalProperties": false,
+      "properties": {
+        "asset_id": {
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/FrozenAssetKind"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-fA-F]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sha256"
+        }
+      },
+      "required": [
+        "asset_id",
+        "kind",
+        "path"
+      ],
+      "title": "FrozenAsset",
+      "type": "object"
+    },
+    "FrozenAssetKind": {
+      "enum": [
+        "evaluator",
+        "data_manifest",
+        "protocol",
+        "confirmation",
+        "model"
+      ],
+      "title": "FrozenAssetKind",
+      "type": "string"
+    },
+    "MetricConstraint": {
+      "additionalProperties": false,
+      "properties": {
+        "max": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max"
+        },
+        "min": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Min"
+        }
+      },
+      "title": "MetricConstraint",
+      "type": "object"
+    },
+    "MetricsPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "hard_constraints": {
+          "additionalProperties": {
+            "$ref": "#/$defs/MetricConstraint"
+          },
+          "minProperties": 1,
+          "title": "Hard Constraints",
+          "type": "object"
+        },
+        "pareto_objectives": {
+          "additionalProperties": {
+            "$ref": "#/$defs/ObjectiveDirection"
+          },
+          "minProperties": 1,
+          "title": "Pareto Objectives",
+          "type": "object"
+        }
+      },
+      "required": [
+        "hard_constraints",
+        "pareto_objectives"
+      ],
+      "title": "MetricsPolicy",
+      "type": "object"
+    },
+    "ObjectiveDirection": {
+      "enum": [
+        "minimize",
+        "maximize"
+      ],
+      "title": "ObjectiveDirection",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "authority": {
+      "$ref": "#/$defs/Authority"
+    },
+    "budgets": {
+      "$ref": "#/$defs/Budgets"
+    },
+    "campaign": {
+      "$ref": "#/$defs/Campaign"
+    },
+    "closure_registry": {
+      "title": "Closure Registry",
+      "type": "string"
+    },
+    "editable_scope": {
+      "$ref": "#/$defs/EditableScope"
+    },
+    "evidence_sources": {
+      "items": {
+        "$ref": "#/$defs/EvidenceSource"
+      },
+      "minItems": 1,
+      "title": "Evidence Sources",
+      "type": "array"
+    },
+    "frozen_assets": {
+      "items": {
+        "$ref": "#/$defs/FrozenAsset"
+      },
+      "minItems": 1,
+      "title": "Frozen Assets",
+      "type": "array"
+    },
+    "lock": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ContractLock"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "metrics": {
+      "$ref": "#/$defs/MetricsPolicy"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "campaign",
+    "editable_scope",
+    "evidence_sources",
+    "frozen_assets",
+    "metrics",
+    "budgets",
+    "closure_registry"
+  ],
+  "title": "ResearchContract",
+  "type": "object"
+}

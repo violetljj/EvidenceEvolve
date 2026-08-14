@@ -1,0 +1,7 @@
+{
+  "manifest_id": "synthetic-hidden-confirmation-r0",
+  "visible_to_candidate_agents": false,
+  "payload_mounted": false,
+  "note": "The Harness canary verifies policy isolation; it contains no scientific truth."
+}
+
