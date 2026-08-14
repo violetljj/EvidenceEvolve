@@ -75,6 +75,20 @@ class MutationType(StrEnum):
     RESTART = "restart"
 
 
+class SearchAbstraction(StrEnum):
+    DIRECT_SOLUTION = "direct_solution"
+    CONSTRUCTOR = "constructor"
+    HEURISTIC = "heuristic"
+    SEARCH_ALGORITHM = "search_algorithm"
+    REPRESENTATION = "representation"
+    LOSS_FUNCTION = "loss_function"
+    OPTIMIZER = "optimizer"
+    DATA_SELECTION_POLICY = "data_selection_policy"
+    UNCERTAINTY_RULE = "uncertainty_rule"
+    SYSTEM_SCHEDULE = "system_schedule"
+    HYBRID_PIPELINE = "hybrid_pipeline"
+
+
 class ObjectiveDirection(StrEnum):
     MINIMIZE = "minimize"
     MAXIMIZE = "maximize"
@@ -207,6 +221,16 @@ class ExpectedSignature(StrictModel):
     improve: Annotated[list[str], Field(min_length=1)]
     unchanged: list[str] = Field(default_factory=list)
 
+    @model_validator(mode="after")
+    def metrics_are_disjoint(self) -> "ExpectedSignature":
+        overlap = set(self.improve) & set(self.unchanged)
+        if overlap:
+            raise ValueError(
+                f"expected signature metrics cannot both improve and remain unchanged: "
+                f"{sorted(overlap)}"
+            )
+        return self
+
 
 class CandidateGenome(StrictModel):
     schema_version: Literal["1.0"] = "1.0"
@@ -215,13 +239,21 @@ class CandidateGenome(StrictModel):
     island: str
     family: str
     mutation_type: MutationType
+    search_abstraction: SearchAbstraction = SearchAbstraction.DIRECT_SOLUTION
     hypothesis: Annotated[str, Field(min_length=12)]
     intervention: Annotated[str, Field(min_length=8)]
+    mechanism_claims: list[str] = Field(default_factory=list)
+    assumptions: list[str] = Field(default_factory=list)
     expected_signature: ExpectedSignature
     falsifier: Annotated[str, Field(min_length=8)]
     required_controls: Annotated[list[str], Field(min_length=1)]
+    behavior_descriptor: dict[str, str] = Field(default_factory=dict)
+    ablation_plan: list[str] = Field(default_factory=list)
+    transfer_motifs: list[str] = Field(default_factory=list)
+    failure_risks: list[str] = Field(default_factory=list)
     editable_files: Annotated[list[str], Field(min_length=1)]
     estimated_cost_tier: Annotated[int, Field(ge=0, le=5)]
+    estimated_information_value: Annotated[float, Field(ge=0.0, le=1.0)] = 0.0
     reopen_condition_claims: list[str] = Field(default_factory=list)
 
     @field_validator("editable_files")
