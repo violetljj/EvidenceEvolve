@@ -4,7 +4,9 @@ import json
 import sqlite3
 from pathlib import Path
 
+from evidence_evolve.meta_evolution.policy import AcquisitionDecision, CandidateAcquisition
 from evidence_evolve.models import CandidateGenome, ReceiptEnvelope
+from evidence_evolve.understanding.signatures import MechanismAssessment
 
 
 class ArchiveStore:
@@ -48,6 +50,30 @@ class ArchiveStore:
                     ON evaluation_receipts(archive_class, island);
                 CREATE INDEX IF NOT EXISTS idx_evaluation_receipts_candidate
                     ON evaluation_receipts(candidate_id, created_at_utc);
+                CREATE TABLE IF NOT EXISTS acquisition_decisions (
+                    generation_id TEXT NOT NULL,
+                    candidate_id TEXT NOT NULL,
+                    policy_id TEXT NOT NULL,
+                    candidate_json TEXT NOT NULL,
+                    eligible INTEGER NOT NULL,
+                    acquisition_score REAL,
+                    reasons_json TEXT NOT NULL,
+                    created_at_utc TEXT NOT NULL,
+                    PRIMARY KEY(generation_id, candidate_id)
+                );
+                CREATE INDEX IF NOT EXISTS idx_acquisition_generation
+                    ON acquisition_decisions(generation_id, eligible, acquisition_score);
+                CREATE TABLE IF NOT EXISTS mechanism_assessments (
+                    receipt_id TEXT PRIMARY KEY,
+                    candidate_id TEXT NOT NULL,
+                    support TEXT NOT NULL,
+                    authority TEXT NOT NULL,
+                    assessment_json TEXT NOT NULL,
+                    created_at_utc TEXT NOT NULL,
+                    FOREIGN KEY(receipt_id) REFERENCES evaluation_receipts(receipt_id)
+                );
+                CREATE INDEX IF NOT EXISTS idx_mechanism_candidate
+                    ON mechanism_assessments(candidate_id, support);
                 """
             )
 
@@ -99,6 +125,127 @@ class ArchiveStore:
                 ).fetchone()
                 if existing != (receipt_path.as_posix(), envelope.receipt_sha256):
                     raise
+            connection.execute(
+                """
+                INSERT INTO candidates(
+                    candidate_id, parent_ids_json, island, family, mutation_type,
+                    archive_class, gate_decision, scientific_outcome, receipt_path,
+                    receipt_sha256, created_at_utc
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ON CONFLICT(candidate_id) DO UPDATE SET
+                    parent_ids_json=excluded.parent_ids_json,
+                    island=excluded.island,
+                    family=excluded.family,
+                    mutation_type=excluded.mutation_type,
+                    archive_class=excluded.archive_class,
+                    gate_decision=excluded.gate_decision,
+                    scientific_outcome=excluded.scientific_outcome,
+                    receipt_path=excluded.receipt_path,
+                    receipt_sha256=excluded.receipt_sha256,
+                    created_at_utc=excluded.created_at_utc
+                """,
+                (
+                    candidate.candidate_id,
+                    json.dumps(candidate.parent_ids, sort_keys=True),
+                    candidate.island,
+                    candidate.family,
+                    candidate.mutation_type.value,
+                    verdict.archive_class.value,
+                    verdict.decision.value,
+                    verdict.scientific_outcome.value,
+                    receipt_path.as_posix(),
+                    envelope.receipt_sha256,
+                    envelope.receipt.created_at_utc,
+                ),
+            )
+
+    def record_acquisition(
+        self,
+        *,
+        generation_id: str,
+        policy_id: str,
+        pool: list[CandidateAcquisition],
+        decisions: list[AcquisitionDecision],
+        created_at_utc: str,
+    ) -> None:
+        candidates = {item.candidate.candidate_id: item.candidate for item in pool}
+        if set(candidates) != {decision.candidate_id for decision in decisions}:
+            raise ValueError("acquisition decisions do not match candidate pool")
+        with self._connect() as connection:
+            for decision in decisions:
+                values = (
+                    generation_id,
+                    decision.candidate_id,
+                    policy_id,
+                    json.dumps(
+                        candidates[decision.candidate_id].model_dump(mode="json"),
+                        sort_keys=True,
+                    ),
+                    int(decision.eligible),
+                    decision.acquisition_score,
+                    json.dumps(decision.reasons, sort_keys=True),
+                    created_at_utc,
+                )
+                try:
+                    connection.execute(
+                        """
+                        INSERT INTO acquisition_decisions(
+                            generation_id, candidate_id, policy_id, candidate_json,
+                            eligible, acquisition_score, reasons_json, created_at_utc
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                        """,
+                        values,
+                    )
+                except sqlite3.IntegrityError:
+                    existing = connection.execute(
+                        """
+                        SELECT generation_id, candidate_id, policy_id, candidate_json,
+                               eligible, acquisition_score, reasons_json, created_at_utc
+                        FROM acquisition_decisions
+                        WHERE generation_id = ? AND candidate_id = ?
+                        """,
+                        (generation_id, decision.candidate_id),
+                    ).fetchone()
+                    if existing != values:
+                        raise
+
+    def record_mechanism_assessment(
+        self,
+        *,
+        receipt_id: str,
+        assessment: MechanismAssessment,
+        created_at_utc: str,
+    ) -> None:
+        values = (
+            receipt_id,
+            assessment.candidate_id,
+            assessment.support.value,
+            assessment.authority,
+            json.dumps(assessment.model_dump(mode="json"), sort_keys=True),
+            created_at_utc,
+        )
+        with self._connect() as connection:
+            try:
+                connection.execute(
+                    """
+                    INSERT INTO mechanism_assessments(
+                        receipt_id, candidate_id, support, authority,
+                        assessment_json, created_at_utc
+                    ) VALUES (?, ?, ?, ?, ?, ?)
+                    """,
+                    values,
+                )
+            except sqlite3.IntegrityError:
+                existing = connection.execute(
+                    """
+                    SELECT receipt_id, candidate_id, support, authority,
+                           assessment_json, created_at_utc
+                    FROM mechanism_assessments WHERE receipt_id = ?
+                    """,
+                    (receipt_id,),
+                ).fetchone()
+                if existing != values:
+                    raise
 
     def summary(self) -> dict[str, object]:
         with self._connect() as connection:
@@ -118,10 +265,21 @@ class ArchiveStore:
                 "archive_class, gate_decision FROM evaluation_receipts "
                 "ORDER BY created_at_utc, receipt_id"
             ).fetchall()
+            by_mechanism_support = dict(
+                connection.execute(
+                    "SELECT support, COUNT(*) FROM mechanism_assessments "
+                    "GROUP BY support ORDER BY support"
+                ).fetchall()
+            )
+            scheduled = connection.execute(
+                "SELECT COUNT(*) FROM acquisition_decisions WHERE eligible = 1"
+            ).fetchone()[0]
         return {
             "total": total,
             "unique_candidates": len({row[1] for row in rows}),
             "by_archive_class": by_class,
+            "by_mechanism_support": by_mechanism_support,
+            "scheduled_candidates": scheduled,
             "candidates": [
                 {
                     "receipt_id": receipt_id,
