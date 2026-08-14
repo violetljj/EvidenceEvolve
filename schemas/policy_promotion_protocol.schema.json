@@ -1,0 +1,55 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "max_calibration_regression": {
+      "default": 0.0,
+      "minimum": 0.0,
+      "title": "Max Calibration Regression",
+      "type": "number"
+    },
+    "max_mechanism_accuracy_regression": {
+      "default": 0.0,
+      "minimum": 0.0,
+      "title": "Max Mechanism Accuracy Regression",
+      "type": "number"
+    },
+    "max_redundancy_regression": {
+      "default": 0.0,
+      "minimum": 0.0,
+      "title": "Max Redundancy Regression",
+      "type": "number"
+    },
+    "min_breakthrough_delta": {
+      "default": 0.0,
+      "title": "Min Breakthrough Delta",
+      "type": "number"
+    },
+    "min_efficiency_delta": {
+      "default": 0.0,
+      "title": "Min Efficiency Delta",
+      "type": "number"
+    },
+    "min_fresh_set_robustness": {
+      "default": 0.0,
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Min Fresh Set Robustness",
+      "type": "number"
+    },
+    "min_reproducibility_rate": {
+      "default": 1.0,
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Min Reproducibility Rate",
+      "type": "number"
+    },
+    "min_tasks": {
+      "default": 3,
+      "minimum": 1,
+      "title": "Min Tasks",
+      "type": "integer"
+    }
+  },
+  "title": "PolicyPromotionProtocol",
+  "type": "object"
+}

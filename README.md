@@ -30,6 +30,20 @@ Implemented in this repository:
 
 Not claimed by R0: an autonomous campaign loop, live Shinka evolution, physically blind confirmation, QNN/device deployment, algorithm novelty, or safety evidence. The ONNX task is an engineering harness canary, not scientific or product authority.
 
+## R1 core slice
+
+The repository now also contains the first executable slice of **EvidenceEvolve R1 — Evidence-Guided Open-Ended Discovery**:
+
+- candidate genomes can declare the search abstraction, mechanism claims, assumptions, behavior descriptors, ablations, transfer motifs, failure risks, and estimated information value;
+- a research-policy genome ranks candidates by admission likelihood, expected improvement, information gain, novelty, transfer value, cost, and redundancy;
+- closure is a non-bypassable scheduling boundary: a closed family is ineligible even when its acquisition score would otherwise dominate;
+- `CampaignRunner` runs one bounded generation through a contract-frozen task adapter, re-audits changed files and closures, derives the verdict with `GateEngine`, writes an immutable receipt, and resumes idempotently;
+- the understanding loop compares preregistered expected signatures with frozen metrics and reference metrics, then combines controls and ablations into `INTERVENTION_SUPPORTED`, `PREDICTION_SUPPORTED`, `CONTRADICTED`, `INCONCLUSIVE`, or `NOT_EVALUABLE`;
+- mechanism assessments are explicitly `SCHEDULING_ONLY`; they cannot change the four scientific outcomes;
+- policy candidates can be compared on blind held-out meta-benchmark observations, but passing only yields `ELIGIBLE_FOR_HUMAN_PROMOTION`.
+
+This is a working orchestration and causal-credit core, not a claim that open-ended discovery has already succeeded. Still missing are automatic Codex/Shinka proposal and isolated implementation adapters, a real ChronoDiscovery task suite, literature reproduction/mechanism cards, policy mutation campaigns, and any blind evidence that R1 discovers algorithms more efficiently than the baselines.
+
 ## Setup
 
 Python 3.11 is recommended because it matches ShinkaEvolve's documented development setup. The governance core also supports Python 3.12-3.14.
@@ -64,3 +78,34 @@ evolve replay-evaluation runs/synthetic_canary_r0
 The Codex backend emits `codex exec --json --output-schema ...` commands and grants `workspace-write` only to the implementer role. Read-only roles use the default read-only sandbox. Authentication is deliberately outside contract files and receipts.
 
 ShinkaEvolve remains an optional search kernel. Its score may schedule proposals, but EvidenceEvolve verdicts never read `combined_score`; they read the frozen multi-metric gate input.
+
+## R1 generation interface
+
+Export the JSON Schemas first; `campaign_candidate.schema.json` describes every pool entry and `research_policy.schema.json` describes the mutable policy genome:
+
+```powershell
+evolve export-schemas --output-dir schemas
+```
+
+Then run or resume one generation through a task adapter whose source file is hashed as `kind: adapter` in the locked contract:
+
+```powershell
+evolve campaign run CONTRACT POOL `
+  --policy research/policies/r1_default.yaml `
+  --adapter package.frozen_adapter:evaluate_candidate `
+  --run-dir runs/CAMPAIGN
+
+evolve campaign resume CONTRACT POOL `
+  --policy research/policies/r1_default.yaml `
+  --adapter package.frozen_adapter:evaluate_candidate `
+  --run-dir runs/CAMPAIGN
+```
+
+The adapter receives a validated `CampaignCandidate` and must return an `EvaluationRun`. It may orchestrate candidate-specific worktrees, but it does not return a verdict. The runner independently audits scope/closure and invokes the frozen gate.
+
+Meta-benchmark results can be compared without auto-promoting the policy:
+
+```powershell
+evolve policy evaluate-promotion BASELINE_RESULT CANDIDATE_RESULT `
+  --protocol META_PROTOCOL
+```

@@ -1,0 +1,23 @@
+schema_version: "1.0"
+policy_id: r1_default
+parent_selector: pareto_complementary
+inspiration_selector: mechanism_diverse
+abstraction_selector: stagnation_adaptive
+context_compiler: lineage_plus_failure_signature
+evaluation_cascade:
+  - M0_MECHANICS
+  - H0_REAL_HEADROOM
+ablation_trigger: signature_supported
+stagnation_response: cross_family_structural_restart
+mutation_operator_mix:
+  mechanism_mutation: 0.4
+  representation_mutation: 0.3
+  failure_directed_mutation: 0.3
+weights:
+  admit_probability: 1.0
+  expected_improvement: 1.0
+  information_gain: 1.0
+  novelty: 0.5
+  transfer_value: 0.25
+  cost: 0.5
+  redundancy: 0.5

@@ -37,10 +37,48 @@
       ],
       "title": "MutationType",
       "type": "string"
+    },
+    "SearchAbstraction": {
+      "enum": [
+        "direct_solution",
+        "constructor",
+        "heuristic",
+        "search_algorithm",
+        "representation",
+        "loss_function",
+        "optimizer",
+        "data_selection_policy",
+        "uncertainty_rule",
+        "system_schedule",
+        "hybrid_pipeline"
+      ],
+      "title": "SearchAbstraction",
+      "type": "string"
     }
   },
   "additionalProperties": false,
   "properties": {
+    "ablation_plan": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Ablation Plan",
+      "type": "array"
+    },
+    "assumptions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Assumptions",
+      "type": "array"
+    },
+    "behavior_descriptor": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Behavior Descriptor",
+      "type": "object"
+    },
     "candidate_id": {
       "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{1,127}$",
       "title": "Candidate Id",
@@ -60,8 +98,22 @@
       "title": "Estimated Cost Tier",
       "type": "integer"
     },
+    "estimated_information_value": {
+      "default": 0.0,
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Estimated Information Value",
+      "type": "number"
+    },
     "expected_signature": {
       "$ref": "#/$defs/ExpectedSignature"
+    },
+    "failure_risks": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Failure Risks",
+      "type": "array"
     },
     "falsifier": {
       "minLength": 8,
@@ -85,6 +137,13 @@
     "island": {
       "title": "Island",
       "type": "string"
+    },
+    "mechanism_claims": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Mechanism Claims",
+      "type": "array"
     },
     "mutation_type": {
       "$ref": "#/$defs/MutationType"
@@ -117,6 +176,17 @@
       "default": "1.0",
       "title": "Schema Version",
       "type": "string"
+    },
+    "search_abstraction": {
+      "$ref": "#/$defs/SearchAbstraction",
+      "default": "direct_solution"
+    },
+    "transfer_motifs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Transfer Motifs",
+      "type": "array"
     }
   },
   "required": [

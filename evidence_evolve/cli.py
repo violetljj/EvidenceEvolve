@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import argparse
+import importlib
+import inspect
 import json
 import sqlite3
 import subprocess
@@ -15,6 +17,11 @@ from evidence_evolve.archive import ArchiveStore
 from evidence_evolve.backends.codex_cli import CodexCliBackend
 from evidence_evolve.backends.shinka_backend import ShinkaBackend
 from evidence_evolve.canary import run_canary
+from evidence_evolve.discovery.campaign import (
+    CampaignCandidate,
+    CampaignRunner,
+    EvaluationRun,
+)
 from evidence_evolve.governance.candidate_auditor import audit_candidate
 from evidence_evolve.governance.closure_registry import ClosureRegistry
 from evidence_evolve.governance.protocol_lock import (
@@ -24,6 +31,12 @@ from evidence_evolve.governance.protocol_lock import (
     load_contract,
 )
 from evidence_evolve.models import CandidateGenome, GateVerdict, ResearchContract
+from evidence_evolve.meta_evolution.policy import ResearchPolicyGenome
+from evidence_evolve.meta_evolution.promotion import (
+    PolicyBenchmarkResult,
+    PolicyPromotionProtocol,
+    evaluate_policy_promotion,
+)
 from evidence_evolve.onnx_campaign import evaluate_onnx_candidate
 from evidence_evolve.replay import replay_evaluation, replay_verdict
 
@@ -68,6 +81,44 @@ def _load_candidate(path: Path) -> CandidateGenome:
         else:
             payload = json.load(stream)
     return CandidateGenome.model_validate(payload)
+
+
+def _load_payload(path: Path) -> Any:
+    with path.open("r", encoding="utf-8") as stream:
+        if path.suffix.lower() in {".yaml", ".yml"}:
+            return yaml.safe_load(stream)
+        return json.load(stream)
+
+
+def _load_frozen_campaign_adapter(
+    spec: str,
+    *,
+    contract: ResearchContract,
+    repo: Path,
+) -> Any:
+    try:
+        module_name, function_name = spec.split(":", 1)
+    except ValueError as exc:
+        raise ValueError("adapter must use module:function syntax") from exc
+    module = importlib.import_module(module_name)
+    function = getattr(module, function_name, None)
+    if not callable(function):
+        raise ValueError(f"campaign adapter is not callable: {spec}")
+    source = inspect.getsourcefile(function)
+    if source is None:
+        raise ValueError("campaign adapter must be backed by a repository file")
+    try:
+        relative = Path(source).resolve().relative_to(repo.resolve()).as_posix()
+    except ValueError as exc:
+        raise ValueError("campaign adapter source is outside the repository") from exc
+    frozen_adapters = {
+        asset.path
+        for asset in contract.frozen_assets
+        if asset.kind.value == "adapter"
+    }
+    if relative not in frozen_adapters:
+        raise ValueError(f"campaign adapter is not frozen by the contract: {relative}")
+    return function
 
 
 def command_lock_contract(args: argparse.Namespace) -> int:
@@ -195,6 +246,13 @@ def command_export_schemas(args: argparse.Namespace) -> int:
         "research_contract.schema.json": ResearchContract.model_json_schema(),
         "candidate.schema.json": CandidateGenome.model_json_schema(),
         "verdict.schema.json": GateVerdict.model_json_schema(),
+        "research_policy.schema.json": ResearchPolicyGenome.model_json_schema(),
+        "campaign_candidate.schema.json": CampaignCandidate.model_json_schema(),
+        "evaluation_run.schema.json": EvaluationRun.model_json_schema(),
+        "policy_benchmark.schema.json": PolicyBenchmarkResult.model_json_schema(),
+        "policy_promotion_protocol.schema.json": (
+            PolicyPromotionProtocol.model_json_schema()
+        ),
     }
     for name, schema in schemas.items():
         (output / name).write_text(_json(schema) + "\n", encoding="utf-8")
@@ -225,6 +283,75 @@ def command_evaluate_onnx_candidate(args: argparse.Namespace) -> int:
         confirmation=args.confirmation,
     )
     print(_json(result))
+    return 0
+
+
+def command_campaign_run(args: argparse.Namespace) -> int:
+    repo = _repo_root(args.repo)
+    contract = load_contract(Path(args.contract).resolve())
+    ProtocolLock(repo).assert_valid(contract)
+    policy = ResearchPolicyGenome.model_validate(
+        _load_payload(Path(args.policy).resolve())
+    )
+    payload = _load_payload(Path(args.pool).resolve())
+    if not isinstance(payload, dict):
+        raise ValueError("campaign pool must be an object")
+    generation_id = str(payload.get("generation_id", "")).strip()
+    if not generation_id:
+        raise ValueError("campaign pool requires generation_id")
+    raw_candidates = payload.get("candidates")
+    if not isinstance(raw_candidates, list):
+        raise ValueError("campaign pool requires a candidates list")
+    candidates = [CampaignCandidate.model_validate(item) for item in raw_candidates]
+    adapter = _load_frozen_campaign_adapter(
+        args.adapter,
+        contract=contract,
+        repo=repo,
+    )
+
+    def evaluate(item: CampaignCandidate) -> EvaluationRun:
+        return EvaluationRun.model_validate(adapter(item))
+
+    runner = CampaignRunner(
+        contract=contract,
+        closure_registry=ClosureRegistry.load(repo / contract.closure_registry),
+        policy=policy,
+        run_dir=Path(args.run_dir).resolve(),
+    )
+    result = runner.run_generation(
+        generation_id=generation_id,
+        candidates=candidates,
+        evaluate=evaluate,
+        max_evaluations=args.max_evaluations,
+        signature_tolerance=args.signature_tolerance,
+    )
+    print(_json(result))
+    return 0
+
+
+def command_policy_evaluate_promotion(args: argparse.Namespace) -> int:
+    baseline = PolicyBenchmarkResult.model_validate(
+        _load_payload(Path(args.baseline).resolve())
+    )
+    candidate = PolicyBenchmarkResult.model_validate(
+        _load_payload(Path(args.candidate).resolve())
+    )
+    protocol = (
+        PolicyPromotionProtocol.model_validate(
+            _load_payload(Path(args.protocol).resolve())
+        )
+        if args.protocol
+        else PolicyPromotionProtocol()
+    )
+    print(
+        _json(
+            evaluate_policy_promotion(
+                candidate=candidate,
+                baseline=baseline,
+                protocol=protocol,
+            )
+        )
+    )
     return 0
 
 
@@ -306,6 +433,37 @@ def build_parser() -> argparse.ArgumentParser:
     onnx_candidate.add_argument("--run-dir", required=True)
     onnx_candidate.add_argument("--confirmation", action="store_true")
     onnx_candidate.set_defaults(handler=command_evaluate_onnx_candidate)
+
+    campaign = subparsers.add_parser(
+        "campaign", help="run or resume an R1 evidence-guided generation"
+    )
+    campaign_commands = campaign.add_subparsers(dest="campaign_command", required=True)
+    for command_name in ("run", "resume"):
+        campaign_run = campaign_commands.add_parser(
+            command_name,
+            help=f"{command_name} a generation through a frozen task adapter",
+        )
+        campaign_run.add_argument("contract")
+        campaign_run.add_argument("pool")
+        campaign_run.add_argument("--policy", required=True)
+        campaign_run.add_argument("--adapter", required=True)
+        campaign_run.add_argument("--run-dir", required=True)
+        campaign_run.add_argument("--max-evaluations", type=int)
+        campaign_run.add_argument("--signature-tolerance", type=float, default=0.0)
+        campaign_run.set_defaults(handler=command_campaign_run)
+
+    policy = subparsers.add_parser(
+        "policy", help="evaluate research-policy evidence without auto-promoting"
+    )
+    policy_commands = policy.add_subparsers(dest="policy_command", required=True)
+    promotion = policy_commands.add_parser(
+        "evaluate-promotion",
+        help="compare a policy candidate on a blind held-out meta suite",
+    )
+    promotion.add_argument("baseline")
+    promotion.add_argument("candidate")
+    promotion.add_argument("--protocol")
+    promotion.set_defaults(handler=command_policy_evaluate_promotion)
     return parser
 
 

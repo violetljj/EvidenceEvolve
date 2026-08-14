@@ -1,0 +1,394 @@
+{
+  "$defs": {
+    "CandidateGenome": {
+      "additionalProperties": false,
+      "properties": {
+        "ablation_plan": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Ablation Plan",
+          "type": "array"
+        },
+        "assumptions": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Assumptions",
+          "type": "array"
+        },
+        "behavior_descriptor": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Behavior Descriptor",
+          "type": "object"
+        },
+        "candidate_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{1,127}$",
+          "title": "Candidate Id",
+          "type": "string"
+        },
+        "editable_files": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Editable Files",
+          "type": "array"
+        },
+        "estimated_cost_tier": {
+          "maximum": 5,
+          "minimum": 0,
+          "title": "Estimated Cost Tier",
+          "type": "integer"
+        },
+        "estimated_information_value": {
+          "default": 0.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Estimated Information Value",
+          "type": "number"
+        },
+        "expected_signature": {
+          "$ref": "#/$defs/ExpectedSignature"
+        },
+        "failure_risks": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Failure Risks",
+          "type": "array"
+        },
+        "falsifier": {
+          "minLength": 8,
+          "title": "Falsifier",
+          "type": "string"
+        },
+        "family": {
+          "title": "Family",
+          "type": "string"
+        },
+        "hypothesis": {
+          "minLength": 12,
+          "title": "Hypothesis",
+          "type": "string"
+        },
+        "intervention": {
+          "minLength": 8,
+          "title": "Intervention",
+          "type": "string"
+        },
+        "island": {
+          "title": "Island",
+          "type": "string"
+        },
+        "mechanism_claims": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Mechanism Claims",
+          "type": "array"
+        },
+        "mutation_type": {
+          "$ref": "#/$defs/MutationType"
+        },
+        "parent_ids": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Parent Ids",
+          "type": "array"
+        },
+        "reopen_condition_claims": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Reopen Condition Claims",
+          "type": "array"
+        },
+        "required_controls": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Required Controls",
+          "type": "array"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "search_abstraction": {
+          "$ref": "#/$defs/SearchAbstraction",
+          "default": "direct_solution"
+        },
+        "transfer_motifs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Transfer Motifs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "candidate_id",
+        "parent_ids",
+        "island",
+        "family",
+        "mutation_type",
+        "hypothesis",
+        "intervention",
+        "expected_signature",
+        "falsifier",
+        "required_controls",
+        "editable_files",
+        "estimated_cost_tier"
+      ],
+      "title": "CandidateGenome",
+      "type": "object"
+    },
+    "EvaluationInput": {
+      "additionalProperties": false,
+      "properties": {
+        "candidate": {
+          "$ref": "#/$defs/CandidateGenome"
+        },
+        "changed_files": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Changed Files",
+          "type": "array"
+        },
+        "contract_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Contract Sha256",
+          "type": "string"
+        },
+        "controls": {
+          "additionalProperties": {
+            "type": "boolean"
+          },
+          "title": "Controls",
+          "type": "object"
+        },
+        "data_eligible": {
+          "default": false,
+          "title": "Data Eligible",
+          "type": "boolean"
+        },
+        "data_ineligibility_reasons": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Data Ineligibility Reasons",
+          "type": "array"
+        },
+        "data_leakage": {
+          "default": false,
+          "title": "Data Leakage",
+          "type": "boolean"
+        },
+        "mechanics_status": {
+          "$ref": "#/$defs/MechanicsStatus",
+          "default": "NOT_RUN"
+        },
+        "metrics": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "title": "Metrics",
+          "type": "object"
+        },
+        "protocol_violations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Protocol Violations",
+          "type": "array"
+        },
+        "scientific_outcome": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ScientificOutcome"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "stage": {
+          "$ref": "#/$defs/ResearchStage"
+        },
+        "verified_reopen_conditions": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Verified Reopen Conditions",
+          "type": "array",
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "contract_sha256",
+        "candidate",
+        "stage"
+      ],
+      "title": "EvaluationInput",
+      "type": "object"
+    },
+    "ExpectedSignature": {
+      "additionalProperties": false,
+      "properties": {
+        "improve": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Improve",
+          "type": "array"
+        },
+        "unchanged": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Unchanged",
+          "type": "array"
+        }
+      },
+      "required": [
+        "improve"
+      ],
+      "title": "ExpectedSignature",
+      "type": "object"
+    },
+    "MechanicsStatus": {
+      "enum": [
+        "NOT_RUN",
+        "PASS",
+        "FAIL"
+      ],
+      "title": "MechanicsStatus",
+      "type": "string"
+    },
+    "MutationType": {
+      "enum": [
+        "mechanism_mutation",
+        "representation_mutation",
+        "failure_directed_mutation",
+        "control_mutation",
+        "simplification",
+        "cross_family",
+        "restart"
+      ],
+      "title": "MutationType",
+      "type": "string"
+    },
+    "ResearchStage": {
+      "enum": [
+        "P0_PROTOCOL_LOCK",
+        "M0_MECHANICS",
+        "H0_REAL_HEADROOM",
+        "T0_LEARNED_CANDIDATE",
+        "C0_CONFIRMATION",
+        "D0_DEPLOYMENT"
+      ],
+      "title": "ResearchStage",
+      "type": "string"
+    },
+    "ScientificOutcome": {
+      "enum": [
+        "POSITIVE_HEADROOM",
+        "VALID_NEGATIVE",
+        "NOT_EVALUABLE_DATA",
+        "INVALID_MECHANICS_OR_ADAPTER"
+      ],
+      "title": "ScientificOutcome",
+      "type": "string"
+    },
+    "SearchAbstraction": {
+      "enum": [
+        "direct_solution",
+        "constructor",
+        "heuristic",
+        "search_algorithm",
+        "representation",
+        "loss_function",
+        "optimizer",
+        "data_selection_policy",
+        "uncertainty_rule",
+        "system_schedule",
+        "hybrid_pipeline"
+      ],
+      "title": "SearchAbstraction",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "ablation_results": {
+      "additionalProperties": {
+        "type": "boolean"
+      },
+      "title": "Ablation Results",
+      "type": "object"
+    },
+    "candidate_commit": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Candidate Commit"
+    },
+    "command": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Command",
+      "type": "array"
+    },
+    "elapsed_seconds": {
+      "minimum": 0.0,
+      "title": "Elapsed Seconds",
+      "type": "number"
+    },
+    "evaluation": {
+      "$ref": "#/$defs/EvaluationInput"
+    },
+    "patch_sha256": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Patch Sha256"
+    },
+    "seed": {
+      "default": 0,
+      "title": "Seed",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "evaluation",
+    "command",
+    "elapsed_seconds"
+  ],
+  "title": "EvaluationRun",
+  "type": "object"
+}

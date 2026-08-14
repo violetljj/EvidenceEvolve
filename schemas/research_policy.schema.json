@@ -1,0 +1,134 @@
+{
+  "$defs": {
+    "AcquisitionWeights": {
+      "additionalProperties": false,
+      "properties": {
+        "admit_probability": {
+          "default": 1.0,
+          "minimum": 0.0,
+          "title": "Admit Probability",
+          "type": "number"
+        },
+        "cost": {
+          "default": 0.5,
+          "minimum": 0.0,
+          "title": "Cost",
+          "type": "number"
+        },
+        "expected_improvement": {
+          "default": 1.0,
+          "minimum": 0.0,
+          "title": "Expected Improvement",
+          "type": "number"
+        },
+        "information_gain": {
+          "default": 1.0,
+          "minimum": 0.0,
+          "title": "Information Gain",
+          "type": "number"
+        },
+        "novelty": {
+          "default": 0.5,
+          "minimum": 0.0,
+          "title": "Novelty",
+          "type": "number"
+        },
+        "redundancy": {
+          "default": 0.5,
+          "minimum": 0.0,
+          "title": "Redundancy",
+          "type": "number"
+        },
+        "transfer_value": {
+          "default": 0.25,
+          "minimum": 0.0,
+          "title": "Transfer Value",
+          "type": "number"
+        }
+      },
+      "title": "AcquisitionWeights",
+      "type": "object"
+    },
+    "MutationType": {
+      "enum": [
+        "mechanism_mutation",
+        "representation_mutation",
+        "failure_directed_mutation",
+        "control_mutation",
+        "simplification",
+        "cross_family",
+        "restart"
+      ],
+      "title": "MutationType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "ablation_trigger": {
+      "default": "signature_supported",
+      "title": "Ablation Trigger",
+      "type": "string"
+    },
+    "abstraction_selector": {
+      "default": "stagnation_adaptive",
+      "title": "Abstraction Selector",
+      "type": "string"
+    },
+    "context_compiler": {
+      "default": "lineage_plus_failure_signature",
+      "title": "Context Compiler",
+      "type": "string"
+    },
+    "evaluation_cascade": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Evaluation Cascade",
+      "type": "array"
+    },
+    "inspiration_selector": {
+      "default": "mechanism_diverse",
+      "title": "Inspiration Selector",
+      "type": "string"
+    },
+    "mutation_operator_mix": {
+      "additionalProperties": {
+        "type": "number"
+      },
+      "propertyNames": {
+        "$ref": "#/$defs/MutationType"
+      },
+      "title": "Mutation Operator Mix",
+      "type": "object"
+    },
+    "parent_selector": {
+      "default": "pareto_complementary",
+      "title": "Parent Selector",
+      "type": "string"
+    },
+    "policy_id": {
+      "title": "Policy Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "stagnation_response": {
+      "default": "cross_family_structural_restart",
+      "title": "Stagnation Response",
+      "type": "string"
+    },
+    "weights": {
+      "$ref": "#/$defs/AcquisitionWeights"
+    }
+  },
+  "required": [
+    "policy_id"
+  ],
+  "title": "ResearchPolicyGenome",
+  "type": "object"
+}

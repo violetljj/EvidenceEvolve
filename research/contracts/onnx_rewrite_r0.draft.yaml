@@ -45,6 +45,9 @@ frozen_assets:
   - asset_id: harness-budgets-r0
     kind: harness_core
     path: evidence_evolve/budgets.py
+  - asset_id: harness-campaign-runner-r1
+    kind: harness_core
+    path: evidence_evolve/discovery/campaign.py
   - asset_id: harness-hashing-r0
     kind: harness_core
     path: evidence_evolve/hashing.py

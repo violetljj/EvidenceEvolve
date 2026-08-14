@@ -200,13 +200,13 @@ class ArchiveStore:
                     existing = connection.execute(
                         """
                         SELECT generation_id, candidate_id, policy_id, candidate_json,
-                               eligible, acquisition_score, reasons_json, created_at_utc
+                               eligible, acquisition_score, reasons_json
                         FROM acquisition_decisions
                         WHERE generation_id = ? AND candidate_id = ?
                         """,
                         (generation_id, decision.candidate_id),
                     ).fetchone()
-                    if existing != values:
+                    if existing != values[:-1]:
                         raise
 
     def record_mechanism_assessment(

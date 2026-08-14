@@ -1,0 +1,89 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "blind": {
+      "title": "Blind",
+      "type": "boolean"
+    },
+    "blind_breakthrough_rate": {
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Blind Breakthrough Rate",
+      "type": "number"
+    },
+    "closure_violations": {
+      "minimum": 0,
+      "title": "Closure Violations",
+      "type": "integer"
+    },
+    "fresh_set_robustness": {
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Fresh Set Robustness",
+      "type": "number"
+    },
+    "held_out": {
+      "title": "Held Out",
+      "type": "boolean"
+    },
+    "hypothesis_calibration": {
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Hypothesis Calibration",
+      "type": "number"
+    },
+    "mechanism_prediction_accuracy": {
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Mechanism Prediction Accuracy",
+      "type": "number"
+    },
+    "policy_id": {
+      "title": "Policy Id",
+      "type": "string"
+    },
+    "redundant_experiment_rate": {
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Redundant Experiment Rate",
+      "type": "number"
+    },
+    "reproducibility_rate": {
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Reproducibility Rate",
+      "type": "number"
+    },
+    "suite_id": {
+      "title": "Suite Id",
+      "type": "string"
+    },
+    "task_count": {
+      "minimum": 1,
+      "title": "Task Count",
+      "type": "integer"
+    },
+    "valid_improvement_per_cost": {
+      "minimum": 0.0,
+      "title": "Valid Improvement Per Cost",
+      "type": "number"
+    }
+  },
+  "required": [
+    "policy_id",
+    "suite_id",
+    "task_count",
+    "held_out",
+    "blind",
+    "blind_breakthrough_rate",
+    "valid_improvement_per_cost",
+    "hypothesis_calibration",
+    "mechanism_prediction_accuracy",
+    "redundant_experiment_rate",
+    "closure_violations",
+    "fresh_set_robustness",
+    "reproducibility_rate"
+  ],
+  "title": "PolicyBenchmarkResult",
+  "type": "object"
+}
