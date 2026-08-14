@@ -1,7 +1,7 @@
 schema_version: '1.0'
 campaign:
   id: onnx_rewrite_r0
-  base_commit: 6bd41c32bc85a09535afb13aec3ba7d74468def0
+  base_commit: 641c69d62c562a706ac7db28e9e9d7b4d2239d6a
   research_question: Can bounded ONNX rewrite passes reduce graph cost while preserving
     exact task behavior?
   claim_scope: engineering_harness_canary_only
@@ -24,8 +24,8 @@ evidence_sources:
   grade: B
   path: research/evidence_policies/onnx_rewrite_dev_manifest.json
   permissions:
-  - CONFIRM
   - CLAIM
+  - CONFIRM
   - DEV
   sha256: 9ee146efbc2a33c9fddf1faf070855077c8bfc6ff1716df6cb2d78cc2fcff36f
 frozen_assets:
@@ -44,11 +44,11 @@ frozen_assets:
 - asset_id: harness-models-r0
   kind: harness_core
   path: evidence_evolve/models.py
-  sha256: c96886d437ef3bad674abd8ff017886503ef81c7378c002029cd320818ecbbf1
+  sha256: 756335fbb0af2254d345c48e384b86fd34ee64a367d01eb549bc506a6c8af8d7
 - asset_id: harness-archive-r0
   kind: harness_core
   path: evidence_evolve/archive.py
-  sha256: 89a19688feabbbde2948b24ef5a5b17d920f884b1ee515b9034966e90f8bd869
+  sha256: 2047c2f060ee83c27e149eddc5a410f71cd91a4aea1a51e604b0420028e52330
 - asset_id: harness-artifacts-r0
   kind: harness_core
   path: evidence_evolve/artifacts.py
@@ -57,6 +57,10 @@ frozen_assets:
   kind: harness_core
   path: evidence_evolve/budgets.py
   sha256: 05194da10dd70816a55f97a356d208cd8fbdc5b8c35d06acd8d82ade7f8914d9
+- asset_id: harness-campaign-runner-r1
+  kind: harness_core
+  path: evidence_evolve/discovery/campaign.py
+  sha256: 1d715df3cf40968dabe21197820f909adfc8c79f0682b807d16481fb1fe3c077
 - asset_id: harness-hashing-r0
   kind: harness_core
   path: evidence_evolve/hashing.py
@@ -80,7 +84,7 @@ frozen_assets:
 - asset_id: harness-protocol-lock-r0
   kind: harness_core
   path: evidence_evolve/governance/protocol_lock.py
-  sha256: 5392243484c94104e4574875b75726ecaa619f910ab2539b7a8fac6a78f99a5c
+  sha256: 71b627ae808c6ecb2b0aec1cc2976f2c8a98fc7a2bc0b2b1eac8199ab946f0e1
 - asset_id: harness-evidence-policy-r0
   kind: harness_core
   path: evidence_evolve/governance/evidence_policy.py
@@ -123,4 +127,4 @@ budgets:
 closure_registry: research/closures/closure_registry.yaml
 lock:
   algorithm: sha256
-  content_sha256: 9599a30c6f04a108551ff64957ea59b34ec4177f1dd169c6c2ed4de9dbbc2c4c
+  content_sha256: d2a89b692e58a0043579bae88863976ba780ead1cfd5f13a15d6064762968f4f
