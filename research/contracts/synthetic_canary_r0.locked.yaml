@@ -1,0 +1,89 @@
+schema_version: '1.0'
+campaign:
+  id: synthetic_canary_r0
+  base_commit: d35f567ead4257d2036400243ef1d209aa280fd0
+  research_question: Can the harness reject protocol, closure, evidence, and safety
+    traps deterministically?
+  claim_scope: harness_mechanics_only
+authority:
+  protocol_mutable: false
+  evaluator_mutable: false
+  confirmation_visible_to_agents: false
+  final_merge_requires_human: true
+editable_scope:
+  allow:
+  - tasks/synthetic_canary/candidates/**
+  deny:
+  - evidence_evolve/**
+  - tasks/synthetic_canary/evaluator.py
+  - research/**
+  - confirmation/**
+evidence_sources:
+- source_id: synthetic-dev-a-r0
+  grade: A
+  path: research/evidence_policies/synthetic_dev_manifest.json
+  permissions:
+  - TRAIN
+  - CLAIM
+  - DEV
+  - CONFIRM
+  sha256: dc4368093ddd8e61660d416398c80e75501312844effda9f5a241c69b8813044
+frozen_assets:
+- asset_id: synthetic-evaluator-r0
+  kind: evaluator
+  path: tasks/synthetic_canary/evaluator.py
+  sha256: 14f8ab8728eb303bf05eff9761e4e733ee8b76fdf2393ef2fbe0029140b1309c
+- asset_id: harness-models-r0
+  kind: harness_core
+  path: evidence_evolve/models.py
+  sha256: aa9d0a3b1b29bc9ba6b714a6b440bea0356aa8dc8d8fbf3f55c0bca87b882631
+- asset_id: harness-gate-engine-r0
+  kind: harness_core
+  path: evidence_evolve/governance/gate_engine.py
+  sha256: d77c238f577cd9ea53266b26636e5867ba66806aa5964ad57209a30485dd8495
+- asset_id: harness-evidence-policy-r0
+  kind: harness_core
+  path: evidence_evolve/governance/evidence_policy.py
+  sha256: f53c2030af94b39f515b1ef99d2a121f7f02e020eca1782197fad153d86db9e5
+- asset_id: harness-protocol-lock-r0
+  kind: harness_core
+  path: evidence_evolve/governance/protocol_lock.py
+  sha256: 393d39222a52ae358dda6c7ef11c028541dfe34fdd8dcd940f6b6ded72a405e5
+- asset_id: harness-closure-r0
+  kind: harness_core
+  path: evidence_evolve/governance/closure_registry.py
+  sha256: f2ed509179769aeb1b626ae300b3c0949154ca2b03e3d65b9bd2bb887e73f6ff
+- asset_id: harness-scope-r0
+  kind: harness_core
+  path: evidence_evolve/governance/scope.py
+  sha256: de9c394f933d52687eeac79e739d52ebfc535f4a2555087b6f22cf0658040d7b
+- asset_id: harness-hashing-r0
+  kind: harness_core
+  path: evidence_evolve/hashing.py
+  sha256: 22b96285699877ffb3695caf0a5c6d6fa518d0ccbb1f91df3ac332fb66094be7
+- asset_id: closure-registry-r0
+  kind: protocol
+  path: research/closures/closure_registry.yaml
+  sha256: bc216c30dcdcc9a55a057f01d7ba67644bbddced5ad0d47929d02e85c86b0099
+- asset_id: hidden-confirmation-manifest-r0
+  kind: confirmation
+  path: confirmation/synthetic_hidden_manifest.json
+  sha256: c15c1f394f0854a86d93f681bdfd5fe8a9a60bb951ac431786e9084d4be8efff
+metrics:
+  hard_constraints:
+    false_block_delta_pp:
+      max: 0.0
+  pareto_objectives:
+    clearance_mae_delta: minimize
+    false_block_delta_pp: minimize
+budgets:
+  proposal_calls: 5
+  implementations: 0
+  mechanics_runs: 5
+  proxy_runs: 0
+  confirmation_runs: 0
+  device_runs: 0
+closure_registry: research/closures/closure_registry.yaml
+lock:
+  algorithm: sha256
+  content_sha256: 8cf83c6e348f60668fe88e2a13b523c5ec969391002a24a23109b72ee0b84a25
