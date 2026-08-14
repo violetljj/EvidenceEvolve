@@ -1,0 +1,70 @@
+schema_version: "1.0"
+campaign:
+  id: onnx_rewrite_r0
+  base_commit: HEAD
+  research_question: Can bounded ONNX rewrite passes reduce graph cost while preserving exact task behavior?
+  claim_scope: engineering_harness_canary_only
+authority:
+  protocol_mutable: false
+  evaluator_mutable: false
+  confirmation_visible_to_agents: false
+  final_merge_requires_human: true
+editable_scope:
+  allow:
+    - tasks/onnx_rewrite/candidates/candidate.py
+  deny:
+    - evidence_evolve/**
+    - tasks/onnx_rewrite/evaluator.py
+    - tasks/onnx_rewrite/model_factory.py
+    - research/**
+    - confirmation/**
+evidence_sources:
+  - source_id: onnx-rewrite-dev-b-r0
+    grade: B
+    path: research/evidence_policies/onnx_rewrite_dev_manifest.json
+    permissions: [DEV, CONFIRM, CLAIM]
+frozen_assets:
+  - asset_id: onnx-rewrite-evaluator-r0
+    kind: evaluator
+    path: tasks/onnx_rewrite/evaluator.py
+  - asset_id: onnx-rewrite-model-factory-r0
+    kind: model
+    path: tasks/onnx_rewrite/model_factory.py
+  - asset_id: harness-models-r0
+    kind: harness_core
+    path: evidence_evolve/models.py
+  - asset_id: harness-gate-engine-r0
+    kind: harness_core
+    path: evidence_evolve/governance/gate_engine.py
+  - asset_id: harness-protocol-lock-r0
+    kind: harness_core
+    path: evidence_evolve/governance/protocol_lock.py
+  - asset_id: harness-scope-r0
+    kind: harness_core
+    path: evidence_evolve/governance/scope.py
+  - asset_id: closure-registry-r0
+    kind: protocol
+    path: research/closures/closure_registry.yaml
+  - asset_id: onnx-rewrite-confirmation-r0
+    kind: confirmation
+    path: confirmation/onnx_rewrite_hidden_manifest.json
+metrics:
+  hard_constraints:
+    checker_failure:
+      max: 0.0
+    max_abs_error:
+      max: 0.00001
+    output_shape_mismatch:
+      max: 0.0
+  pareto_objectives:
+    node_count: minimize
+    model_bytes: minimize
+    latency_ms: minimize
+budgets:
+  proposal_calls: 4
+  implementations: 3
+  mechanics_runs: 3
+  proxy_runs: 3
+  confirmation_runs: 1
+  device_runs: 0
+closure_registry: research/closures/closure_registry.yaml

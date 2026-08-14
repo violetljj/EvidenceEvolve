@@ -24,6 +24,7 @@ from evidence_evolve.governance.protocol_lock import (
     load_contract,
 )
 from evidence_evolve.models import CandidateGenome, GateVerdict, ResearchContract
+from evidence_evolve.onnx_campaign import evaluate_onnx_candidate
 
 
 def _json(value: Any) -> str:
@@ -188,6 +189,20 @@ def command_backend_status(args: argparse.Namespace) -> int:
     return 0
 
 
+def command_evaluate_onnx_candidate(args: argparse.Namespace) -> int:
+    repo = _repo_root(args.repo)
+    result = evaluate_onnx_candidate(
+        Path(args.contract).resolve(),
+        Path(args.proposal).resolve(),
+        repo,
+        Path(args.worktree).resolve(),
+        Path(args.run_dir).resolve(),
+        confirmation=args.confirmation,
+    )
+    print(_json(result))
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="evolve",
@@ -246,6 +261,17 @@ def build_parser() -> argparse.ArgumentParser:
         "backend-status", help="report optional backend availability"
     )
     status.set_defaults(handler=command_backend_status)
+
+    onnx_candidate = subparsers.add_parser(
+        "evaluate-onnx-candidate",
+        help="evaluate one isolated ONNX rewrite candidate",
+    )
+    onnx_candidate.add_argument("contract")
+    onnx_candidate.add_argument("proposal")
+    onnx_candidate.add_argument("--worktree", required=True)
+    onnx_candidate.add_argument("--run-dir", required=True)
+    onnx_candidate.add_argument("--confirmation", action="store_true")
+    onnx_candidate.set_defaults(handler=command_evaluate_onnx_candidate)
     return parser
 
 

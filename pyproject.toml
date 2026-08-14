@@ -23,6 +23,11 @@ dev = [
 shinka = [
   "shinka-evolve>=0.1",
 ]
+onnx-canary = [
+  "numpy>=2.0,<3",
+  "onnx>=1.17,<2",
+  "onnxruntime>=1.20,<2",
+]
 
 [project.scripts]
 evolve = "evidence_evolve.cli:main"
@@ -33,4 +38,3 @@ packages = ["evidence_evolve"]
 [tool.pytest.ini_options]
 addopts = "-q"
 testpaths = ["tests"]
-

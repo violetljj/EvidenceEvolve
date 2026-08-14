@@ -1,0 +1,8 @@
+{
+  "source_id": "onnx-rewrite-generated-corpus-r0",
+  "generator": "tasks/onnx_rewrite/model_factory.py",
+  "development_seed": 1701,
+  "batches": 6,
+  "grade": "B",
+  "claim_boundary": "engineering canary only"
+}

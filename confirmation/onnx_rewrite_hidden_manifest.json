@@ -1,0 +1,7 @@
+{
+  "source_id": "onnx-rewrite-confirmation-r0",
+  "seed_commitment": "sha256:4eef0bb248ca9ca037168189006f6cd4dd145158026c0737917f6d94db06addc",
+  "batches": 12,
+  "visibility": "evaluator-only by protocol",
+  "claim_boundary": "engineering canary only"
+}
