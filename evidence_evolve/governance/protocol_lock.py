@@ -45,7 +45,7 @@ def dump_contract(contract: ResearchContract, path: Path) -> None:
 
 
 def contract_content_hash(contract: ResearchContract) -> str:
-    return sha256_object(contract.model_dump(mode="json", exclude={"lock"}))
+    return sha256_object(contract.model_dump(mode="python", exclude={"lock"}))
 
 
 class ProtocolLock:
@@ -113,6 +113,8 @@ class ProtocolLock:
         kinds = {asset.kind for asset in contract.frozen_assets}
         if FrozenAssetKind.EVALUATOR not in kinds:
             issues.append("NO_FROZEN_EVALUATOR")
+        if FrozenAssetKind.HARNESS_CORE not in kinds:
+            issues.append("NO_FROZEN_HARNESS_CORE")
         if FrozenAssetKind.CONFIRMATION not in kinds:
             issues.append("NO_HIDDEN_CONFIRMATION_ASSET")
 
@@ -160,4 +162,3 @@ class ProtocolLock:
         if not report.valid:
             raise ContractValidationError(report)
         return report
-

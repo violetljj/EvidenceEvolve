@@ -83,6 +83,12 @@ def contract() -> ResearchContract:
                 sha256="c" * 64,
             ),
             FrozenAsset(
+                asset_id="harness",
+                kind=FrozenAssetKind.HARNESS_CORE,
+                path="protocols/gate.py",
+                sha256="f" * 64,
+            ),
+            FrozenAsset(
                 asset_id="closures",
                 kind=FrozenAssetKind.PROTOCOL,
                 path="protocols/closures.yaml",
@@ -108,7 +114,6 @@ def contract() -> ResearchContract:
         closure_registry="protocols/closures.yaml",
     )
     value.lock = ContractLock(
-        content_sha256=sha256_object(value.model_dump(mode="json", exclude={"lock"}))
+        content_sha256=sha256_object(value.model_dump(mode="python", exclude={"lock"}))
     )
     return value
-

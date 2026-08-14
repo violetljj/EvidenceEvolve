@@ -27,9 +27,22 @@ from evidence_evolve.models import CandidateGenome, GateVerdict, ResearchContrac
 
 
 def _json(value: Any) -> str:
-    if hasattr(value, "model_dump"):
-        value = value.model_dump(mode="json")
-    return json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True)
+    def default(item: Any) -> Any:
+        if hasattr(item, "model_dump"):
+            return item.model_dump(mode="json")
+        if isinstance(item, (set, frozenset)):
+            return sorted(item)
+        if isinstance(item, Path):
+            return str(item)
+        raise TypeError(f"Object of type {type(item).__name__} is not JSON serializable")
+
+    return json.dumps(
+        value,
+        ensure_ascii=False,
+        indent=2,
+        sort_keys=True,
+        default=default,
+    )
 
 
 def _repo_root(explicit: str | None) -> Path:
@@ -251,4 +264,3 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

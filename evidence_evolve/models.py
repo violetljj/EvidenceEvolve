@@ -82,6 +82,7 @@ class ObjectiveDirection(StrEnum):
 
 class FrozenAssetKind(StrEnum):
     EVALUATOR = "evaluator"
+    HARNESS_CORE = "harness_core"
     DATA_MANIFEST = "data_manifest"
     PROTOCOL = "protocol"
     CONFIRMATION = "confirmation"
@@ -292,4 +293,3 @@ class EvaluationReceipt(StrictModel):
 class ReceiptEnvelope(StrictModel):
     receipt: EvaluationReceipt
     receipt_sha256: Annotated[str, Field(pattern=r"^[0-9a-f]{64}$")]
-

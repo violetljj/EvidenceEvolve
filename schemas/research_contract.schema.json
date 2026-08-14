@@ -258,6 +258,7 @@
     "FrozenAssetKind": {
       "enum": [
         "evaluator",
+        "harness_core",
         "data_manifest",
         "protocol",
         "confirmation",

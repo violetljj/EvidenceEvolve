@@ -32,6 +32,7 @@ def test_lock_hashes_assets_and_detects_drift(tmp_path) -> None:
     _git(repo, "config", "user.name", "Test")
     files = {
         "evaluators/evaluate.py": "print('fixed')\n",
+        "protocols/gate.py": "def gate(): return 'fixed'\n",
         "protocols/closures.yaml": 'schema_version: "1.0"\nclosures: []\n',
         "confirmation/manifest.json": "{}\n",
         "manifests/truth.json": "{}\n",
@@ -68,6 +69,11 @@ def test_lock_hashes_assets_and_detects_drift(tmp_path) -> None:
                 path="evaluators/evaluate.py",
             ),
             FrozenAsset(
+                asset_id="harness",
+                kind=FrozenAssetKind.HARNESS_CORE,
+                path="protocols/gate.py",
+            ),
+            FrozenAsset(
                 asset_id="closures",
                 kind=FrozenAssetKind.PROTOCOL,
                 path="protocols/closures.yaml",
@@ -92,4 +98,3 @@ def test_lock_hashes_assets_and_detects_drift(tmp_path) -> None:
     drift = locker.validate(locked)
     assert not drift.valid
     assert "FROZEN_ASSET_HASH_MISMATCH:evaluator" in drift.issues
-
