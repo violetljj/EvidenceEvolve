@@ -180,7 +180,7 @@ def command_backend_status(args: argparse.Namespace) -> int:
     print(
         _json(
             {
-                "codex_cli": {"discovered": CodexCliBackend().available()},
+                "codex_cli": CodexCliBackend().status(),
                 "shinka": ShinkaBackend().status().__dict__,
             }
         )

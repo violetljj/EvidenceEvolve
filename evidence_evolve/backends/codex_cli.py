@@ -29,8 +29,43 @@ class CodexCliBackend:
     def __init__(self, executable: str = "codex"):
         self.executable = executable
 
+    def status(self) -> dict[str, object]:
+        discovered_path = shutil.which(self.executable)
+        if discovered_path is None:
+            return {
+                "discovered": False,
+                "usable": False,
+                "path": None,
+                "version": None,
+                "error": "EXECUTABLE_NOT_FOUND",
+            }
+        try:
+            completed = subprocess.run(
+                [self.executable, "--version"],
+                check=False,
+                capture_output=True,
+                text=True,
+                timeout=10,
+            )
+        except (OSError, subprocess.TimeoutExpired) as exc:
+            return {
+                "discovered": True,
+                "usable": False,
+                "path": discovered_path,
+                "version": None,
+                "error": f"{type(exc).__name__}:{exc}",
+            }
+        version = (completed.stdout or completed.stderr).strip() or None
+        return {
+            "discovered": True,
+            "usable": completed.returncode == 0,
+            "path": discovered_path,
+            "version": version,
+            "error": None if completed.returncode == 0 else f"EXIT_{completed.returncode}",
+        }
+
     def available(self) -> bool:
-        return shutil.which(self.executable) is not None
+        return bool(self.status()["usable"])
 
     def build_command(
         self,
@@ -111,4 +146,3 @@ class CodexCliBackend:
             "command": command,
             "event_types": event_types,
         }
-

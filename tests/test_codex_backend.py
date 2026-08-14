@@ -37,3 +37,21 @@ def test_only_implementer_can_write() -> None:
     )
     assert command[command.index("--sandbox") + 1] == "workspace-write"
 
+
+def test_discovered_but_unstartable_codex_is_not_available(monkeypatch) -> None:
+    monkeypatch.setattr(
+        "evidence_evolve.backends.codex_cli.shutil.which",
+        lambda _: "C:/Program Files/Codex/codex.exe",
+    )
+
+    def denied(*args, **kwargs):
+        raise PermissionError("access denied")
+
+    monkeypatch.setattr(
+        "evidence_evolve.backends.codex_cli.subprocess.run",
+        denied,
+    )
+    status = CodexCliBackend().status()
+    assert status["discovered"] is True
+    assert status["usable"] is False
+    assert CodexCliBackend().available() is False
