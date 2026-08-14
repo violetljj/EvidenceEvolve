@@ -27,18 +27,48 @@ frozen_assets:
   - asset_id: onnx-rewrite-evaluator-r0
     kind: evaluator
     path: tasks/onnx_rewrite/evaluator.py
+  - asset_id: onnx-rewrite-adapter-r0
+    kind: adapter
+    path: evidence_evolve/onnx_campaign.py
   - asset_id: onnx-rewrite-model-factory-r0
     kind: model
     path: tasks/onnx_rewrite/model_factory.py
   - asset_id: harness-models-r0
     kind: harness_core
     path: evidence_evolve/models.py
+  - asset_id: harness-archive-r0
+    kind: harness_core
+    path: evidence_evolve/archive.py
+  - asset_id: harness-artifacts-r0
+    kind: harness_core
+    path: evidence_evolve/artifacts.py
+  - asset_id: harness-budgets-r0
+    kind: harness_core
+    path: evidence_evolve/budgets.py
+  - asset_id: harness-hashing-r0
+    kind: harness_core
+    path: evidence_evolve/hashing.py
+  - asset_id: harness-replay-r0
+    kind: harness_core
+    path: evidence_evolve/replay.py
+  - asset_id: harness-worktrees-r0
+    kind: harness_core
+    path: evidence_evolve/worktrees.py
+  - asset_id: harness-candidate-auditor-r0
+    kind: harness_core
+    path: evidence_evolve/governance/candidate_auditor.py
   - asset_id: harness-gate-engine-r0
     kind: harness_core
     path: evidence_evolve/governance/gate_engine.py
   - asset_id: harness-protocol-lock-r0
     kind: harness_core
     path: evidence_evolve/governance/protocol_lock.py
+  - asset_id: harness-evidence-policy-r0
+    kind: harness_core
+    path: evidence_evolve/governance/evidence_policy.py
+  - asset_id: harness-closure-r0
+    kind: harness_core
+    path: evidence_evolve/governance/closure_registry.py
   - asset_id: harness-scope-r0
     kind: harness_core
     path: evidence_evolve/governance/scope.py

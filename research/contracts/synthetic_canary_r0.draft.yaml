@@ -26,6 +26,18 @@ frozen_assets:
   - asset_id: synthetic-evaluator-r0
     kind: evaluator
     path: tasks/synthetic_canary/evaluator.py
+  - asset_id: synthetic-adapter-r0
+    kind: adapter
+    path: evidence_evolve/canary.py
+  - asset_id: harness-archive-r0
+    kind: harness_core
+    path: evidence_evolve/archive.py
+  - asset_id: harness-artifacts-r0
+    kind: harness_core
+    path: evidence_evolve/artifacts.py
+  - asset_id: harness-budgets-r0
+    kind: harness_core
+    path: evidence_evolve/budgets.py
   - asset_id: harness-models-r0
     kind: harness_core
     path: evidence_evolve/models.py
@@ -47,6 +59,15 @@ frozen_assets:
   - asset_id: harness-hashing-r0
     kind: harness_core
     path: evidence_evolve/hashing.py
+  - asset_id: harness-replay-r0
+    kind: harness_core
+    path: evidence_evolve/replay.py
+  - asset_id: harness-worktrees-r0
+    kind: harness_core
+    path: evidence_evolve/worktrees.py
+  - asset_id: harness-candidate-auditor-r0
+    kind: harness_core
+    path: evidence_evolve/governance/candidate_auditor.py
   - asset_id: closure-registry-r0
     kind: protocol
     path: research/closures/closure_registry.yaml

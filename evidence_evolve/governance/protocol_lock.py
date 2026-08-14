@@ -17,6 +17,25 @@ from evidence_evolve.models import (
 )
 
 
+REQUIRED_HARNESS_CORE_PATHS = frozenset(
+    {
+        "evidence_evolve/archive.py",
+        "evidence_evolve/artifacts.py",
+        "evidence_evolve/budgets.py",
+        "evidence_evolve/hashing.py",
+        "evidence_evolve/models.py",
+        "evidence_evolve/replay.py",
+        "evidence_evolve/worktrees.py",
+        "evidence_evolve/governance/candidate_auditor.py",
+        "evidence_evolve/governance/closure_registry.py",
+        "evidence_evolve/governance/evidence_policy.py",
+        "evidence_evolve/governance/gate_engine.py",
+        "evidence_evolve/governance/protocol_lock.py",
+        "evidence_evolve/governance/scope.py",
+    }
+)
+
+
 class ValidationReport(StrictModel):
     valid: bool
     issues: list[str] = Field(default_factory=list)
@@ -113,6 +132,8 @@ class ProtocolLock:
         kinds = {asset.kind for asset in contract.frozen_assets}
         if FrozenAssetKind.EVALUATOR not in kinds:
             issues.append("NO_FROZEN_EVALUATOR")
+        if FrozenAssetKind.ADAPTER not in kinds:
+            issues.append("NO_FROZEN_EVALUATION_ADAPTER")
         if FrozenAssetKind.HARNESS_CORE not in kinds:
             issues.append("NO_FROZEN_HARNESS_CORE")
         if FrozenAssetKind.CONFIRMATION not in kinds:
@@ -134,6 +155,14 @@ class ProtocolLock:
                     issues.append(f"FROZEN_ASSET_HASH_MISMATCH:{asset.asset_id}")
         if not registry_present:
             issues.append("CLOSURE_REGISTRY_NOT_FROZEN_AS_PROTOCOL")
+
+        frozen_core_paths = {
+            asset.path
+            for asset in contract.frozen_assets
+            if asset.kind is FrozenAssetKind.HARNESS_CORE
+        }
+        for missing_path in sorted(REQUIRED_HARNESS_CORE_PATHS - frozen_core_paths):
+            issues.append(f"REQUIRED_HARNESS_CORE_NOT_FROZEN:{missing_path}")
 
         if contract.lock is None:
             issues.append("CONTRACT_NOT_LOCKED")

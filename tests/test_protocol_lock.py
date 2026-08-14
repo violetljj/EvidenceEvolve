@@ -3,7 +3,10 @@ from __future__ import annotations
 import subprocess
 from pathlib import Path
 
-from evidence_evolve.governance.protocol_lock import ProtocolLock
+from evidence_evolve.governance.protocol_lock import (
+    REQUIRED_HARNESS_CORE_PATHS,
+    ProtocolLock,
+)
 from evidence_evolve.models import (
     Budgets,
     Campaign,
@@ -32,11 +35,12 @@ def test_lock_hashes_assets_and_detects_drift(tmp_path) -> None:
     _git(repo, "config", "user.name", "Test")
     files = {
         "evaluators/evaluate.py": "print('fixed')\n",
-        "protocols/gate.py": "def gate(): return 'fixed'\n",
+        "adapters/evaluate.py": "def adapt(): return 'fixed'\n",
         "protocols/closures.yaml": 'schema_version: "1.0"\nclosures: []\n',
         "confirmation/manifest.json": "{}\n",
         "manifests/truth.json": "{}\n",
     }
+    files.update({path: "# frozen harness core\n" for path in REQUIRED_HARNESS_CORE_PATHS})
     for name, content in files.items():
         path = repo / name
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -52,7 +56,13 @@ def test_lock_hashes_assets_and_detects_drift(tmp_path) -> None:
         ),
         editable_scope=EditableScope(
             allow=["candidates/**"],
-            deny=["evaluators/**", "protocols/**", "confirmation/**"],
+            deny=[
+                "adapters/**",
+                "confirmation/**",
+                "evaluators/**",
+                "evidence_evolve/**",
+                "protocols/**",
+            ],
         ),
         evidence_sources=[
             EvidenceSource(
@@ -69,10 +79,18 @@ def test_lock_hashes_assets_and_detects_drift(tmp_path) -> None:
                 path="evaluators/evaluate.py",
             ),
             FrozenAsset(
-                asset_id="harness",
-                kind=FrozenAssetKind.HARNESS_CORE,
-                path="protocols/gate.py",
+                asset_id="adapter",
+                kind=FrozenAssetKind.ADAPTER,
+                path="adapters/evaluate.py",
             ),
+            *[
+                FrozenAsset(
+                    asset_id=f"harness-{index}",
+                    kind=FrozenAssetKind.HARNESS_CORE,
+                    path=path,
+                )
+                for index, path in enumerate(sorted(REQUIRED_HARNESS_CORE_PATHS))
+            ],
             FrozenAsset(
                 asset_id="closures",
                 kind=FrozenAssetKind.PROTOCOL,

@@ -20,6 +20,10 @@ class ReceiptIntegrityError(RuntimeError):
     pass
 
 
+class ReceiptAlreadyExistsError(FileExistsError):
+    pass
+
+
 def environment_receipt(extra: dict[str, str] | None = None) -> EnvironmentReceipt:
     return EnvironmentReceipt(
         python=sys.version,
@@ -49,12 +53,40 @@ def atomic_write_json(path: Path, payload: Any) -> None:
         raise
 
 
+def create_once_json(path: Path, payload: Any) -> None:
+    """Atomically create a JSON artifact and refuse replacement.
+
+    The temporary file is linked into place only after its bytes are flushed.
+    A hard link is used because, unlike ``os.replace``, it cannot overwrite an
+    existing destination on either Windows or POSIX.
+    """
+    path.parent.mkdir(parents=True, exist_ok=True)
+    encoded = canonical_json_bytes(payload) + b"\n"
+    descriptor, temporary_name = tempfile.mkstemp(
+        prefix=f".{path.name}.", suffix=".tmp", dir=path.parent
+    )
+    try:
+        with os.fdopen(descriptor, "wb") as stream:
+            stream.write(encoded)
+            stream.flush()
+            os.fsync(stream.fileno())
+        try:
+            os.link(temporary_name, path)
+        except FileExistsError as exc:
+            raise ReceiptAlreadyExistsError(f"receipt already exists: {path}") from exc
+    finally:
+        try:
+            os.unlink(temporary_name)
+        except FileNotFoundError:
+            pass
+
+
 def write_receipt(path: Path, receipt: EvaluationReceipt) -> ReceiptEnvelope:
     envelope = ReceiptEnvelope(
         receipt=receipt,
         receipt_sha256=sha256_object(receipt),
     )
-    atomic_write_json(path, envelope)
+    create_once_json(path, envelope)
     return envelope
 
 
@@ -67,4 +99,3 @@ def load_receipt(path: Path) -> ReceiptEnvelope:
             f"receipt hash mismatch: stored={envelope.receipt_sha256} actual={actual}"
         )
     return envelope
-

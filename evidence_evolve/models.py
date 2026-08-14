@@ -82,6 +82,7 @@ class ObjectiveDirection(StrEnum):
 
 class FrozenAssetKind(StrEnum):
     EVALUATOR = "evaluator"
+    ADAPTER = "adapter"
     HARNESS_CORE = "harness_core"
     DATA_MANIFEST = "data_manifest"
     PROTOCOL = "protocol"

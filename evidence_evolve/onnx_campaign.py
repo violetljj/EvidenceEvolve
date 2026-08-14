@@ -7,7 +7,12 @@ from pathlib import Path
 from time import perf_counter
 
 from evidence_evolve.archive import ArchiveStore
-from evidence_evolve.artifacts import atomic_write_json, environment_receipt, write_receipt
+from evidence_evolve.artifacts import (
+    atomic_write_json,
+    environment_receipt,
+    load_receipt,
+    write_receipt,
+)
 from evidence_evolve.budgets import BudgetLedger
 from evidence_evolve.governance.candidate_auditor import audit_candidate
 from evidence_evolve.governance.closure_registry import ClosureRegistry
@@ -32,6 +37,39 @@ def _git(worktree: Path, *args: str) -> str:
     return completed.stdout.strip()
 
 
+def build_onnx_evaluation(
+    *,
+    contract_sha256: str,
+    candidate: CandidateGenome,
+    stage: ResearchStage,
+    changed_files: list[str],
+    protocol_violations: list[str],
+    raw: dict[str, object],
+) -> EvaluationInput:
+    mechanics = MechanicsStatus(str(raw["mechanics_status"]))
+    controls = dict(raw["controls"])  # type: ignore[arg-type]
+    improved = bool(raw.get("improved", False))
+    outcome = (
+        ScientificOutcome.INVALID_MECHANICS_OR_ADAPTER
+        if mechanics is MechanicsStatus.FAIL
+        else ScientificOutcome.POSITIVE_HEADROOM
+        if improved and all(controls.values())
+        else ScientificOutcome.VALID_NEGATIVE
+    )
+    return EvaluationInput(
+        contract_sha256=contract_sha256,
+        candidate=candidate,
+        stage=stage,
+        changed_files=changed_files,
+        protocol_violations=protocol_violations,
+        mechanics_status=mechanics,
+        data_eligible=True,
+        metrics=dict(raw["metrics"]),  # type: ignore[arg-type]
+        controls=controls,
+        scientific_outcome=outcome,
+    )
+
+
 def evaluate_onnx_candidate(
     contract_path: Path,
     proposal_path: Path,
@@ -46,6 +84,13 @@ def evaluate_onnx_candidate(
     candidate = CandidateGenome.model_validate(
         json.loads(proposal_path.read_text(encoding="utf-8"))
     )
+    stage = (
+        ResearchStage.C0_CONFIRMATION
+        if confirmation
+        else ResearchStage.M0_MECHANICS
+    )
+    candidate_dir = run_dir / "candidates" / candidate.candidate_id
+    receipt_path = candidate_dir / "receipts" / f"{stage.value}.json"
     manager = WorktreeManager(repo_root)
     changed_files = manager.changed_files(worktree, contract.campaign.base_commit)
     registry = ClosureRegistry.load(repo_root / contract.closure_registry)
@@ -61,54 +106,54 @@ def evaluate_onnx_candidate(
             "confirmation_runs", 1, f"confirmation_runs:{candidate.candidate_id}"
         )
 
+    if receipt_path.exists():
+        envelope = load_receipt(receipt_path)
+        if envelope.receipt.candidate_id != candidate.candidate_id:
+            raise ValueError("existing receipt candidate mismatch")
+        ArchiveStore(database).record(
+            candidate, envelope, receipt_path.relative_to(run_dir)
+        )
+        return {
+            "candidate_id": candidate.candidate_id,
+            "stage": stage.value,
+            "verdict": envelope.receipt.verdict.model_dump(mode="json"),
+            "metrics": envelope.receipt.evaluation_input.metrics,
+            "budgets": budgets.snapshot(),
+            "receipt": str(receipt_path),
+            "resumed": True,
+        }
+
     candidate_path = worktree / "tasks/onnx_rewrite/candidates/candidate.py"
     from tasks.onnx_rewrite.evaluator import evaluate as raw_evaluate
 
     started = perf_counter()
     raw = raw_evaluate(candidate_path, confirmation=confirmation)
     elapsed = perf_counter() - started
-    mechanics = MechanicsStatus(raw["mechanics_status"])
-    controls = dict(raw["controls"])
-    improved = bool(raw.get("improved", False))
-    outcome = (
-        ScientificOutcome.INVALID_MECHANICS_OR_ADAPTER
-        if mechanics is MechanicsStatus.FAIL
-        else ScientificOutcome.POSITIVE_HEADROOM
-        if improved and all(controls.values())
-        else ScientificOutcome.VALID_NEGATIVE
-    )
-    evaluation = EvaluationInput(
+    evaluation = build_onnx_evaluation(
         contract_sha256=validation.contract_sha256 or "",
         candidate=candidate,
-        stage=(
-            ResearchStage.C0_CONFIRMATION
-            if confirmation
-            else ResearchStage.M0_MECHANICS
-        ),
+        stage=stage,
         changed_files=changed_files,
         protocol_violations=audit.violations,
-        mechanics_status=mechanics,
-        data_eligible=True,
-        metrics=dict(raw["metrics"]),
-        controls=controls,
-        scientific_outcome=outcome,
+        raw=raw,
     )
     verdict = GateEngine(contract).evaluate(evaluation)
-    candidate_dir = run_dir / "candidates" / candidate.candidate_id
     candidate_dir.mkdir(parents=True, exist_ok=True)
+    stage_dir = candidate_dir / "stages" / stage.value
     patch = subprocess.run(
         ["git", "diff", "--binary", contract.campaign.base_commit, "HEAD", "--"],
         cwd=worktree,
         check=True,
         capture_output=True,
     ).stdout
-    (candidate_dir / "patch.diff").write_bytes(patch)
-    atomic_write_json(candidate_dir / "proposal.json", candidate)
-    atomic_write_json(candidate_dir / "metrics.json", raw)
-    atomic_write_json(candidate_dir / "controls.json", controls)
-    atomic_write_json(candidate_dir / "gates.json", verdict)
+    stage_dir.mkdir(parents=True, exist_ok=True)
+    (stage_dir / "patch.diff").write_bytes(patch)
+    atomic_write_json(stage_dir / "proposal.json", candidate)
+    atomic_write_json(stage_dir / "metrics.json", raw)
+    atomic_write_json(stage_dir / "controls.json", evaluation.controls)
+    atomic_write_json(stage_dir / "gates.json", verdict)
     atomic_write_json(
-        candidate_dir / "code_manifest.json",
+        stage_dir / "code_manifest.json",
         {
             "changed_files": changed_files,
             "patch_sha256": sha256_bytes(patch),
@@ -116,7 +161,7 @@ def evaluate_onnx_candidate(
         },
     )
     atomic_write_json(
-        candidate_dir / "evidence_manifest.json",
+        stage_dir / "evidence_manifest.json",
         {
             "contract_sha256": validation.contract_sha256,
             "stage": evaluation.stage.value,
@@ -124,7 +169,7 @@ def evaluate_onnx_candidate(
             "confirmation": confirmation,
         },
     )
-    logs = candidate_dir / "logs"
+    logs = stage_dir / "logs"
     logs.mkdir(exist_ok=True)
     (logs / "stdout.log").write_text(json.dumps(raw, sort_keys=True), encoding="utf-8")
     (logs / "stderr.log").write_text(str(raw.get("error", "")), encoding="utf-8")
@@ -151,7 +196,6 @@ def evaluate_onnx_candidate(
         evaluation_input=evaluation,
         verdict=verdict,
     )
-    receipt_path = candidate_dir / "reproducibility_receipt.json"
     envelope = write_receipt(receipt_path, receipt)
     ArchiveStore(database).record(candidate, envelope, receipt_path.relative_to(run_dir))
     if not (run_dir / "contract.locked.yaml").exists():

@@ -19,14 +19,16 @@ Implemented in this repository:
 - closure/reopen enforcement;
 - hard-constraint and four-outcome gate semantics;
 - idempotent budget accounting;
-- immutable JSON receipts and deterministic replay;
-- SQLite archive and lineage index;
+- create-once, stage-addressed JSON receipts;
+- SQLite receipt history and lineage index without candidate-stage overwrite;
+- bound verdict replay and frozen-evaluator re-execution;
 - Git worktree scope auditing;
 - Codex CLI command construction with role-specific sandboxes;
 - an optional ShinkaEvolve integration seam;
 - a synthetic trap canary for protocol tampering, missing evidence, safety regression, and a valid positive.
+- a bounded ONNX graph-rewrite engineering canary adapter.
 
-Not claimed by R0: an executed ONNX/QNN campaign, live Shinka evolution, blind confirmation, device deployment, algorithm novelty, or safety evidence.
+Not claimed by R0: an autonomous campaign loop, live Shinka evolution, physically blind confirmation, QNN/device deployment, algorithm novelty, or safety evidence. The ONNX task is an engineering harness canary, not scientific or product authority.
 
 ## Setup
 
@@ -50,13 +52,15 @@ evolve validate-contract research/contracts/synthetic_canary_r0.locked.yaml
 evolve run-canary research/contracts/synthetic_canary_r0.locked.yaml
 evolve inspect runs/synthetic_canary_r0
 evolve replay runs/synthetic_canary_r0
+evolve replay-evaluation runs/synthetic_canary_r0
 ```
 
-`lock-contract` resolves `HEAD`, hashes every frozen asset, and seals the canonical contract payload. `validate-contract` then rejects drift, mutable evaluators, visible confirmation data, invalid evidence permissions, missing hard gates, and editable-scope conflicts.
+`lock-contract` resolves `HEAD`, hashes every frozen asset, and seals the canonical contract payload. `validate-contract` then rejects drift, an incomplete authority TCB, mutable evaluators/adapters, visible confirmation policy, invalid evidence permissions, missing hard gates, and editable-scope conflicts.
+
+`replay` validates receipt-to-contract bindings and recomputes deterministic gate verdicts. `replay-evaluation` additionally re-runs the campaign's frozen evaluator adapter. Runtime latency is reported as observational replay drift rather than treated as byte-deterministic evidence.
 
 ## Codex and ShinkaEvolve
 
 The Codex backend emits `codex exec --json --output-schema ...` commands and grants `workspace-write` only to the implementer role. Read-only roles use the default read-only sandbox. Authentication is deliberately outside contract files and receipts.
 
 ShinkaEvolve remains an optional search kernel. Its score may schedule proposals, but EvidenceEvolve verdicts never read `combined_score`; they read the frozen multi-metric gate input.
-

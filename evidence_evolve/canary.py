@@ -99,29 +99,52 @@ def _scenario_definitions() -> list[tuple[str, str, CandidateGenome, list[str]]]
 
 
 def _write_candidate_artifacts(
-    candidate_dir: Path,
+    stage_dir: Path,
     candidate: CandidateGenome,
     evaluation: EvaluationInput,
     verdict: object,
 ) -> None:
-    atomic_write_json(candidate_dir / "proposal.json", candidate)
-    atomic_write_json(candidate_dir / "code_manifest.json", {
+    atomic_write_json(stage_dir / "proposal.json", candidate)
+    atomic_write_json(stage_dir / "code_manifest.json", {
         "changed_files": evaluation.changed_files,
         "patch_sha256": None,
         "synthetic": True,
     })
-    atomic_write_json(candidate_dir / "metrics.json", evaluation.metrics)
-    atomic_write_json(candidate_dir / "controls.json", evaluation.controls)
-    atomic_write_json(candidate_dir / "evidence_manifest.json", {
+    atomic_write_json(stage_dir / "metrics.json", evaluation.metrics)
+    atomic_write_json(stage_dir / "controls.json", evaluation.controls)
+    atomic_write_json(stage_dir / "evidence_manifest.json", {
         "contract_sha256": evaluation.contract_sha256,
         "data_eligible": evaluation.data_eligible,
         "ineligibility_reasons": evaluation.data_ineligibility_reasons,
     })
-    atomic_write_json(candidate_dir / "gates.json", verdict)
-    (candidate_dir / "logs").mkdir(parents=True, exist_ok=True)
-    (candidate_dir / "logs" / "stdout.log").touch(exist_ok=True)
-    (candidate_dir / "logs" / "stderr.log").touch(exist_ok=True)
-    (candidate_dir / "patch.diff").touch(exist_ok=True)
+    atomic_write_json(stage_dir / "gates.json", verdict)
+    (stage_dir / "logs").mkdir(parents=True, exist_ok=True)
+    (stage_dir / "logs" / "stdout.log").touch(exist_ok=True)
+    (stage_dir / "logs" / "stderr.log").touch(exist_ok=True)
+    (stage_dir / "patch.diff").touch(exist_ok=True)
+
+
+def build_canary_evaluation(
+    *,
+    contract_sha256: str,
+    candidate: CandidateGenome,
+    changed_files: list[str],
+    protocol_violations: list[str],
+    raw: dict[str, object],
+) -> EvaluationInput:
+    return EvaluationInput(
+        contract_sha256=contract_sha256,
+        candidate=candidate,
+        stage=ResearchStage.H0_REAL_HEADROOM,
+        changed_files=changed_files,
+        protocol_violations=protocol_violations,
+        mechanics_status=MechanicsStatus(str(raw["mechanics_status"])),
+        data_eligible=bool(raw["data_eligible"]),
+        data_ineligibility_reasons=list(raw.get("data_ineligibility_reasons", [])),  # type: ignore[arg-type]
+        metrics=dict(raw["metrics"]),  # type: ignore[arg-type]
+        controls=dict(raw["controls"]),  # type: ignore[arg-type]
+        scientific_outcome=ScientificOutcome(str(raw["scientific_outcome"])),
+    )
 
 
 def run_canary(contract_path: Path, repo_root: Path, run_dir: Path) -> dict[str, object]:
@@ -147,7 +170,8 @@ def run_canary(contract_path: Path, repo_root: Path, run_dir: Path) -> dict[str,
 
     for scenario, candidate_id, candidate, changed_files in _scenario_definitions():
         candidate_dir = run_dir / "candidates" / candidate_id
-        receipt_path = candidate_dir / "reproducibility_receipt.json"
+        stage = ResearchStage.H0_REAL_HEADROOM
+        receipt_path = candidate_dir / "receipts" / f"{stage.value}.json"
         budgets.reserve("proposal_calls", 1, f"proposal:{candidate_id}")
         budgets.reserve("mechanics_runs", 1, f"mechanics:{candidate_id}")
         if receipt_path.exists():
@@ -163,25 +187,21 @@ def run_canary(contract_path: Path, repo_root: Path, run_dir: Path) -> dict[str,
             registry,
             changed_files=changed_files,
         )
-        evaluation = EvaluationInput(
+        evaluation = build_canary_evaluation(
             contract_sha256=report.contract_sha256 or "",
             candidate=candidate,
-            stage=ResearchStage.H0_REAL_HEADROOM,
             changed_files=changed_files,
             protocol_violations=audit.violations,
-            mechanics_status=MechanicsStatus(raw["mechanics_status"]),
-            data_eligible=bool(raw["data_eligible"]),
-            data_ineligibility_reasons=list(raw.get("data_ineligibility_reasons", [])),
-            metrics=dict(raw["metrics"]),
-            controls=dict(raw["controls"]),
-            scientific_outcome=ScientificOutcome(raw["scientific_outcome"]),
+            raw=raw,
         )
         started = perf_counter()
         verdict = gate.evaluate(evaluation)
         elapsed = perf_counter() - started
-        _write_candidate_artifacts(candidate_dir, candidate, evaluation, verdict)
+        stage_dir = candidate_dir / "stages" / stage.value
+        stage_dir.mkdir(parents=True, exist_ok=True)
+        _write_candidate_artifacts(stage_dir, candidate, evaluation, verdict)
         receipt = EvaluationReceipt(
-            receipt_id=f"{contract.campaign.id}:{candidate_id}",
+            receipt_id=f"{contract.campaign.id}:{candidate_id}:{stage.value}",
             created_at_utc=datetime.now(timezone.utc).isoformat(),
             campaign_id=contract.campaign.id,
             candidate_id=candidate_id,
@@ -219,20 +239,4 @@ def run_canary(contract_path: Path, repo_root: Path, run_dir: Path) -> dict[str,
     if not passed:
         raise RuntimeError(f"synthetic canary failed: {results}")
     return summary
-
-
-def replay_run(run_dir: Path) -> dict[str, object]:
-    contract = load_contract(run_dir / "contract.locked.yaml")
-    gate = GateEngine(contract)
-    failures: list[str] = []
-    replayed = 0
-    for receipt_path in sorted(
-        (run_dir / "candidates").glob("*/reproducibility_receipt.json")
-    ):
-        envelope = load_receipt(receipt_path)
-        replayed += 1
-        replayed_verdict = gate.evaluate(envelope.receipt.evaluation_input)
-        if replayed_verdict != envelope.receipt.verdict:
-            failures.append(envelope.receipt.candidate_id)
-    return {"passed": not failures, "replayed": replayed, "failures": failures}
 

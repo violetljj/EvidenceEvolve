@@ -14,7 +14,7 @@ from pydantic import ValidationError
 from evidence_evolve.archive import ArchiveStore
 from evidence_evolve.backends.codex_cli import CodexCliBackend
 from evidence_evolve.backends.shinka_backend import ShinkaBackend
-from evidence_evolve.canary import replay_run, run_canary
+from evidence_evolve.canary import run_canary
 from evidence_evolve.governance.candidate_auditor import audit_candidate
 from evidence_evolve.governance.closure_registry import ClosureRegistry
 from evidence_evolve.governance.protocol_lock import (
@@ -25,6 +25,7 @@ from evidence_evolve.governance.protocol_lock import (
 )
 from evidence_evolve.models import CandidateGenome, GateVerdict, ResearchContract
 from evidence_evolve.onnx_campaign import evaluate_onnx_candidate
+from evidence_evolve.replay import replay_evaluation, replay_verdict
 
 
 def _json(value: Any) -> str:
@@ -120,7 +121,19 @@ def command_run_canary(args: argparse.Namespace) -> int:
 
 
 def command_replay(args: argparse.Namespace) -> int:
-    result = replay_run(Path(args.run_dir).resolve())
+    result = replay_verdict(
+        Path(args.run_dir).resolve(),
+        _repo_root(args.repo),
+    )
+    print(_json(result))
+    return 0 if result["passed"] else 4
+
+
+def command_replay_evaluation(args: argparse.Namespace) -> int:
+    result = replay_evaluation(
+        Path(args.run_dir).resolve(),
+        _repo_root(args.repo),
+    )
     print(_json(result))
     return 0 if result["passed"] else 4
 
@@ -138,10 +151,22 @@ def command_inspect(args: argparse.Namespace) -> int:
 def command_explain(args: argparse.Namespace) -> int:
     run_dir = Path(args.run_dir).resolve()
     with sqlite3.connect(run_dir / "research.db") as connection:
-        row = connection.execute(
-            "SELECT receipt_path FROM candidates WHERE candidate_id = ?",
-            (args.candidate_id,),
+        has_receipts = connection.execute(
+            "SELECT 1 FROM sqlite_master WHERE type='table' "
+            "AND name='evaluation_receipts'"
         ).fetchone()
+        row = None
+        if has_receipts:
+            row = connection.execute(
+                "SELECT receipt_path FROM evaluation_receipts WHERE candidate_id = ? "
+                "ORDER BY created_at_utc DESC LIMIT 1",
+                (args.candidate_id,),
+            ).fetchone()
+        if row is None:
+            row = connection.execute(
+                "SELECT receipt_path FROM candidates WHERE candidate_id = ?",
+                (args.candidate_id,),
+            ).fetchone()
     if row is None:
         print(_json({"error": "candidate not found", "candidate_id": args.candidate_id}))
         return 5
@@ -238,9 +263,18 @@ def build_parser() -> argparse.ArgumentParser:
     canary.add_argument("--run-dir")
     canary.set_defaults(handler=command_run_canary)
 
-    replay = subparsers.add_parser("replay", help="recompute verdicts from receipts")
+    replay = subparsers.add_parser(
+        "replay", help="validate receipt bindings and recompute verdicts only"
+    )
     replay.add_argument("run_dir")
     replay.set_defaults(handler=command_replay)
+
+    replay_eval = subparsers.add_parser(
+        "replay-evaluation",
+        help="re-run the frozen evaluator and recompute bound verdicts",
+    )
+    replay_eval.add_argument("run_dir")
+    replay_eval.set_defaults(handler=command_replay_evaluation)
 
     inspect = subparsers.add_parser("inspect", help="summarize a run archive")
     inspect.add_argument("run_dir")
