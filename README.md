@@ -134,6 +134,31 @@ meta-learning, Red Queen populations, blind confirmation, algorithm novelty, and
 superiority over a baseline remain unproven or unimplemented until the named code
 and external campaigns exist.
 
+## Three-arm benchmark protocol smoke
+
+The first comparative benchmark vertical slice is now executable. It freezes a
+CPU-only graph-coloring task, ten paired seeds, equal per-trial budget ceilings,
+development-only candidate selection, and post-selection public-fresh evaluation
+for `VANILLA_CODEX`, `EVIDENCE_EVOLVE_NO_MEMORY`, and
+`EVIDENCE_EVOLVE_FULL`.
+
+```powershell
+evolve benchmark validate-protocol `
+  benchmarks/graph_coloring/three_arm_v0.locked.yaml
+
+evolve benchmark run-graph-coloring `
+  benchmarks/graph_coloring/three_arm_v0.locked.yaml `
+  --run-dir runs/graph_coloring_three_arm_v0_smoke
+```
+
+The built-in adapter submits the same frozen solver for every arm, so this command
+tests pairing, budget enforcement, immutable receipts, resumption, and evaluator
+symmetry only. The public-fresh instances are visible in the repository and are
+not blind confirmation. Results are hard-coded by schema to remain
+`NOT_EVALUABLE_BLIND_CONFIRMATION_UNAVAILABLE`, with no superiority authority.
+The frozen design and real-arm adapter boundary are documented in
+[`docs/BENCHMARK_PROTOCOL.md`](docs/BENCHMARK_PROTOCOL.md).
+
 ## Research intelligence action
 
 OpenAlex currently requires an API key for API use. GitHub public repository

@@ -1,0 +1,179 @@
+{
+  "$defs": {
+    "BenchmarkArm": {
+      "enum": [
+        "VANILLA_CODEX",
+        "EVIDENCE_EVOLVE_NO_MEMORY",
+        "EVIDENCE_EVOLVE_FULL"
+      ],
+      "title": "BenchmarkArm",
+      "type": "string"
+    },
+    "BenchmarkArmSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "arm": {
+          "$ref": "#/$defs/BenchmarkArm"
+        },
+        "candidate_evaluations_used": {
+          "minimum": 1,
+          "title": "Candidate Evaluations Used",
+          "type": "integer"
+        },
+        "invalid_candidate_rate": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Invalid Candidate Rate",
+          "type": "number"
+        },
+        "mean_development_improvement": {
+          "title": "Mean Development Improvement",
+          "type": "number"
+        },
+        "mean_public_fresh_improvement": {
+          "title": "Mean Public Fresh Improvement",
+          "type": "number"
+        },
+        "proposal_calls_used": {
+          "minimum": 0,
+          "title": "Proposal Calls Used",
+          "type": "integer"
+        },
+        "public_fresh_valid_rate": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Public Fresh Valid Rate",
+          "type": "number"
+        },
+        "redundant_candidate_rate": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Redundant Candidate Rate",
+          "type": "number"
+        },
+        "reproducibility_rate": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Reproducibility Rate",
+          "type": "number"
+        },
+        "token_count_used": {
+          "minimum": 0,
+          "title": "Token Count Used",
+          "type": "integer"
+        },
+        "trial_count": {
+          "minimum": 1,
+          "title": "Trial Count",
+          "type": "integer"
+        },
+        "valid_public_fresh_improvement_per_cost": {
+          "minimum": 0.0,
+          "title": "Valid Public Fresh Improvement Per Cost",
+          "type": "number"
+        },
+        "wall_seconds_used": {
+          "minimum": 0.0,
+          "title": "Wall Seconds Used",
+          "type": "number"
+        }
+      },
+      "required": [
+        "arm",
+        "trial_count",
+        "valid_public_fresh_improvement_per_cost",
+        "mean_public_fresh_improvement",
+        "mean_development_improvement",
+        "public_fresh_valid_rate",
+        "reproducibility_rate",
+        "invalid_candidate_rate",
+        "redundant_candidate_rate",
+        "proposal_calls_used",
+        "candidate_evaluations_used",
+        "token_count_used",
+        "wall_seconds_used"
+      ],
+      "title": "BenchmarkArmSummary",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "arms": {
+      "items": {
+        "$ref": "#/$defs/BenchmarkArmSummary"
+      },
+      "title": "Arms",
+      "type": "array"
+    },
+    "authority": {
+      "const": "META_BENCHMARK_SMOKE_ONLY",
+      "default": "META_BENCHMARK_SMOKE_ONLY",
+      "title": "Authority",
+      "type": "string"
+    },
+    "blind": {
+      "const": false,
+      "default": false,
+      "title": "Blind",
+      "type": "boolean"
+    },
+    "decision": {
+      "const": "NOT_EVALUABLE_BLIND_CONFIRMATION_UNAVAILABLE",
+      "default": "NOT_EVALUABLE_BLIND_CONFIRMATION_UNAVAILABLE",
+      "title": "Decision",
+      "type": "string"
+    },
+    "held_out": {
+      "const": false,
+      "default": false,
+      "title": "Held Out",
+      "type": "boolean"
+    },
+    "paired_primary_deltas_vs_vanilla": {
+      "additionalProperties": {
+        "type": "number"
+      },
+      "title": "Paired Primary Deltas Vs Vanilla",
+      "type": "object"
+    },
+    "protocol_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Protocol Sha256",
+      "type": "string"
+    },
+    "reasons": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Reasons",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "suite_id": {
+      "title": "Suite Id",
+      "type": "string"
+    },
+    "superiority_claim_permitted": {
+      "const": false,
+      "default": false,
+      "title": "Superiority Claim Permitted",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "suite_id",
+    "protocol_sha256",
+    "arms",
+    "paired_primary_deltas_vs_vanilla",
+    "reasons"
+  ],
+  "title": "BenchmarkSuiteResult",
+  "type": "object"
+}

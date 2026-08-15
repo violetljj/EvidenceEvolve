@@ -1,0 +1,302 @@
+{
+  "$defs": {
+    "BenchmarkArm": {
+      "enum": [
+        "VANILLA_CODEX",
+        "EVIDENCE_EVOLVE_NO_MEMORY",
+        "EVIDENCE_EVOLVE_FULL"
+      ],
+      "title": "BenchmarkArm",
+      "type": "string"
+    },
+    "BenchmarkAsset": {
+      "additionalProperties": false,
+      "properties": {
+        "asset_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{1,127}$",
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sha256"
+        }
+      },
+      "required": [
+        "asset_id",
+        "path"
+      ],
+      "title": "BenchmarkAsset",
+      "type": "object"
+    },
+    "BenchmarkBudget": {
+      "additionalProperties": false,
+      "properties": {
+        "candidate_evaluations_per_trial": {
+          "minimum": 1,
+          "title": "Candidate Evaluations Per Trial",
+          "type": "integer"
+        },
+        "proposal_calls_per_trial": {
+          "minimum": 0,
+          "title": "Proposal Calls Per Trial",
+          "type": "integer"
+        },
+        "token_limit_per_trial": {
+          "minimum": 0,
+          "title": "Token Limit Per Trial",
+          "type": "integer"
+        },
+        "wall_seconds_per_trial": {
+          "exclusiveMinimum": 0.0,
+          "title": "Wall Seconds Per Trial",
+          "type": "number"
+        }
+      },
+      "required": [
+        "proposal_calls_per_trial",
+        "candidate_evaluations_per_trial",
+        "token_limit_per_trial",
+        "wall_seconds_per_trial"
+      ],
+      "title": "BenchmarkBudget",
+      "type": "object"
+    },
+    "BenchmarkProtocolLockData": {
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": {
+          "const": "sha256",
+          "default": "sha256",
+          "title": "Algorithm",
+          "type": "string"
+        },
+        "content_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Content Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "content_sha256"
+      ],
+      "title": "BenchmarkProtocolLockData",
+      "type": "object"
+    },
+    "BenchmarkStopRule": {
+      "additionalProperties": false,
+      "properties": {
+        "complete_all_arms_and_seeds": {
+          "const": true,
+          "default": true,
+          "title": "Complete All Arms And Seeds",
+          "type": "boolean"
+        },
+        "early_superiority_stop_allowed": {
+          "const": false,
+          "default": false,
+          "title": "Early Superiority Stop Allowed",
+          "type": "boolean"
+        },
+        "paired_seed_comparison": {
+          "const": true,
+          "default": true,
+          "title": "Paired Seed Comparison",
+          "type": "boolean"
+        }
+      },
+      "title": "BenchmarkStopRule",
+      "type": "object"
+    },
+    "DatasetVisibility": {
+      "enum": [
+        "DEVELOPMENT",
+        "PUBLIC_FRESH",
+        "EXTERNAL_BLIND_CONFIRMATION"
+      ],
+      "title": "DatasetVisibility",
+      "type": "string"
+    },
+    "GraphDatasetSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "instances": {
+          "items": {
+            "$ref": "#/$defs/GraphInstanceSpec"
+          },
+          "minItems": 1,
+          "title": "Instances",
+          "type": "array"
+        },
+        "visibility": {
+          "$ref": "#/$defs/DatasetVisibility"
+        }
+      },
+      "required": [
+        "visibility",
+        "instances"
+      ],
+      "title": "GraphDatasetSpec",
+      "type": "object"
+    },
+    "GraphInstanceSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "edge_probability": {
+          "exclusiveMaximum": 1.0,
+          "exclusiveMinimum": 0.0,
+          "title": "Edge Probability",
+          "type": "number"
+        },
+        "instance_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{1,127}$",
+          "title": "Instance Id",
+          "type": "string"
+        },
+        "node_count": {
+          "maximum": 500,
+          "minimum": 8,
+          "title": "Node Count",
+          "type": "integer"
+        },
+        "seed": {
+          "minimum": 0,
+          "title": "Seed",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "instance_id",
+        "seed",
+        "node_count",
+        "edge_probability"
+      ],
+      "title": "GraphInstanceSpec",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "arms": {
+      "items": {
+        "$ref": "#/$defs/BenchmarkArm"
+      },
+      "title": "Arms",
+      "type": "array"
+    },
+    "assets": {
+      "items": {
+        "$ref": "#/$defs/BenchmarkAsset"
+      },
+      "minItems": 1,
+      "title": "Assets",
+      "type": "array"
+    },
+    "blind_confirmation_available": {
+      "const": false,
+      "default": false,
+      "title": "Blind Confirmation Available",
+      "type": "boolean"
+    },
+    "budget": {
+      "$ref": "#/$defs/BenchmarkBudget"
+    },
+    "claim_scope": {
+      "const": "BENCHMARK_PROTOCOL_SMOKE_ONLY",
+      "default": "BENCHMARK_PROTOCOL_SMOKE_ONLY",
+      "title": "Claim Scope",
+      "type": "string"
+    },
+    "development": {
+      "$ref": "#/$defs/GraphDatasetSpec"
+    },
+    "lock": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/BenchmarkProtocolLockData"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "primary_metric": {
+      "const": "valid_public_fresh_improvement_per_cost",
+      "default": "valid_public_fresh_improvement_per_cost",
+      "title": "Primary Metric",
+      "type": "string"
+    },
+    "public_fresh": {
+      "$ref": "#/$defs/GraphDatasetSpec"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "secondary_metrics": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Secondary Metrics",
+      "type": "array"
+    },
+    "selection_split": {
+      "const": "DEVELOPMENT",
+      "default": "DEVELOPMENT",
+      "title": "Selection Split",
+      "type": "string"
+    },
+    "stop_rule": {
+      "$ref": "#/$defs/BenchmarkStopRule"
+    },
+    "suite_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{1,127}$",
+      "title": "Suite Id",
+      "type": "string"
+    },
+    "task_id": {
+      "const": "graph_coloring",
+      "default": "graph_coloring",
+      "title": "Task Id",
+      "type": "string"
+    },
+    "trial_seeds": {
+      "items": {
+        "type": "integer"
+      },
+      "minItems": 1,
+      "title": "Trial Seeds",
+      "type": "array"
+    }
+  },
+  "required": [
+    "suite_id",
+    "arms",
+    "trial_seeds",
+    "budget",
+    "development",
+    "public_fresh",
+    "secondary_metrics",
+    "stop_rule",
+    "assets"
+  ],
+  "title": "BenchmarkProtocol",
+  "type": "object"
+}

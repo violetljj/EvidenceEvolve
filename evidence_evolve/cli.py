@@ -63,6 +63,14 @@ from evidence_evolve.research_actions.models import (
 )
 from evidence_evolve.research_actions.store import ResearchActionRunner
 from evidence_evolve.budgets import BudgetLedger
+from evidence_evolve.benchmarks.models import BenchmarkProtocol, BenchmarkSuiteResult
+from evidence_evolve.benchmarks.protocol import (
+    BenchmarkProtocolLock,
+    BenchmarkProtocolValidation,
+    dump_benchmark_protocol,
+    load_benchmark_protocol,
+)
+from evidence_evolve.benchmarks.runner import ThreeArmBenchmarkRunner
 
 
 def _json(value: Any) -> str:
@@ -142,6 +150,32 @@ def _load_frozen_campaign_adapter(
     }
     if relative not in frozen_adapters:
         raise ValueError(f"campaign adapter is not frozen by the contract: {relative}")
+    return function
+
+
+def _load_benchmark_adapter(
+    spec: str,
+    *,
+    protocol: BenchmarkProtocol,
+    repo: Path,
+) -> Any:
+    try:
+        module_name, function_name = spec.split(":", 1)
+    except ValueError as exc:
+        raise ValueError("benchmark adapter must use module:function syntax") from exc
+    module = importlib.import_module(module_name)
+    function = getattr(module, function_name, None)
+    if not callable(function):
+        raise ValueError(f"benchmark adapter is not callable: {spec}")
+    source = inspect.getsourcefile(function)
+    if source is None:
+        raise ValueError("benchmark adapter must be backed by a repository file")
+    try:
+        relative = Path(source).resolve().relative_to(repo.resolve()).as_posix()
+    except ValueError as exc:
+        raise ValueError("benchmark adapter source is outside the repository") from exc
+    if relative not in {asset.path for asset in protocol.assets}:
+        raise ValueError(f"benchmark adapter is not frozen by the protocol: {relative}")
     return function
 
 
@@ -336,6 +370,11 @@ def command_export_schemas(args: argparse.Namespace) -> int:
         ),
         "evaluation_run.schema.json": EvaluationRun.model_json_schema(),
         "policy_benchmark.schema.json": PolicyBenchmarkResult.model_json_schema(),
+        "benchmark_protocol.schema.json": BenchmarkProtocol.model_json_schema(),
+        "benchmark_suite_result.schema.json": BenchmarkSuiteResult.model_json_schema(),
+        "benchmark_protocol_validation.schema.json": (
+            BenchmarkProtocolValidation.model_json_schema()
+        ),
         "policy_promotion_protocol.schema.json": (
             PolicyPromotionProtocol.model_json_schema()
         ),
@@ -520,6 +559,39 @@ def command_policy_evaluate_promotion(args: argparse.Namespace) -> int:
     return 0
 
 
+def command_benchmark_lock_protocol(args: argparse.Namespace) -> int:
+    repo = _repo_root(args.repo)
+    draft = load_benchmark_protocol(Path(args.draft))
+    locked = BenchmarkProtocolLock(repo).lock(draft)
+    output = Path(args.output)
+    dump_benchmark_protocol(locked, output)
+    report = BenchmarkProtocolLock(repo).validate(locked)
+    print(_json({"output": str(output.resolve()), "validation": report}))
+    return 0 if report.valid else 2
+
+
+def command_benchmark_validate_protocol(args: argparse.Namespace) -> int:
+    repo = _repo_root(args.repo)
+    protocol = load_benchmark_protocol(Path(args.protocol))
+    report = BenchmarkProtocolLock(repo).validate(protocol)
+    print(_json(report))
+    return 0 if report.valid else 2
+
+
+def command_benchmark_run_graph_coloring(args: argparse.Namespace) -> int:
+    repo = _repo_root(args.repo)
+    protocol = load_benchmark_protocol(Path(args.protocol))
+    adapter = _load_benchmark_adapter(args.adapter, protocol=protocol, repo=repo)
+    result = ThreeArmBenchmarkRunner(
+        protocol=protocol,
+        repo_root=repo,
+        run_dir=Path(args.run_dir),
+        adapter=adapter,
+    ).run()
+    print(_json(result))
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="evolve",
@@ -677,6 +749,34 @@ def build_parser() -> argparse.ArgumentParser:
     autonomous.add_argument("--openalex-api-key-env", default="OPENALEX_API_KEY")
     autonomous.add_argument("--github-token-env", default="GITHUB_TOKEN")
     autonomous.set_defaults(handler=command_campaign_autonomous)
+
+    benchmark = subparsers.add_parser(
+        "benchmark", help="run claim-bounded comparative benchmarks"
+    )
+    benchmark_commands = benchmark.add_subparsers(
+        dest="benchmark_command", required=True
+    )
+    benchmark_lock = benchmark_commands.add_parser(
+        "lock-protocol", help="hash and freeze a benchmark protocol and its assets"
+    )
+    benchmark_lock.add_argument("draft")
+    benchmark_lock.add_argument("--output", required=True)
+    benchmark_lock.set_defaults(handler=command_benchmark_lock_protocol)
+    benchmark_validate = benchmark_commands.add_parser(
+        "validate-protocol", help="validate a frozen benchmark protocol"
+    )
+    benchmark_validate.add_argument("protocol")
+    benchmark_validate.set_defaults(handler=command_benchmark_validate_protocol)
+    benchmark_run = benchmark_commands.add_parser(
+        "run-graph-coloring", help="run the paired graph-coloring three-arm suite"
+    )
+    benchmark_run.add_argument("protocol")
+    benchmark_run.add_argument("--run-dir", required=True)
+    benchmark_run.add_argument(
+        "--adapter",
+        default="tasks.graph_coloring.arm_adapter:scripted_protocol_smoke",
+    )
+    benchmark_run.set_defaults(handler=command_benchmark_run_graph_coloring)
 
     policy = subparsers.add_parser(
         "policy", help="evaluate research-policy evidence without auto-promoting"

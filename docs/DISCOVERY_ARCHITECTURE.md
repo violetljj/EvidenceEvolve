@@ -207,6 +207,14 @@ confirmation success, redundant experiment rate, proposal calibration, closure
 violations, invalid candidate rate, and reproducibility. Aggregate scheduling scores
 never rescue a failed hard constraint.
 
+The repository now includes a three-arm graph-coloring protocol smoke that checks
+paired seeds, equal budget ceilings, development-only selection, public-fresh
+evaluation, and immutable trial receipts. Its built-in adapter uses the same solver
+for all arms and must produce zero deltas. Because the fresh set is public and no
+external confirmation authority is configured, this slice validates benchmark
+mechanics only; it cannot satisfy the evaluation program or support a superiority
+claim. See [`BENCHMARK_PROTOCOL.md`](BENCHMARK_PROTOCOL.md).
+
 ## Feature admission test
 
 Before adding a governance or research mechanism, ask whether it measurably does at

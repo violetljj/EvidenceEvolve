@@ -1,0 +1,107 @@
+schema_version: '1.0'
+suite_id: graph_coloring_three_arm_v0_smoke
+task_id: graph_coloring
+claim_scope: BENCHMARK_PROTOCOL_SMOKE_ONLY
+arms:
+- VANILLA_CODEX
+- EVIDENCE_EVOLVE_NO_MEMORY
+- EVIDENCE_EVOLVE_FULL
+trial_seeds:
+- 104729
+- 104743
+- 104759
+- 104761
+- 104773
+- 104779
+- 104789
+- 104801
+- 104803
+- 104827
+budget:
+  proposal_calls_per_trial: 1
+  candidate_evaluations_per_trial: 1
+  token_limit_per_trial: 20000
+  wall_seconds_per_trial: 30.0
+development:
+  visibility: DEVELOPMENT
+  instances:
+  - instance_id: dev_sparse_40
+    seed: 23011
+    node_count: 40
+    edge_probability: 0.12
+  - instance_id: dev_medium_50
+    seed: 23021
+    node_count: 50
+    edge_probability: 0.22
+  - instance_id: dev_dense_45
+    seed: 23027
+    node_count: 45
+    edge_probability: 0.38
+  - instance_id: dev_large_70
+    seed: 23029
+    node_count: 70
+    edge_probability: 0.18
+public_fresh:
+  visibility: PUBLIC_FRESH
+  instances:
+  - instance_id: fresh_sparse_44
+    seed: 53003
+    node_count: 44
+    edge_probability: 0.1
+  - instance_id: fresh_medium_56
+    seed: 53017
+    node_count: 56
+    edge_probability: 0.24
+  - instance_id: fresh_dense_48
+    seed: 53047
+    node_count: 48
+    edge_probability: 0.41
+  - instance_id: fresh_large_76
+    seed: 53051
+    node_count: 76
+    edge_probability: 0.16
+blind_confirmation_available: false
+selection_split: DEVELOPMENT
+primary_metric: valid_public_fresh_improvement_per_cost
+secondary_metrics:
+- mean_development_improvement
+- mean_public_fresh_improvement
+- public_fresh_valid_rate
+- reproducibility_rate
+- invalid_candidate_rate
+- redundant_candidate_rate
+stop_rule:
+  complete_all_arms_and_seeds: true
+  early_superiority_stop_allowed: false
+  paired_seed_comparison: true
+assets:
+- asset_id: shared-strict-models-v0
+  path: evidence_evolve/models.py
+  sha256: 056bb7d1208a0b12d490218e1a8948fa876bfe4c1775fd31508108eb6171b618
+- asset_id: shared-artifact-integrity-v0
+  path: evidence_evolve/artifacts.py
+  sha256: b59a1e65729e5c8c0bdea32ff568acb872fbbc95d8731dea6ab105998d399e10
+- asset_id: shared-canonical-hashing-v0
+  path: evidence_evolve/hashing.py
+  sha256: 22b96285699877ffb3695caf0a5c6d6fa518d0ccbb1f91df3ac332fb66094be7
+- asset_id: benchmark-models-v0
+  path: evidence_evolve/benchmarks/models.py
+  sha256: 911117a4451c255a8f9d441cb185244a32b84db49404eea8ddfdc7aa72a79f76
+- asset_id: benchmark-protocol-lock-v0
+  path: evidence_evolve/benchmarks/protocol.py
+  sha256: 91459bd63593c1ad14d69aeb3df7026813c9aa8f802cd01b1580ae1b43c1bd9b
+- asset_id: three-arm-runner-v0
+  path: evidence_evolve/benchmarks/runner.py
+  sha256: aa1bccba26c5954ebdd89c0fac06718f2cfeda7acc6bd176c25b220fc1eaf5ce
+- asset_id: graph-coloring-evaluator-v0
+  path: tasks/graph_coloring/evaluator.py
+  sha256: 8d42c060385da7fb4cb493649a7f0b1418d0d4a863e6411a28578198cec61619
+- asset_id: graph-coloring-baseline-v0
+  path: tasks/graph_coloring/candidates/baseline.py
+  sha256: 2c69667d3ec9f8bc46f61aa07d5527406b726d09acb338030a15ca41589ec58b
+- asset_id: scripted-smoke-adapter-v0
+  path: tasks/graph_coloring/arm_adapter.py
+  sha256: 78045afed5578a142c99321bb4badb7dcbf3636dd8932189e006c3d5d446abb4
+lock:
+  algorithm: sha256
+  content_sha256: e52354dbd5caf82b9d0aeba8a0be6729e4e42075646a4318966f2a0926111c1c
