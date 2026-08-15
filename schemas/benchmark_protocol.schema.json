@@ -190,6 +190,11 @@
   },
   "additionalProperties": false,
   "properties": {
+    "arm_adapter": {
+      "pattern": "^[A-Za-z_][A-Za-z0-9_.]*:[A-Za-z_][A-Za-z0-9_]*$",
+      "title": "Arm Adapter",
+      "type": "string"
+    },
     "arms": {
       "items": {
         "$ref": "#/$defs/BenchmarkArm"
@@ -288,6 +293,7 @@
   },
   "required": [
     "suite_id",
+    "arm_adapter",
     "arms",
     "trial_seeds",
     "budget",

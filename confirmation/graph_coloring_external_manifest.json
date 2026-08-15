@@ -1,0 +1,7 @@
+{
+  "schema_version": "1.0",
+  "status": "EXTERNAL_BLIND_CONFIRMATION_NOT_CONFIGURED",
+  "instances_embedded": false,
+  "claim_authority": "NONE",
+  "note": "A public repository cannot certify its own hidden confirmation set."
+}

@@ -1,7 +1,7 @@
 schema_version: '1.0'
 campaign:
   id: onnx_rewrite_r1_2_a0
-  base_commit: 0d6fbe81867348c2fc1086f70493a885e9bdc9d1
+  base_commit: 8731af6f62ea94bb32d6d0ed8beedf4265562ec6
   research_question: Can a persistent five-island Codex population discover ONNX rewrite
     improvements while preserving exact task behavior?
   claim_scope: autonomous_engineering_harness_canary_only
@@ -26,9 +26,9 @@ evidence_sources:
   grade: B
   path: research/evidence_policies/onnx_rewrite_dev_manifest.json
   permissions:
+  - CONFIRM
   - DEV
   - CLAIM
-  - CONFIRM
   sha256: 9ee146efbc2a33c9fddf1faf070855077c8bfc6ff1716df6cb2d78cc2fcff36f
 frozen_assets:
 - asset_id: onnx-rewrite-evaluator-r1
@@ -78,7 +78,7 @@ frozen_assets:
 - asset_id: harness-autonomous-runner-r1
   kind: harness_core
   path: evidence_evolve/discovery/autonomous.py
-  sha256: 6cf9fe2f6e99f783fa39b92a5a278d8a31b73357cb4ec49bc723e9db698d6985
+  sha256: 96a169b7b96089e27775b15b0fa08a7600e372a89fd0ebc06b138131283be655
 - asset_id: harness-research-director-r1
   kind: harness_core
   path: evidence_evolve/discovery/director.py
@@ -185,4 +185,4 @@ budgets:
 closure_registry: research/closures/closure_registry.yaml
 lock:
   algorithm: sha256
-  content_sha256: 5e0de7edc6f49edf4bcad6fd8d59a92e1346fa04a487c145f02700d8f8221809
+  content_sha256: 975c30981a0c21e3cbedde68e6fcc4d17e27e665a0ca7d36256605ad862317c7

@@ -84,6 +84,9 @@ class BenchmarkProtocol(StrictModel):
     claim_scope: Literal["BENCHMARK_PROTOCOL_SMOKE_ONLY"] = (
         "BENCHMARK_PROTOCOL_SMOKE_ONLY"
     )
+    arm_adapter: str = Field(
+        pattern=r"^[A-Za-z_][A-Za-z0-9_.]*:[A-Za-z_][A-Za-z0-9_]*$"
+    )
     arms: list[BenchmarkArm]
     trial_seeds: list[int] = Field(min_length=1)
     budget: BenchmarkBudget

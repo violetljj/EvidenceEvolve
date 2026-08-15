@@ -2,6 +2,7 @@ schema_version: '1.0'
 suite_id: graph_coloring_three_arm_v0_smoke
 task_id: graph_coloring
 claim_scope: BENCHMARK_PROTOCOL_SMOKE_ONLY
+arm_adapter: tasks.graph_coloring.arm_adapter:scripted_protocol_smoke
 arms:
 - VANILLA_CODEX
 - EVIDENCE_EVOLVE_NO_MEMORY

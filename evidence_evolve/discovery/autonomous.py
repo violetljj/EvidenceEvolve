@@ -173,6 +173,7 @@ class AutonomousCampaignRunner:
         worktree_root: Path | None = None,
         reference_metrics: dict[str, float] | None = None,
         intelligence_executor: LiteratureRepoIntelligenceExecutor | None = None,
+        memory_enabled: bool = True,
         timeout_seconds: int = 1800,
     ) -> None:
         if contract.lock is None:
@@ -184,6 +185,7 @@ class AutonomousCampaignRunner:
         self.policy = policy
         self.repo_root = repo_root.resolve()
         self.run_dir = run_dir.resolve()
+        self.memory_enabled = memory_enabled
         self.run_dir.mkdir(parents=True, exist_ok=True)
         self._bind_run_contract()
         self.evaluate = evaluate
@@ -231,6 +233,7 @@ class AutonomousCampaignRunner:
             "policy_sha256": hashlib.sha256(
                 self.policy.model_dump_json().encode("utf-8")
             ).hexdigest(),
+            "scientific_memory_enabled": self.memory_enabled,
         }
         manifest_path = self.run_dir / "run_manifest.json"
         if manifest_path.exists():
@@ -261,16 +264,14 @@ class AutonomousCampaignRunner:
         stagnant_generations = 0
         for generation_index in range(1, generations + 1):
             generation_id = f"{generation_prefix}-{generation_index:03d}"
-            memory_packet = self.archive.research_memory_packet(
+            memory_packet = self._memory_packet(
+                generation_id=generation_id,
                 role=MemoryRole.HYPOTHESIS_EXPLORER,
-                query=self.contract.campaign.research_question,
-                campaign=self.contract.campaign.id,
                 limit=12,
             )
-            director_packet = self.archive.research_memory_packet(
+            director_packet = self._memory_packet(
+                generation_id=generation_id,
                 role=MemoryRole.RESEARCH_DIRECTOR,
-                query=self.contract.campaign.research_question,
-                campaign=self.contract.campaign.id,
                 limit=16,
             )
             director_path = (
@@ -326,16 +327,14 @@ class AutonomousCampaignRunner:
                             f"{research_action_result.reason}"
                         )
                     if research_action_result.receipt is not None:
-                        memory_packet = self.archive.research_memory_packet(
+                        memory_packet = self._memory_packet(
+                            generation_id=generation_id,
                             role=MemoryRole.HYPOTHESIS_EXPLORER,
-                            query=self.contract.campaign.research_question,
-                            campaign=self.contract.campaign.id,
                             limit=12,
                         )
-                        director_packet = self.archive.research_memory_packet(
+                        director_packet = self._memory_packet(
+                            generation_id=generation_id,
                             role=MemoryRole.RESEARCH_DIRECTOR,
-                            query=self.contract.campaign.research_question,
-                            campaign=self.contract.campaign.id,
                             limit=16,
                         )
                         director_decision = self.director.decide(
@@ -597,6 +596,30 @@ class AutonomousCampaignRunner:
             policy_effect_traces=policy_effect_traces,
             budgets=self.budgets.snapshot(),
             population=self.population.snapshot(),
+        )
+
+    def _memory_packet(
+        self,
+        *,
+        generation_id: str,
+        role: MemoryRole,
+        limit: int,
+    ) -> RoleScopedMemoryPacket:
+        if self.memory_enabled:
+            return self.archive.research_memory_packet(
+                role=role,
+                query=self.contract.campaign.research_question,
+                campaign=self.contract.campaign.id,
+                limit=limit,
+            )
+        return RoleScopedMemoryPacket(
+            retrieval_event_id=(
+                f"MEMORY-DISABLED:{self.contract.campaign.id}:"
+                f"{generation_id}:{role.value}"
+            ),
+            role=role,
+            query=self.contract.campaign.research_question,
+            cards=[],
         )
 
     def _propose_candidate(

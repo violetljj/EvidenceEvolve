@@ -159,6 +159,18 @@ not blind confirmation. Results are hard-coded by schema to remain
 The frozen design and real-arm adapter boundary are documented in
 [`docs/BENCHMARK_PROTOCOL.md`](docs/BENCHMARK_PROTOCOL.md).
 
+A separate one-seed live integration protocol now binds the actual execution
+paths: governed Vanilla Codex iteration, EvidenceEvolve with deterministic empty
+memory packets, and full EvidenceEvolve receipt-bound memory. Each arm receives
+two proposal and implementation opportunities. This remains an integration pilot,
+not a statistical comparison or superiority claim:
+
+```powershell
+evolve benchmark run-graph-coloring `
+  benchmarks/graph_coloring/three_arm_live_pilot_v0.locked.yaml `
+  --run-dir runs/graph_coloring_three_arm_live_pilot_v0
+```
+
 ## Research intelligence action
 
 OpenAlex currently requires an API key for API use. GitHub public repository

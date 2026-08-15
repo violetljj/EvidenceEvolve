@@ -1,0 +1,9 @@
+{
+  "source_id": "graph-coloring-public-dev-b-v0",
+  "path": "benchmarks/graph_coloring/instances_v0.json",
+  "split": "development",
+  "grade": "B",
+  "visibility": "PUBLIC",
+  "claim_boundary": "benchmark pilot mechanics and development scheduling only",
+  "blind": false
+}

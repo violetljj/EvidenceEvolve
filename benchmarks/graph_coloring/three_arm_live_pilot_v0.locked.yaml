@@ -1,0 +1,156 @@
+schema_version: '1.0'
+suite_id: graph_coloring_three_arm_live_pilot_v0
+task_id: graph_coloring
+claim_scope: BENCHMARK_PROTOCOL_SMOKE_ONLY
+arm_adapter: tasks.graph_coloring.real_arms:run_three_arm_trial
+arms:
+- VANILLA_CODEX
+- EVIDENCE_EVOLVE_NO_MEMORY
+- EVIDENCE_EVOLVE_FULL
+trial_seeds:
+- 32452843
+budget:
+  proposal_calls_per_trial: 2
+  candidate_evaluations_per_trial: 2
+  token_limit_per_trial: 800000
+  wall_seconds_per_trial: 2400.0
+development:
+  visibility: DEVELOPMENT
+  instances:
+  - instance_id: dev_sparse_40
+    seed: 23011
+    node_count: 40
+    edge_probability: 0.12
+  - instance_id: dev_medium_50
+    seed: 23021
+    node_count: 50
+    edge_probability: 0.22
+  - instance_id: dev_dense_45
+    seed: 23027
+    node_count: 45
+    edge_probability: 0.38
+  - instance_id: dev_large_70
+    seed: 23029
+    node_count: 70
+    edge_probability: 0.18
+public_fresh:
+  visibility: PUBLIC_FRESH
+  instances:
+  - instance_id: fresh_sparse_44
+    seed: 53003
+    node_count: 44
+    edge_probability: 0.1
+  - instance_id: fresh_medium_56
+    seed: 53017
+    node_count: 56
+    edge_probability: 0.24
+  - instance_id: fresh_dense_48
+    seed: 53047
+    node_count: 48
+    edge_probability: 0.41
+  - instance_id: fresh_large_76
+    seed: 53051
+    node_count: 76
+    edge_probability: 0.16
+blind_confirmation_available: false
+selection_split: DEVELOPMENT
+primary_metric: valid_public_fresh_improvement_per_cost
+secondary_metrics:
+- mean_development_improvement
+- mean_public_fresh_improvement
+- public_fresh_valid_rate
+- reproducibility_rate
+- invalid_candidate_rate
+- redundant_candidate_rate
+stop_rule:
+  complete_all_arms_and_seeds: true
+  early_superiority_stop_allowed: false
+  paired_seed_comparison: true
+assets:
+- asset_id: shared-models-live-v0
+  path: evidence_evolve/models.py
+  sha256: 056bb7d1208a0b12d490218e1a8948fa876bfe4c1775fd31508108eb6171b618
+- asset_id: shared-artifacts-live-v0
+  path: evidence_evolve/artifacts.py
+  sha256: b59a1e65729e5c8c0bdea32ff568acb872fbbc95d8731dea6ab105998d399e10
+- asset_id: shared-hashing-live-v0
+  path: evidence_evolve/hashing.py
+  sha256: 22b96285699877ffb3695caf0a5c6d6fa518d0ccbb1f91df3ac332fb66094be7
+- asset_id: benchmark-models-live-v0
+  path: evidence_evolve/benchmarks/models.py
+  sha256: 775ec610c3d9b72047f6630e6fbd0ffa507d2b3195c75e8815d8fefe67a88137
+- asset_id: benchmark-protocol-live-v0
+  path: evidence_evolve/benchmarks/protocol.py
+  sha256: 91459bd63593c1ad14d69aeb3df7026813c9aa8f802cd01b1580ae1b43c1bd9b
+- asset_id: benchmark-runner-live-v0
+  path: evidence_evolve/benchmarks/runner.py
+  sha256: 14807531c077893f4e270948c624529b03cb7802acbee55eeea1dc5585a4ed31
+- asset_id: live-arm-adapter-v0
+  path: tasks/graph_coloring/real_arms.py
+  sha256: 879fc0b134e224540a92ad5e70e8bc655ffde202da6d312d907f4b52e109add9
+- asset_id: graph-coloring-evaluator-live-v0
+  path: tasks/graph_coloring/evaluator.py
+  sha256: 8d42c060385da7fb4cb493649a7f0b1418d0d4a863e6411a28578198cec61619
+- asset_id: graph-coloring-campaign-evaluator-live-v0
+  path: tasks/graph_coloring/campaign_evaluator.py
+  sha256: 2fe235490f0dcbda256e58165f1efab23850a676f0c059d03c7515f78a4f3819
+- asset_id: graph-coloring-autonomous-adapter-live-v0
+  path: tasks/graph_coloring/autonomous_adapter.py
+  sha256: 27b61ecac0a6f057d454a43f2ab158e027a79b347a965f5a2db69b80c9bad743
+- asset_id: graph-coloring-baseline-live-v0
+  path: tasks/graph_coloring/candidates/baseline.py
+  sha256: 2c69667d3ec9f8bc46f61aa07d5527406b726d09acb338030a15ca41589ec58b
+- asset_id: graph-coloring-instances-live-v0
+  path: benchmarks/graph_coloring/instances_v0.json
+  sha256: 4d09edfc083a7865282ade256d7cdd5aea44f85f1b4da1801f0ccf3e1d416403
+- asset_id: graph-coloring-contract-template-live-v0
+  path: research/contracts/graph_coloring_live_v0.template.yaml
+  sha256: 3d033230b33b10792dcca4b41eab5b01640fc0db3d70d4c171ca42dcbe98da00
+- asset_id: graph-coloring-policy-live-v0
+  path: research/policies/graph_coloring_live_v0.yaml
+  sha256: 57d8dad296a0d0fbee66baa7e99ee56fe4abf83f520fac7a0e41ab8133b7637e
+- asset_id: autonomous-runner-live-v0
+  path: evidence_evolve/discovery/autonomous.py
+  sha256: 96a169b7b96089e27775b15b0fa08a7600e372a89fd0ebc06b138131283be655
+- asset_id: campaign-runner-live-v0
+  path: evidence_evolve/discovery/campaign.py
+  sha256: 40750c9469d866aff565e26e772d25bab8709b0221dd63a6dd288eb91fb1c0c3
+- asset_id: population-store-live-v0
+  path: evidence_evolve/discovery/population.py
+  sha256: cdccf6479b10bafa2c162675ce51709f594a15304603e27182e9b012334e961f
+- asset_id: research-memory-live-v0
+  path: evidence_evolve/research_memory.py
+  sha256: dc9cf63a9c88f4f9d3a9ede105665fd5f2c1be2a2f570ae0ca0c6c13990a6f32
+- asset_id: research-director-live-v0
+  path: evidence_evolve/discovery/director.py
+  sha256: f350f606381762048cdcf479b602903f6a3d5ca80efe674bec8308ce741ab11e
+- asset_id: codex-backend-live-v0
+  path: evidence_evolve/backends/codex_cli.py
+  sha256: 7865bed2fca8ea58d60e3251ebda42f6d4887aade404d1769843d1e174a06571
+- asset_id: worktree-manager-live-v0
+  path: evidence_evolve/worktrees.py
+  sha256: 9ddebdf95846d6eccee7097a100965c1df445fcd66d29b3b25dde90349851d71
+- asset_id: gate-engine-live-v0
+  path: evidence_evolve/governance/gate_engine.py
+  sha256: 069eabba8e6331352f82a52db751aad7681d9db8b47e4e8cf7b6bd9b1591d3a4
+- asset_id: protocol-lock-live-v0
+  path: evidence_evolve/governance/protocol_lock.py
+  sha256: 254a08bc61f58b96edfeffe1eb62c18bf466c94eb4be2af75f83fbf5345f76c4
+- asset_id: explorer-prompt-live-v0
+  path: prompts/explorer.md
+  sha256: 261c9ad30a7c65e88012d5541f8bc58ce7a1e60357ef16c1a65001b2fee1ab8c
+- asset_id: implementer-prompt-live-v0
+  path: prompts/implementer.md
+  sha256: f060c16fc9d2712ded46aca21475200b53490fc3f69fa631650b3e693c08da2c
+- asset_id: closure-registry-live-v0
+  path: research/closures/closure_registry.yaml
+  sha256: bc216c30dcdcc9a55a057f01d7ba67644bbddced5ad0d47929d02e85c86b0099
+- asset_id: development-evidence-manifest-live-v0
+  path: research/evidence_policies/graph_coloring_dev_manifest.json
+  sha256: 422e1ed28a83e471a58ba217f89f5b1bcef4b579acfffea185292cda01814a82
+- asset_id: external-confirmation-manifest-live-v0
+  path: confirmation/graph_coloring_external_manifest.json
+  sha256: 6220e44a88318955d4a8f6b5e51a0b72161573c7b468a3e1398b3f2e882d1ac8
+lock:
+  algorithm: sha256
+  content_sha256: 672e9a3d16a435d3ba41d65c0e6e445714843c42e8740b3aa9955d272fed2f49

@@ -2,6 +2,7 @@ schema_version: '1.0'
 suite_id: graph_coloring_three_arm_v0_smoke
 task_id: graph_coloring
 claim_scope: BENCHMARK_PROTOCOL_SMOKE_ONLY
+arm_adapter: tasks.graph_coloring.arm_adapter:scripted_protocol_smoke
 arms:
 - VANILLA_CODEX
 - EVIDENCE_EVOLVE_NO_MEMORY
@@ -86,13 +87,13 @@ assets:
   sha256: 22b96285699877ffb3695caf0a5c6d6fa518d0ccbb1f91df3ac332fb66094be7
 - asset_id: benchmark-models-v0
   path: evidence_evolve/benchmarks/models.py
-  sha256: 911117a4451c255a8f9d441cb185244a32b84db49404eea8ddfdc7aa72a79f76
+  sha256: 775ec610c3d9b72047f6630e6fbd0ffa507d2b3195c75e8815d8fefe67a88137
 - asset_id: benchmark-protocol-lock-v0
   path: evidence_evolve/benchmarks/protocol.py
   sha256: 91459bd63593c1ad14d69aeb3df7026813c9aa8f802cd01b1580ae1b43c1bd9b
 - asset_id: three-arm-runner-v0
   path: evidence_evolve/benchmarks/runner.py
-  sha256: aa1bccba26c5954ebdd89c0fac06718f2cfeda7acc6bd176c25b220fc1eaf5ce
+  sha256: 14807531c077893f4e270948c624529b03cb7802acbee55eeea1dc5585a4ed31
 - asset_id: graph-coloring-evaluator-v0
   path: tasks/graph_coloring/evaluator.py
   sha256: 8d42c060385da7fb4cb493649a7f0b1418d0d4a863e6411a28578198cec61619
@@ -104,4 +105,4 @@ assets:
   sha256: 78045afed5578a142c99321bb4badb7dcbf3636dd8932189e006c3d5d446abb4
 lock:
   algorithm: sha256
-  content_sha256: e52354dbd5caf82b9d0aeba8a0be6729e4e42075646a4318966f2a0926111c1c
+  content_sha256: de91d0489e42e6f668d33cebe3a154438f865b19ce3400f0c3c3d9d2516cd260

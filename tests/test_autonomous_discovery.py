@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import sqlite3
 import subprocess
 from pathlib import Path
 
@@ -28,6 +29,7 @@ from evidence_evolve.models import (
 from evidence_evolve.research_actions.intelligence import (
     LiteratureRepoIntelligenceExecutor,
 )
+from evidence_evolve.research_memory import MemoryRole
 
 
 def _git(repo: Path, *args: str) -> str:
@@ -222,6 +224,7 @@ def test_two_generation_loop_uses_feedback_and_resumes_idempotently(
         "policy_sha256": hashlib.sha256(
             runner.policy.model_dump_json().encode("utf-8")
         ).hexdigest(),
+        "scientific_memory_enabled": True,
     }
     assert len(result.generations) == 2
     assert result.generations[1].evaluations[0].candidate_id == "GEN-002-C01"
@@ -441,6 +444,35 @@ def test_proposal_schema_binds_candidate_and_parent_ids(contract, tmp_path) -> N
         "summary",
         "tests",
     ]
+
+
+def test_memory_disabled_profile_returns_empty_packets_without_retrieval_events(
+    tmp_path, contract
+) -> None:
+    runner = AutonomousCampaignRunner(
+        contract=contract,
+        closure_registry=ClosureRegistry(),
+        policy=ResearchPolicyGenome(policy_id="POLICY-NO-MEMORY"),
+        repo_root=tmp_path,
+        run_dir=tmp_path / "run",
+        evaluate=lambda context: None,  # type: ignore[arg-type,return-value]
+        backend=FakeCodexBackend(),
+        memory_enabled=False,
+    )
+
+    packet = runner._memory_packet(
+        generation_id="GEN-002",
+        role=MemoryRole.HYPOTHESIS_EXPLORER,
+        limit=12,
+    )
+
+    assert packet.cards == []
+    assert packet.retrieval_event_id.startswith("MEMORY-DISABLED:")
+    with sqlite3.connect(runner.database) as connection:
+        count = connection.execute(
+            "SELECT COUNT(*) FROM memory_retrieval_events"
+        ).fetchone()[0]
+    assert count == 0
 
 
 def test_exact_code_duplicate_skips_frozen_evaluator(tmp_path, contract, candidate) -> None:

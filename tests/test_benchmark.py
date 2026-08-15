@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -9,7 +11,11 @@ from evidence_evolve.benchmarks.protocol import (
     BenchmarkProtocolLock,
     load_benchmark_protocol,
 )
-from evidence_evolve.benchmarks.runner import ThreeArmBenchmarkRunner
+from evidence_evolve.benchmarks.runner import (
+    BenchmarkRunAlreadyActiveError,
+    ThreeArmBenchmarkRunner,
+    benchmark_run_lock,
+)
 from tasks.graph_coloring.arm_adapter import scripted_protocol_smoke
 from tasks.graph_coloring.evaluator import evaluate_split
 
@@ -80,6 +86,31 @@ def test_runner_rejects_candidate_budget_overrun(tmp_path: Path) -> None:
     )
     with pytest.raises(ValueError, match="candidate evaluation budget exceeded"):
         runner.run()
+
+
+def test_run_lock_rejects_a_second_process_and_allows_later_resume(
+    tmp_path: Path,
+) -> None:
+    lock_path = tmp_path / "run" / "run.lock"
+    script = (
+        "from pathlib import Path; import sys; "
+        "from evidence_evolve.benchmarks.runner import benchmark_run_lock; "
+        "\nwith benchmark_run_lock(Path(sys.argv[1])):\n    pass\n"
+    )
+    with benchmark_run_lock(lock_path):
+        completed = subprocess.run(
+            [sys.executable, "-c", script, str(lock_path)],
+            cwd=REPO_ROOT,
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=10,
+        )
+    assert completed.returncode != 0
+    assert "BenchmarkRunAlreadyActiveError" in completed.stderr
+
+    with benchmark_run_lock(lock_path):
+        pass
 
 
 def test_graph_coloring_evaluator_fails_closed_on_invalid_candidate(

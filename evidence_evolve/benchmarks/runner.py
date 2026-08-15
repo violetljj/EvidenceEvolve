@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 import json
+import os
 from collections import Counter
+from contextlib import contextmanager
 from pathlib import Path
 from time import perf_counter
-from typing import Callable
+from typing import Callable, Iterator
 
 from evidence_evolve.artifacts import create_once_json, environment_receipt
 from evidence_evolve.benchmarks.models import (
@@ -29,6 +31,50 @@ from tasks.graph_coloring.evaluator import evaluate_split
 
 
 BenchmarkArmAdapter = Callable[[BenchmarkTrialContext], ArmTrialSubmission]
+
+
+class BenchmarkRunAlreadyActiveError(RuntimeError):
+    pass
+
+
+@contextmanager
+def benchmark_run_lock(path: Path) -> Iterator[None]:
+    """Hold a cross-process, non-blocking lease for one benchmark run directory."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    handle = path.open("a+b")
+    handle.seek(0, os.SEEK_END)
+    if handle.tell() == 0:
+        handle.write(b"\0")
+        handle.flush()
+        os.fsync(handle.fileno())
+    handle.seek(0)
+    try:
+        if os.name == "nt":
+            import msvcrt
+
+            msvcrt.locking(handle.fileno(), msvcrt.LK_NBLCK, 1)
+        else:
+            import fcntl
+
+            fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except OSError as exc:
+        handle.close()
+        raise BenchmarkRunAlreadyActiveError(
+            f"benchmark run directory already has an active writer: {path.parent}"
+        ) from exc
+    try:
+        yield
+    finally:
+        handle.seek(0)
+        if os.name == "nt":
+            import msvcrt
+
+            msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
+        else:
+            import fcntl
+
+            fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
+        handle.close()
 
 
 def _create_or_validate(path: Path, payload: object) -> None:
@@ -88,6 +134,7 @@ class ThreeArmBenchmarkRunner:
                 "arms": [arm.value for arm in protocol.arms],
                 "trial_seeds": protocol.trial_seeds,
                 "claim_scope": protocol.claim_scope,
+                "arm_adapter": protocol.arm_adapter,
                 "blind_confirmation_available": False,
             },
         )
@@ -304,6 +351,10 @@ class ThreeArmBenchmarkRunner:
         )
 
     def run(self) -> BenchmarkSuiteResult:
+        with benchmark_run_lock(self.run_dir / "run.lock"):
+            return self._run_locked()
+
+    def _run_locked(self) -> BenchmarkSuiteResult:
         receipts_by_arm: dict[BenchmarkArm, list[BenchmarkTrialReceipt]] = {}
         for arm in self.protocol.arms:
             receipts_by_arm[arm] = [

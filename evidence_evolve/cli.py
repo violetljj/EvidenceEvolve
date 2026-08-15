@@ -520,6 +520,7 @@ def command_campaign_autonomous(args: argparse.Namespace) -> int:
             str(key): float(value) for key, value in reference_metrics.items()
         },
         intelligence_executor=intelligence_executor,
+        memory_enabled=not args.disable_scientific_memory,
         timeout_seconds=args.timeout_seconds,
     )
     result = runner.run(
@@ -581,7 +582,13 @@ def command_benchmark_validate_protocol(args: argparse.Namespace) -> int:
 def command_benchmark_run_graph_coloring(args: argparse.Namespace) -> int:
     repo = _repo_root(args.repo)
     protocol = load_benchmark_protocol(Path(args.protocol))
-    adapter = _load_benchmark_adapter(args.adapter, protocol=protocol, repo=repo)
+    adapter_spec = args.adapter or protocol.arm_adapter
+    if adapter_spec != protocol.arm_adapter:
+        raise ValueError(
+            "benchmark adapter override does not match the frozen protocol: "
+            f"expected={protocol.arm_adapter} actual={adapter_spec}"
+        )
+    adapter = _load_benchmark_adapter(adapter_spec, protocol=protocol, repo=repo)
     result = ThreeArmBenchmarkRunner(
         protocol=protocol,
         repo_root=repo,
@@ -746,6 +753,11 @@ def build_parser() -> argparse.ArgumentParser:
     autonomous.add_argument("--codex-executable", default="codex")
     autonomous.add_argument("--worktree-root")
     autonomous.add_argument("--enable-live-intelligence", action="store_true")
+    autonomous.add_argument(
+        "--disable-scientific-memory",
+        action="store_true",
+        help="run the population/search loop with empty research-memory packets",
+    )
     autonomous.add_argument("--openalex-api-key-env", default="OPENALEX_API_KEY")
     autonomous.add_argument("--github-token-env", default="GITHUB_TOKEN")
     autonomous.set_defaults(handler=command_campaign_autonomous)
@@ -774,7 +786,7 @@ def build_parser() -> argparse.ArgumentParser:
     benchmark_run.add_argument("--run-dir", required=True)
     benchmark_run.add_argument(
         "--adapter",
-        default="tasks.graph_coloring.arm_adapter:scripted_protocol_smoke",
+        help="must match the adapter frozen in the benchmark protocol",
     )
     benchmark_run.set_defaults(handler=command_benchmark_run_graph_coloring)
 

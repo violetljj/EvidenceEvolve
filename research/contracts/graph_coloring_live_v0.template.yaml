@@ -1,0 +1,147 @@
+schema_version: "1.0"
+campaign:
+  id: graph_coloring_live_v0_template
+  base_commit: HEAD
+  research_question: Can bounded code search reduce valid graph-color counts on the frozen public development instances?
+  claim_scope: public_graph_coloring_benchmark_pilot_only
+authority:
+  protocol_mutable: false
+  evaluator_mutable: false
+  confirmation_visible_to_agents: false
+  final_merge_requires_human: true
+editable_scope:
+  allow:
+    - tasks/graph_coloring/candidates/baseline.py
+  deny:
+    - evidence_evolve/**
+    - tasks/graph_coloring/evaluator.py
+    - tasks/graph_coloring/campaign_evaluator.py
+    - tasks/graph_coloring/autonomous_adapter.py
+    - benchmarks/**
+    - prompts/**
+    - research/**
+    - confirmation/**
+evidence_sources:
+  - source_id: graph-coloring-public-dev-b-v0
+    grade: B
+    path: research/evidence_policies/graph_coloring_dev_manifest.json
+    permissions: [DEV]
+frozen_assets:
+  - asset_id: graph-coloring-campaign-evaluator-v0
+    kind: evaluator
+    path: tasks/graph_coloring/campaign_evaluator.py
+  - asset_id: graph-coloring-autonomous-adapter-v0
+    kind: adapter
+    path: tasks/graph_coloring/autonomous_adapter.py
+  - asset_id: graph-coloring-shared-evaluator-v0
+    kind: evaluator
+    path: tasks/graph_coloring/evaluator.py
+  - asset_id: graph-coloring-instance-manifest-v0
+    kind: model
+    path: benchmarks/graph_coloring/instances_v0.json
+  - asset_id: harness-models-v0
+    kind: harness_core
+    path: evidence_evolve/models.py
+  - asset_id: harness-archive-v0
+    kind: harness_core
+    path: evidence_evolve/archive.py
+  - asset_id: harness-research-memory-v0
+    kind: harness_core
+    path: evidence_evolve/research_memory.py
+  - asset_id: harness-artifacts-v0
+    kind: harness_core
+    path: evidence_evolve/artifacts.py
+  - asset_id: harness-budgets-v0
+    kind: harness_core
+    path: evidence_evolve/budgets.py
+  - asset_id: harness-campaign-runner-v0
+    kind: harness_core
+    path: evidence_evolve/discovery/campaign.py
+  - asset_id: harness-population-store-v0
+    kind: harness_core
+    path: evidence_evolve/discovery/population.py
+  - asset_id: harness-autonomous-runner-v0
+    kind: harness_core
+    path: evidence_evolve/discovery/autonomous.py
+  - asset_id: harness-research-director-v0
+    kind: harness_core
+    path: evidence_evolve/discovery/director.py
+  - asset_id: harness-research-action-models-v0
+    kind: harness_core
+    path: evidence_evolve/research_actions/models.py
+  - asset_id: harness-research-action-store-v0
+    kind: harness_core
+    path: evidence_evolve/research_actions/store.py
+  - asset_id: harness-literature-intelligence-v0
+    kind: harness_core
+    path: evidence_evolve/research_actions/intelligence.py
+  - asset_id: harness-research-policy-v0
+    kind: harness_core
+    path: evidence_evolve/meta_evolution/policy.py
+  - asset_id: harness-codex-backend-v0
+    kind: harness_core
+    path: evidence_evolve/backends/codex_cli.py
+  - asset_id: harness-hashing-v0
+    kind: harness_core
+    path: evidence_evolve/hashing.py
+  - asset_id: harness-replay-v0
+    kind: harness_core
+    path: evidence_evolve/replay.py
+  - asset_id: harness-worktrees-v0
+    kind: harness_core
+    path: evidence_evolve/worktrees.py
+  - asset_id: harness-candidate-auditor-v0
+    kind: harness_core
+    path: evidence_evolve/governance/candidate_auditor.py
+  - asset_id: harness-gate-engine-v0
+    kind: harness_core
+    path: evidence_evolve/governance/gate_engine.py
+  - asset_id: harness-protocol-lock-v0
+    kind: harness_core
+    path: evidence_evolve/governance/protocol_lock.py
+  - asset_id: harness-evidence-policy-v0
+    kind: harness_core
+    path: evidence_evolve/governance/evidence_policy.py
+  - asset_id: harness-closure-v0
+    kind: harness_core
+    path: evidence_evolve/governance/closure_registry.py
+  - asset_id: harness-scope-v0
+    kind: harness_core
+    path: evidence_evolve/governance/scope.py
+  - asset_id: explorer-prompt-v0
+    kind: protocol
+    path: prompts/explorer.md
+  - asset_id: implementer-prompt-v0
+    kind: protocol
+    path: prompts/implementer.md
+  - asset_id: closure-registry-v0
+    kind: protocol
+    path: research/closures/closure_registry.yaml
+  - asset_id: graph-coloring-external-confirmation-v0
+    kind: confirmation
+    path: confirmation/graph_coloring_external_manifest.json
+metrics:
+  hard_constraints:
+    invalid_coloring_rate:
+      max: 0.0
+    nonreproducible_rate:
+      max: 0.0
+  pareto_objectives:
+    mean_color_count: minimize
+    relative_improvement: maximize
+required_controls:
+  - coloring_valid
+  - deterministic_solver
+  - development_only_evaluation
+budgets:
+  proposal_calls: 2
+  implementations: 2
+  mechanics_runs: 2
+  proxy_runs: 0
+  confirmation_runs: 0
+  device_runs: 0
+  literature_searches: 0
+  repository_inspections: 0
+  replications: 0
+  evidence_acquisitions: 0
+closure_registry: research/closures/closure_registry.yaml
