@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0",
+  "task": "graph_coloring_public_smoke",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "candidate_limit_per_arm": 1,
+  "scientific_outcome": "NOT_EVALUABLE_DATA",
+  "authority": "MECHANICS_AND_PUBLIC_BENCHMARK_SMOKE_ONLY",
+  "reason": "The public-fresh split is visible in the repository and no blind confirmation was run.",
+  "arms": [
+    {
+      "arm": "SHINKA_NATIVE",
+      "candidate": "shinka_one_candidate/best/main.py",
+      "development_relative_improvement": 0.2222222222222222,
+      "public_fresh_relative_improvement": 0.16639610389610388,
+      "development_elapsed_seconds": 0.6212864238768816,
+      "public_fresh_elapsed_seconds": 0.17291353456676006,
+      "valid_rate": 1.0,
+      "reproducibility_rate": 1.0,
+      "input_tokens_observed": 4380,
+      "output_tokens_observed": 7218,
+      "token_accounting": "UPSTREAM_PROGRAM_METADATA_BEST_EFFORT",
+      "observed_end_to_end_wall_seconds": 141.3,
+      "mechanics_failures": []
+    },
+    {
+      "arm": "VANILLA_CODEX",
+      "candidate": "/root/autodl-tmp/ee-gc-vanilla-smoke/tasks/graph_coloring/candidates/baseline.py",
+      "development_relative_improvement": 0.2222222222222222,
+      "public_fresh_relative_improvement": 0.16639610389610388,
+      "development_elapsed_seconds": 8.266534766182303,
+      "public_fresh_elapsed_seconds": 9.534510614350438,
+      "valid_rate": 1.0,
+      "reproducibility_rate": 1.0,
+      "input_tokens_observed": 284723,
+      "cached_input_tokens_observed": 255744,
+      "output_tokens_observed": 9457,
+      "observed_end_to_end_wall_seconds": 291.1,
+      "mechanics_failures": [
+        "The first workspace-write attempt could not initialize nested bwrap.",
+        "The successful retry mistakenly installed pydantic into the system Python before locating a usable evaluator environment."
+      ]
+    },
+    {
+      "arm": "EVIDENCE_EVOLVE_FULL",
+      "candidate": "evidence_full/submitted_candidates/C001.py",
+      "development_relative_improvement": 0.12152777777777778,
+      "public_fresh_relative_improvement": 0.11241883116883117,
+      "development_elapsed_seconds": 0.012802088633179665,
+      "public_fresh_elapsed_seconds": 0.024731971323490143,
+      "valid_rate": 1.0,
+      "reproducibility_rate": 1.0,
+      "input_tokens_observed": 129745,
+      "cached_input_tokens_observed": 88832,
+      "output_tokens_observed": 7456,
+      "observed_end_to_end_wall_seconds": 178.6,
+      "mechanics_failures": []
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+{"correct": true, "error": null, "metrics": {"combined_score": 0.2222222222222222, "public": {"mean_color_count": 5.25, "mean_relative_improvement": 0.2222222222222222, "valid_rate": 1.0, "reproducibility_rate": 1.0}, "private": {"instance_count": 4, "failure_count": 0}}}

@@ -1,0 +1,1 @@
+{"additionalProperties":false,"properties":{"status":{"enum":["IMPLEMENTED","NO_CHANGE","BLOCKED"],"type":"string"},"summary":{"type":"string"},"tests":{"items":{"type":"string"},"type":"array"}},"required":["status","summary","tests"],"type":"object"}

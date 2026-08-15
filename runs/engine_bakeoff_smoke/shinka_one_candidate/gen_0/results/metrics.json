@@ -1,0 +1,13 @@
+{
+  "combined_score": 0.0,
+  "private": {
+    "failure_count": 0,
+    "instance_count": 4
+  },
+  "public": {
+    "mean_color_count": 6.75,
+    "mean_relative_improvement": 0.0,
+    "reproducibility_rate": 1.0,
+    "valid_rate": 1.0
+  }
+}

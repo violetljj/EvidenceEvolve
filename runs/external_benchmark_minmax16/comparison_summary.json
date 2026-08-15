@@ -1,0 +1,81 @@
+{
+  "benchmark": {
+    "repository": "https://github.com/skydiscover-ai/skydiscover.git",
+    "commit": "8a840394e19ee4bfb3fb0a62762b902561a7efeb",
+    "task": "benchmarks/math/minimizing_max_min_dist/2",
+    "visibility": "PUBLIC_DEVELOPMENT_ONLY",
+    "baseline_combined_score": 0.01979112384555867,
+    "blind_confirmation_available": false
+  },
+  "smoke_design": {
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "high",
+    "new_candidates_per_engine": 1,
+    "same_initial_program": true,
+    "same_public_evaluator": true,
+    "equal_token_cap_enforced": false,
+    "authority": "EXTERNAL_PUBLIC_BENCHMARK_MECHANICS_SMOKE_ONLY"
+  },
+  "engines": [
+    {
+      "engine": "ShinkaEvolve+Codex",
+      "combined_score": 1.0000028088786328,
+      "min_max_ratio": 0.07758415414727321,
+      "baseline_score_multiplier": 50.52784352633131,
+      "input_tokens": 44508,
+      "output_tokens": 7265,
+      "total_tokens": 51773,
+      "wall_seconds": 220.418714,
+      "wall_seconds_measurement": "artifact_timestamp_span",
+      "invalid_candidate_rate": 0.0,
+      "replay_exact": true,
+      "candidate_sha256": "4426198181fb5d5191a4b5cf4d5b0203b1699b263251ec0c9c65d4b96bfa9b44",
+      "candidate_path": "shinka_one_candidate_fixed/best/main.py"
+    },
+    {
+      "engine": "Vanilla Codex",
+      "combined_score": 1.0000028088804567,
+      "min_max_ratio": 0.07758415414741471,
+      "baseline_score_multiplier": 50.52784352642347,
+      "input_tokens": 225115,
+      "cached_input_tokens": 203008,
+      "output_tokens": 5630,
+      "total_tokens": 230745,
+      "wall_seconds": 100.0,
+      "wall_seconds_measurement": "shell_elapsed_seconds",
+      "invalid_candidate_rate": 0.0,
+      "replay_exact": true,
+      "candidate_sha256": "2b5b6507b856c13601f8d9dbdc88be54fdf88e8c87a1a339adbe160da20c4bbd",
+      "candidate_path": "/root/autodl-tmp/ee-minmax16-vanilla-smoke/initial.py"
+    },
+    {
+      "engine": "EvidenceEvolve+Codex",
+      "combined_score": 0.6783824269473683,
+      "min_max_ratio": 0.05263157894736841,
+      "baseline_score_multiplier": 34.27710483958213,
+      "input_tokens": 99647,
+      "cached_input_tokens": 63488,
+      "output_tokens": 4773,
+      "total_tokens": 104420,
+      "wall_seconds": 102.94616531394422,
+      "wall_seconds_measurement": "campaign_perf_counter",
+      "invalid_candidate_rate": 0.0,
+      "replay_exact": true,
+      "candidate_sha256": "012bd4439ed4e85f39430ebe84ff5a4227fd2c936589d00e6b1bea5750f131da",
+      "candidate_path": "evidence_full_one_candidate/submitted_candidates/C001.py",
+      "public_campaign_outcome": "POSITIVE_HEADROOM"
+    }
+  ],
+  "public_benchmark_result": {
+    "best_score": 1.0000028088804567,
+    "best_engines": [
+      "Vanilla Codex",
+      "ShinkaEvolve+Codex"
+    ],
+    "tie_tolerance": 1e-9,
+    "evidence_evolve_gap_to_best_percent": 32.161947854242065,
+    "lowest_token_engine": "ShinkaEvolve+Codex"
+  },
+  "scientific_outcome": "NOT_EVALUABLE_DATA",
+  "scientific_outcome_reason": "The external task exposes only a public evaluator and has no blind or private confirmation split, so this smoke cannot establish engine superiority or generalization."
+}

@@ -1,0 +1,168 @@
+schema_version: '1.0'
+campaign:
+  id: minmax16_evidence_smoke_001
+  base_commit: 6f031f390189403a8f61f7e1ea072b850798d1e7
+  research_question: Improve the public SkyDiscover minimizing_max_min_dist task for
+    16 planar points. The editable function min_max_dist_dim2_16 must return a deterministic
+    16-by-2 NumPy array. Maximize squared minimum pairwise distance divided by squared
+    maximum pairwise distance; the frozen public baseline combined_score is 0.01979112384555867.
+  claim_scope: public_skydiscover_development_benchmark_only
+authority:
+  protocol_mutable: false
+  evaluator_mutable: false
+  confirmation_visible_to_agents: false
+  final_merge_requires_human: true
+editable_scope:
+  allow:
+  - experiments/engine_bakeoff/minmax16/initial.py
+  deny:
+  - evidence_evolve/**
+  - experiments/engine_bakeoff/minmax16/evaluate.py
+  - experiments/engine_bakeoff/minmax16/upstream_evaluator.py
+  - experiments/engine_bakeoff/minmax16/evidence_adapter.py
+  - experiments/engine_bakeoff/minmax16/evidence_contract.template.yaml
+  - experiments/engine_bakeoff/minmax16/evidence_policy.yaml
+  - experiments/engine_bakeoff/minmax16/run_evidence_smoke.py
+  - experiments/engine_bakeoff/minmax16/source_manifest.json
+  - experiments/engine_bakeoff/minmax16/confirmation_unavailable.json
+  - prompts/**
+  - research/**
+  - confirmation/**
+evidence_sources:
+- source_id: skydiscover-minmax16-public-dev-v0
+  grade: B
+  path: experiments/engine_bakeoff/minmax16/source_manifest.json
+  permissions:
+  - DEV
+  sha256: eba5570c04dc541f0cd76593b0c9ad9abc78e76db6490b1a27ccad70d2151a34
+frozen_assets:
+- asset_id: minmax16-public-evaluator-v0
+  kind: evaluator
+  path: experiments/engine_bakeoff/minmax16/evaluate.py
+  sha256: 128261a1c6c51c494d4061f970d87285e4e63bef815706c9f48702d82ea5d26f
+- asset_id: minmax16-evidence-adapter-v0
+  kind: adapter
+  path: experiments/engine_bakeoff/minmax16/evidence_adapter.py
+  sha256: f3b0fe17430c65ac1caa7903f1efbac0cda8e50491fe88117fd71dd79abdeec0
+- asset_id: minmax16-source-manifest-v0
+  kind: model
+  path: experiments/engine_bakeoff/minmax16/source_manifest.json
+  sha256: eba5570c04dc541f0cd76593b0c9ad9abc78e76db6490b1a27ccad70d2151a34
+- asset_id: minmax16-confirmation-unavailable-v0
+  kind: confirmation
+  path: experiments/engine_bakeoff/minmax16/confirmation_unavailable.json
+  sha256: bd09c47cd08e41fc9ebfa5573cabbef0b21f73dd774445e5f6905d520ab0bfde
+- asset_id: harness-models-v0
+  kind: harness_core
+  path: evidence_evolve/models.py
+  sha256: 056bb7d1208a0b12d490218e1a8948fa876bfe4c1775fd31508108eb6171b618
+- asset_id: harness-archive-v0
+  kind: harness_core
+  path: evidence_evolve/archive.py
+  sha256: 5f697252c90a4e4652b0a48feffc81c44afa4829c2106a98c291123bc48284a3
+- asset_id: harness-research-memory-v0
+  kind: harness_core
+  path: evidence_evolve/research_memory.py
+  sha256: dc9cf63a9c88f4f9d3a9ede105665fd5f2c1be2a2f570ae0ca0c6c13990a6f32
+- asset_id: harness-artifacts-v0
+  kind: harness_core
+  path: evidence_evolve/artifacts.py
+  sha256: b59a1e65729e5c8c0bdea32ff568acb872fbbc95d8731dea6ab105998d399e10
+- asset_id: harness-budgets-v0
+  kind: harness_core
+  path: evidence_evolve/budgets.py
+  sha256: 05194da10dd70816a55f97a356d208cd8fbdc5b8c35d06acd8d82ade7f8914d9
+- asset_id: harness-campaign-runner-v0
+  kind: harness_core
+  path: evidence_evolve/discovery/campaign.py
+  sha256: 40750c9469d866aff565e26e772d25bab8709b0221dd63a6dd288eb91fb1c0c3
+- asset_id: harness-autonomous-runner-v0
+  kind: harness_core
+  path: evidence_evolve/discovery/autonomous.py
+  sha256: 96a169b7b96089e27775b15b0fa08a7600e372a89fd0ebc06b138131283be655
+- asset_id: harness-population-store-v0
+  kind: harness_core
+  path: evidence_evolve/discovery/population.py
+  sha256: cdccf6479b10bafa2c162675ce51709f594a15304603e27182e9b012334e961f
+- asset_id: harness-codex-backend-v0
+  kind: harness_core
+  path: evidence_evolve/backends/codex_cli.py
+  sha256: 7865bed2fca8ea58d60e3251ebda42f6d4887aade404d1769843d1e174a06571
+- asset_id: harness-worktrees-v0
+  kind: harness_core
+  path: evidence_evolve/worktrees.py
+  sha256: 9ddebdf95846d6eccee7097a100965c1df445fcd66d29b3b25dde90349851d71
+- asset_id: harness-candidate-auditor-v0
+  kind: harness_core
+  path: evidence_evolve/governance/candidate_auditor.py
+  sha256: 127f71516396d5826eed87694291e14144307412e2bc4450efb72318d22843ac
+- asset_id: harness-gate-engine-v0
+  kind: harness_core
+  path: evidence_evolve/governance/gate_engine.py
+  sha256: 069eabba8e6331352f82a52db751aad7681d9db8b47e4e8cf7b6bd9b1591d3a4
+- asset_id: harness-protocol-lock-v0
+  kind: harness_core
+  path: evidence_evolve/governance/protocol_lock.py
+  sha256: 254a08bc61f58b96edfeffe1eb62c18bf466c94eb4be2af75f83fbf5345f76c4
+- asset_id: harness-evidence-policy-v0
+  kind: harness_core
+  path: evidence_evolve/governance/evidence_policy.py
+  sha256: f53c2030af94b39f515b1ef99d2a121f7f02e020eca1782197fad153d86db9e5
+- asset_id: harness-closure-v0
+  kind: harness_core
+  path: evidence_evolve/governance/closure_registry.py
+  sha256: f2ed509179769aeb1b626ae300b3c0949154ca2b03e3d65b9bd2bb887e73f6ff
+- asset_id: harness-scope-v0
+  kind: harness_core
+  path: evidence_evolve/governance/scope.py
+  sha256: de9c394f933d52687eeac79e739d52ebfc535f4a2555087b6f22cf0658040d7b
+- asset_id: harness-hashing-v0
+  kind: harness_core
+  path: evidence_evolve/hashing.py
+  sha256: 22b96285699877ffb3695caf0a5c6d6fa518d0ccbb1f91df3ac332fb66094be7
+- asset_id: harness-replay-v0
+  kind: harness_core
+  path: evidence_evolve/replay.py
+  sha256: 4082ab783d677beef34826f873a8878b0001d54391e95c04f1c843d77967e462
+- asset_id: explorer-prompt-v0
+  kind: protocol
+  path: prompts/explorer.md
+  sha256: 261c9ad30a7c65e88012d5541f8bc58ce7a1e60357ef16c1a65001b2fee1ab8c
+- asset_id: implementer-prompt-v0
+  kind: protocol
+  path: prompts/implementer.md
+  sha256: f060c16fc9d2712ded46aca21475200b53490fc3f69fa631650b3e693c08da2c
+- asset_id: closure-registry-v0
+  kind: protocol
+  path: research/closures/closure_registry.yaml
+  sha256: bc216c30dcdcc9a55a057f01d7ba67644bbddced5ad0d47929d02e85c86b0099
+metrics:
+  hard_constraints:
+    invalid_candidate_rate:
+      max: 0.0
+    nonreproducible_rate:
+      max: 0.0
+  pareto_objectives:
+    combined_score: maximize
+    min_max_ratio: maximize
+    relative_improvement: maximize
+required_controls:
+- upstream_evaluator_completed
+- finite_score
+- deterministic_candidate
+- public_development_only
+budgets:
+  proposal_calls: 1
+  implementations: 1
+  mechanics_runs: 1
+  proxy_runs: 0
+  confirmation_runs: 0
+  device_runs: 0
+  literature_searches: 0
+  repository_inspections: 0
+  replications: 0
+  evidence_acquisitions: 0
+closure_registry: research/closures/closure_registry.yaml
+lock:
+  algorithm: sha256
+  content_sha256: 3a6c240b41c251b4c8a80499067fd03edf863ddcca81ceb7a6c13147c7d5ab58

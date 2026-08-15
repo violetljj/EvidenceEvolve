@@ -1,0 +1,15 @@
+{
+  "generation": 1,
+  "novelty_attempt": 1,
+  "resample_attempt": 1,
+  "patch_attempt": 1,
+  "success": true,
+  "num_applied": 1,
+  "patch_name": "component_dsatur_search",
+  "patch_description": "Redesigns the solver as a component-oriented coloring pipeline. Each connected component is handled independently using bipartite detection, several deterministic constructive strategies (DSATUR, smallest-last, and recursive largest-first), followed by bounded exact color-elimination search. The best valid candidate is selected deterministically, components reuse the same color range, and a final validation guard preserves correctness.",
+  "error_msg": null,
+  "timestamp": "2026-08-16T01:36:36.692762",
+  "llm_cost": 0.0,
+  "llm_model": "headless/codex@gpt-5.6-sol?effort=high",
+  "headless_prompt_path": "/root/autodl-tmp/evidenceevolve-engine-bakeoff/runs/engine_bakeoff_smoke/shinka_one_candidate/gen_1/attempts/novelty_1/resample_1/patch_1/headless_prompt.md"
+}
