@@ -44,6 +44,7 @@ frozen_assets:
   - {asset_id: harness-director-v0, kind: harness_core, path: evidence_evolve/discovery/director.py}
   - {asset_id: harness-policy-v0, kind: harness_core, path: evidence_evolve/meta_evolution/policy.py}
   - {asset_id: harness-codex-v0, kind: harness_core, path: evidence_evolve/backends/codex_cli.py}
+  - {asset_id: harness-proot-codex-v0, kind: adapter, path: evidence_evolve/backends/proot_codex.py}
   - {asset_id: harness-hashing-v0, kind: harness_core, path: evidence_evolve/hashing.py}
   - {asset_id: harness-replay-v0, kind: harness_core, path: evidence_evolve/replay.py}
   - {asset_id: harness-worktrees-v0, kind: harness_core, path: evidence_evolve/worktrees.py}

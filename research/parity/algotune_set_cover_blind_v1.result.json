@@ -1,0 +1,109 @@
+{
+  "schema_version": "1.0",
+  "campaign": "algotune_set_cover_blind_v1_corrected_five_arm",
+  "claim_scope": "ALGORITHM_DISCOVERY_BLIND_PILOT_ONLY",
+  "correction": {
+    "authority": "USER_REQUESTED_MECHANICS_ONLY_CORRECTION",
+    "original_failure": "EvidenceEvolve implementers were blocked before editing by the host bwrap namespace mechanism",
+    "repair": "isolated proot-nobody writable Codex bridge",
+    "search_algorithm_changed": false,
+    "prompt_changed": false,
+    "selection_changed": false,
+    "evaluator_changed": false,
+    "source_candidate_lock_sha256": "2c6e92e31f9d2619342af652b60e2ef7cd4790d132797e9780165258fc368579",
+    "corrected_replay_receipt_sha256": "b784d26f588af51bd881b9217c5b8985684175905b43e58ee707cffc8faaae3"
+  },
+  "blind_protocol": {
+    "development_seeds": "0..99",
+    "development_repeats": 3,
+    "heldout_instance_count": 100,
+    "heldout_repeats": 10,
+    "candidate_lock_sha256": "2947d212944e72245ad5a9e705039be52b745ab71c275533b35c269dbed802f0",
+    "heldout_seed_receipt_sha256": "7bc3b26ce12a02cab8d4cc53c426af79903898100d3189fbc50cc21b46d816a0",
+    "heldout_generated_after_candidate_lock": true,
+    "old_heldout_reused": false,
+    "generator": "Python secrets.SystemRandom / OS CSPRNG",
+    "execution_commit": "49e3d24170b11d951095c4f50d5416ecab7dece0",
+    "suite_result_sha256": "d095d795af54d24011013b74321f8d55e79608da559f86a759f94285e7c03008"
+  },
+  "results": [
+    {
+      "arm": "evidence_evolve",
+      "candidate_sha256": "4e278d6b1968e54e1126366590bda6477396a330e9f1b4e9ccf902e9ace383a1",
+      "heldout_raw_speedup": 39.599225668482035,
+      "heldout_valid_rate": 1.0,
+      "tokens": 322489,
+      "wall_seconds": 337.27473535202444,
+      "proposal_valid_rate": 0.3333333333333333,
+      "scientific_outcome": "POSITIVE_HEADROOM",
+      "budget_violation": false
+    },
+    {
+      "arm": "vanilla",
+      "candidate_sha256": "8a8122bdecd180e41533cee4c34cfa33480248a2750523ca9be5989ca7149f75",
+      "heldout_raw_speedup": 4.206930447523574,
+      "heldout_valid_rate": 1.0,
+      "tokens": 63284,
+      "wall_seconds": 302.46712755039334,
+      "proposal_valid_rate": 1.0,
+      "scientific_outcome": "POSITIVE_HEADROOM",
+      "budget_violation": false
+    },
+    {
+      "arm": "ada",
+      "candidate_sha256": "63f374b3805a3c62c1f3fb88e93784c079609fdc7b2a5aea5eb78279e24b903a",
+      "heldout_raw_speedup": 3.323566328049417,
+      "heldout_valid_rate": 1.0,
+      "tokens": 110256,
+      "wall_seconds": 266.42692806199193,
+      "proposal_valid_rate": 1.0,
+      "scientific_outcome": "POSITIVE_HEADROOM",
+      "budget_violation": false
+    },
+    {
+      "arm": "shinka",
+      "candidate_sha256": "65d68cf6402c427601f8a2ce47572c976bad2c0933c4ea0f79fc9540d6da9ffa",
+      "heldout_raw_speedup": 2.0046571547844754,
+      "heldout_valid_rate": 1.0,
+      "tokens": 59305,
+      "wall_seconds": 327.8286459352821,
+      "proposal_valid_rate": 1.0,
+      "scientific_outcome": "POSITIVE_HEADROOM",
+      "budget_violation": false
+    },
+    {
+      "arm": "evox",
+      "candidate_sha256": "f11a15060cc7e07a8d57ec41417c6bbc939d5a3ef73bbe49aa0c32d6ca33f2fe",
+      "heldout_raw_speedup": 1.372337951501608,
+      "heldout_valid_rate": 1.0,
+      "tokens": 129885,
+      "wall_seconds": 313.62164044752717,
+      "proposal_valid_rate": 0.0,
+      "scientific_outcome": "POSITIVE_HEADROOM",
+      "budget_violation": false
+    }
+  ],
+  "observed_score_order": [
+    "evidence_evolve",
+    "vanilla",
+    "ada",
+    "shinka",
+    "evox"
+  ],
+  "pareto_front": [
+    "ada",
+    "evidence_evolve",
+    "shinka",
+    "vanilla"
+  ],
+  "audits": {
+    "evidence_evolve_changed_files": [
+      "tasks/algotune_set_cover/initial.py"
+    ],
+    "evidence_evolve_static_leakage_indicators_found": false,
+    "evidence_evolve_candidate_valid_on_all_heldout_instances": true,
+    "mechanism_ablations_complete": false
+  },
+  "superiority_claim_permitted": false,
+  "mechanism_claim_permitted": false
+}

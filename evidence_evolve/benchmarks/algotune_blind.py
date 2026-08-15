@@ -21,6 +21,7 @@ import yaml
 
 from evidence_evolve.artifacts import create_once_json
 from evidence_evolve.backends.codex_cli import CodexCliBackend, CodexRole
+from evidence_evolve.backends.proot_codex import ProotCodexCliBackend
 from evidence_evolve.discovery.autonomous import AutonomousCampaignRunner
 from evidence_evolve.governance.closure_registry import ClosureRegistry
 from evidence_evolve.governance.protocol_lock import ProtocolLock, dump_contract, load_contract
@@ -54,6 +55,15 @@ _SKY_CLIENT_IDS = itertools.count(1)
 
 class _PinnedCodexBackend(CodexCliBackend):
     """Pilot-local model pin without changing the frozen shared backend."""
+
+    def build_command(self, **kwargs: Any) -> list[str]:
+        command = super().build_command(**kwargs)
+        command[-1:-1] = ["--model", MODEL]
+        return command
+
+
+class _PinnedProotCodexBackend(ProotCodexCliBackend):
+    """Pilot-local model pin plus isolated writable implementer bridge."""
 
     def build_command(self, **kwargs: Any) -> list[str]:
         command = super().build_command(**kwargs)
@@ -727,7 +737,7 @@ def run_evidence_evolve(run_dir: Path) -> dict[str, Any]:
         repo_root=execution_repo,
         run_dir=campaign_dir,
         evaluate=evaluate_ee,
-        backend=_PinnedCodexBackend(),
+        backend=_PinnedProotCodexBackend(),
         worktree_root=worktree_root,
         reference_metrics=evaluate_development(
             execution_repo / "tasks" / "algotune_set_cover" / "initial.py"
@@ -774,6 +784,7 @@ def run_evidence_evolve(run_dir: Path) -> dict[str, Any]:
             "selected_candidate_id": selected_id,
             "execution_commit": contract.campaign.base_commit,
             "scientific_memory_enabled": True,
+            "implementer_sandbox_bridge": "proot-nobody",
             "search_mechanics_status": "PASS" if successful else "FAIL",
             "baseline_fallback": selected_id == "SEED",
         },
