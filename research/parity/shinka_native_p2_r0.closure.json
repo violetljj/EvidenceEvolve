@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "protocol_id": "SHINKA_NATIVE_P2_R0",
+  "campaign_state": "CLOSED_NOT_EVALUABLE",
+  "scientific_outcome": "NOT_EVALUABLE_DATA",
+  "assessment": "INCONCLUSIVE",
+  "failure_domain": "SEARCH_CANDIDATES_NEVER_REACHED_EVALUATOR",
+  "reason": "All 68 real-provider proposals failed patch application; zero proposal candidates reached the evaluator. Baseline-only score equality is not eligible evidence for search non-inferiority.",
+  "r0_is_immutable": true,
+  "replacement_run_id": "SHINKA_NATIVE_P2_R1",
+  "reopen_requirement": "P2-M0 mechanics admission gate must pass first.",
+  "future_remote_model_policy": {
+    "gpt-5.5_permitted": false,
+    "fallback_model_if_remote_generation_is_required": "gpt-5.6-terra",
+    "m0_replay_requires_remote_generation": false
+  },
+  "m0_frozen_admission_sample": {
+    "selection_rule": "Earliest proposal generation from each arm in each block.",
+    "case_count": 20,
+    "case_ids": [
+      "p2r0-b01-official-g1",
+      "p2r0-b01-native-g1",
+      "p2r0-b02-native-g1",
+      "p2r0-b02-official-g1",
+      "p2r0-b03-official-g1",
+      "p2r0-b03-native-g1",
+      "p2r0-b04-native-g1",
+      "p2r0-b04-official-g1",
+      "p2r0-b05-official-g1",
+      "p2r0-b05-native-g1",
+      "p2r0-b06-native-g1",
+      "p2r0-b06-official-g1",
+      "p2r0-b07-official-g1",
+      "p2r0-b07-native-g1",
+      "p2r0-b08-native-g1",
+      "p2r0-b08-official-g1",
+      "p2r0-b09-official-g1",
+      "p2r0-b09-native-g1",
+      "p2r0-b10-native-g1",
+      "p2r0-b10-official-g1"
+    ]
+  },
+  "admission_thresholds": {
+    "patch_apply_success_rate_min": 0.9,
+    "candidate_compile_success_rate_min": 0.9,
+    "evaluator_reached_rate_min": 0.8,
+    "nonbaseline_candidate_score_required_per_arm": 1
+  },
+  "tracked_artifacts": {
+    "result": "shinka_native_p2_r0.result.json",
+    "config": "shinka_native_p2_r0.config.yaml",
+    "formal_manifest": "shinka_native_p2_r0.manifest.json",
+    "protocol_receipt": "shinka_native_p2_r0.protocol.json",
+    "invalid_attempt_audit": "shinka_native_p2_r0.invalid_attempt.json",
+    "failure_replay_corpus": "shinka_native_p2_r0.failures.jsonl",
+    "target_program": "shinka_native_p2_r0.target_program.py"
+  }
+}

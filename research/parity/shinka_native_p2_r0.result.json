@@ -1,0 +1,3381 @@
+{
+  "schema_version": "1.0",
+  "protocol_id": "SHINKA_NATIVE_P2_R0",
+  "claim_scope": "REAL_PROVIDER_MATCHED_BLOCK_NON_INFERIORITY",
+  "scientific_outcome": "NOT_EVALUABLE_DATA",
+  "non_inferiority_assessment": "INCONCLUSIVE",
+  "failure_domain": "SEARCH_CANDIDATES_NEVER_REACHED_EVALUATOR",
+  "campaign_state": "CLOSED_NOT_EVALUABLE",
+  "practical_degradation_observed": false,
+  "main_conclusion": "No relative SHINKA_NATIVE score degradation was observed, but non-inferiority is not established because all 68 proposals failed patch application and no proposal reached the evaluator.",
+  "p1_binding": {
+    "evidence_evolve_commit": "31c7f8210b78e808af0255e0b0ce7408176d3a1b",
+    "origin_master_at_freeze": "31c7f8210b78e808af0255e0b0ce7408176d3a1b",
+    "p1_result_path": "research/parity/shinka_native_p1_r0.result.json"
+  },
+  "upstream": {
+    "repository": "https://github.com/SakanaAI/ShinkaEvolve",
+    "distribution": "shinka-evolve",
+    "source_commit": "c4568adde253cacf185be3a8412c3c2142761ebe",
+    "version": "0.0.7"
+  },
+  "provider": {
+    "transport": "ChatGPT subscription-backed Codex CLI through @roberttlange/headless",
+    "model": "gpt-5.5",
+    "reasoning_effort": "high",
+    "temperature": 0.0,
+    "max_tokens": 32768,
+    "codex_cli_version": "codex-cli 0.147.0",
+    "codex_authentication": "Logged in using ChatGPT",
+    "openai_api_key_present": false,
+    "headless_command": "npx -y @roberttlange/headless@0.6.1",
+    "node_version": "v22.23.2",
+    "npm_version": "10.9.8",
+    "codex_generation_seed": null,
+    "codex_seed_gap": "Subscription-backed Codex does not expose a shared generation seed."
+  },
+  "environment_receipt": {
+    "hostname": "autodl-container-c4494d88d0-6743dcf7",
+    "os_release": {
+      "PRETTY_NAME": "Ubuntu 22.04.5 LTS",
+      "NAME": "Ubuntu",
+      "VERSION_ID": "22.04",
+      "VERSION": "22.04.5 LTS (Jammy Jellyfish)",
+      "VERSION_CODENAME": "jammy",
+      "ID": "ubuntu",
+      "ID_LIKE": "debian",
+      "HOME_URL": "https://www.ubuntu.com/",
+      "SUPPORT_URL": "https://help.ubuntu.com/",
+      "BUG_REPORT_URL": "https://bugs.launchpad.net/ubuntu/",
+      "PRIVACY_POLICY_URL": "https://www.ubuntu.com/legal/terms-and-policies/privacy-policy",
+      "UBUNTU_CODENAME": "jammy"
+    },
+    "python": "3.12.3 | packaged by Anaconda, Inc. | (main, May  6 2024, 19:46:43) [GCC 11.2.0]",
+    "python_executable": "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+    "platform": "Linux-5.15.0-94-generic-x86_64-with-glibc2.35",
+    "uname": [
+      "Linux",
+      "autodl-container-c4494d88d0-6743dcf7",
+      "5.15.0-94-generic",
+      "#104-Ubuntu SMP Tue Jan 9 15:25:40 UTC 2024",
+      "x86_64",
+      "x86_64"
+    ],
+    "cpu": "Architecture:                       x86_64\nCPU op-mode(s):                     32-bit, 64-bit\nAddress sizes:                      52 bits physical, 57 bits virtual\nByte Order:                         Little Endian\nCPU(s):                             256\nOn-line CPU(s) list:                0-255\nVendor ID:                          AuthenticAMD\nModel name:                         AMD EPYC 9754 128-Core Processor\nCPU family:                         25\nModel:                              160\nThread(s) per core:                 2\nCore(s) per socket:                 128\nSocket(s):                          1\nStepping:                           2\nFrequency boost:                    enabled\nCPU max MHz:                        3100.3411\nCPU min MHz:                        1500.0000\nBogoMIPS:                           4499.85\nFlags:                              fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl nonstop_tsc cpuid extd_apicid aperfmperf rapl pni pclmulqdq monitor ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpb cat_l3 cdp_l3 invpcid_single hw_pstate ssbd mba ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local avx512_bf16 clzero irperf xsaveerptr rdpru wbnoinvd amd_ppin cppc arat npt lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avic v_vmsave_vmload vgif v_spec_ctrl avx512vbmi umip pku ospke avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq la57 rdpid overflow_recov succor smca fsrm flush_l1d\nVirtualization:                     AMD-V\nL1d cache:                          4 MiB (128 instances)\nL1i cache:                          4 MiB (128 instances)\nL2 cache:                           128 MiB (128 instances)\nL3 cache:                           256 MiB (16 instances)\nNUMA node(s):                       1\nNUMA node0 CPU(s):                  0-255\nVulnerability Gather data sampling: Not affected\nVulnerability Itlb multihit:        Not affected\nVulnerability L1tf:                 Not affected\nVulnerability Mds:                  Not affected\nVulnerability Meltdown:             Not affected\nVulnerability Mmio stale data:      Not affected\nVulnerability Retbleed:             Not affected\nVulnerability Spec rstack overflow: Mitigation; safe RET\nVulnerability Spec store bypass:    Mitigation; Speculative Store Bypass disabled via prctl and seccomp\nVulnerability Spectre v1:           Mitigation; usercopy/swapgs barriers and __user pointer sanitization\nVulnerability Spectre v2:           Mitigation; Retpolines, IBPB conditional, IBRS_FW, STIBP always-on, RSB filling, PBRSB-eIBRS Not affected\nVulnerability Srbds:                Not affected\nVulnerability Tsx async abort:      Not affected",
+    "gpu": "NVIDIA GeForce RTX 4090 D, GPU-706f701e-d390-7859-c905-94f2e1d1b5cb, 570.124.04, 24564 MiB",
+    "python_random_seed": 20260815,
+    "numpy_seed": 20260815,
+    "python_hash_seed": 20260815,
+    "pip_freeze_sha256": "59595adbc32f34f6062cc97c5fd542e65470e8066a7e96564a40b6e2892df5a5"
+  },
+  "frozen_inputs": {
+    "task": "pinned upstream examples/circle_packing with P1 byte hashes",
+    "config_path": "research/parity/shinka_native_p2_r0.config.yaml",
+    "config_sha256": "ca86b048a6254136cf7d582ffca19ef275b717552b21cd5cd7b5da9c68189240",
+    "initial_program_sha256": "edc7f3d6fa3682214c9a41964176576ea7c141f937c2db71fe3ba10b43b2bf9d",
+    "evaluator_sha256": "1e6a045e7b3562738be2d870f42211ea64833d331240ee79404aa1d3e6c1af47",
+    "seed_hook_sha256": "048fe0f4aadce746508abaeb5b2a40a47ae8cfa8f20d64ad470f04793c552b22",
+    "generation_slots": 6,
+    "proposal_target_mode": "fixed",
+    "max_proposal_jobs": 1,
+    "max_evaluation_jobs": 1,
+    "max_db_workers": 1,
+    "no_failure_resampling": true,
+    "schedule": [
+      {
+        "block": 1,
+        "order": [
+          "official",
+          "native"
+        ]
+      },
+      {
+        "block": 2,
+        "order": [
+          "native",
+          "official"
+        ]
+      },
+      {
+        "block": 3,
+        "order": [
+          "official",
+          "native"
+        ]
+      },
+      {
+        "block": 4,
+        "order": [
+          "native",
+          "official"
+        ]
+      },
+      {
+        "block": 5,
+        "order": [
+          "official",
+          "native"
+        ]
+      },
+      {
+        "block": 6,
+        "order": [
+          "native",
+          "official"
+        ]
+      },
+      {
+        "block": 7,
+        "order": [
+          "official",
+          "native"
+        ]
+      },
+      {
+        "block": 8,
+        "order": [
+          "native",
+          "official"
+        ]
+      },
+      {
+        "block": 9,
+        "order": [
+          "official",
+          "native"
+        ]
+      },
+      {
+        "block": 10,
+        "order": [
+          "native",
+          "official"
+        ]
+      }
+    ],
+    "protocol_sha256": "c71e497f860461486a38dc9de50a05716eca3fa8dac65bdf8821b95d9ea71aeb"
+  },
+  "execution_integrity": {
+    "formal_batch_started_at": "2026-08-15T11:22:23.607761+00:00",
+    "formal_batch_finished_at": "2026-08-15T13:51:37.676094+00:00",
+    "formal_batch_elapsed_seconds": 8954.068333,
+    "declared_runs": 20,
+    "completed_runs": 20,
+    "all_exit_zero": true,
+    "all_complete_without_retry": true,
+    "official_runs": 10,
+    "native_runs": 10,
+    "matched_blocks": 10,
+    "ab_ba_schedule_exact": true,
+    "codex_rollouts_mapped": 68,
+    "rollout_count_matches_proposal_count": true,
+    "baseline_evaluator_calls": 20,
+    "proposal_evaluator_calls": 0,
+    "tracked_worktree_clean_at_protocol_start": true
+  },
+  "smoke": {
+    "official": {
+      "results_dir": "runs/shinka_native_p2_r0/smoke/official",
+      "database_created": true,
+      "generation_directories": [
+        "gen_0",
+        "gen_1",
+        "gen_2"
+      ],
+      "baseline_evaluator_calls": 1,
+      "proposal_count": 2,
+      "patch_failure_count": 2,
+      "proposal_evaluator_calls": 0,
+      "resume_observation": "Existing proposal generations were not replayed; reopening added a second baseline program/archive row."
+    },
+    "native": {
+      "results_dir": "runs/shinka_native_p2_r0/smoke/native",
+      "database_created": true,
+      "generation_directories": [
+        "gen_0",
+        "gen_1",
+        "gen_2"
+      ],
+      "baseline_evaluator_calls": 1,
+      "proposal_count": 2,
+      "patch_failure_count": 2,
+      "proposal_evaluator_calls": 0,
+      "resume_observation": "Existing proposal generations were not replayed; reopening added a second baseline program/archive row."
+    },
+    "interpretation": "Both arms exercised the real provider, baseline evaluator, database, and resume path. Both had 2/2 patch failures, so the smoke did not observe a proposal evaluator call."
+  },
+  "arm_aggregates": {
+    "official": {
+      "run_count": 10,
+      "final_best_score_median": 0.9597642169962064,
+      "final_best_score_min": 0.9597642169962064,
+      "final_best_score_max": 0.9597642169962064,
+      "best_so_far_auc_median": 0.9597642169962064,
+      "proposal_count": 34,
+      "valid_proposal_count": 0,
+      "valid_proposal_rate": 0.0,
+      "patch_failure_count": 34,
+      "patch_failure_rate": 1.0,
+      "improvement_count": 0,
+      "improvements_per_proposal": 0.0,
+      "proposal_evaluator_calls": 0,
+      "evaluator_calls_per_proposal": 0.0,
+      "baseline_evaluator_calls": 10,
+      "time_to_first_improvement_observed_count": 0,
+      "time_to_first_improvement_right_censored_count": 10,
+      "wall_seconds_total": 4349.908036312088,
+      "wall_seconds_mean": 434.99080363120885,
+      "wall_seconds_median": 433.14577245432884,
+      "observed_token_usage": {
+        "input_tokens": 1210803,
+        "cached_input_tokens": 892416,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 181280,
+        "reasoning_output_tokens": 142166,
+        "total_tokens": 1392083
+      },
+      "patch_type_counts": {
+        "diff": 34
+      },
+      "proposal_model_counts": {
+        "headless/codex@gpt-5.5?effort=high": 34
+      },
+      "resume_no_new_proposal_artifacts": 10,
+      "resume_database_row_idempotent": 0
+    },
+    "native": {
+      "run_count": 10,
+      "final_best_score_median": 0.9597642169962064,
+      "final_best_score_min": 0.9597642169962064,
+      "final_best_score_max": 0.9597642169962064,
+      "best_so_far_auc_median": 0.9597642169962064,
+      "proposal_count": 34,
+      "valid_proposal_count": 0,
+      "valid_proposal_rate": 0.0,
+      "patch_failure_count": 34,
+      "patch_failure_rate": 1.0,
+      "improvement_count": 0,
+      "improvements_per_proposal": 0.0,
+      "proposal_evaluator_calls": 0,
+      "evaluator_calls_per_proposal": 0.0,
+      "baseline_evaluator_calls": 10,
+      "time_to_first_improvement_observed_count": 0,
+      "time_to_first_improvement_right_censored_count": 10,
+      "wall_seconds_total": 4043.4755518008024,
+      "wall_seconds_mean": 404.34755518008024,
+      "wall_seconds_median": 384.1204456323758,
+      "observed_token_usage": {
+        "input_tokens": 1087859,
+        "cached_input_tokens": 846976,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 164642,
+        "reasoning_output_tokens": 129386,
+        "total_tokens": 1252501
+      },
+      "patch_type_counts": {
+        "diff": 34
+      },
+      "proposal_model_counts": {
+        "headless/codex@gpt-5.5?effort=high": 34
+      },
+      "resume_no_new_proposal_artifacts": 10,
+      "resume_database_row_idempotent": 0
+    }
+  },
+  "arm_comparison": {
+    "native_minus_official_median_final_best_score": 0.0,
+    "native_minus_official_median_best_so_far_auc": 0.0,
+    "native_minus_official_valid_proposal_rate": 0.0,
+    "native_minus_official_patch_failure_rate": 0.0,
+    "native_minus_official_improvements_per_proposal": 0.0,
+    "native_minus_official_evaluator_calls_per_proposal": 0.0,
+    "native_minus_official_wall_seconds_total": -306.432484511286,
+    "native_wall_time_relative_delta": -0.07044573861177161,
+    "native_minus_official_observed_total_tokens": -139582,
+    "native_observed_total_tokens_relative_delta": -0.10026844663716172,
+    "time_to_first_improvement": "No event in either arm; all runs right-censored.",
+    "resume_consistency": "No proposal artifact delta in either arm; neither arm was database-row idempotent on reopen."
+  },
+  "paired_blocks": [
+    {
+      "block": 1,
+      "order": [
+        "official",
+        "native"
+      ],
+      "official_final_best_score": 0.9597642169962064,
+      "native_final_best_score": 0.9597642169962064,
+      "native_normalized_best_score": 1.0,
+      "native_normalized_best_score_delta": 0.0,
+      "best_so_far_auc_delta": 0.0,
+      "valid_proposal_rate_delta": 0.0,
+      "patch_failure_rate_delta": 0.0,
+      "wall_seconds_delta": 54.446129899472,
+      "observed_total_tokens_delta": -14282
+    },
+    {
+      "block": 2,
+      "order": [
+        "native",
+        "official"
+      ],
+      "official_final_best_score": 0.9597642169962064,
+      "native_final_best_score": 0.9597642169962064,
+      "native_normalized_best_score": 1.0,
+      "native_normalized_best_score_delta": 0.0,
+      "best_so_far_auc_delta": 0.0,
+      "valid_proposal_rate_delta": 0.0,
+      "patch_failure_rate_delta": 0.0,
+      "wall_seconds_delta": 200.52588832564652,
+      "observed_total_tokens_delta": 61688
+    },
+    {
+      "block": 3,
+      "order": [
+        "official",
+        "native"
+      ],
+      "official_final_best_score": 0.9597642169962064,
+      "native_final_best_score": 0.9597642169962064,
+      "native_normalized_best_score": 1.0,
+      "native_normalized_best_score_delta": 0.0,
+      "best_so_far_auc_delta": 0.0,
+      "valid_proposal_rate_delta": 0.0,
+      "patch_failure_rate_delta": 0.0,
+      "wall_seconds_delta": 92.35192481987178,
+      "observed_total_tokens_delta": 22009
+    },
+    {
+      "block": 4,
+      "order": [
+        "native",
+        "official"
+      ],
+      "official_final_best_score": 0.9597642169962064,
+      "native_final_best_score": 0.9597642169962064,
+      "native_normalized_best_score": 1.0,
+      "native_normalized_best_score_delta": 0.0,
+      "best_so_far_auc_delta": 0.0,
+      "valid_proposal_rate_delta": 0.0,
+      "patch_failure_rate_delta": 0.0,
+      "wall_seconds_delta": -279.83555542491376,
+      "observed_total_tokens_delta": -118967
+    },
+    {
+      "block": 5,
+      "order": [
+        "official",
+        "native"
+      ],
+      "official_final_best_score": 0.9597642169962064,
+      "native_final_best_score": 0.9597642169962064,
+      "native_normalized_best_score": 1.0,
+      "native_normalized_best_score_delta": 0.0,
+      "best_so_far_auc_delta": 0.0,
+      "valid_proposal_rate_delta": 0.0,
+      "patch_failure_rate_delta": 0.0,
+      "wall_seconds_delta": 24.83007108233869,
+      "observed_total_tokens_delta": 21091
+    },
+    {
+      "block": 6,
+      "order": [
+        "native",
+        "official"
+      ],
+      "official_final_best_score": 0.9597642169962064,
+      "native_final_best_score": 0.9597642169962064,
+      "native_normalized_best_score": 1.0,
+      "native_normalized_best_score_delta": 0.0,
+      "best_so_far_auc_delta": 0.0,
+      "valid_proposal_rate_delta": 0.0,
+      "patch_failure_rate_delta": 0.0,
+      "wall_seconds_delta": -109.89277372695506,
+      "observed_total_tokens_delta": -36951
+    },
+    {
+      "block": 7,
+      "order": [
+        "official",
+        "native"
+      ],
+      "official_final_best_score": 0.9597642169962064,
+      "native_final_best_score": 0.9597642169962064,
+      "native_normalized_best_score": 1.0,
+      "native_normalized_best_score_delta": 0.0,
+      "best_so_far_auc_delta": 0.0,
+      "valid_proposal_rate_delta": 0.0,
+      "patch_failure_rate_delta": 0.0,
+      "wall_seconds_delta": -116.53590200841427,
+      "observed_total_tokens_delta": -89952
+    },
+    {
+      "block": 8,
+      "order": [
+        "native",
+        "official"
+      ],
+      "official_final_best_score": 0.9597642169962064,
+      "native_final_best_score": 0.9597642169962064,
+      "native_normalized_best_score": 1.0,
+      "native_normalized_best_score_delta": 0.0,
+      "best_so_far_auc_delta": 0.0,
+      "valid_proposal_rate_delta": 0.0,
+      "patch_failure_rate_delta": 0.0,
+      "wall_seconds_delta": -142.43439472280443,
+      "observed_total_tokens_delta": -26326
+    },
+    {
+      "block": 9,
+      "order": [
+        "official",
+        "native"
+      ],
+      "official_final_best_score": 0.9597642169962064,
+      "native_final_best_score": 0.9597642169962064,
+      "native_normalized_best_score": 1.0,
+      "native_normalized_best_score_delta": 0.0,
+      "best_so_far_auc_delta": 0.0,
+      "valid_proposal_rate_delta": 0.0,
+      "patch_failure_rate_delta": 0.0,
+      "wall_seconds_delta": -39.85470258817077,
+      "observed_total_tokens_delta": 61838
+    },
+    {
+      "block": 10,
+      "order": [
+        "native",
+        "official"
+      ],
+      "official_final_best_score": 0.9597642169962064,
+      "native_final_best_score": 0.9597642169962064,
+      "native_normalized_best_score": 1.0,
+      "native_normalized_best_score_delta": 0.0,
+      "best_so_far_auc_delta": 0.0,
+      "valid_proposal_rate_delta": 0.0,
+      "patch_failure_rate_delta": 0.0,
+      "wall_seconds_delta": 9.96682983264327,
+      "observed_total_tokens_delta": -19730
+    }
+  ],
+  "pre_frozen_gate": {
+    "metric": "median paired normalized final best score delta",
+    "margin": -0.01,
+    "observed_median_delta": 0.0,
+    "observed_min_delta": 0.0,
+    "observed_max_delta": 0.0,
+    "descriptive_numeric_threshold_met": true,
+    "paired_bootstrap_95_percent_interval": [
+      0.0,
+      0.0
+    ],
+    "bootstrap_note": "All ten baseline-only paired deltas are exactly zero; every paired resample is therefore zero.",
+    "inference_eligible": false,
+    "status": "NOT_EVALUABLE_NO_EVALUATED_PROPOSALS",
+    "decision": "INCONCLUSIVE"
+  },
+  "metric_interpretation": {
+    "final_best_score": "baseline-only in every run",
+    "best_so_far_auc": "baseline-only in every declared generation slot",
+    "valid_proposal_rate": "0/34 in each arm",
+    "patch_failure_rate": "34/34 in each arm",
+    "improvement_per_proposal": "0/34 in each arm",
+    "evaluator_calls_per_proposal": "0/34 in each arm; baseline calls excluded",
+    "time_to_first_improvement": "right-censored in all 20 runs",
+    "observed_token_usage": "Exact final token_count event from each of 68 Codex rollout JSONL files; reasoning_output_tokens is a subset of output_tokens.",
+    "patch_type_selection": "All 68 realized proposals selected diff under the fixed per-process Python/NumPy seed; the configured diff/full probabilities remained 0.5/0.5.",
+    "resume_consistency": "20/20 added no proposal artifacts; 0/20 were row-idempotent because reopen inserted a duplicate baseline program/archive row."
+  },
+  "invalid_attempt_audit": {
+    "schema_version": "1.0",
+    "protocol_id": "SHINKA_NATIVE_P2_R0",
+    "classification": "INVALID_MECHANICS_OR_ADAPTER",
+    "excluded_from_p2_statistics": true,
+    "reason": "The first driver used the declared target of 6 for a resume check after the Native main process stopped early at generation 3. That resume invocation created generation 4 and began a new Codex proposal, violating the no-failure-resampling rule.",
+    "response": "The process group was interrupted immediately, the entire attempted matched block was excluded, all artifacts were preserved here, and the driver was changed so a resume probe targets max_observed_generation_index_plus_one and therefore cannot add a proposal generation.",
+    "affected_declared_runs": [
+      "p2-b01-official",
+      "p2-b01-native"
+    ],
+    "native_contaminating_resume_run_id": "p2-b01-native-resume-check",
+    "original_driver_sha256": "27604a482a0e82239b64556eb997007878021e2248a87a69be4823fd65b8a009",
+    "recovery_policy": "Restart all 10 matched blocks in a fresh formal directory; do not reuse either arm from the invalid block.",
+    "record_path": "runs/shinka_native_p2_r0/invalid_attempt_resume_target_bug/INVALID_MECHANICS_OR_ADAPTER.json",
+    "record_sha256": "979138b6fbbe3c20c719b24b96048a3825d39c034a3791832fa48586216bea86"
+  },
+  "per_run_provenance": [
+    {
+      "sequence": 1,
+      "block": 1,
+      "position_in_block": 1,
+      "arm": "official",
+      "run_id": "p2-b01-official",
+      "entrypoint_command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "shinka.cli.run",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results_dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_01/official",
+        "--num_generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "started_at": "2026-08-15T11:22:23.608017+00:00",
+      "finished_at": "2026-08-15T11:30:31.855193+00:00",
+      "exit_code": 0,
+      "status": "COMPLETE_NO_RETRY",
+      "results_dir": "runs/shinka_native_p2_r0/formal/block_01/official",
+      "pre_resume_database": "runs/shinka_native_p2_r0/formal/block_01/official/programs.pre_resume.sqlite",
+      "pre_resume_database_sha256": "a7046607c90fb6debef3fbf31f94443f7166e7520d54dac64c23fd6f63363adf",
+      "artifact_file_count": 32,
+      "artifact_tree_sha256": "0cc4a198abbc860363c4ab8a0e05d51620d08e495d2f997e15d1026d1486a9f6",
+      "proposal_count": 3,
+      "valid_proposal_count": 0,
+      "valid_proposal_rate": 0.0,
+      "patch_failure_count": 3,
+      "patch_failure_rate": 1.0,
+      "proposal_evaluator_calls": 0,
+      "evaluator_calls_per_proposal": 0.0,
+      "baseline_evaluator_calls": 1,
+      "improvement_count": 0,
+      "improvements_per_proposal": 0.0,
+      "final_best_score": 0.9597642169962064,
+      "best_so_far_by_declared_generation_slot": [
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064
+      ],
+      "best_so_far_auc": 0.9597642169962064,
+      "best_so_far_auc_definition": "trapezoidal area divided by five intervals over declared slots 0..5",
+      "time_to_first_improvement_seconds": null,
+      "time_to_first_improvement_right_censored": true,
+      "time_to_first_improvement_censor_seconds": 488.2470134012401,
+      "wall_seconds": 488.2470134012401,
+      "observed_token_usage": {
+        "input_tokens": 175566,
+        "cached_input_tokens": 79104,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 21619,
+        "reasoning_output_tokens": 16903,
+        "total_tokens": 197185
+      },
+      "codex_rollouts": [
+        {
+          "session_id": "01a00528-c169-7480-a9e7-0f2d8d74daef",
+          "started_at": "2026-08-15T11:22:32.186Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T19-22-32-01a00528-c169-7480-a9e7-0f2d8d74daef.jsonl",
+          "rollout_sha256": "24cc7f6cc41fcd5ee273493dad189191e57932b40af7b9dbffd3a9a3dc231742",
+          "token_usage": {
+            "input_tokens": 35721,
+            "cached_input_tokens": 18176,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 5660,
+            "reasoning_output_tokens": 4140,
+            "total_tokens": 41381
+          }
+        },
+        {
+          "session_id": "01a0052a-ab5f-7862-8495-382d4a4f6c18",
+          "started_at": "2026-08-15T11:24:37.619Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T19-24-37-01a0052a-ab5f-7862-8495-382d4a4f6c18.jsonl",
+          "rollout_sha256": "061c0cd6dc3a6d5a75d6a9ffd167fb58f6e628a0150c7ef558175e3d98ba8b54",
+          "token_usage": {
+            "input_tokens": 102765,
+            "cached_input_tokens": 27392,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 11506,
+            "reasoning_output_tokens": 9297,
+            "total_tokens": 114271
+          }
+        },
+        {
+          "session_id": "01a0052e-7ce3-7a73-8292-134b0c547624",
+          "started_at": "2026-08-15T11:28:47.866Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T19-28-47-01a0052e-7ce3-7a73-8292-134b0c547624.jsonl",
+          "rollout_sha256": "f6c006e3f040f91d36b87c888213e9346744cfc0f28d790b03c63c29faca7f3f",
+          "token_usage": {
+            "input_tokens": 37080,
+            "cached_input_tokens": 33536,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 4453,
+            "reasoning_output_tokens": 3466,
+            "total_tokens": 41533
+          }
+        }
+      ],
+      "failure_classes": {
+        "patch_apply_failed": 3
+      },
+      "patch_type_counts": {
+        "diff": 3
+      },
+      "proposal_model_counts": {
+        "headless/codex@gpt-5.5?effort=high": 3
+      },
+      "resume_consistency": {
+        "safe_target_generations": 4,
+        "no_new_proposal_artifacts": true,
+        "database_row_idempotent": false,
+        "sqlite_table_count_deltas": {
+          "archive": 1,
+          "attempt_log": 0,
+          "generation_event_log": 0,
+          "metadata_store": 0,
+          "programs": 1
+        },
+        "observation": "Proposal generations, prompts, metrics, and attempts were preserved, but reopening inserted one additional baseline program/archive row."
+      }
+    },
+    {
+      "sequence": 2,
+      "block": 1,
+      "position_in_block": 2,
+      "arm": "native",
+      "run_id": "p2-b01-native",
+      "entrypoint_command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "evidence_evolve",
+        "search",
+        "shinka-native",
+        "--run-id",
+        "p2-b01-native",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_01/native",
+        "--num-generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "started_at": "2026-08-15T11:30:54.999587+00:00",
+      "finished_at": "2026-08-15T11:39:57.693240+00:00",
+      "exit_code": 0,
+      "status": "COMPLETE_NO_RETRY",
+      "results_dir": "runs/shinka_native_p2_r0/formal/block_01/native",
+      "pre_resume_database": "runs/shinka_native_p2_r0/formal/block_01/native/programs.pre_resume.sqlite",
+      "pre_resume_database_sha256": "95d68bd46dfe78f9d682178f8f29784e579fb801dc30dfd243869b9ba44012fa",
+      "artifact_file_count": 46,
+      "artifact_tree_sha256": "e2382962fe53e8d130ca837ee038890a376a44558664afe8e86b5a44c6541897",
+      "proposal_count": 5,
+      "valid_proposal_count": 0,
+      "valid_proposal_rate": 0.0,
+      "patch_failure_count": 5,
+      "patch_failure_rate": 1.0,
+      "proposal_evaluator_calls": 0,
+      "evaluator_calls_per_proposal": 0.0,
+      "baseline_evaluator_calls": 1,
+      "improvement_count": 0,
+      "improvements_per_proposal": 0.0,
+      "final_best_score": 0.9597642169962064,
+      "best_so_far_by_declared_generation_slot": [
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064
+      ],
+      "best_so_far_auc": 0.9597642169962064,
+      "best_so_far_auc_definition": "trapezoidal area divided by five intervals over declared slots 0..5",
+      "time_to_first_improvement_seconds": null,
+      "time_to_first_improvement_right_censored": true,
+      "time_to_first_improvement_censor_seconds": 542.6931433007121,
+      "wall_seconds": 542.6931433007121,
+      "observed_token_usage": {
+        "input_tokens": 160271,
+        "cached_input_tokens": 119168,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 22632,
+        "reasoning_output_tokens": 17539,
+        "total_tokens": 182903
+      },
+      "codex_rollouts": [
+        {
+          "session_id": "01a00530-8d0f-7833-91b7-55603055a160",
+          "started_at": "2026-08-15T11:31:03.077Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T19-31-03-01a00530-8d0f-7833-91b7-55603055a160.jsonl",
+          "rollout_sha256": "7d3db043ff2f405475f27f583d6152a21af7a10b2bbead7b41c0f9f2d6d08b11",
+          "token_usage": {
+            "input_tokens": 35352,
+            "cached_input_tokens": 30464,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 4206,
+            "reasoning_output_tokens": 3327,
+            "total_tokens": 39558
+          }
+        },
+        {
+          "session_id": "01a00532-165b-7fb1-b135-f68b697581ec",
+          "started_at": "2026-08-15T11:32:43.755Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T19-32-43-01a00532-165b-7fb1-b135-f68b697581ec.jsonl",
+          "rollout_sha256": "a7efb392f622c23b3f018de19a22be84ff3221c71ceb8cea6755901e7d2c2efa",
+          "token_usage": {
+            "input_tokens": 37501,
+            "cached_input_tokens": 20224,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 5705,
+            "reasoning_output_tokens": 4600,
+            "total_tokens": 43206
+          }
+        },
+        {
+          "session_id": "01a00534-110a-7b10-b4bd-0863ac4823ea",
+          "started_at": "2026-08-15T11:34:53.470Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T19-34-53-01a00534-110a-7b10-b4bd-0863ac4823ea.jsonl",
+          "rollout_sha256": "2ed9944a8c9b643f8d30e6d7a06c08537716be80fbb3af07b8abb86f7e66ef0f",
+          "token_usage": {
+            "input_tokens": 17094,
+            "cached_input_tokens": 16768,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 1733,
+            "reasoning_output_tokens": 516,
+            "total_tokens": 18827
+          }
+        },
+        {
+          "session_id": "01a00534-e741-7fc2-a065-7b1338e5a885",
+          "started_at": "2026-08-15T11:35:48.311Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T19-35-48-01a00534-e741-7fc2-a065-7b1338e5a885.jsonl",
+          "rollout_sha256": "80e5dc67f8c3df7a6e93332bab480e27b9515ee158553c368ab8b261f5a155a3",
+          "token_usage": {
+            "input_tokens": 35226,
+            "cached_input_tokens": 18176,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 4136,
+            "reasoning_output_tokens": 3104,
+            "total_tokens": 39362
+          }
+        },
+        {
+          "session_id": "01a00536-6f64-7c71-970a-626e6f6d15cb",
+          "started_at": "2026-08-15T11:37:28.698Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T19-37-28-01a00536-6f64-7c71-970a-626e6f6d15cb.jsonl",
+          "rollout_sha256": "c000ee18406d8d2a813f993c424b332349d7dfa213e18142f26eab46f7551418",
+          "token_usage": {
+            "input_tokens": 35098,
+            "cached_input_tokens": 33536,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 6852,
+            "reasoning_output_tokens": 5992,
+            "total_tokens": 41950
+          }
+        }
+      ],
+      "failure_classes": {
+        "patch_apply_failed": 5
+      },
+      "patch_type_counts": {
+        "diff": 5
+      },
+      "proposal_model_counts": {
+        "headless/codex@gpt-5.5?effort=high": 5
+      },
+      "resume_consistency": {
+        "safe_target_generations": 6,
+        "no_new_proposal_artifacts": true,
+        "database_row_idempotent": false,
+        "sqlite_table_count_deltas": {
+          "archive": 1,
+          "attempt_log": 0,
+          "generation_event_log": 0,
+          "metadata_store": 0,
+          "programs": 1
+        },
+        "observation": "Proposal generations, prompts, metrics, and attempts were preserved, but reopening inserted one additional baseline program/archive row."
+      }
+    },
+    {
+      "sequence": 3,
+      "block": 2,
+      "position_in_block": 1,
+      "arm": "native",
+      "run_id": "p2-b02-native",
+      "entrypoint_command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "evidence_evolve",
+        "search",
+        "shinka-native",
+        "--run-id",
+        "p2-b02-native",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_02/native",
+        "--num-generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "started_at": "2026-08-15T11:40:30.992794+00:00",
+      "finished_at": "2026-08-15T11:49:34.476742+00:00",
+      "exit_code": 0,
+      "status": "COMPLETE_NO_RETRY",
+      "results_dir": "runs/shinka_native_p2_r0/formal/block_02/native",
+      "pre_resume_database": "runs/shinka_native_p2_r0/formal/block_02/native/programs.pre_resume.sqlite",
+      "pre_resume_database_sha256": "3876db05428bd993c730cae31ad54ab836feaef6c5eae424c15fe8714aa2be42",
+      "artifact_file_count": 46,
+      "artifact_tree_sha256": "d1219df26c538c6f2a3326e620eb133bf29bdf91197b584894a60b0abd0d128f",
+      "proposal_count": 5,
+      "valid_proposal_count": 0,
+      "valid_proposal_rate": 0.0,
+      "patch_failure_count": 5,
+      "patch_failure_rate": 1.0,
+      "proposal_evaluator_calls": 0,
+      "evaluator_calls_per_proposal": 0.0,
+      "baseline_evaluator_calls": 1,
+      "improvement_count": 0,
+      "improvements_per_proposal": 0.0,
+      "final_best_score": 0.9597642169962064,
+      "best_so_far_by_declared_generation_slot": [
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064
+      ],
+      "best_so_far_auc": 0.9597642169962064,
+      "best_so_far_auc_definition": "trapezoidal area divided by five intervals over declared slots 0..5",
+      "time_to_first_improvement_seconds": null,
+      "time_to_first_improvement_right_censored": true,
+      "time_to_first_improvement_censor_seconds": 543.4836470745504,
+      "wall_seconds": 543.4836470745504,
+      "observed_token_usage": {
+        "input_tokens": 140920,
+        "cached_input_tokens": 121856,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 23049,
+        "reasoning_output_tokens": 17123,
+        "total_tokens": 163969
+      },
+      "codex_rollouts": [
+        {
+          "session_id": "01a00539-5a6b-7f00-bf37-44ad85398574",
+          "started_at": "2026-08-15T11:40:39.933Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T19-40-39-01a00539-5a6b-7f00-bf37-44ad85398574.jsonl",
+          "rollout_sha256": "fb7e81b9cae56bc92356605d7e103f25cecaad9d1c0dee8cd97a614f71dc9436",
+          "token_usage": {
+            "input_tokens": 17094,
+            "cached_input_tokens": 13696,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 980,
+            "reasoning_output_tokens": 516,
+            "total_tokens": 18074
+          }
+        },
+        {
+          "session_id": "01a00539-f732-77b2-adb1-0bc888068db4",
+          "started_at": "2026-08-15T11:41:20.070Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T19-41-20-01a00539-f732-77b2-adb1-0bc888068db4.jsonl",
+          "rollout_sha256": "ac14cd9b79a4153c9ab537ab4f2412409e5a7c1a64b586163aaac7c44f50876c",
+          "token_usage": {
+            "input_tokens": 35815,
+            "cached_input_tokens": 30464,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 6833,
+            "reasoning_output_tokens": 6090,
+            "total_tokens": 42648
+          }
+        },
+        {
+          "session_id": "01a0053c-2f1b-79e1-8851-eabeb9823ff3",
+          "started_at": "2026-08-15T11:43:45.457Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T19-43-45-01a0053c-2f1b-79e1-8851-eabeb9823ff3.jsonl",
+          "rollout_sha256": "cb759c6a434bab6fe036f0224b27699e9616db206b17af67365bac1bfc02a51f",
+          "token_usage": {
+            "input_tokens": 36069,
+            "cached_input_tokens": 30464,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 7755,
+            "reasoning_output_tokens": 5913,
+            "total_tokens": 43824
+          }
+        },
+        {
+          "session_id": "01a0053e-b370-7371-8aae-1269a43e7da8",
+          "started_at": "2026-08-15T11:46:30.402Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T19-46-30-01a0053e-b370-7371-8aae-1269a43e7da8.jsonl",
+          "rollout_sha256": "43e82aca1af0061659cbec1cece5de7cb3bbdb3574b94f126fdf4f5d1b54cf64",
+          "token_usage": {
+            "input_tokens": 17094,
+            "cached_input_tokens": 13696,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 1651,
+            "reasoning_output_tokens": 516,
+            "total_tokens": 18745
+          }
+        },
+        {
+          "session_id": "01a0053f-88f8-77a0-893b-8319d18268e2",
+          "started_at": "2026-08-15T11:47:25.067Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T19-47-25-01a0053f-88f8-77a0-893b-8319d18268e2.jsonl",
+          "rollout_sha256": "aa92f39c5e2a71a70888e7a97b84cdb93bb1b93a95175aea24735675c196c620",
+          "token_usage": {
+            "input_tokens": 34848,
+            "cached_input_tokens": 33536,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 5830,
+            "reasoning_output_tokens": 4088,
+            "total_tokens": 40678
+          }
+        }
+      ],
+      "failure_classes": {
+        "patch_apply_failed": 5
+      },
+      "patch_type_counts": {
+        "diff": 5
+      },
+      "proposal_model_counts": {
+        "headless/codex@gpt-5.5?effort=high": 5
+      },
+      "resume_consistency": {
+        "safe_target_generations": 6,
+        "no_new_proposal_artifacts": true,
+        "database_row_idempotent": false,
+        "sqlite_table_count_deltas": {
+          "archive": 1,
+          "attempt_log": 0,
+          "generation_event_log": 0,
+          "metadata_store": 0,
+          "programs": 1
+        },
+        "observation": "Proposal generations, prompts, metrics, and attempts were preserved, but reopening inserted one additional baseline program/archive row."
+      }
+    },
+    {
+      "sequence": 4,
+      "block": 2,
+      "position_in_block": 2,
+      "arm": "official",
+      "run_id": "p2-b02-official",
+      "entrypoint_command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "shinka.cli.run",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results_dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_02/official",
+        "--num_generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "started_at": "2026-08-15T11:50:08.170709+00:00",
+      "finished_at": "2026-08-15T11:55:51.128860+00:00",
+      "exit_code": 0,
+      "status": "COMPLETE_NO_RETRY",
+      "results_dir": "runs/shinka_native_p2_r0/formal/block_02/official",
+      "pre_resume_database": "runs/shinka_native_p2_r0/formal/block_02/official/programs.pre_resume.sqlite",
+      "pre_resume_database_sha256": "38db7b776ffaac94532a6b6ca911597fd2e6d39efde7dd1e2c884aaa040676d2",
+      "artifact_file_count": 32,
+      "artifact_tree_sha256": "6ddd1274168925587880dfba39d0ccd1376e3eb1d0abd225d150d8d19432b98c",
+      "proposal_count": 3,
+      "valid_proposal_count": 0,
+      "valid_proposal_rate": 0.0,
+      "patch_failure_count": 3,
+      "patch_failure_rate": 1.0,
+      "proposal_evaluator_calls": 0,
+      "evaluator_calls_per_proposal": 0.0,
+      "baseline_evaluator_calls": 1,
+      "improvement_count": 0,
+      "improvements_per_proposal": 0.0,
+      "final_best_score": 0.9597642169962064,
+      "best_so_far_by_declared_generation_slot": [
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064
+      ],
+      "best_so_far_auc": 0.9597642169962064,
+      "best_so_far_auc_definition": "trapezoidal area divided by five intervals over declared slots 0..5",
+      "time_to_first_improvement_seconds": null,
+      "time_to_first_improvement_right_censored": true,
+      "time_to_first_improvement_censor_seconds": 342.95775874890387,
+      "wall_seconds": 342.95775874890387,
+      "observed_token_usage": {
+        "input_tokens": 87714,
+        "cached_input_tokens": 74624,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 14567,
+        "reasoning_output_tokens": 12195,
+        "total_tokens": 102281
+      },
+      "codex_rollouts": [
+        {
+          "session_id": "01a00542-2760-77c3-9c0e-d635300dcd63",
+          "started_at": "2026-08-15T11:50:16.693Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T19-50-16-01a00542-2760-77c3-9c0e-d635300dcd63.jsonl",
+          "rollout_sha256": "648206e677e75927ce977abf763e191b92469b203f8a45c6486f49b52baa9382",
+          "token_usage": {
+            "input_tokens": 17097,
+            "cached_input_tokens": 13696,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 2709,
+            "reasoning_output_tokens": 2070,
+            "total_tokens": 19806
+          }
+        },
+        {
+          "session_id": "01a00543-39d6-7a70-b7a2-a2af469c4839",
+          "started_at": "2026-08-15T11:51:26.954Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T19-51-26-01a00543-39d6-7a70-b7a2-a2af469c4839.jsonl",
+          "rollout_sha256": "46d0f12f7dca4561c8c417df896a4cce19283230a49f77683c47a10dcdde5044",
+          "token_usage": {
+            "input_tokens": 34850,
+            "cached_input_tokens": 30464,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 7216,
+            "reasoning_output_tokens": 6150,
+            "total_tokens": 42066
+          }
+        },
+        {
+          "session_id": "01a00545-9704-7e31-92e1-35dedaa0d9ab",
+          "started_at": "2026-08-15T11:54:01.881Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T19-54-01-01a00545-9704-7e31-92e1-35dedaa0d9ab.jsonl",
+          "rollout_sha256": "d426377990d5587e4b8db09d62027f220c92f7cd7c4b1e1c5c325e0c85de26ba",
+          "token_usage": {
+            "input_tokens": 35767,
+            "cached_input_tokens": 30464,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 4642,
+            "reasoning_output_tokens": 3975,
+            "total_tokens": 40409
+          }
+        }
+      ],
+      "failure_classes": {
+        "patch_apply_failed": 3
+      },
+      "patch_type_counts": {
+        "diff": 3
+      },
+      "proposal_model_counts": {
+        "headless/codex@gpt-5.5?effort=high": 3
+      },
+      "resume_consistency": {
+        "safe_target_generations": 4,
+        "no_new_proposal_artifacts": true,
+        "database_row_idempotent": false,
+        "sqlite_table_count_deltas": {
+          "archive": 1,
+          "attempt_log": 0,
+          "generation_event_log": 0,
+          "metadata_store": 0,
+          "programs": 1
+        },
+        "observation": "Proposal generations, prompts, metrics, and attempts were preserved, but reopening inserted one additional baseline program/archive row."
+      }
+    },
+    {
+      "sequence": 5,
+      "block": 3,
+      "position_in_block": 1,
+      "arm": "official",
+      "run_id": "p2-b03-official",
+      "entrypoint_command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "shinka.cli.run",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results_dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_03/official",
+        "--num_generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "started_at": "2026-08-15T11:56:14.193422+00:00",
+      "finished_at": "2026-08-15T12:02:02.213614+00:00",
+      "exit_code": 0,
+      "status": "COMPLETE_NO_RETRY",
+      "results_dir": "runs/shinka_native_p2_r0/formal/block_03/official",
+      "pre_resume_database": "runs/shinka_native_p2_r0/formal/block_03/official/programs.pre_resume.sqlite",
+      "pre_resume_database_sha256": "1dedb942a06e8bfa22d53f14f202b5db13e726fb9ad5f5275d53fe9257c26d33",
+      "artifact_file_count": 32,
+      "artifact_tree_sha256": "790e4407d68ff1788eb67516c60dcdd66ca73d2ca12e6c32d2828c6be75087dd",
+      "proposal_count": 3,
+      "valid_proposal_count": 0,
+      "valid_proposal_rate": 0.0,
+      "patch_failure_count": 3,
+      "patch_failure_rate": 1.0,
+      "proposal_evaluator_calls": 0,
+      "evaluator_calls_per_proposal": 0.0,
+      "baseline_evaluator_calls": 1,
+      "improvement_count": 0,
+      "improvements_per_proposal": 0.0,
+      "final_best_score": 0.9597642169962064,
+      "best_so_far_by_declared_generation_slot": [
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064
+      ],
+      "best_so_far_auc": 0.9597642169962064,
+      "best_so_far_auc_definition": "trapezoidal area divided by five intervals over declared slots 0..5",
+      "time_to_first_improvement_seconds": null,
+      "time_to_first_improvement_right_censored": true,
+      "time_to_first_improvement_censor_seconds": 348.01925098896027,
+      "wall_seconds": 348.01925098896027,
+      "observed_token_usage": {
+        "input_tokens": 86812,
+        "cached_input_tokens": 77696,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 15214,
+        "reasoning_output_tokens": 12120,
+        "total_tokens": 102026
+      },
+      "codex_rollouts": [
+        {
+          "session_id": "01a00547-bcbe-71f3-a59d-536146c16cdc",
+          "started_at": "2026-08-15T11:56:22.611Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T19-56-22-01a00547-bcbe-71f3-a59d-536146c16cdc.jsonl",
+          "rollout_sha256": "6b61081551a454fd757a7b96a60e050f80834743dc2b7e9cc280c3f663dcb264",
+          "token_usage": {
+            "input_tokens": 17097,
+            "cached_input_tokens": 13696,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 5033,
+            "reasoning_output_tokens": 3916,
+            "total_tokens": 22130
+          }
+        },
+        {
+          "session_id": "01a00549-6b92-7211-96c9-97050d6fa9e5",
+          "started_at": "2026-08-15T11:58:12.904Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T19-58-12-01a00549-6b92-7211-96c9-97050d6fa9e5.jsonl",
+          "rollout_sha256": "14c25bed48c879537f585119c756b576823f3178a13ec2270549a9d0a1b3276a",
+          "token_usage": {
+            "input_tokens": 34741,
+            "cached_input_tokens": 33536,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 3124,
+            "reasoning_output_tokens": 2430,
+            "total_tokens": 37865
+          }
+        },
+        {
+          "session_id": "01a0054a-a4e0-7f02-963d-9fc391abf5ed",
+          "started_at": "2026-08-15T11:59:33.108Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T19-59-33-01a0054a-a4e0-7f02-963d-9fc391abf5ed.jsonl",
+          "rollout_sha256": "0773fb29ebf1899b0a1c8e08d8fb46ccb1bd9995d1290542c1d1c8561f197a9f",
+          "token_usage": {
+            "input_tokens": 34974,
+            "cached_input_tokens": 30464,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 7057,
+            "reasoning_output_tokens": 5774,
+            "total_tokens": 42031
+          }
+        }
+      ],
+      "failure_classes": {
+        "patch_apply_failed": 3
+      },
+      "patch_type_counts": {
+        "diff": 3
+      },
+      "proposal_model_counts": {
+        "headless/codex@gpt-5.5?effort=high": 3
+      },
+      "resume_consistency": {
+        "safe_target_generations": 4,
+        "no_new_proposal_artifacts": true,
+        "database_row_idempotent": false,
+        "sqlite_table_count_deltas": {
+          "archive": 1,
+          "attempt_log": 0,
+          "generation_event_log": 0,
+          "metadata_store": 0,
+          "programs": 1
+        },
+        "observation": "Proposal generations, prompts, metrics, and attempts were preserved, but reopening inserted one additional baseline program/archive row."
+      }
+    },
+    {
+      "sequence": 6,
+      "block": 3,
+      "position_in_block": 2,
+      "arm": "native",
+      "run_id": "p2-b03-native",
+      "entrypoint_command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "evidence_evolve",
+        "search",
+        "shinka-native",
+        "--run-id",
+        "p2-b03-native",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_03/native",
+        "--num-generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "started_at": "2026-08-15T12:02:25.887082+00:00",
+      "finished_at": "2026-08-15T12:09:46.259330+00:00",
+      "exit_code": 0,
+      "status": "COMPLETE_NO_RETRY",
+      "results_dir": "runs/shinka_native_p2_r0/formal/block_03/native",
+      "pre_resume_database": "runs/shinka_native_p2_r0/formal/block_03/native/programs.pre_resume.sqlite",
+      "pre_resume_database_sha256": "9e244c38529ce4cc5d599b1605cbd4f51427ab4aec396e91a3f5d9120cb09d18",
+      "artifact_file_count": 34,
+      "artifact_tree_sha256": "9d4f5a2af701c1120dd0721585b32b1aed851599a33355a7503fd6ee9a31f94f",
+      "proposal_count": 3,
+      "valid_proposal_count": 0,
+      "valid_proposal_rate": 0.0,
+      "patch_failure_count": 3,
+      "patch_failure_rate": 1.0,
+      "proposal_evaluator_calls": 0,
+      "evaluator_calls_per_proposal": 0.0,
+      "baseline_evaluator_calls": 1,
+      "improvement_count": 0,
+      "improvements_per_proposal": 0.0,
+      "final_best_score": 0.9597642169962064,
+      "best_so_far_by_declared_generation_slot": [
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064
+      ],
+      "best_so_far_auc": 0.9597642169962064,
+      "best_so_far_auc_definition": "trapezoidal area divided by five intervals over declared slots 0..5",
+      "time_to_first_improvement_seconds": null,
+      "time_to_first_improvement_right_censored": true,
+      "time_to_first_improvement_censor_seconds": 440.37117580883205,
+      "wall_seconds": 440.37117580883205,
+      "observed_token_usage": {
+        "input_tokens": 105555,
+        "cached_input_tokens": 97536,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 18480,
+        "reasoning_output_tokens": 15192,
+        "total_tokens": 124035
+      },
+      "codex_rollouts": [
+        {
+          "session_id": "01a0054d-9e59-70f1-be20-9d1febbcc7e4",
+          "started_at": "2026-08-15T12:02:48.042Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T20-02-48-01a0054d-9e59-70f1-be20-9d1febbcc7e4.jsonl",
+          "rollout_sha256": "a3aedb993771946b1c5eb438d474b1369c04d42b171063eb6a554da77558779b",
+          "token_usage": {
+            "input_tokens": 35227,
+            "cached_input_tokens": 30464,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 5123,
+            "reasoning_output_tokens": 4061,
+            "total_tokens": 40350
+          }
+        },
+        {
+          "session_id": "01a0054f-9c26-70a3-bc86-d3542bf8d765",
+          "started_at": "2026-08-15T12:04:58.551Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T20-04-58-01a0054f-9c26-70a3-bc86-d3542bf8d765.jsonl",
+          "rollout_sha256": "f236b0534c92923b34264d0690a173fd2c953d26689ead4dc99d5f5ddcc98794",
+          "token_usage": {
+            "input_tokens": 35265,
+            "cached_input_tokens": 33536,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 3852,
+            "reasoning_output_tokens": 2677,
+            "total_tokens": 39117
+          }
+        },
+        {
+          "session_id": "01a00551-0ad9-7fd3-8f8d-8a2618c2c287",
+          "started_at": "2026-08-15T12:06:32.424Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T20-06-32-01a00551-0ad9-7fd3-8f8d-8a2618c2c287.jsonl",
+          "rollout_sha256": "8939a4741aabe1eb4b193f52e736fc08893af6ac9345344d5f5102928063eabb",
+          "token_usage": {
+            "input_tokens": 35063,
+            "cached_input_tokens": 33536,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 9505,
+            "reasoning_output_tokens": 8454,
+            "total_tokens": 44568
+          }
+        }
+      ],
+      "failure_classes": {
+        "patch_apply_failed": 3
+      },
+      "patch_type_counts": {
+        "diff": 3
+      },
+      "proposal_model_counts": {
+        "headless/codex@gpt-5.5?effort=high": 3
+      },
+      "resume_consistency": {
+        "safe_target_generations": 4,
+        "no_new_proposal_artifacts": true,
+        "database_row_idempotent": false,
+        "sqlite_table_count_deltas": {
+          "archive": 1,
+          "attempt_log": 0,
+          "generation_event_log": 0,
+          "metadata_store": 0,
+          "programs": 1
+        },
+        "observation": "Proposal generations, prompts, metrics, and attempts were preserved, but reopening inserted one additional baseline program/archive row."
+      }
+    },
+    {
+      "sequence": 7,
+      "block": 4,
+      "position_in_block": 1,
+      "arm": "native",
+      "run_id": "p2-b04-native",
+      "entrypoint_command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "evidence_evolve",
+        "search",
+        "shinka-native",
+        "--run-id",
+        "p2-b04-native",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_04/native",
+        "--num-generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "started_at": "2026-08-15T12:10:10.657109+00:00",
+      "finished_at": "2026-08-15T12:15:09.252475+00:00",
+      "exit_code": 0,
+      "status": "COMPLETE_NO_RETRY",
+      "results_dir": "runs/shinka_native_p2_r0/formal/block_04/native",
+      "pre_resume_database": "runs/shinka_native_p2_r0/formal/block_04/native/programs.pre_resume.sqlite",
+      "pre_resume_database_sha256": "5f3ca982d68a139210b426d5c79c873c7fcc3a7dc07674cdc0c2088f6c7b9e4c",
+      "artifact_file_count": 34,
+      "artifact_tree_sha256": "da3b95a5bac2de4bffe0456a263fcd7cfaefba7b2e7c8470bb7c6eada30762fc",
+      "proposal_count": 3,
+      "valid_proposal_count": 0,
+      "valid_proposal_rate": 0.0,
+      "patch_failure_count": 3,
+      "patch_failure_rate": 1.0,
+      "proposal_evaluator_calls": 0,
+      "evaluator_calls_per_proposal": 0.0,
+      "baseline_evaluator_calls": 1,
+      "improvement_count": 0,
+      "improvements_per_proposal": 0.0,
+      "final_best_score": 0.9597642169962064,
+      "best_so_far_by_declared_generation_slot": [
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064
+      ],
+      "best_so_far_auc": 0.9597642169962064,
+      "best_so_far_auc_definition": "trapezoidal area divided by five intervals over declared slots 0..5",
+      "time_to_first_improvement_seconds": null,
+      "time_to_first_improvement_right_censored": true,
+      "time_to_first_improvement_censor_seconds": 298.5940328575671,
+      "wall_seconds": 298.5940328575671,
+      "observed_token_usage": {
+        "input_tokens": 70604,
+        "cached_input_tokens": 60928,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 12292,
+        "reasoning_output_tokens": 9625,
+        "total_tokens": 82896
+      },
+      "codex_rollouts": [
+        {
+          "session_id": "01a00554-83da-7da0-8b4f-6555259d5c62",
+          "started_at": "2026-08-15T12:10:20.015Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T20-10-20-01a00554-83da-7da0-8b4f-6555259d5c62.jsonl",
+          "rollout_sha256": "b51222a29b730710dbb385b4ad7d0b8856b992843301b4ec1a7d8d8b87b9e72a",
+          "token_usage": {
+            "input_tokens": 17094,
+            "cached_input_tokens": 13696,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 4756,
+            "reasoning_output_tokens": 4142,
+            "total_tokens": 21850
+          }
+        },
+        {
+          "session_id": "01a00556-347a-72b1-99ce-c0a702d17b68",
+          "started_at": "2026-08-15T12:12:10.764Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T20-12-10-01a00556-347a-72b1-99ce-c0a702d17b68.jsonl",
+          "rollout_sha256": "b2f4857728cf21a41aed610b1dafa37b755a9c7266625b95803ee6d49b4ad1ab",
+          "token_usage": {
+            "input_tokens": 36416,
+            "cached_input_tokens": 30464,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 3761,
+            "reasoning_output_tokens": 2377,
+            "total_tokens": 40177
+          }
+        },
+        {
+          "session_id": "01a00557-9480-7013-800a-a082675c3126",
+          "started_at": "2026-08-15T12:13:40.881Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T20-13-40-01a00557-9480-7013-800a-a082675c3126.jsonl",
+          "rollout_sha256": "4e11e2b7eafe2fc28aa4fe9f11c8d49c83abec5bed2c2db22be8570933cc17b8",
+          "token_usage": {
+            "input_tokens": 17094,
+            "cached_input_tokens": 16768,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 3775,
+            "reasoning_output_tokens": 3106,
+            "total_tokens": 20869
+          }
+        }
+      ],
+      "failure_classes": {
+        "patch_apply_failed": 3
+      },
+      "patch_type_counts": {
+        "diff": 3
+      },
+      "proposal_model_counts": {
+        "headless/codex@gpt-5.5?effort=high": 3
+      },
+      "resume_consistency": {
+        "safe_target_generations": 4,
+        "no_new_proposal_artifacts": true,
+        "database_row_idempotent": false,
+        "sqlite_table_count_deltas": {
+          "archive": 1,
+          "attempt_log": 0,
+          "generation_event_log": 0,
+          "metadata_store": 0,
+          "programs": 1
+        },
+        "observation": "Proposal generations, prompts, metrics, and attempts were preserved, but reopening inserted one additional baseline program/archive row."
+      }
+    },
+    {
+      "sequence": 8,
+      "block": 4,
+      "position_in_block": 2,
+      "arm": "official",
+      "run_id": "p2-b04-official",
+      "entrypoint_command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "shinka.cli.run",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results_dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_04/official",
+        "--num_generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "started_at": "2026-08-15T12:15:34.613124+00:00",
+      "finished_at": "2026-08-15T12:25:13.044086+00:00",
+      "exit_code": 0,
+      "status": "COMPLETE_NO_RETRY",
+      "results_dir": "runs/shinka_native_p2_r0/formal/block_04/official",
+      "pre_resume_database": "runs/shinka_native_p2_r0/formal/block_04/official/programs.pre_resume.sqlite",
+      "pre_resume_database_sha256": "a7b514c1d9687c59cc3ba07aebe1a558da1d8d9195182312c11094879a0cfe47",
+      "artifact_file_count": 44,
+      "artifact_tree_sha256": "052c9eae83ed46c32a34aeef15ab0fe79322323e8dc0c914f1a99853ea70f111",
+      "proposal_count": 5,
+      "valid_proposal_count": 0,
+      "valid_proposal_rate": 0.0,
+      "patch_failure_count": 5,
+      "patch_failure_rate": 1.0,
+      "proposal_evaluator_calls": 0,
+      "evaluator_calls_per_proposal": 0.0,
+      "baseline_evaluator_calls": 1,
+      "improvement_count": 0,
+      "improvements_per_proposal": 0.0,
+      "final_best_score": 0.9597642169962064,
+      "best_so_far_by_declared_generation_slot": [
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064
+      ],
+      "best_so_far_auc": 0.9597642169962064,
+      "best_so_far_auc_definition": "trapezoidal area divided by five intervals over declared slots 0..5",
+      "time_to_first_improvement_seconds": null,
+      "time_to_first_improvement_right_censored": true,
+      "time_to_first_improvement_censor_seconds": 578.4295882824808,
+      "wall_seconds": 578.4295882824808,
+      "observed_token_usage": {
+        "input_tokens": 178501,
+        "cached_input_tokens": 132480,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 23362,
+        "reasoning_output_tokens": 16643,
+        "total_tokens": 201863
+      },
+      "codex_rollouts": [
+        {
+          "session_id": "01a00559-795d-7ee0-af98-f11431524d30",
+          "started_at": "2026-08-15T12:15:45.011Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T20-15-45-01a00559-795d-7ee0-af98-f11431524d30.jsonl",
+          "rollout_sha256": "32cd07f2d1d28dc9535fd4e0c15ac69b8dcde0e87d15cd269510eaf63bb696a4",
+          "token_usage": {
+            "input_tokens": 53314,
+            "cached_input_tokens": 18176,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 6531,
+            "reasoning_output_tokens": 4372,
+            "total_tokens": 59845
+          }
+        },
+        {
+          "session_id": "01a0055b-eaa8-7402-8502-ea9b75ea12b5",
+          "started_at": "2026-08-15T12:18:25.086Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T20-18-25-01a0055b-eaa8-7402-8502-ea9b75ea12b5.jsonl",
+          "rollout_sha256": "78784f9fcc080c773c2e8b97908eebd7569a30728763f775fe6c660d6b5db781",
+          "token_usage": {
+            "input_tokens": 35657,
+            "cached_input_tokens": 33536,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 3496,
+            "reasoning_output_tokens": 2068,
+            "total_tokens": 39153
+          }
+        },
+        {
+          "session_id": "01a0055d-4a88-7bc3-a08a-ae76e39bfcef",
+          "started_at": "2026-08-15T12:19:55.972Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T20-19-55-01a0055d-4a88-7bc3-a08a-ae76e39bfcef.jsonl",
+          "rollout_sha256": "8069b3169d6d6bb60750d1c42fbb518da56797d783fb6e257a83fd12159800c9",
+          "token_usage": {
+            "input_tokens": 17097,
+            "cached_input_tokens": 13696,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 1166,
+            "reasoning_output_tokens": 516,
+            "total_tokens": 18263
+          }
+        },
+        {
+          "session_id": "01a0055d-fd78-7ef2-bfca-2a2c16994e74",
+          "started_at": "2026-08-15T12:20:40.971Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T20-20-40-01a0055d-fd78-7ef2-bfca-2a2c16994e74.jsonl",
+          "rollout_sha256": "9b2b10f23e721c5ecd9f46bc82d1b5d7381d7407b5cdfd18612a057cc370ebe0",
+          "token_usage": {
+            "input_tokens": 37185,
+            "cached_input_tokens": 33536,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 7129,
+            "reasoning_output_tokens": 6065,
+            "total_tokens": 44314
+          }
+        },
+        {
+          "session_id": "01a00560-5e4d-72c2-8f71-3f3c424920d4",
+          "started_at": "2026-08-15T12:23:16.832Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T20-23-16-01a00560-5e4d-72c2-8f71-3f3c424920d4.jsonl",
+          "rollout_sha256": "24a147bb691ef93b73c2e278d0c5234decc0fa8f3773dd2fd14c2f74675080f9",
+          "token_usage": {
+            "input_tokens": 35248,
+            "cached_input_tokens": 33536,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 5040,
+            "reasoning_output_tokens": 3622,
+            "total_tokens": 40288
+          }
+        }
+      ],
+      "failure_classes": {
+        "patch_apply_failed": 5
+      },
+      "patch_type_counts": {
+        "diff": 5
+      },
+      "proposal_model_counts": {
+        "headless/codex@gpt-5.5?effort=high": 5
+      },
+      "resume_consistency": {
+        "safe_target_generations": 6,
+        "no_new_proposal_artifacts": true,
+        "database_row_idempotent": false,
+        "sqlite_table_count_deltas": {
+          "archive": 1,
+          "attempt_log": 0,
+          "generation_event_log": 0,
+          "metadata_store": 0,
+          "programs": 1
+        },
+        "observation": "Proposal generations, prompts, metrics, and attempts were preserved, but reopening inserted one additional baseline program/archive row."
+      }
+    },
+    {
+      "sequence": 9,
+      "block": 5,
+      "position_in_block": 1,
+      "arm": "official",
+      "run_id": "p2-b05-official",
+      "entrypoint_command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "shinka.cli.run",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results_dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_05/official",
+        "--num_generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "started_at": "2026-08-15T12:25:46.269802+00:00",
+      "finished_at": "2026-08-15T12:31:34.583246+00:00",
+      "exit_code": 0,
+      "status": "COMPLETE_NO_RETRY",
+      "results_dir": "runs/shinka_native_p2_r0/formal/block_05/official",
+      "pre_resume_database": "runs/shinka_native_p2_r0/formal/block_05/official/programs.pre_resume.sqlite",
+      "pre_resume_database_sha256": "600ad210e0b4d4edd417b39098cd6a80c1e52a252539fcc6874742c6aa25cbd5",
+      "artifact_file_count": 32,
+      "artifact_tree_sha256": "055bd80988395523fb371f082d878ca030bd6ab864d8ec5145142e29f07154bc",
+      "proposal_count": 3,
+      "valid_proposal_count": 0,
+      "valid_proposal_rate": 0.0,
+      "patch_failure_count": 3,
+      "patch_failure_rate": 1.0,
+      "proposal_evaluator_calls": 0,
+      "evaluator_calls_per_proposal": 0.0,
+      "baseline_evaluator_calls": 1,
+      "improvement_count": 0,
+      "improvements_per_proposal": 0.0,
+      "final_best_score": 0.9597642169962064,
+      "best_so_far_by_declared_generation_slot": [
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064
+      ],
+      "best_so_far_auc": 0.9597642169962064,
+      "best_so_far_auc_definition": "trapezoidal area divided by five intervals over declared slots 0..5",
+      "time_to_first_improvement_seconds": null,
+      "time_to_first_improvement_right_censored": true,
+      "time_to_first_improvement_censor_seconds": 348.31275161355734,
+      "wall_seconds": 348.31275161355734,
+      "observed_token_usage": {
+        "input_tokens": 87319,
+        "cached_input_tokens": 77696,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 15006,
+        "reasoning_output_tokens": 11669,
+        "total_tokens": 102325
+      },
+      "codex_rollouts": [
+        {
+          "session_id": "01a00562-c8c3-7f63-b870-5b08d03b2e18",
+          "started_at": "2026-08-15T12:25:55.160Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T20-25-55-01a00562-c8c3-7f63-b870-5b08d03b2e18.jsonl",
+          "rollout_sha256": "9c742f19108b841f781d04bb167035382948d91a5fd29e1578d84d98748cfcdb",
+          "token_usage": {
+            "input_tokens": 35197,
+            "cached_input_tokens": 30464,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 4548,
+            "reasoning_output_tokens": 3422,
+            "total_tokens": 39745
+          }
+        },
+        {
+          "session_id": "01a00564-6408-7303-85eb-22f2af86a715",
+          "started_at": "2026-08-15T12:27:40.443Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T20-27-40-01a00564-6408-7303-85eb-22f2af86a715.jsonl",
+          "rollout_sha256": "44796df16a7e94c0c7914206d70c1e7049a79ccdff7d663d8889c5c41f2cbc7a",
+          "token_usage": {
+            "input_tokens": 17097,
+            "cached_input_tokens": 16768,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 5116,
+            "reasoning_output_tokens": 3612,
+            "total_tokens": 22213
+          }
+        },
+        {
+          "session_id": "01a00566-25c8-7b51-99e8-848b6aaa7d9c",
+          "started_at": "2026-08-15T12:29:35.580Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T20-29-35-01a00566-25c8-7b51-99e8-848b6aaa7d9c.jsonl",
+          "rollout_sha256": "c16e0179d3adfe9a323192acbcedaa45bc4dbaa5a5680f1159d70c3e72f56e97",
+          "token_usage": {
+            "input_tokens": 35025,
+            "cached_input_tokens": 30464,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 5342,
+            "reasoning_output_tokens": 4635,
+            "total_tokens": 40367
+          }
+        }
+      ],
+      "failure_classes": {
+        "patch_apply_failed": 3
+      },
+      "patch_type_counts": {
+        "diff": 3
+      },
+      "proposal_model_counts": {
+        "headless/codex@gpt-5.5?effort=high": 3
+      },
+      "resume_consistency": {
+        "safe_target_generations": 4,
+        "no_new_proposal_artifacts": true,
+        "database_row_idempotent": false,
+        "sqlite_table_count_deltas": {
+          "archive": 1,
+          "attempt_log": 0,
+          "generation_event_log": 0,
+          "metadata_store": 0,
+          "programs": 1
+        },
+        "observation": "Proposal generations, prompts, metrics, and attempts were preserved, but reopening inserted one additional baseline program/archive row."
+      }
+    },
+    {
+      "sequence": 10,
+      "block": 5,
+      "position_in_block": 2,
+      "arm": "native",
+      "run_id": "p2-b05-native",
+      "entrypoint_command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "evidence_evolve",
+        "search",
+        "shinka-native",
+        "--run-id",
+        "p2-b05-native",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_05/native",
+        "--num-generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "started_at": "2026-08-15T12:31:57.995978+00:00",
+      "finished_at": "2026-08-15T12:38:11.139565+00:00",
+      "exit_code": 0,
+      "status": "COMPLETE_NO_RETRY",
+      "results_dir": "runs/shinka_native_p2_r0/formal/block_05/native",
+      "pre_resume_database": "runs/shinka_native_p2_r0/formal/block_05/native/programs.pre_resume.sqlite",
+      "pre_resume_database_sha256": "0538f2c8abab65fdb5bd59bc0db0740a05e077a3ae3c19694605441e31ea2853",
+      "artifact_file_count": 34,
+      "artifact_tree_sha256": "7ad03a3f6efb25a916cc308d5af6177fd7f6371d5120029ef851e1208c1ba4dc",
+      "proposal_count": 3,
+      "valid_proposal_count": 0,
+      "valid_proposal_rate": 0.0,
+      "patch_failure_count": 3,
+      "patch_failure_rate": 1.0,
+      "proposal_evaluator_calls": 0,
+      "evaluator_calls_per_proposal": 0.0,
+      "baseline_evaluator_calls": 1,
+      "improvement_count": 0,
+      "improvements_per_proposal": 0.0,
+      "final_best_score": 0.9597642169962064,
+      "best_so_far_by_declared_generation_slot": [
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064
+      ],
+      "best_so_far_auc": 0.9597642169962064,
+      "best_so_far_auc_definition": "trapezoidal area divided by five intervals over declared slots 0..5",
+      "time_to_first_improvement_seconds": null,
+      "time_to_first_improvement_right_censored": true,
+      "time_to_first_improvement_censor_seconds": 373.14282269589603,
+      "wall_seconds": 373.14282269589603,
+      "observed_token_usage": {
+        "input_tokens": 107229,
+        "cached_input_tokens": 91392,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 16187,
+        "reasoning_output_tokens": 13563,
+        "total_tokens": 123416
+      },
+      "codex_rollouts": [
+        {
+          "session_id": "01a00568-73cc-7e02-b51b-a4be04f5e747",
+          "started_at": "2026-08-15T12:32:06.625Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T20-32-06-01a00568-73cc-7e02-b51b-a4be04f5e747.jsonl",
+          "rollout_sha256": "4bc2780cd2a7b47114d7e2e48bd33ab9d3e0b6741a21c8f0a2325bb605ef88b6",
+          "token_usage": {
+            "input_tokens": 37101,
+            "cached_input_tokens": 27392,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 7042,
+            "reasoning_output_tokens": 6056,
+            "total_tokens": 44143
+          }
+        },
+        {
+          "session_id": "01a0056a-bef4-7ef2-b48c-86ed9d0fdf79",
+          "started_at": "2026-08-15T12:34:36.937Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T20-34-36-01a0056a-bef4-7ef2-b48c-86ed9d0fdf79.jsonl",
+          "rollout_sha256": "406b24793ec1e29d5f0ad37766275368fbc303b8f0a6d10338360f075314c727",
+          "token_usage": {
+            "input_tokens": 35172,
+            "cached_input_tokens": 33536,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 4785,
+            "reasoning_output_tokens": 3823,
+            "total_tokens": 39957
+          }
+        },
+        {
+          "session_id": "01a0056c-6cce-72a3-876d-15ed9f27d244",
+          "started_at": "2026-08-15T12:36:26.978Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T20-36-26-01a0056c-6cce-72a3-876d-15ed9f27d244.jsonl",
+          "rollout_sha256": "c609e6493053486067ace15024d7c28e8c04e9c35a1514a30917319e74128be7",
+          "token_usage": {
+            "input_tokens": 34956,
+            "cached_input_tokens": 30464,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 4360,
+            "reasoning_output_tokens": 3684,
+            "total_tokens": 39316
+          }
+        }
+      ],
+      "failure_classes": {
+        "patch_apply_failed": 3
+      },
+      "patch_type_counts": {
+        "diff": 3
+      },
+      "proposal_model_counts": {
+        "headless/codex@gpt-5.5?effort=high": 3
+      },
+      "resume_consistency": {
+        "safe_target_generations": 4,
+        "no_new_proposal_artifacts": true,
+        "database_row_idempotent": false,
+        "sqlite_table_count_deltas": {
+          "archive": 1,
+          "attempt_log": 0,
+          "generation_event_log": 0,
+          "metadata_store": 0,
+          "programs": 1
+        },
+        "observation": "Proposal generations, prompts, metrics, and attempts were preserved, but reopening inserted one additional baseline program/archive row."
+      }
+    },
+    {
+      "sequence": 11,
+      "block": 6,
+      "position_in_block": 1,
+      "arm": "native",
+      "run_id": "p2-b06-native",
+      "entrypoint_command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "evidence_evolve",
+        "search",
+        "shinka-native",
+        "--run-id",
+        "p2-b06-native",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_06/native",
+        "--num-generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "started_at": "2026-08-15T12:38:34.809523+00:00",
+      "finished_at": "2026-08-15T12:45:09.909373+00:00",
+      "exit_code": 0,
+      "status": "COMPLETE_NO_RETRY",
+      "results_dir": "runs/shinka_native_p2_r0/formal/block_06/native",
+      "pre_resume_database": "runs/shinka_native_p2_r0/formal/block_06/native/programs.pre_resume.sqlite",
+      "pre_resume_database_sha256": "b0e145d22c258cd7f323fb0c4b74a2243d9d487d29dd69f76488e8876b843e88",
+      "artifact_file_count": 34,
+      "artifact_tree_sha256": "8721734ebd22d04a1fca96b8728b2ed8b914627c6bfad016cc03f1f933c83ff8",
+      "proposal_count": 3,
+      "valid_proposal_count": 0,
+      "valid_proposal_rate": 0.0,
+      "patch_failure_count": 3,
+      "patch_failure_rate": 1.0,
+      "proposal_evaluator_calls": 0,
+      "evaluator_calls_per_proposal": 0.0,
+      "baseline_evaluator_calls": 1,
+      "improvement_count": 0,
+      "improvements_per_proposal": 0.0,
+      "final_best_score": 0.9597642169962064,
+      "best_so_far_by_declared_generation_slot": [
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064
+      ],
+      "best_so_far_auc": 0.9597642169962064,
+      "best_so_far_auc_definition": "trapezoidal area divided by five intervals over declared slots 0..5",
+      "time_to_first_improvement_seconds": null,
+      "time_to_first_improvement_right_censored": true,
+      "time_to_first_improvement_censor_seconds": 395.0980685688555,
+      "wall_seconds": 395.0980685688555,
+      "observed_token_usage": {
+        "input_tokens": 87124,
+        "cached_input_tokens": 65408,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 15947,
+        "reasoning_output_tokens": 13681,
+        "total_tokens": 103071
+      },
+      "codex_rollouts": [
+        {
+          "session_id": "01a0056e-db98-7073-bc9f-904ee32dd659",
+          "started_at": "2026-08-15T12:39:06.412Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T20-39-06-01a0056e-db98-7073-bc9f-904ee32dd659.jsonl",
+          "rollout_sha256": "1fc589242f9659092f74abc10f1c3c767efeeac6ba0496f0d659236571c72e50",
+          "token_usage": {
+            "input_tokens": 17094,
+            "cached_input_tokens": 1408,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 5322,
+            "reasoning_output_tokens": 4660,
+            "total_tokens": 22416
+          }
+        },
+        {
+          "session_id": "01a00570-b367-7ac0-9856-c400bb26182c",
+          "started_at": "2026-08-15T12:41:07.195Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T20-41-07-01a00570-b367-7ac0-9856-c400bb26182c.jsonl",
+          "rollout_sha256": "b4b3379b6f348891ec6038d05ebe8f9b217ba1d4f6c1e796b516666ee9a285f5",
+          "token_usage": {
+            "input_tokens": 35037,
+            "cached_input_tokens": 30464,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 5169,
+            "reasoning_output_tokens": 4263,
+            "total_tokens": 40206
+          }
+        },
+        {
+          "session_id": "01a00572-8913-7dd0-9a8b-6579eee7e314",
+          "started_at": "2026-08-15T12:43:07.429Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T20-43-07-01a00572-8913-7dd0-9a8b-6579eee7e314.jsonl",
+          "rollout_sha256": "90c265f2ebae6b5535a2153cf574369e769e92f50d641ea8913a50ff69937b5d",
+          "token_usage": {
+            "input_tokens": 34993,
+            "cached_input_tokens": 33536,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 5456,
+            "reasoning_output_tokens": 4758,
+            "total_tokens": 40449
+          }
+        }
+      ],
+      "failure_classes": {
+        "patch_apply_failed": 3
+      },
+      "patch_type_counts": {
+        "diff": 3
+      },
+      "proposal_model_counts": {
+        "headless/codex@gpt-5.5?effort=high": 3
+      },
+      "resume_consistency": {
+        "safe_target_generations": 4,
+        "no_new_proposal_artifacts": true,
+        "database_row_idempotent": false,
+        "sqlite_table_count_deltas": {
+          "archive": 1,
+          "attempt_log": 0,
+          "generation_event_log": 0,
+          "metadata_store": 0,
+          "programs": 1
+        },
+        "observation": "Proposal generations, prompts, metrics, and attempts were preserved, but reopening inserted one additional baseline program/archive row."
+      }
+    },
+    {
+      "sequence": 12,
+      "block": 6,
+      "position_in_block": 2,
+      "arm": "official",
+      "run_id": "p2-b06-official",
+      "entrypoint_command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "shinka.cli.run",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results_dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_06/official",
+        "--num_generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "started_at": "2026-08-15T12:45:36.116267+00:00",
+      "finished_at": "2026-08-15T12:54:01.107982+00:00",
+      "exit_code": 0,
+      "status": "COMPLETE_NO_RETRY",
+      "results_dir": "runs/shinka_native_p2_r0/formal/block_06/official",
+      "pre_resume_database": "runs/shinka_native_p2_r0/formal/block_06/official/programs.pre_resume.sqlite",
+      "pre_resume_database_sha256": "92a6844597584f2278fb533f0783511a9e677e86351ed55c959f8c9a4145eaa0",
+      "artifact_file_count": 44,
+      "artifact_tree_sha256": "2aacb8fbdba3c3a7271b458c2079520dc6eb12f1d2281f365a4eac828bcd853f",
+      "proposal_count": 5,
+      "valid_proposal_count": 0,
+      "valid_proposal_rate": 0.0,
+      "patch_failure_count": 5,
+      "patch_failure_rate": 1.0,
+      "proposal_evaluator_calls": 0,
+      "evaluator_calls_per_proposal": 0.0,
+      "baseline_evaluator_calls": 1,
+      "improvement_count": 0,
+      "improvements_per_proposal": 0.0,
+      "final_best_score": 0.9597642169962064,
+      "best_so_far_by_declared_generation_slot": [
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064
+      ],
+      "best_so_far_auc": 0.9597642169962064,
+      "best_so_far_auc_definition": "trapezoidal area divided by five intervals over declared slots 0..5",
+      "time_to_first_improvement_seconds": null,
+      "time_to_first_improvement_right_censored": true,
+      "time_to_first_improvement_censor_seconds": 504.9908422958106,
+      "wall_seconds": 504.9908422958106,
+      "observed_token_usage": {
+        "input_tokens": 121557,
+        "cached_input_tokens": 105088,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 18465,
+        "reasoning_output_tokens": 13545,
+        "total_tokens": 140022
+      },
+      "codex_rollouts": [
+        {
+          "session_id": "01a00574-f7a6-75a3-9105-450160f8199f",
+          "started_at": "2026-08-15T12:45:46.810Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T20-45-46-01a00574-f7a6-75a3-9105-450160f8199f.jsonl",
+          "rollout_sha256": "aa6b253cdc813b65ad860483d0904157ec64ebbfc69ec887d229f2e0d84d0044",
+          "token_usage": {
+            "input_tokens": 35019,
+            "cached_input_tokens": 30464,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 4429,
+            "reasoning_output_tokens": 3713,
+            "total_tokens": 39448
+          }
+        },
+        {
+          "session_id": "01a00576-93d6-7f20-8448-6e4bd7fa513e",
+          "started_at": "2026-08-15T12:47:32.329Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T20-47-32-01a00576-93d6-7f20-8448-6e4bd7fa513e.jsonl",
+          "rollout_sha256": "54906eb14f44078724c89cf1b2fd67c6c1fe09f90eea75a87daa10a682de8075",
+          "token_usage": {
+            "input_tokens": 17097,
+            "cached_input_tokens": 13696,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 1400,
+            "reasoning_output_tokens": 516,
+            "total_tokens": 18497
+          }
+        },
+        {
+          "session_id": "01a00577-a609-7c73-83ba-c9517c7670c1",
+          "started_at": "2026-08-15T12:48:42.525Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T20-48-42-01a00577-a609-7c73-83ba-c9517c7670c1.jsonl",
+          "rollout_sha256": "df9cd18c0c7834aa1703a6d5b326b9227ee0291dcd8a12acaf9266d13369f2f7",
+          "token_usage": {
+            "input_tokens": 17097,
+            "cached_input_tokens": 13696,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 1623,
+            "reasoning_output_tokens": 516,
+            "total_tokens": 18720
+          }
+        },
+        {
+          "session_id": "01a00578-971f-7840-afb3-1c915e222f24",
+          "started_at": "2026-08-15T12:49:44.240Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T20-49-44-01a00578-971f-7840-afb3-1c915e222f24.jsonl",
+          "rollout_sha256": "1cdd2a3a9abb5cc304eba034abc6e0f289259e66aa6b558a66d02ffbd7543d8d",
+          "token_usage": {
+            "input_tokens": 17097,
+            "cached_input_tokens": 16768,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 1078,
+            "reasoning_output_tokens": 516,
+            "total_tokens": 18175
+          }
+        },
+        {
+          "session_id": "01a00579-5727-7fe3-a1fc-3d8ef8bb82e9",
+          "started_at": "2026-08-15T12:50:33.404Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T20-50-33-01a00579-5727-7fe3-a1fc-3d8ef8bb82e9.jsonl",
+          "rollout_sha256": "2dff59fbf3884b73715eb456488376173cf32519ba46c1073d51e048f49c0d46",
+          "token_usage": {
+            "input_tokens": 35247,
+            "cached_input_tokens": 30464,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 9935,
+            "reasoning_output_tokens": 8284,
+            "total_tokens": 45182
+          }
+        }
+      ],
+      "failure_classes": {
+        "patch_apply_failed": 5
+      },
+      "patch_type_counts": {
+        "diff": 5
+      },
+      "proposal_model_counts": {
+        "headless/codex@gpt-5.5?effort=high": 5
+      },
+      "resume_consistency": {
+        "safe_target_generations": 6,
+        "no_new_proposal_artifacts": true,
+        "database_row_idempotent": false,
+        "sqlite_table_count_deltas": {
+          "archive": 1,
+          "attempt_log": 0,
+          "generation_event_log": 0,
+          "metadata_store": 0,
+          "programs": 1
+        },
+        "observation": "Proposal generations, prompts, metrics, and attempts were preserved, but reopening inserted one additional baseline program/archive row."
+      }
+    },
+    {
+      "sequence": 13,
+      "block": 7,
+      "position_in_block": 1,
+      "arm": "official",
+      "run_id": "p2-b07-official",
+      "entrypoint_command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "shinka.cli.run",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results_dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_07/official",
+        "--num_generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "started_at": "2026-08-15T12:54:37.936930+00:00",
+      "finished_at": "2026-08-15T13:02:42.651390+00:00",
+      "exit_code": 0,
+      "status": "COMPLETE_NO_RETRY",
+      "results_dir": "runs/shinka_native_p2_r0/formal/block_07/official",
+      "pre_resume_database": "runs/shinka_native_p2_r0/formal/block_07/official/programs.pre_resume.sqlite",
+      "pre_resume_database_sha256": "cf18dd8aaac65a76306a8b492617855bd4fa7c170af9fee03bdb7d3c1893264b",
+      "artifact_file_count": 32,
+      "artifact_tree_sha256": "4cfcbcec82e18420e08806cef4ee3010d123552a2c17ab040f651393ded787e3",
+      "proposal_count": 3,
+      "valid_proposal_count": 0,
+      "valid_proposal_rate": 0.0,
+      "patch_failure_count": 3,
+      "patch_failure_rate": 1.0,
+      "proposal_evaluator_calls": 0,
+      "evaluator_calls_per_proposal": 0.0,
+      "baseline_evaluator_calls": 1,
+      "improvement_count": 0,
+      "improvements_per_proposal": 0.0,
+      "final_best_score": 0.9597642169962064,
+      "best_so_far_by_declared_generation_slot": [
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064
+      ],
+      "best_so_far_auc": 0.9597642169962064,
+      "best_so_far_auc_definition": "trapezoidal area divided by five intervals over declared slots 0..5",
+      "time_to_first_improvement_seconds": null,
+      "time_to_first_improvement_right_censored": true,
+      "time_to_first_improvement_censor_seconds": 484.71349565684795,
+      "wall_seconds": 484.71349565684795,
+      "observed_token_usage": {
+        "input_tokens": 174369,
+        "cached_input_tokens": 82176,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 19321,
+        "reasoning_output_tokens": 15453,
+        "total_tokens": 193690
+      },
+      "codex_rollouts": [
+        {
+          "session_id": "01a0057d-5303-76b1-8bad-62f16d4fe346",
+          "started_at": "2026-08-15T12:54:54.486Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T20-54-54-01a0057d-5303-76b1-8bad-62f16d4fe346.jsonl",
+          "rollout_sha256": "636af7e1775227be3a70064f2021240fa1109bceeed157a8c4c151ab77b50d1f",
+          "token_usage": {
+            "input_tokens": 103201,
+            "cached_input_tokens": 18176,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 10061,
+            "reasoning_output_tokens": 7621,
+            "total_tokens": 113262
+          }
+        },
+        {
+          "session_id": "01a00580-fd18-76d1-8ba8-2eda0b2c6a40",
+          "started_at": "2026-08-15T12:58:54.632Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T20-58-54-01a00580-fd18-76d1-8ba8-2eda0b2c6a40.jsonl",
+          "rollout_sha256": "c52b2b7261a1ec1670bc6b96c98725a9d9a8355d96fb1836a6ffccf252adf203",
+          "token_usage": {
+            "input_tokens": 35460,
+            "cached_input_tokens": 30464,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 3802,
+            "reasoning_output_tokens": 3097,
+            "total_tokens": 39262
+          }
+        },
+        {
+          "session_id": "01a00582-72b8-7462-a9de-857cdece5ae4",
+          "started_at": "2026-08-15T13:00:30.283Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T21-00-30-01a00582-72b8-7462-a9de-857cdece5ae4.jsonl",
+          "rollout_sha256": "2182650b1f248b7da64bcc552fd96d5f831d266053d26b5409d684f729099994",
+          "token_usage": {
+            "input_tokens": 35708,
+            "cached_input_tokens": 33536,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 5458,
+            "reasoning_output_tokens": 4735,
+            "total_tokens": 41166
+          }
+        }
+      ],
+      "failure_classes": {
+        "patch_apply_failed": 3
+      },
+      "patch_type_counts": {
+        "diff": 3
+      },
+      "proposal_model_counts": {
+        "headless/codex@gpt-5.5?effort=high": 3
+      },
+      "resume_consistency": {
+        "safe_target_generations": 4,
+        "no_new_proposal_artifacts": true,
+        "database_row_idempotent": false,
+        "sqlite_table_count_deltas": {
+          "archive": 1,
+          "attempt_log": 0,
+          "generation_event_log": 0,
+          "metadata_store": 0,
+          "programs": 1
+        },
+        "observation": "Proposal generations, prompts, metrics, and attempts were preserved, but reopening inserted one additional baseline program/archive row."
+      }
+    },
+    {
+      "sequence": 14,
+      "block": 7,
+      "position_in_block": 2,
+      "arm": "native",
+      "run_id": "p2-b07-native",
+      "entrypoint_command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "evidence_evolve",
+        "search",
+        "shinka-native",
+        "--run-id",
+        "p2-b07-native",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_07/native",
+        "--num-generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "started_at": "2026-08-15T13:03:05.474685+00:00",
+      "finished_at": "2026-08-15T13:09:13.653596+00:00",
+      "exit_code": 0,
+      "status": "COMPLETE_NO_RETRY",
+      "results_dir": "runs/shinka_native_p2_r0/formal/block_07/native",
+      "pre_resume_database": "runs/shinka_native_p2_r0/formal/block_07/native/programs.pre_resume.sqlite",
+      "pre_resume_database_sha256": "05775e1c3f7ccf4db480df1a39ce6a6f3b5d347b34b8ee681dbb7d956d133f89",
+      "artifact_file_count": 34,
+      "artifact_tree_sha256": "64c846d2c6793fc4992e44a3a7bb2119ce7ca80e8d21602099eaabe32a942eb2",
+      "proposal_count": 3,
+      "valid_proposal_count": 0,
+      "valid_proposal_rate": 0.0,
+      "patch_failure_count": 3,
+      "patch_failure_rate": 1.0,
+      "proposal_evaluator_calls": 0,
+      "evaluator_calls_per_proposal": 0.0,
+      "baseline_evaluator_calls": 1,
+      "improvement_count": 0,
+      "improvements_per_proposal": 0.0,
+      "final_best_score": 0.9597642169962064,
+      "best_so_far_by_declared_generation_slot": [
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064
+      ],
+      "best_so_far_auc": 0.9597642169962064,
+      "best_so_far_auc_definition": "trapezoidal area divided by five intervals over declared slots 0..5",
+      "time_to_first_improvement_seconds": null,
+      "time_to_first_improvement_right_censored": true,
+      "time_to_first_improvement_censor_seconds": 368.1775936484337,
+      "wall_seconds": 368.1775936484337,
+      "observed_token_usage": {
+        "input_tokens": 88024,
+        "cached_input_tokens": 59264,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 15714,
+        "reasoning_output_tokens": 12539,
+        "total_tokens": 103738
+      },
+      "codex_rollouts": [
+        {
+          "session_id": "01a00584-f426-7c71-b073-27c40bf85806",
+          "started_at": "2026-08-15T13:03:14.488Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T21-03-14-01a00584-f426-7c71-b073-27c40bf85806.jsonl",
+          "rollout_sha256": "b3ea8346586b885b8114460b27c1372118929ed33ff11a57277fa246a0726009",
+          "token_usage": {
+            "input_tokens": 35726,
+            "cached_input_tokens": 30464,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 5308,
+            "reasoning_output_tokens": 3777,
+            "total_tokens": 41034
+          }
+        },
+        {
+          "session_id": "01a00586-c891-7003-ab18-d2aa112cfa63",
+          "started_at": "2026-08-15T13:05:14.407Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T21-05-14-01a00586-c891-7003-ab18-d2aa112cfa63.jsonl",
+          "rollout_sha256": "f98209349cd041952eb8514d2ee2900b4fafb33658b4f7557ebd41814df345b9",
+          "token_usage": {
+            "input_tokens": 17094,
+            "cached_input_tokens": 13696,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 4777,
+            "reasoning_output_tokens": 4142,
+            "total_tokens": 21871
+          }
+        },
+        {
+          "session_id": "01a00588-76f3-7d80-af3a-1347fb0a4577",
+          "started_at": "2026-08-15T13:07:04.583Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T21-07-04-01a00588-76f3-7d80-af3a-1347fb0a4577.jsonl",
+          "rollout_sha256": "187ee69d2d8365e069ba5a7cd049ab24aad766fc9738107e4481bbbdb4243fc2",
+          "token_usage": {
+            "input_tokens": 35204,
+            "cached_input_tokens": 15104,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 5629,
+            "reasoning_output_tokens": 4620,
+            "total_tokens": 40833
+          }
+        }
+      ],
+      "failure_classes": {
+        "patch_apply_failed": 3
+      },
+      "patch_type_counts": {
+        "diff": 3
+      },
+      "proposal_model_counts": {
+        "headless/codex@gpt-5.5?effort=high": 3
+      },
+      "resume_consistency": {
+        "safe_target_generations": 4,
+        "no_new_proposal_artifacts": true,
+        "database_row_idempotent": false,
+        "sqlite_table_count_deltas": {
+          "archive": 1,
+          "attempt_log": 0,
+          "generation_event_log": 0,
+          "metadata_store": 0,
+          "programs": 1
+        },
+        "observation": "Proposal generations, prompts, metrics, and attempts were preserved, but reopening inserted one additional baseline program/archive row."
+      }
+    },
+    {
+      "sequence": 15,
+      "block": 8,
+      "position_in_block": 1,
+      "arm": "native",
+      "run_id": "p2-b08-native",
+      "entrypoint_command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "evidence_evolve",
+        "search",
+        "shinka-native",
+        "--run-id",
+        "p2-b08-native",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_08/native",
+        "--num-generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "started_at": "2026-08-15T13:09:37.046784+00:00",
+      "finished_at": "2026-08-15T13:14:32.713728+00:00",
+      "exit_code": 0,
+      "status": "COMPLETE_NO_RETRY",
+      "results_dir": "runs/shinka_native_p2_r0/formal/block_08/native",
+      "pre_resume_database": "runs/shinka_native_p2_r0/formal/block_08/native/programs.pre_resume.sqlite",
+      "pre_resume_database_sha256": "a62cebf24273e939b0dc04b261a8d69ad0f97598a9c24e069427f31fd2718fea",
+      "artifact_file_count": 34,
+      "artifact_tree_sha256": "c40ab15dd66da50b82c24c74734aaf4cf7affbfeac6ad813b4445ded418d9281",
+      "proposal_count": 3,
+      "valid_proposal_count": 0,
+      "valid_proposal_rate": 0.0,
+      "patch_failure_count": 3,
+      "patch_failure_rate": 1.0,
+      "proposal_evaluator_calls": 0,
+      "evaluator_calls_per_proposal": 0.0,
+      "baseline_evaluator_calls": 1,
+      "improvement_count": 0,
+      "improvements_per_proposal": 0.0,
+      "final_best_score": 0.9597642169962064,
+      "best_so_far_by_declared_generation_slot": [
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064
+      ],
+      "best_so_far_auc": 0.9597642169962064,
+      "best_so_far_auc_definition": "trapezoidal area divided by five intervals over declared slots 0..5",
+      "time_to_first_improvement_seconds": null,
+      "time_to_first_improvement_right_censored": true,
+      "time_to_first_improvement_censor_seconds": 295.66453579068184,
+      "wall_seconds": 295.66453579068184,
+      "observed_token_usage": {
+        "input_tokens": 87277,
+        "cached_input_tokens": 74624,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 11355,
+        "reasoning_output_tokens": 8326,
+        "total_tokens": 98632
+      },
+      "codex_rollouts": [
+        {
+          "session_id": "01a0058a-f635-7942-9a03-79ab01f45bab",
+          "started_at": "2026-08-15T13:09:48.232Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T21-09-48-01a0058a-f635-7942-9a03-79ab01f45bab.jsonl",
+          "rollout_sha256": "e9c1f37d6d5554794f3dc7e3c706ef8d7fcf2bcb0edbcbecc73c2ec4cd8c2dcc",
+          "token_usage": {
+            "input_tokens": 35214,
+            "cached_input_tokens": 27392,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 5677,
+            "reasoning_output_tokens": 4634,
+            "total_tokens": 40891
+          }
+        },
+        {
+          "session_id": "01a0058c-f43f-72f3-b53b-de65de695988",
+          "started_at": "2026-08-15T13:11:58.802Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T21-11-58-01a0058c-f43f-72f3-b53b-de65de695988.jsonl",
+          "rollout_sha256": "80af9b1d6bfef40702bf27a1db7bbc7ad1bec22e9d95e886aacd59860cdfa027",
+          "token_usage": {
+            "input_tokens": 17094,
+            "cached_input_tokens": 16768,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 1812,
+            "reasoning_output_tokens": 516,
+            "total_tokens": 18906
+          }
+        },
+        {
+          "session_id": "01a0058d-dc7f-7183-a031-53b51597624e",
+          "started_at": "2026-08-15T13:12:58.258Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T21-12-58-01a0058d-dc7f-7183-a031-53b51597624e.jsonl",
+          "rollout_sha256": "99d3eee2597dd2d22b53e8ce1be3e10e4ea8fec366e8bd1f9410c2a3c0fcb05b",
+          "token_usage": {
+            "input_tokens": 34969,
+            "cached_input_tokens": 30464,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 3866,
+            "reasoning_output_tokens": 3176,
+            "total_tokens": 38835
+          }
+        }
+      ],
+      "failure_classes": {
+        "patch_apply_failed": 3
+      },
+      "patch_type_counts": {
+        "diff": 3
+      },
+      "proposal_model_counts": {
+        "headless/codex@gpt-5.5?effort=high": 3
+      },
+      "resume_consistency": {
+        "safe_target_generations": 4,
+        "no_new_proposal_artifacts": true,
+        "database_row_idempotent": false,
+        "sqlite_table_count_deltas": {
+          "archive": 1,
+          "attempt_log": 0,
+          "generation_event_log": 0,
+          "metadata_store": 0,
+          "programs": 1
+        },
+        "observation": "Proposal generations, prompts, metrics, and attempts were preserved, but reopening inserted one additional baseline program/archive row."
+      }
+    },
+    {
+      "sequence": 16,
+      "block": 8,
+      "position_in_block": 2,
+      "arm": "official",
+      "run_id": "p2-b08-official",
+      "entrypoint_command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "shinka.cli.run",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results_dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_08/official",
+        "--num_generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "started_at": "2026-08-15T13:14:56.127708+00:00",
+      "finished_at": "2026-08-15T13:22:14.227773+00:00",
+      "exit_code": 0,
+      "status": "COMPLETE_NO_RETRY",
+      "results_dir": "runs/shinka_native_p2_r0/formal/block_08/official",
+      "pre_resume_database": "runs/shinka_native_p2_r0/formal/block_08/official/programs.pre_resume.sqlite",
+      "pre_resume_database_sha256": "97102297262ef6494d57947bc875c0f165ad7a75d42bd842492d8a1d2f37f239",
+      "artifact_file_count": 32,
+      "artifact_tree_sha256": "cb99474dcd10ef32257e18ac251a4b02aba032084a782d03afe1ecda133ea682",
+      "proposal_count": 3,
+      "valid_proposal_count": 0,
+      "valid_proposal_rate": 0.0,
+      "patch_failure_count": 3,
+      "patch_failure_rate": 1.0,
+      "proposal_evaluator_calls": 0,
+      "evaluator_calls_per_proposal": 0.0,
+      "baseline_evaluator_calls": 1,
+      "improvement_count": 0,
+      "improvements_per_proposal": 0.0,
+      "final_best_score": 0.9597642169962064,
+      "best_so_far_by_declared_generation_slot": [
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064
+      ],
+      "best_so_far_auc": 0.9597642169962064,
+      "best_so_far_auc_definition": "trapezoidal area divided by five intervals over declared slots 0..5",
+      "time_to_first_improvement_seconds": null,
+      "time_to_first_improvement_right_censored": true,
+      "time_to_first_improvement_censor_seconds": 438.09893051348627,
+      "wall_seconds": 438.09893051348627,
+      "observed_token_usage": {
+        "input_tokens": 105225,
+        "cached_input_tokens": 91392,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 19733,
+        "reasoning_output_tokens": 16056,
+        "total_tokens": 124958
+      },
+      "codex_rollouts": [
+        {
+          "session_id": "01a0058f-ca9b-77a3-89a2-6a7f0046b30a",
+          "started_at": "2026-08-15T13:15:04.750Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T21-15-04-01a0058f-ca9b-77a3-89a2-6a7f0046b30a.jsonl",
+          "rollout_sha256": "f479d7b4e4790aa905749a2e29c436a5f7fd1b4fe1dad6ba1ca5c980f376856a",
+          "token_usage": {
+            "input_tokens": 34880,
+            "cached_input_tokens": 30464,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 9181,
+            "reasoning_output_tokens": 7658,
+            "total_tokens": 44061
+          }
+        },
+        {
+          "session_id": "01a00592-cd36-7650-99bd-f0ffe88e763f",
+          "started_at": "2026-08-15T13:18:22.026Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T21-18-22-01a00592-cd36-7650-99bd-f0ffe88e763f.jsonl",
+          "rollout_sha256": "f89b0d89f60e4f646012a0fdc369fcec36e8bb1accd1354b010f644d828cd091",
+          "token_usage": {
+            "input_tokens": 35584,
+            "cached_input_tokens": 33536,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 5482,
+            "reasoning_output_tokens": 4418,
+            "total_tokens": 41066
+          }
+        },
+        {
+          "session_id": "01a00594-8e99-7402-961b-88b22f7acbc2",
+          "started_at": "2026-08-15T13:20:17.061Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T21-20-17-01a00594-8e99-7402-961b-88b22f7acbc2.jsonl",
+          "rollout_sha256": "33d968065ab8bc4766e19a6067c13bc1834356b915c48da765662b0a346c345d",
+          "token_usage": {
+            "input_tokens": 34761,
+            "cached_input_tokens": 27392,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 5070,
+            "reasoning_output_tokens": 3980,
+            "total_tokens": 39831
+          }
+        }
+      ],
+      "failure_classes": {
+        "patch_apply_failed": 3
+      },
+      "patch_type_counts": {
+        "diff": 3
+      },
+      "proposal_model_counts": {
+        "headless/codex@gpt-5.5?effort=high": 3
+      },
+      "resume_consistency": {
+        "safe_target_generations": 4,
+        "no_new_proposal_artifacts": true,
+        "database_row_idempotent": false,
+        "sqlite_table_count_deltas": {
+          "archive": 1,
+          "attempt_log": 0,
+          "generation_event_log": 0,
+          "metadata_store": 0,
+          "programs": 1
+        },
+        "observation": "Proposal generations, prompts, metrics, and attempts were preserved, but reopening inserted one additional baseline program/archive row."
+      }
+    },
+    {
+      "sequence": 17,
+      "block": 9,
+      "position_in_block": 1,
+      "arm": "official",
+      "run_id": "p2-b09-official",
+      "entrypoint_command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "shinka.cli.run",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results_dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_09/official",
+        "--num_generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "started_at": "2026-08-15T13:22:43.334467+00:00",
+      "finished_at": "2026-08-15T13:29:11.282506+00:00",
+      "exit_code": 0,
+      "status": "COMPLETE_NO_RETRY",
+      "results_dir": "runs/shinka_native_p2_r0/formal/block_09/official",
+      "pre_resume_database": "runs/shinka_native_p2_r0/formal/block_09/official/programs.pre_resume.sqlite",
+      "pre_resume_database_sha256": "36038053131a8197d9ec1110ebceb7ec4baf7bfc2d32ea3ed4fa87f226d7e9c1",
+      "artifact_file_count": 32,
+      "artifact_tree_sha256": "436c5b7c798ed47ce6460cc413a7cee3a49170aacd60f7306305ad0485adba5c",
+      "proposal_count": 3,
+      "valid_proposal_count": 0,
+      "valid_proposal_rate": 0.0,
+      "patch_failure_count": 3,
+      "patch_failure_rate": 1.0,
+      "proposal_evaluator_calls": 0,
+      "evaluator_calls_per_proposal": 0.0,
+      "baseline_evaluator_calls": 1,
+      "improvement_count": 0,
+      "improvements_per_proposal": 0.0,
+      "final_best_score": 0.9597642169962064,
+      "best_so_far_by_declared_generation_slot": [
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064
+      ],
+      "best_so_far_auc": 0.9597642169962064,
+      "best_so_far_auc_definition": "trapezoidal area divided by five intervals over declared slots 0..5",
+      "time_to_first_improvement_seconds": null,
+      "time_to_first_improvement_right_censored": true,
+      "time_to_first_improvement_censor_seconds": 387.94579041562974,
+      "wall_seconds": 387.94579041562974,
+      "observed_token_usage": {
+        "input_tokens": 87118,
+        "cached_input_tokens": 80768,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 16425,
+        "reasoning_output_tokens": 13415,
+        "total_tokens": 103543
+      },
+      "codex_rollouts": [
+        {
+          "session_id": "01a00597-0390-7ff1-ad3b-2fe69c445c24",
+          "started_at": "2026-08-15T13:22:58.081Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T21-22-58-01a00597-0390-7ff1-ad3b-2fe69c445c24.jsonl",
+          "rollout_sha256": "85b35324507bd51f3287e586f8de72ea7d7ce0063c04a1e5799a4dff519a6876",
+          "token_usage": {
+            "input_tokens": 34801,
+            "cached_input_tokens": 30464,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 6770,
+            "reasoning_output_tokens": 6045,
+            "total_tokens": 41571
+          }
+        },
+        {
+          "session_id": "01a00599-4ce5-7990-8518-e9abe4a20fc2",
+          "started_at": "2026-08-15T13:25:27.932Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T21-25-27-01a00599-4ce5-7990-8518-e9abe4a20fc2.jsonl",
+          "rollout_sha256": "6c09078de74b20a20659efedbe4eb529b1e2815f82159c750ecb41af4bef7767",
+          "token_usage": {
+            "input_tokens": 17097,
+            "cached_input_tokens": 16768,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 4790,
+            "reasoning_output_tokens": 3506,
+            "total_tokens": 21887
+          }
+        },
+        {
+          "session_id": "01a0059a-f756-7ca2-b8ec-d2a594a3c521",
+          "started_at": "2026-08-15T13:27:17.097Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T21-27-17-01a0059a-f756-7ca2-b8ec-d2a594a3c521.jsonl",
+          "rollout_sha256": "e4ce84050081e86d2608491394ad30c8ae6fb04d1e5ef353968c970ccd7b0e7d",
+          "token_usage": {
+            "input_tokens": 35220,
+            "cached_input_tokens": 33536,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 4865,
+            "reasoning_output_tokens": 3864,
+            "total_tokens": 40085
+          }
+        }
+      ],
+      "failure_classes": {
+        "patch_apply_failed": 3
+      },
+      "patch_type_counts": {
+        "diff": 3
+      },
+      "proposal_model_counts": {
+        "headless/codex@gpt-5.5?effort=high": 3
+      },
+      "resume_consistency": {
+        "safe_target_generations": 4,
+        "no_new_proposal_artifacts": true,
+        "database_row_idempotent": false,
+        "sqlite_table_count_deltas": {
+          "archive": 1,
+          "attempt_log": 0,
+          "generation_event_log": 0,
+          "metadata_store": 0,
+          "programs": 1
+        },
+        "observation": "Proposal generations, prompts, metrics, and attempts were preserved, but reopening inserted one additional baseline program/archive row."
+      }
+    },
+    {
+      "sequence": 18,
+      "block": 9,
+      "position_in_block": 2,
+      "arm": "native",
+      "run_id": "p2-b09-native",
+      "entrypoint_command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "evidence_evolve",
+        "search",
+        "shinka-native",
+        "--run-id",
+        "p2-b09-native",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_09/native",
+        "--num-generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "started_at": "2026-08-15T13:29:34.525025+00:00",
+      "finished_at": "2026-08-15T13:35:22.618369+00:00",
+      "exit_code": 0,
+      "status": "COMPLETE_NO_RETRY",
+      "results_dir": "runs/shinka_native_p2_r0/formal/block_09/native",
+      "pre_resume_database": "runs/shinka_native_p2_r0/formal/block_09/native/programs.pre_resume.sqlite",
+      "pre_resume_database_sha256": "b61196df93234c99e652ca30397301e94c97d014f2421c37e91d679838d68721",
+      "artifact_file_count": 34,
+      "artifact_tree_sha256": "1e6b1bc119481fb35c86d8019fdbf60e072dad0b4bf8e37ce79fd72aac1ebd3a",
+      "proposal_count": 3,
+      "valid_proposal_count": 0,
+      "valid_proposal_rate": 0.0,
+      "patch_failure_count": 3,
+      "patch_failure_rate": 1.0,
+      "proposal_evaluator_calls": 0,
+      "evaluator_calls_per_proposal": 0.0,
+      "baseline_evaluator_calls": 1,
+      "improvement_count": 0,
+      "improvements_per_proposal": 0.0,
+      "final_best_score": 0.9597642169962064,
+      "best_so_far_by_declared_generation_slot": [
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064
+      ],
+      "best_so_far_auc": 0.9597642169962064,
+      "best_so_far_auc_definition": "trapezoidal area divided by five intervals over declared slots 0..5",
+      "time_to_first_improvement_seconds": null,
+      "time_to_first_improvement_right_censored": true,
+      "time_to_first_improvement_censor_seconds": 348.091087827459,
+      "wall_seconds": 348.091087827459,
+      "observed_token_usage": {
+        "input_tokens": 151765,
+        "cached_input_tokens": 91392,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 13616,
+        "reasoning_output_tokens": 10296,
+        "total_tokens": 165381
+      },
+      "codex_rollouts": [
+        {
+          "session_id": "01a0059d-32fd-73c0-baed-9c2680c81ce4",
+          "started_at": "2026-08-15T13:29:43.442Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T21-29-43-01a0059d-32fd-73c0-baed-9c2680c81ce4.jsonl",
+          "rollout_sha256": "c746d6389c91e96622d4d2e7f524e88bfbc5df83a8e87442c1bd6721cf670f00",
+          "token_usage": {
+            "input_tokens": 81587,
+            "cached_input_tokens": 30464,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 3759,
+            "reasoning_output_tokens": 2099,
+            "total_tokens": 85346
+          }
+        },
+        {
+          "session_id": "01a0059e-e19f-7c60-8eff-ab428bee3c01",
+          "started_at": "2026-08-15T13:31:33.684Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T21-31-33-01a0059e-e19f-7c60-8eff-ab428bee3c01.jsonl",
+          "rollout_sha256": "0190c39ab5b6970c1bc2ec1ee432b0791aa5559d300954629967514d0b8ea7a3",
+          "token_usage": {
+            "input_tokens": 35220,
+            "cached_input_tokens": 30464,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 6006,
+            "reasoning_output_tokens": 5033,
+            "total_tokens": 41226
+          }
+        },
+        {
+          "session_id": "01a005a0-f1bc-72a2-bb68-e18297df5c76",
+          "started_at": "2026-08-15T13:33:48.881Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T21-33-48-01a005a0-f1bc-72a2-bb68-e18297df5c76.jsonl",
+          "rollout_sha256": "fad5197ee8f3f929447d32762dcfa7103fa48041d6a8f4fcdab7c8c485f2b7df",
+          "token_usage": {
+            "input_tokens": 34958,
+            "cached_input_tokens": 30464,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 3851,
+            "reasoning_output_tokens": 3164,
+            "total_tokens": 38809
+          }
+        }
+      ],
+      "failure_classes": {
+        "patch_apply_failed": 3
+      },
+      "patch_type_counts": {
+        "diff": 3
+      },
+      "proposal_model_counts": {
+        "headless/codex@gpt-5.5?effort=high": 3
+      },
+      "resume_consistency": {
+        "safe_target_generations": 4,
+        "no_new_proposal_artifacts": true,
+        "database_row_idempotent": false,
+        "sqlite_table_count_deltas": {
+          "archive": 1,
+          "attempt_log": 0,
+          "generation_event_log": 0,
+          "metadata_store": 0,
+          "programs": 1
+        },
+        "observation": "Proposal generations, prompts, metrics, and attempts were preserved, but reopening inserted one additional baseline program/archive row."
+      }
+    },
+    {
+      "sequence": 19,
+      "block": 10,
+      "position_in_block": 1,
+      "arm": "native",
+      "run_id": "p2-b10-native",
+      "entrypoint_command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "evidence_evolve",
+        "search",
+        "shinka-native",
+        "--run-id",
+        "p2-b10-native",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_10/native",
+        "--num-generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "started_at": "2026-08-15T13:35:46.347345+00:00",
+      "finished_at": "2026-08-15T13:43:04.509748+00:00",
+      "exit_code": 0,
+      "status": "COMPLETE_NO_RETRY",
+      "results_dir": "runs/shinka_native_p2_r0/formal/block_10/native",
+      "pre_resume_database": "runs/shinka_native_p2_r0/formal/block_10/native/programs.pre_resume.sqlite",
+      "pre_resume_database_sha256": "8bb61320b0b9665f65964269b94ea96bea6518a48123bbd445c5cd9fadbefdef",
+      "artifact_file_count": 34,
+      "artifact_tree_sha256": "1e03465b8e39b5b694f1d2bd690620b27c0c5c491579250d38f276414e1ecc37",
+      "proposal_count": 3,
+      "valid_proposal_count": 0,
+      "valid_proposal_rate": 0.0,
+      "patch_failure_count": 3,
+      "patch_failure_rate": 1.0,
+      "proposal_evaluator_calls": 0,
+      "evaluator_calls_per_proposal": 0.0,
+      "baseline_evaluator_calls": 1,
+      "improvement_count": 0,
+      "improvements_per_proposal": 0.0,
+      "final_best_score": 0.9597642169962064,
+      "best_so_far_by_declared_generation_slot": [
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064
+      ],
+      "best_so_far_auc": 0.9597642169962064,
+      "best_so_far_auc_definition": "trapezoidal area divided by five intervals over declared slots 0..5",
+      "time_to_first_improvement_seconds": null,
+      "time_to_first_improvement_right_censored": true,
+      "time_to_first_improvement_censor_seconds": 438.1594442278147,
+      "wall_seconds": 438.1594442278147,
+      "observed_token_usage": {
+        "input_tokens": 89090,
+        "cached_input_tokens": 65408,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 15370,
+        "reasoning_output_tokens": 11502,
+        "total_tokens": 104460
+      },
+      "codex_rollouts": [
+        {
+          "session_id": "01a005a2-de51-7c60-b1ab-d20e96a1ff6f",
+          "started_at": "2026-08-15T13:35:54.983Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T21-35-54-01a005a2-de51-7c60-b1ab-d20e96a1ff6f.jsonl",
+          "rollout_sha256": "6f975452b6b063ef847417fa83fa5bc372b40ad2b75b7267034412d405dc5917",
+          "token_usage": {
+            "input_tokens": 35356,
+            "cached_input_tokens": 30464,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 6250,
+            "reasoning_output_tokens": 5038,
+            "total_tokens": 41606
+          }
+        },
+        {
+          "session_id": "01a005a5-3e8b-7743-b478-d870c3963409",
+          "started_at": "2026-08-15T13:38:30.689Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T21-38-30-01a005a5-3e8b-7743-b478-d870c3963409.jsonl",
+          "rollout_sha256": "2f3a71e40a1a3c1fc040f65986a55aa5858b419df6586fa96a577628a6927372",
+          "token_usage": {
+            "input_tokens": 39001,
+            "cached_input_tokens": 30464,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 7481,
+            "reasoning_output_tokens": 5948,
+            "total_tokens": 46482
+          }
+        },
+        {
+          "session_id": "01a005a7-ae91-7093-b09b-135af04294ed",
+          "started_at": "2026-08-15T13:41:10.439Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T21-41-10-01a005a7-ae91-7093-b09b-135af04294ed.jsonl",
+          "rollout_sha256": "5b10029ff4c3b39553c0e41c15badd149d87957d480c9915884bfb8560fe40dd",
+          "token_usage": {
+            "input_tokens": 14733,
+            "cached_input_tokens": 4480,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 1639,
+            "reasoning_output_tokens": 516,
+            "total_tokens": 16372
+          }
+        }
+      ],
+      "failure_classes": {
+        "patch_apply_failed": 3
+      },
+      "patch_type_counts": {
+        "diff": 3
+      },
+      "proposal_model_counts": {
+        "headless/codex@gpt-5.5?effort=high": 3
+      },
+      "resume_consistency": {
+        "safe_target_generations": 4,
+        "no_new_proposal_artifacts": true,
+        "database_row_idempotent": false,
+        "sqlite_table_count_deltas": {
+          "archive": 1,
+          "attempt_log": 0,
+          "generation_event_log": 0,
+          "metadata_store": 0,
+          "programs": 1
+        },
+        "observation": "Proposal generations, prompts, metrics, and attempts were preserved, but reopening inserted one additional baseline program/archive row."
+      }
+    },
+    {
+      "sequence": 20,
+      "block": 10,
+      "position_in_block": 2,
+      "arm": "official",
+      "run_id": "p2-b10-official",
+      "entrypoint_command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "shinka.cli.run",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results_dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_10/official",
+        "--num_generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "started_at": "2026-08-15T13:43:29.339865+00:00",
+      "finished_at": "2026-08-15T13:50:37.535621+00:00",
+      "exit_code": 0,
+      "status": "COMPLETE_NO_RETRY",
+      "results_dir": "runs/shinka_native_p2_r0/formal/block_10/official",
+      "pre_resume_database": "runs/shinka_native_p2_r0/formal/block_10/official/programs.pre_resume.sqlite",
+      "pre_resume_database_sha256": "5ed6857c94aaf5dad8d04e63e0514e927f2b371a9f0c985f6a536cbe87c97bc2",
+      "artifact_file_count": 32,
+      "artifact_tree_sha256": "46e8c5616ead22ac8eb8111697a35a046352351cd3b1d18a69d82e0f0923b031",
+      "proposal_count": 3,
+      "valid_proposal_count": 0,
+      "valid_proposal_rate": 0.0,
+      "patch_failure_count": 3,
+      "patch_failure_rate": 1.0,
+      "proposal_evaluator_calls": 0,
+      "evaluator_calls_per_proposal": 0.0,
+      "baseline_evaluator_calls": 1,
+      "improvement_count": 0,
+      "improvements_per_proposal": 0.0,
+      "final_best_score": 0.9597642169962064,
+      "best_so_far_by_declared_generation_slot": [
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064,
+        0.9597642169962064
+      ],
+      "best_so_far_auc": 0.9597642169962064,
+      "best_so_far_auc_definition": "trapezoidal area divided by five intervals over declared slots 0..5",
+      "time_to_first_improvement_seconds": null,
+      "time_to_first_improvement_right_censored": true,
+      "time_to_first_improvement_censor_seconds": 428.1926143951714,
+      "wall_seconds": 428.1926143951714,
+      "observed_token_usage": {
+        "input_tokens": 106622,
+        "cached_input_tokens": 91392,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 17568,
+        "reasoning_output_tokens": 14167,
+        "total_tokens": 124190
+      },
+      "codex_rollouts": [
+        {
+          "session_id": "01a005a9-ef2d-7711-b21f-acf8364dcf88",
+          "started_at": "2026-08-15T13:43:38.049Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T21-43-38-01a005a9-ef2d-7711-b21f-acf8364dcf88.jsonl",
+          "rollout_sha256": "786107a499f0e669f168bbd236534978866e0bb30fa897b942646cc393e0db8b",
+          "token_usage": {
+            "input_tokens": 36310,
+            "cached_input_tokens": 30464,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 7851,
+            "reasoning_output_tokens": 6725,
+            "total_tokens": 44161
+          }
+        },
+        {
+          "session_id": "01a005ac-886b-7b40-a44c-9e12145a4919",
+          "started_at": "2026-08-15T13:46:28.351Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T21-46-28-01a005ac-886b-7b40-a44c-9e12145a4919.jsonl",
+          "rollout_sha256": "eac0bd0ca47eb697fa8f5a3614401b737a946660d8f3c2460793509e0795d5c7",
+          "token_usage": {
+            "input_tokens": 35221,
+            "cached_input_tokens": 30464,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 5719,
+            "reasoning_output_tokens": 4539,
+            "total_tokens": 40940
+          }
+        },
+        {
+          "session_id": "01a005ae-85c7-7842-b2bd-44910de7df1c",
+          "started_at": "2026-08-15T13:48:38.746Z",
+          "originator": "codex_exec",
+          "codex_cli_version": "0.147.0",
+          "rollout_path": "/root/.codex/sessions/2026/08/15/rollout-2026-08-15T21-48-38-01a005ae-85c7-7842-b2bd-44910de7df1c.jsonl",
+          "rollout_sha256": "db09936a3fa1e493b8e3870dc933e49153b5926dcb49036d08f237d1aac60966",
+          "token_usage": {
+            "input_tokens": 35091,
+            "cached_input_tokens": 30464,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 3998,
+            "reasoning_output_tokens": 2903,
+            "total_tokens": 39089
+          }
+        }
+      ],
+      "failure_classes": {
+        "patch_apply_failed": 3
+      },
+      "patch_type_counts": {
+        "diff": 3
+      },
+      "proposal_model_counts": {
+        "headless/codex@gpt-5.5?effort=high": 3
+      },
+      "resume_consistency": {
+        "safe_target_generations": 4,
+        "no_new_proposal_artifacts": true,
+        "database_row_idempotent": false,
+        "sqlite_table_count_deltas": {
+          "archive": 1,
+          "attempt_log": 0,
+          "generation_event_log": 0,
+          "metadata_store": 0,
+          "programs": 1
+        },
+        "observation": "Proposal generations, prompts, metrics, and attempts were preserved, but reopening inserted one additional baseline program/archive row."
+      }
+    }
+  ],
+  "artifacts": {
+    "runtime_root": "runs/shinka_native_p2_r0",
+    "runtime_file_count": 1169,
+    "runtime_tree_sha256": "6645f1cef882029bbbb2fccf35b344211c42878d7303e35bfe18d1c74bfe0684",
+    "runtime_tree_definition": "SHA-256 of sorted '<file sha256><two spaces><relative path><newline>' entries",
+    "formal_manifest": "runs/shinka_native_p2_r0/formal/manifest.json",
+    "formal_manifest_sha256": "f39f87d13e071aaf26acbbb044fd266fc05e53c60cdbaea7dcb4fd56accbf59e",
+    "protocol_receipt": "runs/shinka_native_p2_r0/protocol/protocol.json",
+    "protocol_receipt_sha256": "602660f00c6751ef810ba294865c2f2afb034bf8bae42c0c112b31ff90e78029",
+    "pip_freeze": "runs/shinka_native_p2_r0/protocol/pip-freeze.txt",
+    "smoke_official": "runs/shinka_native_p2_r0/smoke/official",
+    "smoke_native": "runs/shinka_native_p2_r0/smoke/native"
+  },
+  "authority": {
+    "search_score_authority": "SHINKA_SCHEDULING_ONLY",
+    "scientific_outcome_authority": "FROZEN_EVALUATOR_AND_ELIGIBILITY_RULES",
+    "superiority_claim_permitted": false,
+    "native_non_inferiority_claim_permitted": false
+  },
+  "validation": {
+    "formal_integrity_assertions": "PASS",
+    "artifact_parse": "PASS",
+    "targeted_command": "python -m pytest tests/test_shinka_native.py tests/test_shinka_native_semantic_parity.py -q",
+    "targeted_result": "3 passed"
+  }
+}

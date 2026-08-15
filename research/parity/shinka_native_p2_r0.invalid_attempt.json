@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "protocol_id": "SHINKA_NATIVE_P2_R0",
+  "classification": "INVALID_MECHANICS_OR_ADAPTER",
+  "excluded_from_p2_statistics": true,
+  "reason": "The first driver used the declared target of 6 for a resume check after the Native main process stopped early at generation 3. That resume invocation created generation 4 and began a new Codex proposal, violating the no-failure-resampling rule.",
+  "response": "The process group was interrupted immediately, the entire attempted matched block was excluded, all artifacts were preserved here, and the driver was changed so a resume probe targets max_observed_generation_index_plus_one and therefore cannot add a proposal generation.",
+  "affected_declared_runs": [
+    "p2-b01-official",
+    "p2-b01-native"
+  ],
+  "native_contaminating_resume_run_id": "p2-b01-native-resume-check",
+  "original_driver_sha256": "27604a482a0e82239b64556eb997007878021e2248a87a69be4823fd65b8a009",
+  "recovery_policy": "Restart all 10 matched blocks in a fresh formal directory; do not reuse either arm from the invalid block."
+}

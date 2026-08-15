@@ -1,0 +1,1805 @@
+{
+  "finished_at": "2026-08-15T13:51:37.676094+00:00",
+  "protocol_id": "SHINKA_NATIVE_P2_R0",
+  "protocol_sha256": "c71e497f860461486a38dc9de50a05716eca3fa8dac65bdf8821b95d9ea71aeb",
+  "runs": [
+    {
+      "arm": "official",
+      "block": 1,
+      "command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "shinka.cli.run",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results_dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_01/official",
+        "--num_generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "exit_code": 0,
+      "finished_at": "2026-08-15T11:30:31.855193+00:00",
+      "position_in_block": 1,
+      "pre_resume_database_sha256": "a7046607c90fb6debef3fbf31f94443f7166e7520d54dac64c23fd6f63363adf",
+      "pre_resume_state": {
+        "failure_count": 3,
+        "generation_directories": [
+          "gen_0",
+          "gen_1",
+          "gen_2",
+          "gen_3"
+        ],
+        "headless_prompt_count": 6,
+        "metrics_count": 1,
+        "sqlite_table_counts": {
+          "archive": 1,
+          "attempt_log": 3,
+          "generation_event_log": 0,
+          "metadata_store": 5,
+          "programs": 1
+        }
+      },
+      "results_dir": "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_01/official",
+      "resume_check": {
+        "command": [
+          "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+          "-m",
+          "shinka.cli.run",
+          "--task-dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+          "--results_dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_01/official",
+          "--num_generations",
+          "4",
+          "--config-fname",
+          "shinka.yaml"
+        ],
+        "declared_main_target_generations": 6,
+        "exit_code": 0,
+        "no_new_generation_directories": true,
+        "no_new_headless_prompts": true,
+        "no_new_metrics": true,
+        "post_resume_state": {
+          "failure_count": 3,
+          "generation_directories": [
+            "gen_0",
+            "gen_1",
+            "gen_2",
+            "gen_3"
+          ],
+          "headless_prompt_count": 6,
+          "metrics_count": 1,
+          "sqlite_table_counts": {
+            "archive": 2,
+            "attempt_log": 3,
+            "generation_event_log": 0,
+            "metadata_store": 5,
+            "programs": 2
+          }
+        },
+        "safe_target_generations": 4,
+        "wall_seconds": 23.132685584947467
+      },
+      "run_id": "p2-b01-official",
+      "sequence": 1,
+      "started_at": "2026-08-15T11:22:23.608017+00:00",
+      "status": "COMPLETE_NO_RETRY",
+      "wall_seconds": 488.2470134012401
+    },
+    {
+      "arm": "native",
+      "block": 1,
+      "command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "evidence_evolve",
+        "search",
+        "shinka-native",
+        "--run-id",
+        "p2-b01-native",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_01/native",
+        "--num-generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "exit_code": 0,
+      "finished_at": "2026-08-15T11:39:57.693240+00:00",
+      "position_in_block": 2,
+      "pre_resume_database_sha256": "95d68bd46dfe78f9d682178f8f29784e579fb801dc30dfd243869b9ba44012fa",
+      "pre_resume_state": {
+        "failure_count": 5,
+        "generation_directories": [
+          "gen_0",
+          "gen_1",
+          "gen_2",
+          "gen_3",
+          "gen_4",
+          "gen_5"
+        ],
+        "headless_prompt_count": 10,
+        "metrics_count": 1,
+        "sqlite_table_counts": {
+          "archive": 1,
+          "attempt_log": 5,
+          "generation_event_log": 0,
+          "metadata_store": 5,
+          "programs": 1
+        }
+      },
+      "results_dir": "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_01/native",
+      "resume_check": {
+        "command": [
+          "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+          "-m",
+          "evidence_evolve",
+          "search",
+          "shinka-native",
+          "--run-id",
+          "p2-b01-native-resume-check",
+          "--task-dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+          "--results-dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_01/native",
+          "--num-generations",
+          "6",
+          "--config-fname",
+          "shinka.yaml"
+        ],
+        "declared_main_target_generations": 6,
+        "exit_code": 0,
+        "no_new_generation_directories": true,
+        "no_new_headless_prompts": true,
+        "no_new_metrics": true,
+        "post_resume_state": {
+          "failure_count": 5,
+          "generation_directories": [
+            "gen_0",
+            "gen_1",
+            "gen_2",
+            "gen_3",
+            "gen_4",
+            "gen_5"
+          ],
+          "headless_prompt_count": 10,
+          "metrics_count": 1,
+          "sqlite_table_counts": {
+            "archive": 2,
+            "attempt_log": 5,
+            "generation_event_log": 0,
+            "metadata_store": 5,
+            "programs": 2
+          }
+        },
+        "safe_target_generations": 6,
+        "wall_seconds": 33.29041056521237
+      },
+      "run_id": "p2-b01-native",
+      "sequence": 2,
+      "started_at": "2026-08-15T11:30:54.999587+00:00",
+      "status": "COMPLETE_NO_RETRY",
+      "wall_seconds": 542.6931433007121
+    },
+    {
+      "arm": "native",
+      "block": 2,
+      "command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "evidence_evolve",
+        "search",
+        "shinka-native",
+        "--run-id",
+        "p2-b02-native",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_02/native",
+        "--num-generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "exit_code": 0,
+      "finished_at": "2026-08-15T11:49:34.476742+00:00",
+      "position_in_block": 1,
+      "pre_resume_database_sha256": "3876db05428bd993c730cae31ad54ab836feaef6c5eae424c15fe8714aa2be42",
+      "pre_resume_state": {
+        "failure_count": 5,
+        "generation_directories": [
+          "gen_0",
+          "gen_1",
+          "gen_2",
+          "gen_3",
+          "gen_4",
+          "gen_5"
+        ],
+        "headless_prompt_count": 10,
+        "metrics_count": 1,
+        "sqlite_table_counts": {
+          "archive": 1,
+          "attempt_log": 5,
+          "generation_event_log": 0,
+          "metadata_store": 5,
+          "programs": 1
+        }
+      },
+      "results_dir": "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_02/native",
+      "resume_check": {
+        "command": [
+          "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+          "-m",
+          "evidence_evolve",
+          "search",
+          "shinka-native",
+          "--run-id",
+          "p2-b02-native-resume-check",
+          "--task-dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+          "--results-dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_02/native",
+          "--num-generations",
+          "6",
+          "--config-fname",
+          "shinka.yaml"
+        ],
+        "declared_main_target_generations": 6,
+        "exit_code": 0,
+        "no_new_generation_directories": true,
+        "no_new_headless_prompts": true,
+        "no_new_metrics": true,
+        "post_resume_state": {
+          "failure_count": 5,
+          "generation_directories": [
+            "gen_0",
+            "gen_1",
+            "gen_2",
+            "gen_3",
+            "gen_4",
+            "gen_5"
+          ],
+          "headless_prompt_count": 10,
+          "metrics_count": 1,
+          "sqlite_table_counts": {
+            "archive": 2,
+            "attempt_log": 5,
+            "generation_event_log": 0,
+            "metadata_store": 5,
+            "programs": 2
+          }
+        },
+        "safe_target_generations": 6,
+        "wall_seconds": 33.68498980253935
+      },
+      "run_id": "p2-b02-native",
+      "sequence": 3,
+      "started_at": "2026-08-15T11:40:30.992794+00:00",
+      "status": "COMPLETE_NO_RETRY",
+      "wall_seconds": 543.4836470745504
+    },
+    {
+      "arm": "official",
+      "block": 2,
+      "command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "shinka.cli.run",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results_dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_02/official",
+        "--num_generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "exit_code": 0,
+      "finished_at": "2026-08-15T11:55:51.128860+00:00",
+      "position_in_block": 2,
+      "pre_resume_database_sha256": "38db7b776ffaac94532a6b6ca911597fd2e6d39efde7dd1e2c884aaa040676d2",
+      "pre_resume_state": {
+        "failure_count": 3,
+        "generation_directories": [
+          "gen_0",
+          "gen_1",
+          "gen_2",
+          "gen_3"
+        ],
+        "headless_prompt_count": 6,
+        "metrics_count": 1,
+        "sqlite_table_counts": {
+          "archive": 1,
+          "attempt_log": 3,
+          "generation_event_log": 0,
+          "metadata_store": 5,
+          "programs": 1
+        }
+      },
+      "results_dir": "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_02/official",
+      "resume_check": {
+        "command": [
+          "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+          "-m",
+          "shinka.cli.run",
+          "--task-dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+          "--results_dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_02/official",
+          "--num_generations",
+          "4",
+          "--config-fname",
+          "shinka.yaml"
+        ],
+        "declared_main_target_generations": 6,
+        "exit_code": 0,
+        "no_new_generation_directories": true,
+        "no_new_headless_prompts": true,
+        "no_new_metrics": true,
+        "post_resume_state": {
+          "failure_count": 3,
+          "generation_directories": [
+            "gen_0",
+            "gen_1",
+            "gen_2",
+            "gen_3"
+          ],
+          "headless_prompt_count": 6,
+          "metrics_count": 1,
+          "sqlite_table_counts": {
+            "archive": 2,
+            "attempt_log": 3,
+            "generation_event_log": 0,
+            "metadata_store": 5,
+            "programs": 2
+          }
+        },
+        "safe_target_generations": 4,
+        "wall_seconds": 23.0557750351727
+      },
+      "run_id": "p2-b02-official",
+      "sequence": 4,
+      "started_at": "2026-08-15T11:50:08.170709+00:00",
+      "status": "COMPLETE_NO_RETRY",
+      "wall_seconds": 342.95775874890387
+    },
+    {
+      "arm": "official",
+      "block": 3,
+      "command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "shinka.cli.run",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results_dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_03/official",
+        "--num_generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "exit_code": 0,
+      "finished_at": "2026-08-15T12:02:02.213614+00:00",
+      "position_in_block": 1,
+      "pre_resume_database_sha256": "1dedb942a06e8bfa22d53f14f202b5db13e726fb9ad5f5275d53fe9257c26d33",
+      "pre_resume_state": {
+        "failure_count": 3,
+        "generation_directories": [
+          "gen_0",
+          "gen_1",
+          "gen_2",
+          "gen_3"
+        ],
+        "headless_prompt_count": 6,
+        "metrics_count": 1,
+        "sqlite_table_counts": {
+          "archive": 1,
+          "attempt_log": 3,
+          "generation_event_log": 0,
+          "metadata_store": 5,
+          "programs": 1
+        }
+      },
+      "results_dir": "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_03/official",
+      "resume_check": {
+        "command": [
+          "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+          "-m",
+          "shinka.cli.run",
+          "--task-dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+          "--results_dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_03/official",
+          "--num_generations",
+          "4",
+          "--config-fname",
+          "shinka.yaml"
+        ],
+        "declared_main_target_generations": 6,
+        "exit_code": 0,
+        "no_new_generation_directories": true,
+        "no_new_headless_prompts": true,
+        "no_new_metrics": true,
+        "post_resume_state": {
+          "failure_count": 3,
+          "generation_directories": [
+            "gen_0",
+            "gen_1",
+            "gen_2",
+            "gen_3"
+          ],
+          "headless_prompt_count": 6,
+          "metrics_count": 1,
+          "sqlite_table_counts": {
+            "archive": 2,
+            "attempt_log": 3,
+            "generation_event_log": 0,
+            "metadata_store": 5,
+            "programs": 2
+          }
+        },
+        "safe_target_generations": 4,
+        "wall_seconds": 23.665601344779134
+      },
+      "run_id": "p2-b03-official",
+      "sequence": 5,
+      "started_at": "2026-08-15T11:56:14.193422+00:00",
+      "status": "COMPLETE_NO_RETRY",
+      "wall_seconds": 348.01925098896027
+    },
+    {
+      "arm": "native",
+      "block": 3,
+      "command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "evidence_evolve",
+        "search",
+        "shinka-native",
+        "--run-id",
+        "p2-b03-native",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_03/native",
+        "--num-generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "exit_code": 0,
+      "finished_at": "2026-08-15T12:09:46.259330+00:00",
+      "position_in_block": 2,
+      "pre_resume_database_sha256": "9e244c38529ce4cc5d599b1605cbd4f51427ab4aec396e91a3f5d9120cb09d18",
+      "pre_resume_state": {
+        "failure_count": 3,
+        "generation_directories": [
+          "gen_0",
+          "gen_1",
+          "gen_2",
+          "gen_3"
+        ],
+        "headless_prompt_count": 6,
+        "metrics_count": 1,
+        "sqlite_table_counts": {
+          "archive": 1,
+          "attempt_log": 3,
+          "generation_event_log": 0,
+          "metadata_store": 5,
+          "programs": 1
+        }
+      },
+      "results_dir": "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_03/native",
+      "resume_check": {
+        "command": [
+          "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+          "-m",
+          "evidence_evolve",
+          "search",
+          "shinka-native",
+          "--run-id",
+          "p2-b03-native-resume-check",
+          "--task-dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+          "--results-dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_03/native",
+          "--num-generations",
+          "4",
+          "--config-fname",
+          "shinka.yaml"
+        ],
+        "declared_main_target_generations": 6,
+        "exit_code": 0,
+        "no_new_generation_directories": true,
+        "no_new_headless_prompts": true,
+        "no_new_metrics": true,
+        "post_resume_state": {
+          "failure_count": 3,
+          "generation_directories": [
+            "gen_0",
+            "gen_1",
+            "gen_2",
+            "gen_3"
+          ],
+          "headless_prompt_count": 6,
+          "metrics_count": 1,
+          "sqlite_table_counts": {
+            "archive": 2,
+            "attempt_log": 3,
+            "generation_event_log": 0,
+            "metadata_store": 5,
+            "programs": 2
+          }
+        },
+        "safe_target_generations": 4,
+        "wall_seconds": 24.389846123754978
+      },
+      "run_id": "p2-b03-native",
+      "sequence": 6,
+      "started_at": "2026-08-15T12:02:25.887082+00:00",
+      "status": "COMPLETE_NO_RETRY",
+      "wall_seconds": 440.37117580883205
+    },
+    {
+      "arm": "native",
+      "block": 4,
+      "command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "evidence_evolve",
+        "search",
+        "shinka-native",
+        "--run-id",
+        "p2-b04-native",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_04/native",
+        "--num-generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "exit_code": 0,
+      "finished_at": "2026-08-15T12:15:09.252475+00:00",
+      "position_in_block": 1,
+      "pre_resume_database_sha256": "5f3ca982d68a139210b426d5c79c873c7fcc3a7dc07674cdc0c2088f6c7b9e4c",
+      "pre_resume_state": {
+        "failure_count": 3,
+        "generation_directories": [
+          "gen_0",
+          "gen_1",
+          "gen_2",
+          "gen_3"
+        ],
+        "headless_prompt_count": 6,
+        "metrics_count": 1,
+        "sqlite_table_counts": {
+          "archive": 1,
+          "attempt_log": 3,
+          "generation_event_log": 0,
+          "metadata_store": 5,
+          "programs": 1
+        }
+      },
+      "results_dir": "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_04/native",
+      "resume_check": {
+        "command": [
+          "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+          "-m",
+          "evidence_evolve",
+          "search",
+          "shinka-native",
+          "--run-id",
+          "p2-b04-native-resume-check",
+          "--task-dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+          "--results-dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_04/native",
+          "--num-generations",
+          "4",
+          "--config-fname",
+          "shinka.yaml"
+        ],
+        "declared_main_target_generations": 6,
+        "exit_code": 0,
+        "no_new_generation_directories": true,
+        "no_new_headless_prompts": true,
+        "no_new_metrics": true,
+        "post_resume_state": {
+          "failure_count": 3,
+          "generation_directories": [
+            "gen_0",
+            "gen_1",
+            "gen_2",
+            "gen_3"
+          ],
+          "headless_prompt_count": 6,
+          "metrics_count": 1,
+          "sqlite_table_counts": {
+            "archive": 2,
+            "attempt_log": 3,
+            "generation_event_log": 0,
+            "metadata_store": 5,
+            "programs": 2
+          }
+        },
+        "safe_target_generations": 4,
+        "wall_seconds": 25.352249585092068
+      },
+      "run_id": "p2-b04-native",
+      "sequence": 7,
+      "started_at": "2026-08-15T12:10:10.657109+00:00",
+      "status": "COMPLETE_NO_RETRY",
+      "wall_seconds": 298.5940328575671
+    },
+    {
+      "arm": "official",
+      "block": 4,
+      "command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "shinka.cli.run",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results_dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_04/official",
+        "--num_generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "exit_code": 0,
+      "finished_at": "2026-08-15T12:25:13.044086+00:00",
+      "position_in_block": 2,
+      "pre_resume_database_sha256": "a7b514c1d9687c59cc3ba07aebe1a558da1d8d9195182312c11094879a0cfe47",
+      "pre_resume_state": {
+        "failure_count": 5,
+        "generation_directories": [
+          "gen_0",
+          "gen_1",
+          "gen_2",
+          "gen_3",
+          "gen_4",
+          "gen_5"
+        ],
+        "headless_prompt_count": 10,
+        "metrics_count": 1,
+        "sqlite_table_counts": {
+          "archive": 1,
+          "attempt_log": 5,
+          "generation_event_log": 0,
+          "metadata_store": 5,
+          "programs": 1
+        }
+      },
+      "results_dir": "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_04/official",
+      "resume_check": {
+        "command": [
+          "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+          "-m",
+          "shinka.cli.run",
+          "--task-dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+          "--results_dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_04/official",
+          "--num_generations",
+          "6",
+          "--config-fname",
+          "shinka.yaml"
+        ],
+        "declared_main_target_generations": 6,
+        "exit_code": 0,
+        "no_new_generation_directories": true,
+        "no_new_headless_prompts": true,
+        "no_new_metrics": true,
+        "post_resume_state": {
+          "failure_count": 5,
+          "generation_directories": [
+            "gen_0",
+            "gen_1",
+            "gen_2",
+            "gen_3",
+            "gen_4",
+            "gen_5"
+          ],
+          "headless_prompt_count": 10,
+          "metrics_count": 1,
+          "sqlite_table_counts": {
+            "archive": 2,
+            "attempt_log": 5,
+            "generation_event_log": 0,
+            "metadata_store": 5,
+            "programs": 2
+          }
+        },
+        "safe_target_generations": 6,
+        "wall_seconds": 33.215912176296115
+      },
+      "run_id": "p2-b04-official",
+      "sequence": 8,
+      "started_at": "2026-08-15T12:15:34.613124+00:00",
+      "status": "COMPLETE_NO_RETRY",
+      "wall_seconds": 578.4295882824808
+    },
+    {
+      "arm": "official",
+      "block": 5,
+      "command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "shinka.cli.run",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results_dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_05/official",
+        "--num_generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "exit_code": 0,
+      "finished_at": "2026-08-15T12:31:34.583246+00:00",
+      "position_in_block": 1,
+      "pre_resume_database_sha256": "600ad210e0b4d4edd417b39098cd6a80c1e52a252539fcc6874742c6aa25cbd5",
+      "pre_resume_state": {
+        "failure_count": 3,
+        "generation_directories": [
+          "gen_0",
+          "gen_1",
+          "gen_2",
+          "gen_3"
+        ],
+        "headless_prompt_count": 6,
+        "metrics_count": 1,
+        "sqlite_table_counts": {
+          "archive": 1,
+          "attempt_log": 3,
+          "generation_event_log": 0,
+          "metadata_store": 5,
+          "programs": 1
+        }
+      },
+      "results_dir": "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_05/official",
+      "resume_check": {
+        "command": [
+          "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+          "-m",
+          "shinka.cli.run",
+          "--task-dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+          "--results_dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_05/official",
+          "--num_generations",
+          "4",
+          "--config-fname",
+          "shinka.yaml"
+        ],
+        "declared_main_target_generations": 6,
+        "exit_code": 0,
+        "no_new_generation_directories": true,
+        "no_new_headless_prompts": true,
+        "no_new_metrics": true,
+        "post_resume_state": {
+          "failure_count": 3,
+          "generation_directories": [
+            "gen_0",
+            "gen_1",
+            "gen_2",
+            "gen_3"
+          ],
+          "headless_prompt_count": 6,
+          "metrics_count": 1,
+          "sqlite_table_counts": {
+            "archive": 2,
+            "attempt_log": 3,
+            "generation_event_log": 0,
+            "metadata_store": 5,
+            "programs": 2
+          }
+        },
+        "safe_target_generations": 4,
+        "wall_seconds": 23.38350984081626
+      },
+      "run_id": "p2-b05-official",
+      "sequence": 9,
+      "started_at": "2026-08-15T12:25:46.269802+00:00",
+      "status": "COMPLETE_NO_RETRY",
+      "wall_seconds": 348.31275161355734
+    },
+    {
+      "arm": "native",
+      "block": 5,
+      "command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "evidence_evolve",
+        "search",
+        "shinka-native",
+        "--run-id",
+        "p2-b05-native",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_05/native",
+        "--num-generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "exit_code": 0,
+      "finished_at": "2026-08-15T12:38:11.139565+00:00",
+      "position_in_block": 2,
+      "pre_resume_database_sha256": "0538f2c8abab65fdb5bd59bc0db0740a05e077a3ae3c19694605441e31ea2853",
+      "pre_resume_state": {
+        "failure_count": 3,
+        "generation_directories": [
+          "gen_0",
+          "gen_1",
+          "gen_2",
+          "gen_3"
+        ],
+        "headless_prompt_count": 6,
+        "metrics_count": 1,
+        "sqlite_table_counts": {
+          "archive": 1,
+          "attempt_log": 3,
+          "generation_event_log": 0,
+          "metadata_store": 5,
+          "programs": 1
+        }
+      },
+      "results_dir": "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_05/native",
+      "resume_check": {
+        "command": [
+          "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+          "-m",
+          "evidence_evolve",
+          "search",
+          "shinka-native",
+          "--run-id",
+          "p2-b05-native-resume-check",
+          "--task-dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+          "--results-dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_05/native",
+          "--num-generations",
+          "4",
+          "--config-fname",
+          "shinka.yaml"
+        ],
+        "declared_main_target_generations": 6,
+        "exit_code": 0,
+        "no_new_generation_directories": true,
+        "no_new_headless_prompts": true,
+        "no_new_metrics": true,
+        "post_resume_state": {
+          "failure_count": 3,
+          "generation_directories": [
+            "gen_0",
+            "gen_1",
+            "gen_2",
+            "gen_3"
+          ],
+          "headless_prompt_count": 6,
+          "metrics_count": 1,
+          "sqlite_table_counts": {
+            "archive": 2,
+            "attempt_log": 3,
+            "generation_event_log": 0,
+            "metadata_store": 5,
+            "programs": 2
+          }
+        },
+        "safe_target_generations": 4,
+        "wall_seconds": 23.661437327042222
+      },
+      "run_id": "p2-b05-native",
+      "sequence": 10,
+      "started_at": "2026-08-15T12:31:57.995978+00:00",
+      "status": "COMPLETE_NO_RETRY",
+      "wall_seconds": 373.14282269589603
+    },
+    {
+      "arm": "native",
+      "block": 6,
+      "command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "evidence_evolve",
+        "search",
+        "shinka-native",
+        "--run-id",
+        "p2-b06-native",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_06/native",
+        "--num-generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "exit_code": 0,
+      "finished_at": "2026-08-15T12:45:09.909373+00:00",
+      "position_in_block": 1,
+      "pre_resume_database_sha256": "b0e145d22c258cd7f323fb0c4b74a2243d9d487d29dd69f76488e8876b843e88",
+      "pre_resume_state": {
+        "failure_count": 3,
+        "generation_directories": [
+          "gen_0",
+          "gen_1",
+          "gen_2",
+          "gen_3"
+        ],
+        "headless_prompt_count": 6,
+        "metrics_count": 1,
+        "sqlite_table_counts": {
+          "archive": 1,
+          "attempt_log": 3,
+          "generation_event_log": 0,
+          "metadata_store": 5,
+          "programs": 1
+        }
+      },
+      "results_dir": "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_06/native",
+      "resume_check": {
+        "command": [
+          "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+          "-m",
+          "evidence_evolve",
+          "search",
+          "shinka-native",
+          "--run-id",
+          "p2-b06-native-resume-check",
+          "--task-dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+          "--results-dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_06/native",
+          "--num-generations",
+          "4",
+          "--config-fname",
+          "shinka.yaml"
+        ],
+        "declared_main_target_generations": 6,
+        "exit_code": 0,
+        "no_new_generation_directories": true,
+        "no_new_headless_prompts": true,
+        "no_new_metrics": true,
+        "post_resume_state": {
+          "failure_count": 3,
+          "generation_directories": [
+            "gen_0",
+            "gen_1",
+            "gen_2",
+            "gen_3"
+          ],
+          "headless_prompt_count": 6,
+          "metrics_count": 1,
+          "sqlite_table_counts": {
+            "archive": 2,
+            "attempt_log": 3,
+            "generation_event_log": 0,
+            "metadata_store": 5,
+            "programs": 2
+          }
+        },
+        "safe_target_generations": 4,
+        "wall_seconds": 26.20097434706986
+      },
+      "run_id": "p2-b06-native",
+      "sequence": 11,
+      "started_at": "2026-08-15T12:38:34.809523+00:00",
+      "status": "COMPLETE_NO_RETRY",
+      "wall_seconds": 395.0980685688555
+    },
+    {
+      "arm": "official",
+      "block": 6,
+      "command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "shinka.cli.run",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results_dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_06/official",
+        "--num_generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "exit_code": 0,
+      "finished_at": "2026-08-15T12:54:01.107982+00:00",
+      "position_in_block": 2,
+      "pre_resume_database_sha256": "92a6844597584f2278fb533f0783511a9e677e86351ed55c959f8c9a4145eaa0",
+      "pre_resume_state": {
+        "failure_count": 5,
+        "generation_directories": [
+          "gen_0",
+          "gen_1",
+          "gen_2",
+          "gen_3",
+          "gen_4",
+          "gen_5"
+        ],
+        "headless_prompt_count": 10,
+        "metrics_count": 1,
+        "sqlite_table_counts": {
+          "archive": 1,
+          "attempt_log": 5,
+          "generation_event_log": 0,
+          "metadata_store": 5,
+          "programs": 1
+        }
+      },
+      "results_dir": "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_06/official",
+      "resume_check": {
+        "command": [
+          "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+          "-m",
+          "shinka.cli.run",
+          "--task-dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+          "--results_dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_06/official",
+          "--num_generations",
+          "6",
+          "--config-fname",
+          "shinka.yaml"
+        ],
+        "declared_main_target_generations": 6,
+        "exit_code": 0,
+        "no_new_generation_directories": true,
+        "no_new_headless_prompts": true,
+        "no_new_metrics": true,
+        "post_resume_state": {
+          "failure_count": 5,
+          "generation_directories": [
+            "gen_0",
+            "gen_1",
+            "gen_2",
+            "gen_3",
+            "gen_4",
+            "gen_5"
+          ],
+          "headless_prompt_count": 10,
+          "metrics_count": 1,
+          "sqlite_table_counts": {
+            "archive": 2,
+            "attempt_log": 5,
+            "generation_event_log": 0,
+            "metadata_store": 5,
+            "programs": 2
+          }
+        },
+        "safe_target_generations": 6,
+        "wall_seconds": 36.820323415100574
+      },
+      "run_id": "p2-b06-official",
+      "sequence": 12,
+      "started_at": "2026-08-15T12:45:36.116267+00:00",
+      "status": "COMPLETE_NO_RETRY",
+      "wall_seconds": 504.9908422958106
+    },
+    {
+      "arm": "official",
+      "block": 7,
+      "command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "shinka.cli.run",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results_dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_07/official",
+        "--num_generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "exit_code": 0,
+      "finished_at": "2026-08-15T13:02:42.651390+00:00",
+      "position_in_block": 1,
+      "pre_resume_database_sha256": "cf18dd8aaac65a76306a8b492617855bd4fa7c170af9fee03bdb7d3c1893264b",
+      "pre_resume_state": {
+        "failure_count": 3,
+        "generation_directories": [
+          "gen_0",
+          "gen_1",
+          "gen_2",
+          "gen_3"
+        ],
+        "headless_prompt_count": 6,
+        "metrics_count": 1,
+        "sqlite_table_counts": {
+          "archive": 1,
+          "attempt_log": 3,
+          "generation_event_log": 0,
+          "metadata_store": 5,
+          "programs": 1
+        }
+      },
+      "results_dir": "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_07/official",
+      "resume_check": {
+        "command": [
+          "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+          "-m",
+          "shinka.cli.run",
+          "--task-dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+          "--results_dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_07/official",
+          "--num_generations",
+          "4",
+          "--config-fname",
+          "shinka.yaml"
+        ],
+        "declared_main_target_generations": 6,
+        "exit_code": 0,
+        "no_new_generation_directories": true,
+        "no_new_headless_prompts": true,
+        "no_new_metrics": true,
+        "post_resume_state": {
+          "failure_count": 3,
+          "generation_directories": [
+            "gen_0",
+            "gen_1",
+            "gen_2",
+            "gen_3"
+          ],
+          "headless_prompt_count": 6,
+          "metrics_count": 1,
+          "sqlite_table_counts": {
+            "archive": 2,
+            "attempt_log": 3,
+            "generation_event_log": 0,
+            "metadata_store": 5,
+            "programs": 2
+          }
+        },
+        "safe_target_generations": 4,
+        "wall_seconds": 22.81376094184816
+      },
+      "run_id": "p2-b07-official",
+      "sequence": 13,
+      "started_at": "2026-08-15T12:54:37.936930+00:00",
+      "status": "COMPLETE_NO_RETRY",
+      "wall_seconds": 484.71349565684795
+    },
+    {
+      "arm": "native",
+      "block": 7,
+      "command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "evidence_evolve",
+        "search",
+        "shinka-native",
+        "--run-id",
+        "p2-b07-native",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_07/native",
+        "--num-generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "exit_code": 0,
+      "finished_at": "2026-08-15T13:09:13.653596+00:00",
+      "position_in_block": 2,
+      "pre_resume_database_sha256": "05775e1c3f7ccf4db480df1a39ce6a6f3b5d347b34b8ee681dbb7d956d133f89",
+      "pre_resume_state": {
+        "failure_count": 3,
+        "generation_directories": [
+          "gen_0",
+          "gen_1",
+          "gen_2",
+          "gen_3"
+        ],
+        "headless_prompt_count": 6,
+        "metrics_count": 1,
+        "sqlite_table_counts": {
+          "archive": 1,
+          "attempt_log": 3,
+          "generation_event_log": 0,
+          "metadata_store": 5,
+          "programs": 1
+        }
+      },
+      "results_dir": "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_07/native",
+      "resume_check": {
+        "command": [
+          "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+          "-m",
+          "evidence_evolve",
+          "search",
+          "shinka-native",
+          "--run-id",
+          "p2-b07-native-resume-check",
+          "--task-dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+          "--results-dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_07/native",
+          "--num-generations",
+          "4",
+          "--config-fname",
+          "shinka.yaml"
+        ],
+        "declared_main_target_generations": 6,
+        "exit_code": 0,
+        "no_new_generation_directories": true,
+        "no_new_headless_prompts": true,
+        "no_new_metrics": true,
+        "post_resume_state": {
+          "failure_count": 3,
+          "generation_directories": [
+            "gen_0",
+            "gen_1",
+            "gen_2",
+            "gen_3"
+          ],
+          "headless_prompt_count": 6,
+          "metrics_count": 1,
+          "sqlite_table_counts": {
+            "archive": 2,
+            "attempt_log": 3,
+            "generation_event_log": 0,
+            "metadata_store": 5,
+            "programs": 2
+          }
+        },
+        "safe_target_generations": 4,
+        "wall_seconds": 23.34017664566636
+      },
+      "run_id": "p2-b07-native",
+      "sequence": 14,
+      "started_at": "2026-08-15T13:03:05.474685+00:00",
+      "status": "COMPLETE_NO_RETRY",
+      "wall_seconds": 368.1775936484337
+    },
+    {
+      "arm": "native",
+      "block": 8,
+      "command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "evidence_evolve",
+        "search",
+        "shinka-native",
+        "--run-id",
+        "p2-b08-native",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_08/native",
+        "--num-generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "exit_code": 0,
+      "finished_at": "2026-08-15T13:14:32.713728+00:00",
+      "position_in_block": 1,
+      "pre_resume_database_sha256": "a62cebf24273e939b0dc04b261a8d69ad0f97598a9c24e069427f31fd2718fea",
+      "pre_resume_state": {
+        "failure_count": 3,
+        "generation_directories": [
+          "gen_0",
+          "gen_1",
+          "gen_2",
+          "gen_3"
+        ],
+        "headless_prompt_count": 6,
+        "metrics_count": 1,
+        "sqlite_table_counts": {
+          "archive": 1,
+          "attempt_log": 3,
+          "generation_event_log": 0,
+          "metadata_store": 5,
+          "programs": 1
+        }
+      },
+      "results_dir": "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_08/native",
+      "resume_check": {
+        "command": [
+          "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+          "-m",
+          "evidence_evolve",
+          "search",
+          "shinka-native",
+          "--run-id",
+          "p2-b08-native-resume-check",
+          "--task-dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+          "--results-dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_08/native",
+          "--num-generations",
+          "4",
+          "--config-fname",
+          "shinka.yaml"
+        ],
+        "declared_main_target_generations": 6,
+        "exit_code": 0,
+        "no_new_generation_directories": true,
+        "no_new_headless_prompts": true,
+        "no_new_metrics": true,
+        "post_resume_state": {
+          "failure_count": 3,
+          "generation_directories": [
+            "gen_0",
+            "gen_1",
+            "gen_2",
+            "gen_3"
+          ],
+          "headless_prompt_count": 6,
+          "metrics_count": 1,
+          "sqlite_table_counts": {
+            "archive": 2,
+            "attempt_log": 3,
+            "generation_event_log": 0,
+            "metadata_store": 5,
+            "programs": 2
+          }
+        },
+        "safe_target_generations": 4,
+        "wall_seconds": 23.387896539643407
+      },
+      "run_id": "p2-b08-native",
+      "sequence": 15,
+      "started_at": "2026-08-15T13:09:37.046784+00:00",
+      "status": "COMPLETE_NO_RETRY",
+      "wall_seconds": 295.66453579068184
+    },
+    {
+      "arm": "official",
+      "block": 8,
+      "command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "shinka.cli.run",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results_dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_08/official",
+        "--num_generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "exit_code": 0,
+      "finished_at": "2026-08-15T13:22:14.227773+00:00",
+      "position_in_block": 2,
+      "pre_resume_database_sha256": "97102297262ef6494d57947bc875c0f165ad7a75d42bd842492d8a1d2f37f239",
+      "pre_resume_state": {
+        "failure_count": 3,
+        "generation_directories": [
+          "gen_0",
+          "gen_1",
+          "gen_2",
+          "gen_3"
+        ],
+        "headless_prompt_count": 6,
+        "metrics_count": 1,
+        "sqlite_table_counts": {
+          "archive": 1,
+          "attempt_log": 3,
+          "generation_event_log": 0,
+          "metadata_store": 5,
+          "programs": 1
+        }
+      },
+      "results_dir": "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_08/official",
+      "resume_check": {
+        "command": [
+          "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+          "-m",
+          "shinka.cli.run",
+          "--task-dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+          "--results_dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_08/official",
+          "--num_generations",
+          "4",
+          "--config-fname",
+          "shinka.yaml"
+        ],
+        "declared_main_target_generations": 6,
+        "exit_code": 0,
+        "no_new_generation_directories": true,
+        "no_new_headless_prompts": true,
+        "no_new_metrics": true,
+        "post_resume_state": {
+          "failure_count": 3,
+          "generation_directories": [
+            "gen_0",
+            "gen_1",
+            "gen_2",
+            "gen_3"
+          ],
+          "headless_prompt_count": 6,
+          "metrics_count": 1,
+          "sqlite_table_counts": {
+            "archive": 2,
+            "attempt_log": 3,
+            "generation_event_log": 0,
+            "metadata_store": 5,
+            "programs": 2
+          }
+        },
+        "safe_target_generations": 4,
+        "wall_seconds": 29.070363448932767
+      },
+      "run_id": "p2-b08-official",
+      "sequence": 16,
+      "started_at": "2026-08-15T13:14:56.127708+00:00",
+      "status": "COMPLETE_NO_RETRY",
+      "wall_seconds": 438.09893051348627
+    },
+    {
+      "arm": "official",
+      "block": 9,
+      "command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "shinka.cli.run",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results_dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_09/official",
+        "--num_generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "exit_code": 0,
+      "finished_at": "2026-08-15T13:29:11.282506+00:00",
+      "position_in_block": 1,
+      "pre_resume_database_sha256": "36038053131a8197d9ec1110ebceb7ec4baf7bfc2d32ea3ed4fa87f226d7e9c1",
+      "pre_resume_state": {
+        "failure_count": 3,
+        "generation_directories": [
+          "gen_0",
+          "gen_1",
+          "gen_2",
+          "gen_3"
+        ],
+        "headless_prompt_count": 6,
+        "metrics_count": 1,
+        "sqlite_table_counts": {
+          "archive": 1,
+          "attempt_log": 3,
+          "generation_event_log": 0,
+          "metadata_store": 5,
+          "programs": 1
+        }
+      },
+      "results_dir": "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_09/official",
+      "resume_check": {
+        "command": [
+          "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+          "-m",
+          "shinka.cli.run",
+          "--task-dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+          "--results_dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_09/official",
+          "--num_generations",
+          "4",
+          "--config-fname",
+          "shinka.yaml"
+        ],
+        "declared_main_target_generations": 6,
+        "exit_code": 0,
+        "no_new_generation_directories": true,
+        "no_new_headless_prompts": true,
+        "no_new_metrics": true,
+        "post_resume_state": {
+          "failure_count": 3,
+          "generation_directories": [
+            "gen_0",
+            "gen_1",
+            "gen_2",
+            "gen_3"
+          ],
+          "headless_prompt_count": 6,
+          "metrics_count": 1,
+          "sqlite_table_counts": {
+            "archive": 2,
+            "attempt_log": 3,
+            "generation_event_log": 0,
+            "metadata_store": 5,
+            "programs": 2
+          }
+        },
+        "safe_target_generations": 4,
+        "wall_seconds": 23.198968928307295
+      },
+      "run_id": "p2-b09-official",
+      "sequence": 17,
+      "started_at": "2026-08-15T13:22:43.334467+00:00",
+      "status": "COMPLETE_NO_RETRY",
+      "wall_seconds": 387.94579041562974
+    },
+    {
+      "arm": "native",
+      "block": 9,
+      "command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "evidence_evolve",
+        "search",
+        "shinka-native",
+        "--run-id",
+        "p2-b09-native",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_09/native",
+        "--num-generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "exit_code": 0,
+      "finished_at": "2026-08-15T13:35:22.618369+00:00",
+      "position_in_block": 2,
+      "pre_resume_database_sha256": "b61196df93234c99e652ca30397301e94c97d014f2421c37e91d679838d68721",
+      "pre_resume_state": {
+        "failure_count": 3,
+        "generation_directories": [
+          "gen_0",
+          "gen_1",
+          "gen_2",
+          "gen_3"
+        ],
+        "headless_prompt_count": 6,
+        "metrics_count": 1,
+        "sqlite_table_counts": {
+          "archive": 1,
+          "attempt_log": 3,
+          "generation_event_log": 0,
+          "metadata_store": 5,
+          "programs": 1
+        }
+      },
+      "results_dir": "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_09/native",
+      "resume_check": {
+        "command": [
+          "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+          "-m",
+          "evidence_evolve",
+          "search",
+          "shinka-native",
+          "--run-id",
+          "p2-b09-native-resume-check",
+          "--task-dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+          "--results-dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_09/native",
+          "--num-generations",
+          "4",
+          "--config-fname",
+          "shinka.yaml"
+        ],
+        "declared_main_target_generations": 6,
+        "exit_code": 0,
+        "no_new_generation_directories": true,
+        "no_new_headless_prompts": true,
+        "no_new_metrics": true,
+        "post_resume_state": {
+          "failure_count": 3,
+          "generation_directories": [
+            "gen_0",
+            "gen_1",
+            "gen_2",
+            "gen_3"
+          ],
+          "headless_prompt_count": 6,
+          "metrics_count": 1,
+          "sqlite_table_counts": {
+            "archive": 2,
+            "attempt_log": 3,
+            "generation_event_log": 0,
+            "metadata_store": 5,
+            "programs": 2
+          }
+        },
+        "safe_target_generations": 4,
+        "wall_seconds": 23.692502092570066
+      },
+      "run_id": "p2-b09-native",
+      "sequence": 18,
+      "started_at": "2026-08-15T13:29:34.525025+00:00",
+      "status": "COMPLETE_NO_RETRY",
+      "wall_seconds": 348.091087827459
+    },
+    {
+      "arm": "native",
+      "block": 10,
+      "command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "evidence_evolve",
+        "search",
+        "shinka-native",
+        "--run-id",
+        "p2-b10-native",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_10/native",
+        "--num-generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "exit_code": 0,
+      "finished_at": "2026-08-15T13:43:04.509748+00:00",
+      "position_in_block": 1,
+      "pre_resume_database_sha256": "8bb61320b0b9665f65964269b94ea96bea6518a48123bbd445c5cd9fadbefdef",
+      "pre_resume_state": {
+        "failure_count": 3,
+        "generation_directories": [
+          "gen_0",
+          "gen_1",
+          "gen_2",
+          "gen_3"
+        ],
+        "headless_prompt_count": 6,
+        "metrics_count": 1,
+        "sqlite_table_counts": {
+          "archive": 1,
+          "attempt_log": 3,
+          "generation_event_log": 0,
+          "metadata_store": 5,
+          "programs": 1
+        }
+      },
+      "results_dir": "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_10/native",
+      "resume_check": {
+        "command": [
+          "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+          "-m",
+          "evidence_evolve",
+          "search",
+          "shinka-native",
+          "--run-id",
+          "p2-b10-native-resume-check",
+          "--task-dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+          "--results-dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_10/native",
+          "--num-generations",
+          "4",
+          "--config-fname",
+          "shinka.yaml"
+        ],
+        "declared_main_target_generations": 6,
+        "exit_code": 0,
+        "no_new_generation_directories": true,
+        "no_new_headless_prompts": true,
+        "no_new_metrics": true,
+        "post_resume_state": {
+          "failure_count": 3,
+          "generation_directories": [
+            "gen_0",
+            "gen_1",
+            "gen_2",
+            "gen_3"
+          ],
+          "headless_prompt_count": 6,
+          "metrics_count": 1,
+          "sqlite_table_counts": {
+            "archive": 2,
+            "attempt_log": 3,
+            "generation_event_log": 0,
+            "metadata_store": 5,
+            "programs": 2
+          }
+        },
+        "safe_target_generations": 4,
+        "wall_seconds": 24.724145371466875
+      },
+      "run_id": "p2-b10-native",
+      "sequence": 19,
+      "started_at": "2026-08-15T13:35:46.347345+00:00",
+      "status": "COMPLETE_NO_RETRY",
+      "wall_seconds": 438.1594442278147
+    },
+    {
+      "arm": "official",
+      "block": 10,
+      "command": [
+        "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+        "-m",
+        "shinka.cli.run",
+        "--task-dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+        "--results_dir",
+        "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_10/official",
+        "--num_generations",
+        "6",
+        "--config-fname",
+        "shinka.yaml"
+      ],
+      "exit_code": 0,
+      "finished_at": "2026-08-15T13:50:37.535621+00:00",
+      "position_in_block": 2,
+      "pre_resume_database_sha256": "5ed6857c94aaf5dad8d04e63e0514e927f2b371a9f0c985f6a536cbe87c97bc2",
+      "pre_resume_state": {
+        "failure_count": 3,
+        "generation_directories": [
+          "gen_0",
+          "gen_1",
+          "gen_2",
+          "gen_3"
+        ],
+        "headless_prompt_count": 6,
+        "metrics_count": 1,
+        "sqlite_table_counts": {
+          "archive": 1,
+          "attempt_log": 3,
+          "generation_event_log": 0,
+          "metadata_store": 5,
+          "programs": 1
+        }
+      },
+      "results_dir": "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_10/official",
+      "resume_check": {
+        "command": [
+          "/root/autodl-tmp/EvidenceEvolve/.venv/bin/python",
+          "-m",
+          "shinka.cli.run",
+          "--task-dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/frozen_task",
+          "--results_dir",
+          "/root/autodl-tmp/EvidenceEvolve/runs/shinka_native_p2_r0/formal/block_10/official",
+          "--num_generations",
+          "4",
+          "--config-fname",
+          "shinka.yaml"
+        ],
+        "declared_main_target_generations": 6,
+        "exit_code": 0,
+        "no_new_generation_directories": true,
+        "no_new_headless_prompts": true,
+        "no_new_metrics": true,
+        "post_resume_state": {
+          "failure_count": 3,
+          "generation_directories": [
+            "gen_0",
+            "gen_1",
+            "gen_2",
+            "gen_3"
+          ],
+          "headless_prompt_count": 6,
+          "metrics_count": 1,
+          "sqlite_table_counts": {
+            "archive": 2,
+            "attempt_log": 3,
+            "generation_event_log": 0,
+            "metadata_store": 5,
+            "programs": 2
+          }
+        },
+        "safe_target_generations": 4,
+        "wall_seconds": 60.12827876769006
+      },
+      "run_id": "p2-b10-official",
+      "sequence": 20,
+      "started_at": "2026-08-15T13:43:29.339865+00:00",
+      "status": "COMPLETE_NO_RETRY",
+      "wall_seconds": 428.1926143951714
+    }
+  ],
+  "started_at": "2026-08-15T11:22:23.607761+00:00",
+  "status": "COMPLETE"
+}
