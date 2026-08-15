@@ -1,0 +1,38 @@
+max_iterations: 3
+checkpoint_interval: 1
+log_level: INFO
+random_seed: 20260816
+llm:
+  models:
+    - name: gpt-5.6-terra
+      weight: 1.0
+  temperature: 0.0
+  max_tokens: 32768
+  timeout: 1200
+  retries: 0
+search:
+  type: adaevolve
+  num_context_programs: 2
+  database:
+    population_size: 8
+    num_islands: 2
+    use_adaptive_search: true
+    use_ucb_selection: true
+    use_migration: true
+    use_unified_archive: true
+    migration_interval: 2
+    migration_count: 1
+    use_dynamic_islands: false
+    max_islands: 2
+    use_paradigm_breakthrough: false
+    enable_error_retry: false
+prompt:
+  system_message: |
+    Optimize the AlgoTune set-cover Solver for speed while returning an exact
+    minimum-cardinality cover for every input. Preserve the Solver.solve API.
+evaluator:
+  timeout: 900
+  max_retries: 0
+  cascade_evaluation: false
+diff_based_generation: true
+max_solution_length: 60000

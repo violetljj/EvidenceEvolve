@@ -1,0 +1,7 @@
+{
+  "task": "AlgoTune set_cover",
+  "problem_size": 52,
+  "development_seeds": "0..99",
+  "visibility": "DEVELOPMENT_ONLY",
+  "claim_boundary": "blind four-arm pilot search feedback only"
+}

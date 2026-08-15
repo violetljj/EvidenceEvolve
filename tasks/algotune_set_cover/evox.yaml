@@ -1,0 +1,28 @@
+max_iterations: 3
+checkpoint_interval: 1
+log_level: INFO
+random_seed: 20260816
+llm:
+  models:
+    - name: gpt-5.6-terra
+      weight: 1.0
+  temperature: 0.0
+  max_tokens: 32768
+  timeout: 1200
+  retries: 0
+search:
+  type: evox
+  num_context_programs: 2
+  share_llm: true
+  database:
+    auto_generate_variation_operators: true
+prompt:
+  system_message: |
+    Optimize the AlgoTune set-cover Solver for speed while returning an exact
+    minimum-cardinality cover for every input. Preserve the Solver.solve API.
+evaluator:
+  timeout: 900
+  max_retries: 0
+  cascade_evaluation: false
+diff_based_generation: true
+max_solution_length: 60000

@@ -1,0 +1,6 @@
+{
+  "task": "AlgoTune set_cover",
+  "status": "RUNTIME_CSPRNG_AFTER_CANDIDATE_LOCK",
+  "visible_to_candidate_agents": false,
+  "authority": "blind pilot promoter only"
+}
