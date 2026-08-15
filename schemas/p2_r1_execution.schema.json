@@ -172,12 +172,18 @@
           "default": "PASS",
           "title": "Status",
           "type": "string"
+        },
+        "zero_call_e2e_receipt_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Zero Call E2E Receipt Sha256",
+          "type": "string"
         }
       },
       "required": [
         "protocol_id",
         "protocol_sha256",
         "executor_commit",
+        "zero_call_e2e_receipt_sha256",
         "start_manifest_sha256",
         "arms"
       ],

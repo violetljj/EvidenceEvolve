@@ -159,6 +159,9 @@ class P2R1StartManifest(StrictModel):
         if self.execution_mode == "FORMAL":
             if set(self.gate_receipt_hashes) != {"zero_call_e2e", "remote_smoke"}:
                 raise ValueError("formal execution lacks both admission gate receipts")
+        elif self.execution_mode == "REMOTE_SMOKE":
+            if set(self.gate_receipt_hashes) != {"zero_call_e2e"}:
+                raise ValueError("remote smoke lacks zero-call E2E admission")
         elif self.gate_receipt_hashes:
             raise ValueError("pre-formal execution cannot carry a budget unlock")
         return self
@@ -221,6 +224,7 @@ class P2R1RemoteSmokeReceipt(StrictModel):
     protocol_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     executor_commit: str = Field(pattern=r"^[0-9a-f]{40}$")
     status: Literal["PASS"] = "PASS"
+    zero_call_e2e_receipt_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     remote_scientific_slots: Literal[2] = 2
     slots_per_arm: Literal[1] = 1
     start_manifest_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
@@ -503,17 +507,14 @@ class P2R1ExecutionDriver:
         return runs
 
     def _gate_receipt_hashes(self) -> dict[str, str]:
-        if self.execution_mode != "FORMAL":
+        if self.execution_mode == "ZERO_CALL_E2E":
             return {}
-        if self.zero_call_receipt is None or self.remote_smoke_receipt is None:
+        if self.zero_call_receipt is None:
             raise RuntimeError(
-                "formal budget is locked: zero-call and remote-smoke receipts are required"
+                "remote budget is locked: a zero-call E2E receipt is required"
             )
         zero = P2R1ZeroCallE2EReceipt.model_validate_json(
             self.zero_call_receipt.read_text(encoding="utf-8")
-        )
-        smoke = P2R1RemoteSmokeReceipt.model_validate_json(
-            self.remote_smoke_receipt.read_text(encoding="utf-8")
         )
         expected = (
             self.protocol.protocol_id,
@@ -522,12 +523,22 @@ class P2R1ExecutionDriver:
         )
         if (zero.protocol_id, zero.protocol_sha256, zero.executor_commit) != expected:
             raise RuntimeError("zero-call receipt does not bind this frozen executor")
+        hashes = {"zero_call_e2e": sha256_file(self.zero_call_receipt)}
+        if self.execution_mode == "REMOTE_SMOKE":
+            return hashes
+        if self.remote_smoke_receipt is None:
+            raise RuntimeError(
+                "formal budget is locked: a remote-smoke receipt is required"
+            )
+        smoke = P2R1RemoteSmokeReceipt.model_validate_json(
+            self.remote_smoke_receipt.read_text(encoding="utf-8")
+        )
         if (smoke.protocol_id, smoke.protocol_sha256, smoke.executor_commit) != expected:
             raise RuntimeError("remote-smoke receipt does not bind this frozen executor")
-        return {
-            "zero_call_e2e": sha256_file(self.zero_call_receipt),
-            "remote_smoke": sha256_file(self.remote_smoke_receipt),
-        }
+        if smoke.zero_call_e2e_receipt_sha256 != hashes["zero_call_e2e"]:
+            raise RuntimeError("remote smoke is not bound to the zero-call receipt")
+        hashes["remote_smoke"] = sha256_file(self.remote_smoke_receipt)
+        return hashes
 
     def _assert_clean_checkout(self) -> None:
         if _git_output(self.repo, "status", "--porcelain"):
@@ -1103,6 +1114,9 @@ class P2R1ExecutionDriver:
             protocol_id=self.protocol.protocol_id,
             protocol_sha256=self.protocol.protocol_sha256,
             executor_commit=self.executor_commit,
+            zero_call_e2e_receipt_sha256=_load_json(self.start_manifest_path)[
+                "gate_receipt_hashes"
+            ]["zero_call_e2e"],
             start_manifest_sha256=sha256_file(self.start_manifest_path),
             arms=arms,
         )

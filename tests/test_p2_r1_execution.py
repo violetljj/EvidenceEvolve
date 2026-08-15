@@ -168,6 +168,17 @@ def test_formal_start_manifest_requires_both_gate_receipts(tmp_path: Path) -> No
     with pytest.raises(ValidationError, match="both admission gate receipts"):
         P2R1StartManifest.model_validate(payload)
 
+    payload.update(
+        {
+            "execution_mode": "REMOTE_SMOKE",
+            "remote_slot_budget": 2,
+            "slot_budget_per_run": 1,
+            "authorized_run_ids": ["p2-r1-smoke-a-official", "p2-r1-smoke-a-native"],
+        }
+    )
+    with pytest.raises(ValidationError, match="zero-call E2E"):
+        P2R1StartManifest.model_validate(payload)
+
 
 def test_schedule_rejects_injected_namespace_or_database_collision(tmp_path: Path) -> None:
     payload = build_p2_r1_schedule(_protocol(), run_root=tmp_path).model_dump()
