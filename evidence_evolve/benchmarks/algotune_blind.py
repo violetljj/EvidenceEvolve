@@ -39,6 +39,15 @@ from tasks.algotune_set_cover.common import evaluate_candidate
 REPO_ROOT = Path(__file__).resolve().parents[2]
 TASK_ROOT = REPO_ROOT / "tasks" / "algotune_set_cover"
 INITIAL = TASK_ROOT / "initial.py"
+TASK_PROMPT = (
+    "Optimize the exact set-cover solver below for runtime on deterministic "
+    "development inputs. Preserve class Solver and solve(problem), return an exact "
+    "minimum-cardinality 1-based cover for every input."
+)
+CONTRACT_TEMPLATE = REPO_ROOT / "research" / "contracts" / "algotune_set_cover_blind_v0.template.yaml"
+POLICY_PATH = REPO_ROOT / "research" / "policies" / "algotune_set_cover_blind_v0.yaml"
+CANDIDATE_RELATIVE = Path("tasks/algotune_set_cover/initial.py")
+CAMPAIGN_ID = "algotune-set-cover-ee-experimental"
 ARMS = ("shinka", "ada", "vanilla", "evidence_evolve", "evox")
 MODEL = "gpt-5.6-terra"
 REASONING_EFFORT = "high"
@@ -163,14 +172,8 @@ def _manifest(run_dir: Path) -> None:
                         [
                             *TASK_ROOT.glob("*"),
                             Path(__file__).resolve(),
-                            REPO_ROOT
-                            / "research"
-                            / "contracts"
-                            / "algotune_set_cover_blind_v0.template.yaml",
-                            REPO_ROOT
-                            / "research"
-                            / "policies"
-                            / "algotune_set_cover_blind_v0.yaml",
+                            CONTRACT_TEMPLATE,
+                            POLICY_PATH,
                         ]
                     )
                     if path.is_file()
@@ -322,9 +325,7 @@ def run_vanilla(run_dir: Path) -> dict[str, Any]:
     }
     for index in range(1, GENERATIONS + 1):
         prompt = (
-            "Optimize the exact set-cover solver below for runtime on deterministic "
-            "development inputs. Preserve class Solver and solve(problem), return an exact "
-            "minimum-cardinality 1-based cover for every input. Do not access benchmark, "
+            f"{TASK_PROMPT} Do not access benchmark, "
             "evaluator, run, or test files. Return the complete Python file.\n\n"
             f"Current development result:\n{json.dumps(incumbent_metrics)}\n\n"
             f"Current code:\n```python\n{incumbent}\n```"
@@ -688,13 +689,9 @@ def _prepare_execution_repo(run_dir: Path) -> Path:
 
 
 def _runtime_contract(execution_repo: Path, arm_dir: Path) -> Any:
-    contract = load_contract(
-        execution_repo
-        / "research"
-        / "contracts"
-        / "algotune_set_cover_blind_v0.template.yaml"
-    )
-    contract.campaign.id = "algotune-set-cover-ee-experimental"
+    template_relative = CONTRACT_TEMPLATE.resolve().relative_to(REPO_ROOT)
+    contract = load_contract(execution_repo / template_relative)
+    contract.campaign.id = CAMPAIGN_ID
     contract.campaign.base_commit = _git(execution_repo, "rev-parse", "HEAD")
     contract.budgets = Budgets(
         proposal_calls=GENERATIONS,
@@ -720,9 +717,7 @@ def run_evidence_evolve(run_dir: Path) -> dict[str, Any]:
     policy_payload = yaml.safe_load(
         (
             execution_repo
-            / "research"
-            / "policies"
-            / "algotune_set_cover_blind_v0.yaml"
+            / POLICY_PATH.resolve().relative_to(REPO_ROOT)
         ).read_text(encoding="utf-8")
     )
     policy = ResearchPolicyGenome.model_validate(policy_payload)
@@ -740,7 +735,7 @@ def run_evidence_evolve(run_dir: Path) -> dict[str, Any]:
         backend=_PinnedProotCodexBackend(),
         worktree_root=worktree_root,
         reference_metrics=evaluate_development(
-            execution_repo / "tasks" / "algotune_set_cover" / "initial.py"
+            execution_repo / CANDIDATE_RELATIVE
         )["metrics"],
         memory_enabled=True,
         timeout_seconds=1_200,
@@ -751,7 +746,7 @@ def run_evidence_evolve(run_dir: Path) -> dict[str, Any]:
         max_evaluations_per_generation=1,
     )
     run_hash = hashlib.sha256(str(campaign_dir.resolve()).encode("utf-8")).hexdigest()[:8]
-    baseline = execution_repo / "tasks" / "algotune_set_cover" / "initial.py"
+    baseline = execution_repo / CANDIDATE_RELATIVE
     candidates: list[tuple[float, Path, str]] = [
         (
             float(evaluate_development(baseline)["metrics"]["raw_speedup"]),
@@ -764,7 +759,7 @@ def run_evidence_evolve(run_dir: Path) -> dict[str, Any]:
         for evaluation in generation.evaluations:
             candidate_id = evaluation.candidate_id
             key = f"{contract.campaign.id}-{run_hash}-{candidate_id}"
-            source = runner.worktrees.candidate_path(key) / "tasks" / "algotune_set_cover" / "initial.py"
+            source = runner.worktrees.candidate_path(key) / CANDIDATE_RELATIVE
             if not source.is_file():
                 continue
             raw = evaluate_development(source)

@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.0",
+  "campaign": "algotune_heterogeneous_five_arm_v0",
+  "claim_scope": "CROSS_TASK_BLIND_ALGORITHM_DISCOVERY_PILOT",
+  "protocol_sha256": "2f30995371b04e152e8ee2abe1598453f1aeaaa6597c8d1dccb250c3efaf90be",
+  "portfolio_candidate_lock_sha256": "bd6c645db73dcdd0b6921483a95ba0285f1120b5bc089fae53f289fb7d87da8c",
+  "common_conditions": {
+    "model": "gpt-5.6-terra",
+    "reasoning_effort": "high",
+    "generations": 3,
+    "development_seeds": "0..19",
+    "development_repeats": 3,
+    "heldout_instances": 100,
+    "heldout_repeats": 10,
+    "fresh_process_per_timed_candidate_call": true,
+    "candidate_import_construction_and_single_solve_timed": true,
+    "all_twenty_candidates_locked_before_any_eligible_heldout_seed": true
+  },
+  "adapter_correction": {
+    "classification": "INVALID_MECHANICS_OR_ADAPTER",
+    "receipt_sha256": "823b0027e6f8ae8846467ca8d447064c3decd9ee81fcf3c7f86403cd6d19157e",
+    "cause": "Initial 63-bit CSPRNG values exceeded the official NumPy RandomState seed domain.",
+    "repair": "Preserve invalid receipts and regenerate OS-CSPRNG seeds uniformly in [0, 2**32 - 1].",
+    "candidate_search_changed": false,
+    "candidate_hashes_changed": false,
+    "model_prompt_selection_or_scoring_changed": false
+  },
+  "tasks": [
+    {
+      "task": "articulation_points",
+      "suite_result_sha256": "c996510037bff1557da866d6803bea3449b1772d5fbd895df8c0123e738a74a8",
+      "candidate_lock_sha256": "e95d6f4f45a1e17048edd19c8edb05b8b72d06522292f857092ca3150b6d0b0c",
+      "heldout_seed_receipt_sha256": "6af8b4ddd8d9ddbfe2bb473f309108a90535b02d31259a8191d3d2ca62a1beb4",
+      "score_order": ["evox", "evidence_evolve", "vanilla", "ada", "shinka"],
+      "pareto_front": ["evox", "vanilla"],
+      "results": [
+        {"arm":"evox","candidate_sha256":"4e35b432faf26dbab8bb5cd9e6e4050724b484ed53b78752bb2032fd8c56abbf","heldout_raw_speedup":2.0641840577918966,"heldout_valid_rate":1.0,"tokens":151501,"wall_seconds":275.80849500373006,"scientific_outcome":"POSITIVE_HEADROOM"},
+        {"arm":"evidence_evolve","candidate_sha256":"decf019d8776483aa6bef163235721bb1b94333aa262a0f0b0c0fdcd9bfef5e4","heldout_raw_speedup":1.997615427592127,"heldout_valid_rate":1.0,"tokens":536764,"wall_seconds":460.50446585938334,"scientific_outcome":"POSITIVE_HEADROOM"},
+        {"arm":"vanilla","candidate_sha256":"68876f8ad7424d5e8c186cc913dd36bed5508e68f1fc928d3b82a87f4c490abc","heldout_raw_speedup":1.9746592339914963,"heldout_valid_rate":1.0,"tokens":52447,"wall_seconds":161.14844158664346,"scientific_outcome":"POSITIVE_HEADROOM"},
+        {"arm":"ada","candidate_sha256":"4e7cb9988fcada9ef69e71bc22dc449f676d538556b212e0a13838889af298f3","heldout_raw_speedup":1.784542547445444,"heldout_valid_rate":1.0,"tokens":61054,"wall_seconds":227.07588352262974,"scientific_outcome":"POSITIVE_HEADROOM"},
+        {"arm":"shinka","candidate_sha256":"17cca1fddce0d441ab98746d997b2079bdd04ab0e4ea13586548dfb86e2c2485","heldout_raw_speedup":1.6655723436438197,"heldout_valid_rate":1.0,"tokens":56588,"wall_seconds":230.19051578827202,"scientific_outcome":"POSITIVE_HEADROOM"}
+      ]
+    },
+    {
+      "task": "job_shop_scheduling",
+      "suite_result_sha256": "6d226494fdf480110fc9c16a3b0bd7c8e6d2e3ba7bf9caf6034079c925ec2672",
+      "candidate_lock_sha256": "a6dc52c2ec3a98826febc191d4b457a8e6329dbca767552507c75c951f1dab34",
+      "heldout_seed_receipt_sha256": "af472c0c8f59d8092a1e42cd7107a8c66da5979e361181c4a724d186a77f33ed",
+      "worker_admission_sha256": "8b56f621c3709708bdac7a21c1777864be058bb96612e09e22fa364d7f257708",
+      "score_order_for_fully_evaluable_arms": ["evidence_evolve", "shinka", "ada", "evox"],
+      "pareto_front": ["ada", "evidence_evolve", "shinka"],
+      "results": [
+        {"arm":"evidence_evolve","candidate_sha256":"9fbc52831ccbd9e70f427db1e4ff5f9af86418835b053f1bb4ebd13b430e355e","heldout_raw_speedup":0.8879487860631776,"heldout_valid_rate":1.0,"tokens":328801,"wall_seconds":605.0087572000921,"scientific_outcome":"VALID_NEGATIVE"},
+        {"arm":"shinka","candidate_sha256":"3f76cbff891d6e92ff839f7ee740d240aa773e28866b8332b8622419be3116a3","heldout_raw_speedup":0.8418922747948715,"heldout_valid_rate":1.0,"tokens":60612,"wall_seconds":210.49766863137484,"scientific_outcome":"VALID_NEGATIVE"},
+        {"arm":"ada","candidate_sha256":"9fbc52831ccbd9e70f427db1e4ff5f9af86418835b053f1bb4ebd13b430e355e","heldout_raw_speedup":0.7313019350256078,"heldout_valid_rate":1.0,"tokens":100496,"wall_seconds":187.31038660556078,"scientific_outcome":"VALID_NEGATIVE"},
+        {"arm":"evox","candidate_sha256":"6c04a3388ed7daec78765b75927c55894bed933f5a25cabb337e82b6ead75ba9","heldout_raw_speedup":0.6446798829522897,"heldout_valid_rate":1.0,"tokens":117043,"wall_seconds":217.74789001606405,"scientific_outcome":"VALID_NEGATIVE"},
+        {"arm":"vanilla","candidate_sha256":"f6a9817664e177a23db3e8a1d8c3ca6d4144bc4c989a96e8a3b21f39e505800b","heldout_raw_speedup":0.0,"heldout_valid_rate":0.991,"tokens":62338,"wall_seconds":248.16729263588786,"status_counts":{"PASS":991,"TIMEOUT_VERIFY":9},"scientific_outcome":"NOT_EVALUABLE_DATA"}
+      ],
+      "caveat": "Ada and EvidenceEvolve selected the same candidate hash but received materially different CP-SAT timing ratios; arm-level performance ordering on this task is not stable evidence."
+    },
+    {
+      "task": "stable_matching",
+      "suite_result_sha256": "edd868b169c7abce1652d112096428b84583eaecc1c1a453b9d20eb838ebc5f2",
+      "candidate_lock_sha256": "9e8e54496aa0ee686a57eb4e3930d295c891f6d12aabe1e1aa61d5d8d4f7adf1",
+      "heldout_seed_receipt_sha256": "19b36670bf58bd1615ff70b26c7ddee8e46c9f8190e7e05ea046da24de06a29f",
+      "score_order": ["vanilla", "evox", "ada", "evidence_evolve", "shinka"],
+      "pareto_front": ["vanilla"],
+      "results": [
+        {"arm":"vanilla","candidate_sha256":"48f76972fc97c3921a1671a4e5fecf00a14596b6d4451fa66140f5de8057c637","heldout_raw_speedup":1.1062816864528693,"heldout_valid_rate":1.0,"tokens":51263,"wall_seconds":316.9388202931732,"scientific_outcome":"POSITIVE_HEADROOM"},
+        {"arm":"evox","candidate_sha256":"4a9c6ca6e6ac3af8334a06967b367d7f4a85a5df13ac882476a893816973fb4c","heldout_raw_speedup":1.0872411623881264,"heldout_valid_rate":1.0,"tokens":111084,"wall_seconds":367.07649326883256,"scientific_outcome":"POSITIVE_HEADROOM"},
+        {"arm":"ada","candidate_sha256":"7dd13911843c12fbe77504ac91f3eb39dba531f7e5ce7dc495e48e280eae5cb0","heldout_raw_speedup":1.0779020959146326,"heldout_valid_rate":1.0,"tokens":79142,"wall_seconds":402.5449573248625,"scientific_outcome":"POSITIVE_HEADROOM"},
+        {"arm":"evidence_evolve","candidate_sha256":"0bc3594e41af161a9956c08a5cec5864910fae9c70ac3ba405c12790eb0a143c","heldout_raw_speedup":1.0761772450457094,"heldout_valid_rate":1.0,"tokens":408887,"wall_seconds":640.893991554156,"scientific_outcome":"POSITIVE_HEADROOM"},
+        {"arm":"shinka","candidate_sha256":"08191d52d1ae83f732189d29d13f838e7c4bd86431e286d7612528860df1ee56","heldout_raw_speedup":0.9692885902819897,"heldout_valid_rate":1.0,"tokens":53145,"wall_seconds":325.03282019123435,"scientific_outcome":"VALID_NEGATIVE"}
+      ]
+    },
+    {
+      "task": "cumulative_simpson_1d",
+      "suite_result_sha256": "31f56e9330ecb79ab67d6ddb29682e525da96f9d8f3740712cb31b767d29350a",
+      "candidate_lock_sha256": "db8bb760eb9d072832bbfb6d81ebcbdf4cc91233266ed70d246855cfe0326663",
+      "heldout_seed_receipt_sha256": "8dd97dc4a808f0fae7c2fb547f05edf0881cf4821ef98da5484f8a8a4cfda636",
+      "score_order": ["shinka", "vanilla", "ada", "evox", "evidence_evolve"],
+      "pareto_front": ["shinka", "vanilla"],
+      "results": [
+        {"arm":"shinka","candidate_sha256":"2609f6c8448d2a151d82b946a2c2d8b0167374af8156e8a254925b1d25b1ca24","heldout_raw_speedup":4.0770825619158675,"heldout_valid_rate":1.0,"tokens":59590,"wall_seconds":250.1553395204246,"scientific_outcome":"POSITIVE_HEADROOM"},
+        {"arm":"vanilla","candidate_sha256":"6b8c4005360bb25df20ad426e67263bac2b45c23e56e9cbd7c397b8ea2c6c7d5","heldout_raw_speedup":2.8556634232473477,"heldout_valid_rate":1.0,"tokens":57435,"wall_seconds":191.76633101888,"scientific_outcome":"POSITIVE_HEADROOM"},
+        {"arm":"ada","candidate_sha256":"d491e34f0570367fcfd4ee11c46b5f54e64041f28db0ee8a5f12b2b7c830c403","heldout_raw_speedup":2.816837755045511,"heldout_valid_rate":1.0,"tokens":95536,"wall_seconds":191.92723655700684,"scientific_outcome":"POSITIVE_HEADROOM"},
+        {"arm":"evox","candidate_sha256":"6a47eea696b417f2fab048de57babbdeb3bb4e1c3961d465f92d4c4ef3a098d4","heldout_raw_speedup":2.579438529122307,"heldout_valid_rate":1.0,"tokens":131236,"wall_seconds":208.6264722365886,"scientific_outcome":"POSITIVE_HEADROOM"},
+        {"arm":"evidence_evolve","candidate_sha256":"fe51e3a45a6c3394940624ea4d9baf1aeb54ba4a42df49198e4f724b830949ef","heldout_raw_speedup":1.8280291488757454,"heldout_valid_rate":1.0,"tokens":415065,"wall_seconds":336.9800806660205,"scientific_outcome":"POSITIVE_HEADROOM"}
+      ]
+    }
+  ],
+  "cross_task_observation": {
+    "heldout_score_wins_on_fully_evaluable_tasks": {"evox":1,"vanilla":1,"shinka":1,"evidence_evolve":0,"ada":0},
+    "interpretation": "No single engine dominated. The results support task-dependent engine routing and do not reproduce EvidenceEvolve's Set Cover breakthrough across these four tasks."
+  },
+  "superiority_claim_permitted": false,
+  "mechanism_claim_permitted": false
+}
