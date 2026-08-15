@@ -21,7 +21,7 @@ dev = [
   "pytest-cov>=6,<8",
 ]
 shinka = [
-  "shinka-evolve>=0.1",
+  "shinka-evolve @ git+https://github.com/SakanaAI/ShinkaEvolve.git@c4568adde253cacf185be3a8412c3c2142761ebe",
 ]
 onnx-canary = [
   "numpy>=2.0,<3",
@@ -34,6 +34,9 @@ evolve = "evidence_evolve.cli:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["evidence_evolve"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
 
 [tool.pytest.ini_options]
 addopts = "-q"

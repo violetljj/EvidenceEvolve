@@ -1,0 +1,267 @@
+{
+  "$defs": {
+    "EnvironmentReceipt": {
+      "additionalProperties": false,
+      "properties": {
+        "executable": {
+          "title": "Executable",
+          "type": "string"
+        },
+        "extra": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Extra",
+          "type": "object"
+        },
+        "platform": {
+          "title": "Platform",
+          "type": "string"
+        },
+        "python": {
+          "title": "Python",
+          "type": "string"
+        }
+      },
+      "required": [
+        "python",
+        "platform",
+        "executable"
+      ],
+      "title": "EnvironmentReceipt",
+      "type": "object"
+    },
+    "ShinkaImportSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "archive_count": {
+          "minimum": 0,
+          "title": "Archive Count",
+          "type": "integer"
+        },
+        "attempt_event_count": {
+          "minimum": 0,
+          "title": "Attempt Event Count",
+          "type": "integer"
+        },
+        "best_combined_score": {
+          "title": "Best Combined Score",
+          "type": "number"
+        },
+        "best_program_id": {
+          "title": "Best Program Id",
+          "type": "string"
+        },
+        "candidate_count": {
+          "minimum": 1,
+          "title": "Candidate Count",
+          "type": "integer"
+        },
+        "correct_candidate_count": {
+          "minimum": 0,
+          "title": "Correct Candidate Count",
+          "type": "integer"
+        },
+        "database_path": {
+          "title": "Database Path",
+          "type": "string"
+        },
+        "generation_event_count": {
+          "minimum": 0,
+          "title": "Generation Event Count",
+          "type": "integer"
+        },
+        "input_tokens_observed": {
+          "minimum": 0,
+          "title": "Input Tokens Observed",
+          "type": "integer"
+        },
+        "invalid_candidate_rate": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Invalid Candidate Rate",
+          "type": "number"
+        },
+        "lineage_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Lineage Sha256",
+          "type": "string"
+        },
+        "max_generation": {
+          "minimum": 0,
+          "title": "Max Generation",
+          "type": "integer"
+        },
+        "metric_event_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Metric Event Sha256",
+          "type": "string"
+        },
+        "output_tokens_observed": {
+          "minimum": 0,
+          "title": "Output Tokens Observed",
+          "type": "integer"
+        },
+        "token_accounting": {
+          "const": "UPSTREAM_PROGRAM_METADATA_BEST_EFFORT",
+          "default": "UPSTREAM_PROGRAM_METADATA_BEST_EFFORT",
+          "title": "Token Accounting",
+          "type": "string"
+        },
+        "total_api_cost": {
+          "minimum": 0.0,
+          "title": "Total Api Cost",
+          "type": "number"
+        }
+      },
+      "required": [
+        "database_path",
+        "candidate_count",
+        "correct_candidate_count",
+        "archive_count",
+        "max_generation",
+        "best_program_id",
+        "best_combined_score",
+        "total_api_cost",
+        "input_tokens_observed",
+        "output_tokens_observed",
+        "invalid_candidate_rate",
+        "attempt_event_count",
+        "generation_event_count",
+        "lineage_sha256",
+        "metric_event_sha256"
+      ],
+      "title": "ShinkaImportSummary",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "claim_scope": {
+      "const": "UPSTREAM_NATIVE_EXECUTION_AND_IMPORT_ONLY",
+      "default": "UPSTREAM_NATIVE_EXECUTION_AND_IMPORT_ONLY",
+      "title": "Claim Scope",
+      "type": "string"
+    },
+    "effective_config_fields": {
+      "additionalProperties": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "title": "Effective Config Fields",
+      "type": "object"
+    },
+    "effective_config_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Effective Config Sha256",
+      "type": "string"
+    },
+    "environment": {
+      "$ref": "#/$defs/EnvironmentReceipt"
+    },
+    "imported": {
+      "$ref": "#/$defs/ShinkaImportSummary"
+    },
+    "metadata": {
+      "additionalProperties": true,
+      "title": "Metadata",
+      "type": "object"
+    },
+    "mode": {
+      "const": "SHINKA_NATIVE",
+      "default": "SHINKA_NATIVE",
+      "title": "Mode",
+      "type": "string"
+    },
+    "request_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Request Sha256",
+      "type": "string"
+    },
+    "results_dir": {
+      "title": "Results Dir",
+      "type": "string"
+    },
+    "run_id": {
+      "title": "Run Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scientific_outcome_authority": {
+      "const": "NONE",
+      "default": "NONE",
+      "title": "Scientific Outcome Authority",
+      "type": "string"
+    },
+    "search_score_authority": {
+      "const": "SHINKA_SCHEDULING_ONLY",
+      "default": "SHINKA_SCHEDULING_ONLY",
+      "title": "Search Score Authority",
+      "type": "string"
+    },
+    "superiority_claim_permitted": {
+      "const": false,
+      "default": false,
+      "title": "Superiority Claim Permitted",
+      "type": "boolean"
+    },
+    "task_asset_hashes": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Task Asset Hashes",
+      "type": "object"
+    },
+    "upstream_artifact_hashes": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Upstream Artifact Hashes",
+      "type": "object"
+    },
+    "upstream_distribution": {
+      "const": "shinka-evolve",
+      "default": "shinka-evolve",
+      "title": "Upstream Distribution",
+      "type": "string"
+    },
+    "upstream_repository": {
+      "const": "https://github.com/SakanaAI/ShinkaEvolve",
+      "default": "https://github.com/SakanaAI/ShinkaEvolve",
+      "title": "Upstream Repository",
+      "type": "string"
+    },
+    "upstream_source_commit": {
+      "const": "c4568adde253cacf185be3a8412c3c2142761ebe",
+      "default": "c4568adde253cacf185be3a8412c3c2142761ebe",
+      "title": "Upstream Source Commit",
+      "type": "string"
+    },
+    "upstream_version": {
+      "const": "0.0.7",
+      "default": "0.0.7",
+      "title": "Upstream Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "run_id",
+    "request_sha256",
+    "effective_config_sha256",
+    "effective_config_fields",
+    "task_asset_hashes",
+    "upstream_artifact_hashes",
+    "results_dir",
+    "environment",
+    "imported"
+  ],
+  "title": "SearchRunReceipt",
+  "type": "object"
+}

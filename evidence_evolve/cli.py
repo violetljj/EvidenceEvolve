@@ -71,6 +71,8 @@ from evidence_evolve.benchmarks.protocol import (
     load_benchmark_protocol,
 )
 from evidence_evolve.benchmarks.runner import ThreeArmBenchmarkRunner
+from evidence_evolve.search.models import SearchRunReceipt, SearchRunRequest
+from evidence_evolve.search.shinka_native import ShinkaNativeEngine
 
 
 def _json(value: Any) -> str:
@@ -375,6 +377,8 @@ def command_export_schemas(args: argparse.Namespace) -> int:
         "benchmark_protocol_validation.schema.json": (
             BenchmarkProtocolValidation.model_json_schema()
         ),
+        "search_run_request.schema.json": SearchRunRequest.model_json_schema(),
+        "search_run_receipt.schema.json": SearchRunReceipt.model_json_schema(),
         "policy_promotion_protocol.schema.json": (
             PolicyPromotionProtocol.model_json_schema()
         ),
@@ -599,6 +603,24 @@ def command_benchmark_run_graph_coloring(args: argparse.Namespace) -> int:
     return 0
 
 
+def command_search_shinka_native(args: argparse.Namespace) -> int:
+    request = SearchRunRequest(
+        run_id=args.run_id,
+        task_dir=Path(args.task_dir),
+        results_dir=Path(args.results_dir),
+        num_generations=args.num_generations,
+        config_fname=args.config_fname,
+        set_overrides=args.set_overrides,
+        max_evaluation_jobs=args.max_evaluation_jobs,
+        max_proposal_jobs=args.max_proposal_jobs,
+        max_db_workers=args.max_db_workers,
+        verbose=args.verbose,
+        debug=args.debug,
+    )
+    print(_json(ShinkaNativeEngine().run(request)))
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="evolve",
@@ -789,7 +811,30 @@ def build_parser() -> argparse.ArgumentParser:
         help="must match the adapter frozen in the benchmark protocol",
     )
     benchmark_run.set_defaults(handler=command_benchmark_run_graph_coloring)
-
+    search = subparsers.add_parser(
+        "search", help="run an upstream or experimental search engine"
+    )
+    search_commands = search.add_subparsers(dest="search_command", required=True)
+    shinka_native = search_commands.add_parser(
+        "shinka-native",
+        help="run the pinned official ShinkaEvolve runner without changing search behavior",
+    )
+    shinka_native.add_argument("--run-id", required=True)
+    shinka_native.add_argument("--task-dir", required=True)
+    shinka_native.add_argument("--results-dir", required=True)
+    shinka_native.add_argument("--num-generations", type=int, required=True)
+    shinka_native.add_argument("--config-fname")
+    shinka_native.add_argument(
+        "--set", dest="set_overrides", action="append", default=[]
+    )
+    shinka_native.add_argument("--max-evaluation-jobs", type=int)
+    shinka_native.add_argument("--max-proposal-jobs", type=int)
+    shinka_native.add_argument("--max-db-workers", type=int)
+    shinka_native.add_argument(
+        "--verbose", action=argparse.BooleanOptionalAction, default=None
+    )
+    shinka_native.add_argument("--debug", action="store_true")
+    shinka_native.set_defaults(handler=command_search_shinka_native)
     policy = subparsers.add_parser(
         "policy", help="evaluate research-policy evidence without auto-promoting"
     )

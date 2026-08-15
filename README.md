@@ -26,7 +26,8 @@ Implemented in this repository:
 - bound verdict replay and frozen-evaluator re-execution;
 - Git worktree scope auditing;
 - Codex CLI command construction with role-specific sandboxes;
-- an optional ShinkaEvolve integration seam;
+- a commit-pinned `SHINKA_NATIVE` engine that runs the official ShinkaEvolve
+  runner and imports its database without changing search behavior;
 - a synthetic trap canary for protocol tampering, missing evidence, safety regression, and a valid positive.
 - a bounded ONNX graph-rewrite engineering canary adapter.
 
@@ -44,7 +45,7 @@ The repository now also contains the first executable slice of **EvidenceEvolve 
 - mechanism assessments are explicitly `SCHEDULING_ONLY`; they cannot change the four scientific outcomes;
 - policy candidates can be compared on blind held-out meta-benchmark observations, but passing only yields `ELIGIBLE_FOR_HUMAN_PROMOTION`.
 
-This is a working orchestration and causal-credit core, not a claim that open-ended discovery has already succeeded. Beyond the bounded Codex slice below, live Shinka evolution, a real ChronoDiscovery task suite, literature reproduction/mechanism cards, policy mutation campaigns, and any blind evidence that R1 discovers algorithms more efficiently than the baselines are still missing.
+This is a working orchestration and causal-credit core, not a claim that open-ended discovery has already succeeded. Beyond the bounded Codex slice below, a real ChronoDiscovery task suite, literature reproduction/mechanism cards, policy mutation campaigns, upstream live-result parity, and any blind evidence that R1 discovers algorithms more efficiently than the baselines are still missing.
 
 ## R1 autonomous loop slice
 
@@ -193,7 +194,9 @@ receipt rather than repeating external calls.
 
 ## Setup
 
-Python 3.11 is recommended because it matches ShinkaEvolve's documented development setup. The governance core also supports Python 3.12-3.14.
+Python 3.11 is recommended for repository development. The pinned ShinkaEvolve
+upstream supports Python 3.10+, while the EvidenceEvolve package supports Python
+3.11-3.14.
 
 ```powershell
 python -m venv .venv
@@ -220,11 +223,31 @@ evolve replay-evaluation runs/synthetic_canary_r0
 
 `replay` validates receipt-to-contract bindings and recomputes deterministic gate verdicts. `replay-evaluation` additionally re-runs the campaign's frozen evaluator adapter. Runtime latency is reported as observational replay drift rather than treated as byte-deterministic evidence.
 
-## Codex and ShinkaEvolve
+## Codex and upstream-first ShinkaEvolve
 
 The Codex backend emits `codex exec --json --output-schema ...` commands and grants `workspace-write` only to the implementer role. Read-only roles use the default read-only sandbox. Authentication is deliberately outside contract files and receipts.
 
-ShinkaEvolve remains an optional search kernel. Its score may schedule proposals, but EvidenceEvolve verdicts never read `combined_score`; they read the frozen multi-metric gate input.
+`SHINKA_NATIVE` now delegates configuration and execution to the commit-pinned
+official ShinkaEvolve 0.0.7 API. EvidenceEvolve does not replace its parent
+sampling, islands, novelty rejection, model bandit, prompt evolution, database,
+checkpoint/resume behavior, or WebUI artifacts. It adds a source-bound import
+receipt after the native run:
+
+```powershell
+evolve search shinka-native `
+  --run-id circle-parity-seed-001 `
+  --task-dir PATH_TO_SHINKA_TASK `
+  --config-fname shinka_small.yaml `
+  --results-dir runs/shinka-native/circle-parity-seed-001 `
+  --num-generations 20
+```
+
+The native `combined_score` remains `SHINKA_SCHEDULING_ONLY`. The import receipt
+has no scientific-outcome authority and cannot support a superiority claim.
+Deterministic construction parity is tested against the pinned upstream CLI
+construction path. Actual-runner fake-provider parity and real multi-seed
+circle-packing non-inferiority are still unmet promotion gates. See
+[`docs/UPSTREAM_SEARCH_KERNELS.md`](docs/UPSTREAM_SEARCH_KERNELS.md).
 
 ## R1 generation interface
 
