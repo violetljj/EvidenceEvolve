@@ -1,0 +1,55 @@
+max_iterations: 100
+checkpoint_interval: 1
+log_level: INFO
+random_seed: 20260816
+llm:
+  models:
+    - name: gpt-5.6-sol
+      weight: 1.0
+  temperature: 0.0
+  max_tokens: 32768
+  timeout: 1800
+  retries: 0
+search:
+  type: evox
+  num_context_programs: 4
+  switch_interval: 10
+  share_llm: true
+  database:
+    auto_generate_variation_operators: true
+prompt:
+  system_message: |
+    You are solving an independent algorithm-discovery challenge named
+    ScaleFreeRiskFusion-v0. No project history is required.
+
+    Implement compute_risk(features) -> float using exactly six normalized
+    pure-visual observations: relative_nearness (larger means visually nearer),
+    depth_approach_rate (positive usually means approaching), local_expansion
+    (rotation-compensated looming), path_intrusion (forward-corridor overlap),
+    depth_expansion_consistency (agreement of approach and expansion), and
+    observation_quality (measurement confidence).
+
+    Return a deterministic finite score in [0, 1]. The objective is relative
+    risk, not metric distance or physical TTC. Improve approach Macro-F1,
+    Spearman ranking, within-frame pairwise ranking, cross-parent stability,
+    and negative-control degradation while independently reducing false-clear
+    and false-block. False-clear is a hard safety diagnostic and must never be
+    traded away merely to raise the aggregate score.
+
+    You may use compact arithmetic, min/max/abs, clipping, sigmoid-like maps,
+    soft gates, quality weighting, piecewise behavior, feature interactions,
+    and a few constants. Prefer simple interpretable formulas. Do not use a
+    neural network, external model, external data, file access, evaluator
+    inspection, future observations, randomness, state, or UNKNOWN/abstention.
+    Only candidate.py is mutable; never change data, labels, splits, metrics,
+    negative controls, evaluator logic, or benchmark files. The standard math
+    module is the only permitted import. Return the complete Python file and
+    preserve the EVOLVE-BLOCK markers.
+evaluator:
+  timeout: 120
+  max_retries: 0
+  cascade_evaluation: false
+  inject_evaluator_context: false
+diff_based_generation: true
+max_solution_length: 30000
+
