@@ -1,0 +1,333 @@
+{
+  "$defs": {
+    "ActionOutcome": {
+      "enum": [
+        "SUCCEEDED",
+        "SUCCEEDED_WITH_GAPS",
+        "FAILED",
+        "NOT_EVALUABLE"
+      ],
+      "title": "ActionOutcome",
+      "type": "string"
+    },
+    "IntelligenceRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "applicability": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Applicability",
+          "type": "object"
+        },
+        "artifact_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Artifact Ids",
+          "type": "array"
+        },
+        "authority": {
+          "const": "INSPIRATION_ONLY",
+          "default": "INSPIRATION_ONLY",
+          "title": "Authority",
+          "type": "string"
+        },
+        "authors": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Authors",
+          "type": "array"
+        },
+        "canonical_id": {
+          "title": "Canonical Id",
+          "type": "string"
+        },
+        "inspected_paths": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Inspected Paths",
+          "type": "array"
+        },
+        "kind": {
+          "$ref": "#/$defs/SourceKind"
+        },
+        "license": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "License"
+        },
+        "open_access": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Open Access"
+        },
+        "published_at": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Published At"
+        },
+        "repository_commit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Repository Commit"
+        },
+        "source_id": {
+          "title": "Source Id",
+          "type": "string"
+        },
+        "summary": {
+          "title": "Summary",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_id",
+        "kind",
+        "canonical_id",
+        "title",
+        "url",
+        "summary"
+      ],
+      "title": "IntelligenceRecord",
+      "type": "object"
+    },
+    "ResearchAction": {
+      "enum": [
+        "MUTATE",
+        "REPLICATE",
+        "ABLATE",
+        "FALSIFY",
+        "COUNTEREXAMPLE",
+        "TRANSFER",
+        "SIMPLIFY",
+        "UNDERSTAND",
+        "SEARCH_LITERATURE",
+        "REPRODUCE",
+        "ACQUIRE_EVIDENCE",
+        "CLOSE",
+        "REOPEN",
+        "BREAKTHROUGH"
+      ],
+      "title": "ResearchAction",
+      "type": "string"
+    },
+    "ResearchActionJob": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "$ref": "#/$defs/ResearchAction"
+        },
+        "action_id": {
+          "title": "Action Id",
+          "type": "string"
+        },
+        "authority": {
+          "const": "SCHEDULING_ONLY",
+          "default": "SCHEDULING_ONLY",
+          "title": "Authority",
+          "type": "string"
+        },
+        "campaign_id": {
+          "title": "Campaign Id",
+          "type": "string"
+        },
+        "generation_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Generation Id"
+        },
+        "max_papers": {
+          "default": 5,
+          "maximum": 25,
+          "minimum": 0,
+          "title": "Max Papers",
+          "type": "integer"
+        },
+        "max_repositories": {
+          "default": 2,
+          "maximum": 10,
+          "minimum": 0,
+          "title": "Max Repositories",
+          "type": "integer"
+        },
+        "max_source_files_per_repository": {
+          "default": 3,
+          "maximum": 20,
+          "minimum": 0,
+          "title": "Max Source Files Per Repository",
+          "type": "integer"
+        },
+        "query": {
+          "title": "Query",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "action_id",
+        "campaign_id",
+        "action",
+        "query"
+      ],
+      "title": "ResearchActionJob",
+      "type": "object"
+    },
+    "SourceArtifact": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "media_type": {
+          "title": "Media Type",
+          "type": "string"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "source_url": {
+          "title": "Source Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "artifact_id",
+        "path",
+        "sha256",
+        "media_type",
+        "source_url"
+      ],
+      "title": "SourceArtifact",
+      "type": "object"
+    },
+    "SourceKind": {
+      "enum": [
+        "PAPER",
+        "REPOSITORY"
+      ],
+      "title": "SourceKind",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "action_receipt_id": {
+      "title": "Action Receipt Id",
+      "type": "string"
+    },
+    "artifacts": {
+      "items": {
+        "$ref": "#/$defs/SourceArtifact"
+      },
+      "title": "Artifacts",
+      "type": "array"
+    },
+    "authority": {
+      "const": "SCHEDULING_ONLY",
+      "default": "SCHEDULING_ONLY",
+      "title": "Authority",
+      "type": "string"
+    },
+    "completed_at_utc": {
+      "title": "Completed At Utc",
+      "type": "string"
+    },
+    "issues": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Issues",
+      "type": "array"
+    },
+    "job": {
+      "$ref": "#/$defs/ResearchActionJob"
+    },
+    "outcome": {
+      "$ref": "#/$defs/ActionOutcome"
+    },
+    "records": {
+      "items": {
+        "$ref": "#/$defs/IntelligenceRecord"
+      },
+      "title": "Records",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "started_at_utc": {
+      "title": "Started At Utc",
+      "type": "string"
+    }
+  },
+  "required": [
+    "action_receipt_id",
+    "job",
+    "started_at_utc",
+    "completed_at_utc",
+    "outcome"
+  ],
+  "title": "ResearchActionReceipt",
+  "type": "object"
+}

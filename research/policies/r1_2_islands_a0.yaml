@@ -18,6 +18,9 @@ migration_count: 1
 stepping_stone_min_information_gain: 0.6
 max_parallel_proposals: 2
 max_parallel_evaluations: 2
+literature_papers_per_action: 5
+repositories_per_action: 2
+source_files_per_repository: 3
 code_parent_dispositions:
   - CODE_PARENT
   - FAILURE_DIRECTED_SEED

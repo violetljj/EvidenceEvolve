@@ -9,9 +9,10 @@ from enum import StrEnum
 from pathlib import Path
 from typing import Literal
 
-from pydantic import Field
+from pydantic import Field, model_validator
 
 from evidence_evolve.artifacts import load_receipt
+from evidence_evolve.hashing import sha256_object
 from evidence_evolve.models import (
     ClaimCeiling,
     MechanicsStatus,
@@ -86,25 +87,41 @@ class MemoryScope(StrictModel):
     project: str = "EvidenceEvolve"
     campaign: str
     family: str
-    stage: ResearchStage
+    stage: ResearchStage | Literal["RESEARCH_INTELLIGENCE"]
     visibility: Literal["DEVELOPMENT"] = "DEVELOPMENT"
 
 
 class MemoryProvenance(StrictModel):
-    receipt_ids: list[str] = Field(min_length=1)
-    receipt_sha256: dict[str, str] = Field(min_length=1)
+    receipt_ids: list[str] = Field(default_factory=list)
+    receipt_sha256: dict[str, str] = Field(default_factory=dict)
+    action_receipt_ids: list[str] = Field(default_factory=list)
+    action_receipt_sha256: dict[str, str] = Field(default_factory=dict)
+    source_artifact_sha256: dict[str, str] = Field(default_factory=dict)
     candidate_commit: str | None = None
     patch_sha256: str | None = None
     evaluator_hashes: dict[str, str] = Field(default_factory=dict)
     data_hashes: dict[str, str] = Field(default_factory=dict)
-    compiler_version: Literal["scientific-memory-v1"] = "scientific-memory-v1"
+    compiler_version: Literal["scientific-memory-v2"] = "scientific-memory-v2"
+
+    @model_validator(mode="after")
+    def has_immutable_source_binding(self) -> "MemoryProvenance":
+        if not self.receipt_ids and not self.action_receipt_ids:
+            raise ValueError("memory card must bind an evidence or action receipt")
+        if set(self.receipt_ids) != set(self.receipt_sha256):
+            raise ValueError("receipt ids and hashes must match")
+        if set(self.action_receipt_ids) != set(self.action_receipt_sha256):
+            raise ValueError("action receipt ids and hashes must match")
+        return self
 
 
 class MemoryEpistemics(StrictModel):
     authority: Literal["SCHEDULING_ONLY"] = "SCHEDULING_ONLY"
     claim_ceiling: ClaimCeiling = ClaimCeiling.DEVELOPMENT_ONLY
-    scientific_outcome: ScientificOutcome
+    scientific_outcome: ScientificOutcome | None = None
     mechanism_support: str | None = None
+    evidence_basis: Literal["INTERNAL_RECEIPT", "EXTERNAL_SOURCE"] = (
+        "INTERNAL_RECEIPT"
+    )
     source_binding_verified: Literal[True] = True
 
 
@@ -218,6 +235,18 @@ class ResearchMemoryStore:
                 );
                 CREATE INDEX IF NOT EXISTS idx_memory_sources_receipt
                     ON memory_sources(receipt_id);
+                CREATE TABLE IF NOT EXISTS memory_action_sources (
+                    memory_id TEXT NOT NULL,
+                    version INTEGER NOT NULL,
+                    action_receipt_id TEXT NOT NULL,
+                    action_receipt_sha256 TEXT NOT NULL,
+                    source_artifact_sha256_json TEXT NOT NULL,
+                    PRIMARY KEY(memory_id, version, action_receipt_id),
+                    FOREIGN KEY(memory_id, version)
+                        REFERENCES memory_cards(memory_id, version)
+                );
+                CREATE INDEX IF NOT EXISTS idx_memory_action_sources_receipt
+                    ON memory_action_sources(action_receipt_id);
                 CREATE TABLE IF NOT EXISTS memory_retrieval_events (
                     retrieval_event_id TEXT PRIMARY KEY,
                     role TEXT NOT NULL,
@@ -257,6 +286,26 @@ class ResearchMemoryStore:
         cards: list[ScientificMemoryCard] = []
         for receipt_id in receipt_ids:
             cards.extend(self.compile_receipt(receipt_id))
+        with self._connect() as connection:
+            has_actions = connection.execute(
+                "SELECT 1 FROM sqlite_master WHERE type='table' "
+                "AND name='research_action_receipts'"
+            ).fetchone()
+            action_receipt_ids = (
+                [
+                    row[0]
+                    for row in connection.execute(
+                        """
+                        SELECT action_receipt_id FROM research_action_receipts
+                        ORDER BY created_at_utc, action_receipt_id
+                        """
+                    ).fetchall()
+                ]
+                if has_actions
+                else []
+            )
+        for action_receipt_id in action_receipt_ids:
+            cards.extend(self.compile_action_receipt(action_receipt_id))
         return cards
 
     def compile_receipt(self, receipt_id: str) -> list[ScientificMemoryCard]:
@@ -410,6 +459,133 @@ class ResearchMemoryStore:
             cards.append(card)
         return cards
 
+    def compile_action_receipt(
+        self, action_receipt_id: str
+    ) -> list[ScientificMemoryCard]:
+        from evidence_evolve.research_actions.models import (
+            ActionOutcome,
+            ActionReceiptEnvelope,
+            SourceKind,
+        )
+
+        with self._connect() as connection:
+            row = connection.execute(
+                """
+                SELECT receipt_path, receipt_sha256
+                FROM research_action_receipts WHERE action_receipt_id = ?
+                """,
+                (action_receipt_id,),
+            ).fetchone()
+        if row is None:
+            return []
+        path, indexed_sha256 = row
+        envelope = ActionReceiptEnvelope.model_validate_json(
+            (self.database.parent / path).read_text(encoding="utf-8")
+        )
+        actual = sha256_object(envelope.receipt)
+        if actual != envelope.receipt_sha256 or actual != indexed_sha256:
+            raise MemoryIntegrityError(
+                f"action receipt hash mismatch for memory source: {action_receipt_id}"
+            )
+        receipt = envelope.receipt
+        if receipt.outcome not in {
+            ActionOutcome.SUCCEEDED,
+            ActionOutcome.SUCCEEDED_WITH_GAPS,
+        }:
+            return []
+        artifact_hashes = {
+            artifact.artifact_id: artifact.sha256 for artifact in receipt.artifacts
+        }
+        cards: list[ScientificMemoryCard] = []
+        for record in receipt.records:
+            kinds = (
+                [MemoryKind.MECHANISM]
+                if record.kind is SourceKind.PAPER
+                else [MemoryKind.PROCEDURE, MemoryKind.TRANSFER]
+            )
+            for kind in kinds:
+                digest = hashlib.sha256(
+                    f"{action_receipt_id}\0{record.source_id}\0{kind.value}".encode()
+                ).hexdigest()
+                is_repository = record.kind is SourceKind.REPOSITORY
+                is_procedure = kind is MemoryKind.PROCEDURE
+                compact_summary = record.summary[:2400]
+                content = MemoryContent(
+                    hypothesis=f"External source for investigation: {record.title}",
+                    intervention=(
+                        "Inspect the pinned repository and reproduce the relevant procedure"
+                        if is_procedure
+                        else "Assess whether this external mechanism transfers to the target campaign"
+                    ),
+                    mechanism_claims=(
+                        []
+                        if is_procedure or not compact_summary
+                        else [compact_summary]
+                    ),
+                    applicability=record.applicability,
+                    non_applicability=[
+                        "External source is inspiration only, not internal experimental evidence",
+                        "Target campaign requires its own implementation, controls, and evaluation",
+                    ],
+                    procedure=(
+                        [
+                            f"Inspect repository at immutable commit {record.repository_commit}",
+                            *[f"Inspect pinned path: {item}" for item in record.inspected_paths],
+                        ]
+                        if is_repository
+                        else []
+                    ),
+                    lineage=(
+                        {
+                            "canonical_id": record.canonical_id,
+                            "repository_commit": record.repository_commit,
+                            "inspected_paths": record.inspected_paths,
+                        }
+                        if is_repository
+                        else {"canonical_id": record.canonical_id}
+                    ),
+                    source_handles=[
+                        f"action_receipt:{action_receipt_id}",
+                        f"external_source:{record.source_id}",
+                        record.url,
+                        *[f"artifact:{item}" for item in record.artifact_ids],
+                    ],
+                )
+                card = ScientificMemoryCard(
+                    memory_id=f"MEM-{digest[:24]}",
+                    kind=kind,
+                    status=MemoryStatus.ACTIVE_SCHEDULING_MEMORY,
+                    scope=MemoryScope(
+                        campaign=receipt.job.campaign_id,
+                        family=(
+                            "external_literature"
+                            if record.kind is SourceKind.PAPER
+                            else "external_repository"
+                        ),
+                        stage="RESEARCH_INTELLIGENCE",
+                    ),
+                    provenance=MemoryProvenance(
+                        action_receipt_ids=[action_receipt_id],
+                        action_receipt_sha256={
+                            action_receipt_id: envelope.receipt_sha256
+                        },
+                        source_artifact_sha256={
+                            artifact_id: artifact_hashes[artifact_id]
+                            for artifact_id in record.artifact_ids
+                            if artifact_id in artifact_hashes
+                        },
+                    ),
+                    epistemics=MemoryEpistemics(
+                        scientific_outcome=None,
+                        evidence_basis="EXTERNAL_SOURCE",
+                    ),
+                    content=content,
+                    created_at_utc=receipt.completed_at_utc,
+                )
+                self._insert_card(card)
+                cards.append(card)
+        return cards
+
     def _insert_card(self, card: ScientificMemoryCard) -> None:
         card_json = json.dumps(card.model_dump(mode="json"), sort_keys=True)
         searchable = " ".join(
@@ -427,6 +603,11 @@ class ResearchMemoryStore:
             ]
         )
         key = f"{card.memory_id}:{card.version}"
+        stage_value = (
+            card.scope.stage.value
+            if isinstance(card.scope.stage, ResearchStage)
+            else card.scope.stage
+        )
         with self._connect() as connection:
             existing = connection.execute(
                 "SELECT card_json FROM memory_cards WHERE memory_id = ? AND version = ?",
@@ -453,11 +634,15 @@ class ResearchMemoryStore:
                     card.status.value,
                     card.scope.campaign,
                     card.scope.family,
-                    card.scope.stage.value,
+                    stage_value,
                     card.scope.visibility,
                     card.epistemics.authority,
                     card.epistemics.claim_ceiling.value,
-                    card.epistemics.scientific_outcome.value,
+                    (
+                        card.epistemics.scientific_outcome.value
+                        if card.epistemics.scientific_outcome is not None
+                        else "EXTERNAL_SOURCE_ONLY"
+                    ),
                     card.epistemics.mechanism_support,
                     card_json,
                     searchable,
@@ -472,6 +657,26 @@ class ResearchMemoryStore:
                     ) VALUES (?, ?, ?, ?)
                     """,
                     (card.memory_id, card.version, source_id, source_sha256),
+                )
+            for action_receipt_id, action_sha256 in (
+                card.provenance.action_receipt_sha256.items()
+            ):
+                connection.execute(
+                    """
+                    INSERT INTO memory_action_sources(
+                        memory_id, version, action_receipt_id,
+                        action_receipt_sha256, source_artifact_sha256_json
+                    ) VALUES (?, ?, ?, ?, ?)
+                    """,
+                    (
+                        card.memory_id,
+                        card.version,
+                        action_receipt_id,
+                        action_sha256,
+                        json.dumps(
+                            card.provenance.source_artifact_sha256, sort_keys=True
+                        ),
+                    ),
                 )
             connection.execute(
                 "INSERT INTO memory_cards_fts(card_key, searchable_text) VALUES (?, ?)",

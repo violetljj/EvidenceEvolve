@@ -25,6 +25,9 @@ from evidence_evolve.models import (
     MutationType,
     ScientificOutcome,
 )
+from evidence_evolve.research_actions.intelligence import (
+    LiteratureRepoIntelligenceExecutor,
+)
 
 
 def _git(repo: Path, *args: str) -> str:
@@ -295,6 +298,48 @@ def test_two_generation_loop_uses_feedback_and_resumes_idempotently(
     )
     assert resumed.budgets == result.budgets
     assert resumed.population == result.population
+
+
+def test_live_intelligence_waits_before_proposals_when_authority_is_missing(
+    tmp_path, contract
+) -> None:
+    contract = contract.model_copy(deep=True)
+    contract.budgets = Budgets(
+        proposal_calls=1,
+        implementations=1,
+        mechanics_runs=1,
+        literature_searches=1,
+        repository_inspections=2,
+    )
+    contract.lock = ContractLock(
+        content_sha256=sha256_object(
+            contract.model_dump(mode="python", exclude={"lock"})
+        )
+    )
+    run_dir = tmp_path / "run"
+    backend = FakeCodexBackend()
+    runner = AutonomousCampaignRunner(
+        contract=contract,
+        closure_registry=ClosureRegistry(),
+        policy=ResearchPolicyGenome(policy_id="POLICY-INTELLIGENCE"),
+        repo_root=tmp_path,
+        run_dir=run_dir,
+        evaluate=lambda context: None,  # type: ignore[arg-type,return-value]
+        backend=backend,
+        intelligence_executor=LiteratureRepoIntelligenceExecutor(
+            run_dir=run_dir,
+            openalex_api_key=None,
+        ),
+    )
+
+    with pytest.raises(RuntimeError, match="waiting for authority"):
+        runner.run(generations=1)
+
+    assert backend.calls == []
+    assert not (
+        run_dir / "generations" / "GEN-001" / "research_director_decision.json"
+    ).exists()
+    assert runner.budgets.snapshot()["literature_searches"]["used"] == 0
 
 
 def test_proposal_schema_binds_candidate_and_parent_ids(contract, tmp_path) -> None:

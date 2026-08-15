@@ -80,6 +80,14 @@ Gate Engine. A scheduling-only Research Director uses those cards to select a
 research action and can reallocate the next generation toward controls, ablations,
 failure-directed tests, transfer, or breakthrough mutations.
 
+The first independent Research Action executor is also available. A
+`SEARCH_LITERATURE` job can search OpenAlex works, inspect public GitHub
+repositories, pin repository evidence to commit/tree/blob snapshots, write an
+immutable scheduling-only action receipt, and compile compact external-source
+cards. When live intelligence is enabled in the autonomous loop, the Director
+can retrieve those new cards and make a second decision in the same generation.
+External sources remain inspiration, never scientific or promotion authority.
+
 R1.2 persists code artifacts and island memberships in the campaign database. Each
 slot is assigned to an island; parents are sampled across elite, novelty,
 failure-directed, explicit stepping-stone, and migrant roles; and bounded ring
@@ -109,17 +117,42 @@ evolve campaign autonomous research/contracts/onnx_rewrite_r1.locked.yaml `
   --proposals-per-generation 5
 ```
 
+Add `--enable-live-intelligence` to let a `SEARCH_LITERATURE` Director decision
+execute before candidate proposal. The per-action paper/repository/file limits
+come from the frozen research-policy genome.
+
 Use `--codex-executable PATH` when `codex` does not resolve to a usable standalone
 CLI. The command fails closed before proposal when the executable cannot start.
 The loop is resumable by rerunning the same command: validated proposals,
 implementations, receipts, and budget reservations are reused rather than counted
 again.
 
-This slice establishes executable search mechanics, not autonomous-discovery
-evidence. Crossover, independently calibrated novelty, literature cards, Research
-Action executors, Red Queen populations, blind confirmation, algorithm novelty, and
+This slice establishes executable search mechanics and source acquisition, not
+autonomous-discovery evidence. Independent `REPLICATE` and `ACQUIRE_EVIDENCE`
+executors, semantic closure, cross-campaign transfer validation, strategy
+meta-learning, Red Queen populations, blind confirmation, algorithm novelty, and
 superiority over a baseline remain unproven or unimplemented until the named code
 and external campaigns exist.
+
+## Research intelligence action
+
+OpenAlex currently requires an API key for API use. GitHub public repository
+inspection can run without a token, although a token is recommended for a larger
+rate limit. Secrets are read from environment variables and are not stored in
+jobs, receipts, source URLs, or memory cards.
+
+```powershell
+$env:OPENALEX_API_KEY = "..."
+$env:GITHUB_TOKEN = "..." # optional for public repositories
+
+evolve research-action search-literature runs/onnx_rewrite_r1_2_a0 `
+  --query "mobile monocular depth false-block support estimation"
+```
+
+Use `--max-papers 0` for a repository-only action when no OpenAlex key is
+available. A missing required credential returns `WAITING_FOR_AUTHORITY` before
+budget is consumed. Rerunning the same action ID returns the existing bound
+receipt rather than repeating external calls.
 
 ## Setup
 

@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import importlib
 import inspect
 import json
+import os
 import sqlite3
 import subprocess
 import sys
@@ -27,7 +29,7 @@ from evidence_evolve.discovery.autonomous import (
     AutonomousEvaluationContext,
     ImplementationManifest,
 )
-from evidence_evolve.discovery.director import ResearchDirectorDecision
+from evidence_evolve.discovery.director import ResearchAction, ResearchDirectorDecision
 from evidence_evolve.governance.candidate_auditor import audit_candidate
 from evidence_evolve.governance.closure_registry import ClosureRegistry
 from evidence_evolve.governance.protocol_lock import (
@@ -51,6 +53,16 @@ from evidence_evolve.research_memory import (
     RoleScopedMemoryPacket,
     ScientificMemoryCard,
 )
+from evidence_evolve.research_actions.intelligence import (
+    LiteratureRepoIntelligenceExecutor,
+)
+from evidence_evolve.research_actions.models import (
+    ActionState,
+    ResearchActionJob,
+    ResearchActionReceipt,
+)
+from evidence_evolve.research_actions.store import ResearchActionRunner
+from evidence_evolve.budgets import BudgetLedger
 
 
 def _json(value: Any) -> str:
@@ -225,6 +237,51 @@ def command_memory_query(args: argparse.Namespace) -> int:
     return 0
 
 
+def command_search_literature(args: argparse.Namespace) -> int:
+    repo = _repo_root(args.repo)
+    run_dir = Path(args.run_dir).resolve()
+    contract_path = run_dir / "contract.locked.yaml"
+    if not contract_path.is_file():
+        raise FileNotFoundError(
+            f"run directory is not bound to a locked contract: {contract_path}"
+        )
+    contract = load_contract(contract_path)
+    ProtocolLock(repo).assert_valid(contract)
+    database = run_dir / "research.db"
+    ArchiveStore(database)
+    budgets = BudgetLedger(database, contract.budgets)
+    action_id = args.action_id or (
+        "INTEL-" + hashlib.sha256(args.query.encode("utf-8")).hexdigest()[:20]
+    )
+    executor = LiteratureRepoIntelligenceExecutor(
+        run_dir=run_dir,
+        openalex_api_key=os.environ.get(args.openalex_api_key_env),
+        github_token=os.environ.get(args.github_token_env),
+    )
+    result = ResearchActionRunner(
+        database=database,
+        run_dir=run_dir,
+        budgets=budgets,
+    ).run(
+        ResearchActionJob(
+            action_id=action_id,
+            campaign_id=contract.campaign.id,
+            action=ResearchAction.SEARCH_LITERATURE,
+            query=args.query,
+            max_papers=args.max_papers,
+            max_repositories=args.max_repositories,
+            max_source_files_per_repository=args.max_source_files,
+        ),
+        executor,
+    )
+    print(_json(result))
+    if result.state is ActionState.WAITING_FOR_AUTHORITY:
+        return 6
+    if result.state is ActionState.FAILED:
+        return 7
+    return 0
+
+
 def command_explain(args: argparse.Namespace) -> int:
     run_dir = Path(args.run_dir).resolve()
     with sqlite3.connect(run_dir / "research.db") as connection:
@@ -286,6 +343,10 @@ def command_export_schemas(args: argparse.Namespace) -> int:
         "role_scoped_memory_packet.schema.json": RoleScopedMemoryPacket.model_json_schema(),
         "research_director_decision.schema.json": (
             ResearchDirectorDecision.model_json_schema()
+        ),
+        "research_action_job.schema.json": ResearchActionJob.model_json_schema(),
+        "research_action_receipt.schema.json": (
+            ResearchActionReceipt.model_json_schema()
         ),
     }
     for name, schema in schemas.items():
@@ -395,12 +456,22 @@ def command_campaign_autonomous(args: argparse.Namespace) -> int:
             "Codex CLI is not usable; pass --codex-executable with a working "
             f"Codex CLI path. Backend status: {status.get('error')}"
         )
+    run_dir = Path(args.run_dir).resolve()
+    intelligence_executor = (
+        LiteratureRepoIntelligenceExecutor(
+            run_dir=run_dir,
+            openalex_api_key=os.environ.get(args.openalex_api_key_env),
+            github_token=os.environ.get(args.github_token_env),
+        )
+        if args.enable_live_intelligence
+        else None
+    )
     runner = AutonomousCampaignRunner(
         contract=contract,
         closure_registry=ClosureRegistry.load(repo / contract.closure_registry),
         policy=policy,
         repo_root=repo,
-        run_dir=Path(args.run_dir).resolve(),
+        run_dir=run_dir,
         evaluate=evaluate,
         backend=backend,
         worktree_root=(
@@ -409,6 +480,7 @@ def command_campaign_autonomous(args: argparse.Namespace) -> int:
         reference_metrics={
             str(key): float(value) for key, value in reference_metrics.items()
         },
+        intelligence_executor=intelligence_executor,
         timeout_seconds=args.timeout_seconds,
     )
     result = runner.run(
@@ -519,6 +591,26 @@ def build_parser() -> argparse.ArgumentParser:
     memory_query.add_argument("--limit", type=int, default=8)
     memory_query.set_defaults(handler=command_memory_query)
 
+    research_action = subparsers.add_parser(
+        "research-action", help="execute a source-bound non-code research action"
+    )
+    research_action_commands = research_action.add_subparsers(
+        dest="research_action_command", required=True
+    )
+    literature = research_action_commands.add_parser(
+        "search-literature",
+        help="search papers and inspect pinned public repositories",
+    )
+    literature.add_argument("run_dir")
+    literature.add_argument("--query", required=True)
+    literature.add_argument("--action-id")
+    literature.add_argument("--max-papers", type=int, default=5)
+    literature.add_argument("--max-repositories", type=int, default=2)
+    literature.add_argument("--max-source-files", type=int, default=3)
+    literature.add_argument("--openalex-api-key-env", default="OPENALEX_API_KEY")
+    literature.add_argument("--github-token-env", default="GITHUB_TOKEN")
+    literature.set_defaults(handler=command_search_literature)
+
     explain = subparsers.add_parser("explain", help="explain one deterministic verdict")
     explain.add_argument("run_dir")
     explain.add_argument("candidate_id")
@@ -581,6 +673,9 @@ def build_parser() -> argparse.ArgumentParser:
     autonomous.add_argument("--timeout-seconds", type=int, default=1800)
     autonomous.add_argument("--codex-executable", default="codex")
     autonomous.add_argument("--worktree-root")
+    autonomous.add_argument("--enable-live-intelligence", action="store_true")
+    autonomous.add_argument("--openalex-api-key-env", default="OPENALEX_API_KEY")
+    autonomous.add_argument("--github-token-env", default="GITHUB_TOKEN")
     autonomous.set_defaults(handler=command_campaign_autonomous)
 
     policy = subparsers.add_parser(
@@ -599,6 +694,8 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
     parser = build_parser()
     args = parser.parse_args(argv)
     try:

@@ -130,6 +130,15 @@
           "$ref": "#/$defs/ClaimCeiling",
           "default": "DEVELOPMENT_ONLY"
         },
+        "evidence_basis": {
+          "default": "INTERNAL_RECEIPT",
+          "enum": [
+            "INTERNAL_RECEIPT",
+            "EXTERNAL_SOURCE"
+          ],
+          "title": "Evidence Basis",
+          "type": "string"
+        },
         "mechanism_support": {
           "anyOf": [
             {
@@ -143,7 +152,15 @@
           "title": "Mechanism Support"
         },
         "scientific_outcome": {
-          "$ref": "#/$defs/ScientificOutcome"
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ScientificOutcome"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
         },
         "source_binding_verified": {
           "const": true,
@@ -152,9 +169,6 @@
           "type": "boolean"
         }
       },
-      "required": [
-        "scientific_outcome"
-      ],
       "title": "MemoryEpistemics",
       "type": "object"
     },
@@ -174,6 +188,20 @@
     "MemoryProvenance": {
       "additionalProperties": false,
       "properties": {
+        "action_receipt_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Action Receipt Ids",
+          "type": "array"
+        },
+        "action_receipt_sha256": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Action Receipt Sha256",
+          "type": "object"
+        },
         "candidate_commit": {
           "anyOf": [
             {
@@ -187,8 +215,8 @@
           "title": "Candidate Commit"
         },
         "compiler_version": {
-          "const": "scientific-memory-v1",
-          "default": "scientific-memory-v1",
+          "const": "scientific-memory-v2",
+          "default": "scientific-memory-v2",
           "title": "Compiler Version",
           "type": "string"
         },
@@ -222,7 +250,6 @@
           "items": {
             "type": "string"
           },
-          "minItems": 1,
           "title": "Receipt Ids",
           "type": "array"
         },
@@ -230,15 +257,17 @@
           "additionalProperties": {
             "type": "string"
           },
-          "minProperties": 1,
           "title": "Receipt Sha256",
+          "type": "object"
+        },
+        "source_artifact_sha256": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Source Artifact Sha256",
           "type": "object"
         }
       },
-      "required": [
-        "receipt_ids",
-        "receipt_sha256"
-      ],
       "title": "MemoryProvenance",
       "type": "object"
     },
@@ -271,7 +300,16 @@
           "type": "string"
         },
         "stage": {
-          "$ref": "#/$defs/ResearchStage"
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ResearchStage"
+            },
+            {
+              "const": "RESEARCH_INTELLIGENCE",
+              "type": "string"
+            }
+          ],
+          "title": "Stage"
         },
         "visibility": {
           "const": "DEVELOPMENT",

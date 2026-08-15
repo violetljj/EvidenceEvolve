@@ -45,10 +45,22 @@
           "title": "Device Runs",
           "type": "integer"
         },
+        "evidence_acquisitions": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Evidence Acquisitions",
+          "type": "integer"
+        },
         "implementations": {
           "default": 0,
           "minimum": 0,
           "title": "Implementations",
+          "type": "integer"
+        },
+        "literature_searches": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Literature Searches",
           "type": "integer"
         },
         "mechanics_runs": {
@@ -67,6 +79,18 @@
           "default": 0,
           "minimum": 0,
           "title": "Proxy Runs",
+          "type": "integer"
+        },
+        "replications": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Replications",
+          "type": "integer"
+        },
+        "repository_inspections": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Repository Inspections",
           "type": "integer"
         }
       },

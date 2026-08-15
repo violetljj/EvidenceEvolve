@@ -113,6 +113,13 @@
       "title": "Island Ids",
       "type": "array"
     },
+    "literature_papers_per_action": {
+      "default": 5,
+      "maximum": 25,
+      "minimum": 0,
+      "title": "Literature Papers Per Action",
+      "type": "integer"
+    },
     "max_parallel_evaluations": {
       "default": 1,
       "maximum": 32,
@@ -172,11 +179,25 @@
       "title": "Policy Id",
       "type": "string"
     },
+    "repositories_per_action": {
+      "default": 2,
+      "maximum": 10,
+      "minimum": 0,
+      "title": "Repositories Per Action",
+      "type": "integer"
+    },
     "schema_version": {
       "const": "1.0",
       "default": "1.0",
       "title": "Schema Version",
       "type": "string"
+    },
+    "source_files_per_repository": {
+      "default": 3,
+      "maximum": 20,
+      "minimum": 0,
+      "title": "Source Files Per Repository",
+      "type": "integer"
     },
     "stagnation_generations": {
       "default": 3,

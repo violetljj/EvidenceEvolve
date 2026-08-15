@@ -1,7 +1,7 @@
 schema_version: '1.0'
 campaign:
   id: onnx_rewrite_r1_2_a0
-  base_commit: 50d33777f1b5d9138ceb76fc535a6fb57874b08b
+  base_commit: 0d6fbe81867348c2fc1086f70493a885e9bdc9d1
   research_question: Can a persistent five-island Codex population discover ONNX rewrite
     improvements while preserving exact task behavior?
   claim_scope: autonomous_engineering_harness_canary_only
@@ -50,7 +50,7 @@ frozen_assets:
 - asset_id: harness-models-r1
   kind: harness_core
   path: evidence_evolve/models.py
-  sha256: f4ffdcd59058937b425b1e25c5325d7f08d2964ffeaf3e1ae38624d0adb5be7a
+  sha256: 056bb7d1208a0b12d490218e1a8948fa876bfe4c1775fd31508108eb6171b618
 - asset_id: harness-archive-r1
   kind: harness_core
   path: evidence_evolve/archive.py
@@ -58,11 +58,11 @@ frozen_assets:
 - asset_id: harness-research-memory-r1
   kind: harness_core
   path: evidence_evolve/research_memory.py
-  sha256: 6dba80f63bccee3774b29687c1be5cf7a3478e5ef93f2a0eba43d99c0d97346e
+  sha256: dc9cf63a9c88f4f9d3a9ede105665fd5f2c1be2a2f570ae0ca0c6c13990a6f32
 - asset_id: harness-artifacts-r1
   kind: harness_core
   path: evidence_evolve/artifacts.py
-  sha256: 55802baa517a93b1a8a2bef9f351c4b6b0c47433663e09a70c215e6ed632e3be
+  sha256: b59a1e65729e5c8c0bdea32ff568acb872fbbc95d8731dea6ab105998d399e10
 - asset_id: harness-budgets-r1
   kind: harness_core
   path: evidence_evolve/budgets.py
@@ -78,15 +78,27 @@ frozen_assets:
 - asset_id: harness-autonomous-runner-r1
   kind: harness_core
   path: evidence_evolve/discovery/autonomous.py
-  sha256: 071a0d457939b12d2c4d46e50390f1bbba46707cf92c8d81a13967845f40c828
+  sha256: 6cf9fe2f6e99f783fa39b92a5a278d8a31b73357cb4ec49bc723e9db698d6985
 - asset_id: harness-research-director-r1
   kind: harness_core
   path: evidence_evolve/discovery/director.py
   sha256: f350f606381762048cdcf479b602903f6a3d5ca80efe674bec8308ce741ab11e
+- asset_id: harness-research-action-models-r1
+  kind: harness_core
+  path: evidence_evolve/research_actions/models.py
+  sha256: 3607f51231dd9e23a845a20d1b307f37e29048cf2ab22950db4d6884c691b147
+- asset_id: harness-research-action-store-r1
+  kind: harness_core
+  path: evidence_evolve/research_actions/store.py
+  sha256: 7ab5a9492a371d48d7c3bd718f7f351cecbf60faeea1a9f7831f36e37d853552
+- asset_id: harness-literature-repo-intelligence-r1
+  kind: harness_core
+  path: evidence_evolve/research_actions/intelligence.py
+  sha256: 3fe8dd98c49abe3f83dd10aa6a9dbf98b7649e0dfe31428008c80f6641773ada
 - asset_id: harness-research-policy-r1
   kind: harness_core
   path: evidence_evolve/meta_evolution/policy.py
-  sha256: c67fbaeac5a5549532124c970640b2e0131e3fa0fa45c16ec36fd77d117708c5
+  sha256: 711e2e346c00b1ad3ec7b2bd23a23d98c7396997034761f90f9382d8c09ac281
 - asset_id: harness-codex-backend-r1
   kind: harness_core
   path: evidence_evolve/backends/codex_cli.py
@@ -166,7 +178,11 @@ budgets:
   proxy_runs: 0
   confirmation_runs: 0
   device_runs: 0
+  literature_searches: 5
+  repository_inspections: 10
+  replications: 0
+  evidence_acquisitions: 0
 closure_registry: research/closures/closure_registry.yaml
 lock:
   algorithm: sha256
-  content_sha256: f179416871274f0e4d6449a279c94daf2686c7744cf9dcdb02f7ffa860198834
+  content_sha256: 5e0de7edc6f49edf4bcad6fd8d59a92e1346fa04a487c145f02700d8f8221809

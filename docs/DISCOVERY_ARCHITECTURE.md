@@ -144,7 +144,9 @@ and has a focused test or campaign measurement.
 ### R1.3 Research intelligence
 
 - sanitized code-context compiler containing relevant source and lineage diffs;
-- literature mechanism cards with source and applicability metadata;
+- **Implemented first slice:** OpenAlex mechanism cards and pinned GitHub
+  repository Procedure/Transfer cards with source, applicability, raw snapshot,
+  and action-receipt bindings;
 - similarity retrieval over prior mechanisms, assumptions, and failure signatures;
 - calibrated proposer predictions rather than self-awarded utility scores;
 - independent acquisition using cost, calibration, redundancy, diversity, and
@@ -162,9 +164,11 @@ TRANSFER  SIMPLIFY  UNDERSTAND  ACQUIRE_NEW_EVIDENCE  CLOSE_FAMILY
 
 `MUTATE`, `ABLATE`, `FALSIFY`, `GENERATE_COUNTEREXAMPLE`, `TRANSFER`, `SIMPLIFY`,
 and `BREAKTHROUGH` can currently alter candidate allocation and proposal context.
-Non-code actions such as literature search, evidence acquisition, replication, and
-standalone diagnosis remain explicitly blocked until they have source-bound
-executors and attribution rules; they are not silently disguised as mutations.
+`SEARCH_LITERATURE` now runs as an independent source-bound action and can change
+the Director decision before proposals are created. Evidence acquisition,
+replication, and standalone diagnosis remain explicitly blocked until they have
+their own attribution rules and executors; they are not silently disguised as
+mutations.
 
 ### R1.5 Explorer, Scientist, and Red Queen
 

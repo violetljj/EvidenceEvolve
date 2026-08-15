@@ -46,6 +46,15 @@ from evidence_evolve.meta_evolution.policy import (
 )
 from evidence_evolve.models import MutationType, ResearchContract, ResearchStage, StrictModel
 from evidence_evolve.research_memory import MemoryRole, RoleScopedMemoryPacket
+from evidence_evolve.research_actions.intelligence import (
+    LiteratureRepoIntelligenceExecutor,
+)
+from evidence_evolve.research_actions.models import (
+    ActionRunResult,
+    ActionState,
+    ResearchActionJob,
+)
+from evidence_evolve.research_actions.store import ResearchActionRunner
 from evidence_evolve.worktrees import WorktreeManager
 
 
@@ -163,6 +172,7 @@ class AutonomousCampaignRunner:
         backend: CodexExecutionBackend | None = None,
         worktree_root: Path | None = None,
         reference_metrics: dict[str, float] | None = None,
+        intelligence_executor: LiteratureRepoIntelligenceExecutor | None = None,
         timeout_seconds: int = 1800,
     ) -> None:
         if contract.lock is None:
@@ -185,6 +195,12 @@ class AutonomousCampaignRunner:
         self.database = self.run_dir / "research.db"
         self.budgets = BudgetLedger(self.database, contract.budgets)
         self.archive = ArchiveStore(self.database)
+        self.action_runner = ResearchActionRunner(
+            database=self.database,
+            run_dir=self.run_dir,
+            budgets=self.budgets,
+        )
+        self.intelligence_executor = intelligence_executor
         self.director = ResearchDirector()
         self.population = PopulationStore(self.database)
         self._parent_commits.update(self.population.parent_commits())
@@ -263,6 +279,7 @@ class AutonomousCampaignRunner:
                 / generation_id
                 / "research_director_decision.json"
             )
+            research_action_result: ActionRunResult | None = None
             if director_path.exists():
                 director_decision = ResearchDirectorDecision.model_validate_json(
                     director_path.read_text(encoding="utf-8")
@@ -280,11 +297,61 @@ class AutonomousCampaignRunner:
                     default_mix=self.policy.mutation_operator_mix,
                     breakthrough_mix=self.policy.breakthrough_mutation_mix,
                 )
+                if (
+                    director_decision.primary_action
+                    is ResearchAction.SEARCH_LITERATURE
+                    and self.intelligence_executor is not None
+                ):
+                    research_action_result = self.action_runner.run(
+                        ResearchActionJob(
+                            action_id=f"{generation_id}-SEARCH-LITERATURE",
+                            campaign_id=self.contract.campaign.id,
+                            generation_id=generation_id,
+                            action=ResearchAction.SEARCH_LITERATURE,
+                            query=self.contract.campaign.research_question,
+                            max_papers=self.policy.literature_papers_per_action,
+                            max_repositories=self.policy.repositories_per_action,
+                            max_source_files_per_repository=(
+                                self.policy.source_files_per_repository
+                            ),
+                        ),
+                        self.intelligence_executor,
+                    )
+                    if (
+                        research_action_result.state
+                        is ActionState.WAITING_FOR_AUTHORITY
+                    ):
+                        raise RuntimeError(
+                            "research intelligence is waiting for authority: "
+                            f"{research_action_result.reason}"
+                        )
+                    if research_action_result.receipt is not None:
+                        memory_packet = self.archive.research_memory_packet(
+                            role=MemoryRole.HYPOTHESIS_EXPLORER,
+                            query=self.contract.campaign.research_question,
+                            campaign=self.contract.campaign.id,
+                            limit=12,
+                        )
+                        director_packet = self.archive.research_memory_packet(
+                            role=MemoryRole.RESEARCH_DIRECTOR,
+                            query=self.contract.campaign.research_question,
+                            campaign=self.contract.campaign.id,
+                            limit=16,
+                        )
+                        director_decision = self.director.decide(
+                            generation_id=generation_id,
+                            packet=director_packet,
+                            stagnant_generations=stagnant_generations,
+                            stagnation_threshold=self.policy.stagnation_generations,
+                            default_mix=self.policy.mutation_operator_mix,
+                            breakthrough_mix=self.policy.breakthrough_mutation_mix,
+                        )
                 create_once_json(director_path, director_decision)
             feedback = self._feedback_context(
                 completed,
                 memory_packet=memory_packet,
                 director_decision=director_decision,
+                research_action_result=research_action_result,
             )
             trace_path = (
                 self.run_dir
@@ -996,11 +1063,17 @@ class AutonomousCampaignRunner:
         *,
         memory_packet: RoleScopedMemoryPacket,
         director_decision: ResearchDirectorDecision,
+        research_action_result: ActionRunResult | None,
     ) -> dict[str, object]:
         return {
             "archive_summary": self.archive.summary(),
             "research_memory": memory_packet.model_dump(mode="json"),
             "research_director": director_decision.model_dump(mode="json"),
+            "research_action_result": (
+                research_action_result.model_dump(mode="json")
+                if research_action_result is not None
+                else None
+            ),
             "completed_generations": [
                 {
                     "generation_id": item.generation_id,

@@ -65,6 +65,15 @@ frozen_assets:
   - asset_id: harness-research-director-r1
     kind: harness_core
     path: evidence_evolve/discovery/director.py
+  - asset_id: harness-research-action-models-r1
+    kind: harness_core
+    path: evidence_evolve/research_actions/models.py
+  - asset_id: harness-research-action-store-r1
+    kind: harness_core
+    path: evidence_evolve/research_actions/store.py
+  - asset_id: harness-literature-repo-intelligence-r1
+    kind: harness_core
+    path: evidence_evolve/research_actions/intelligence.py
   - asset_id: harness-research-policy-r1
     kind: harness_core
     path: evidence_evolve/meta_evolution/policy.py
@@ -133,4 +142,8 @@ budgets:
   proxy_runs: 0
   confirmation_runs: 0
   device_runs: 0
+  literature_searches: 5
+  repository_inspections: 10
+  replications: 0
+  evidence_acquisitions: 0
 closure_registry: research/closures/closure_registry.yaml

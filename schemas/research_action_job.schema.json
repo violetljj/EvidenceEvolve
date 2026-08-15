@@ -1,0 +1,95 @@
+{
+  "$defs": {
+    "ResearchAction": {
+      "enum": [
+        "MUTATE",
+        "REPLICATE",
+        "ABLATE",
+        "FALSIFY",
+        "COUNTEREXAMPLE",
+        "TRANSFER",
+        "SIMPLIFY",
+        "UNDERSTAND",
+        "SEARCH_LITERATURE",
+        "REPRODUCE",
+        "ACQUIRE_EVIDENCE",
+        "CLOSE",
+        "REOPEN",
+        "BREAKTHROUGH"
+      ],
+      "title": "ResearchAction",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "action": {
+      "$ref": "#/$defs/ResearchAction"
+    },
+    "action_id": {
+      "title": "Action Id",
+      "type": "string"
+    },
+    "authority": {
+      "const": "SCHEDULING_ONLY",
+      "default": "SCHEDULING_ONLY",
+      "title": "Authority",
+      "type": "string"
+    },
+    "campaign_id": {
+      "title": "Campaign Id",
+      "type": "string"
+    },
+    "generation_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Generation Id"
+    },
+    "max_papers": {
+      "default": 5,
+      "maximum": 25,
+      "minimum": 0,
+      "title": "Max Papers",
+      "type": "integer"
+    },
+    "max_repositories": {
+      "default": 2,
+      "maximum": 10,
+      "minimum": 0,
+      "title": "Max Repositories",
+      "type": "integer"
+    },
+    "max_source_files_per_repository": {
+      "default": 3,
+      "maximum": 20,
+      "minimum": 0,
+      "title": "Max Source Files Per Repository",
+      "type": "integer"
+    },
+    "query": {
+      "title": "Query",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "action_id",
+    "campaign_id",
+    "action",
+    "query"
+  ],
+  "title": "ResearchActionJob",
+  "type": "object"
+}

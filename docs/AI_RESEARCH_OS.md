@@ -56,8 +56,11 @@ ACQUIRE_EVIDENCE  CLOSE  REOPEN  BREAKTHROUGH
 The current executable slice can change proposal allocation toward controls,
 simplification, failure-directed tests, transfer, representation changes, or
 restarts. Its decision is persisted as a scheduling-only trace and supplied to
-the Hypothesis Explorer. Unsupported actions are reported as blocked rather
-than silently represented as ordinary code mutations.
+the Hypothesis Explorer. `SEARCH_LITERATURE` has an independent, source-bound
+executor: it searches paper metadata, inspects pinned repository source, writes
+an immutable action receipt, and can cause a same-generation Director
+redecision. Other unsupported actions are reported as blocked rather than
+silently represented as ordinary code mutations.
 
 In particular, when evidence-bound frontier questions exist, the Director
 allocates cheap discriminating actions before broad mutation. When one failure
@@ -76,13 +79,19 @@ Implemented in the first vertical slice:
   runner;
 - a Research Director whose evidence-grounded decision changes mutation
   allocation in the autonomous loop;
+- durable Research Action jobs, states, budgets, receipts, and idempotent resume;
+- OpenAlex literature search and GitHub repository inspection with raw hashed
+  snapshots and repository commit/tree/blob bindings;
+- external Mechanism, Procedure, and Transfer cards that remain
+  `INSPIRATION_ONLY` and `SCHEDULING_ONLY`;
+- optional same-generation search, memory refresh, and Director redecision;
 - frozen-contract binding for the memory compiler and R1 Director.
 
 Not yet implemented, and therefore not claimed:
 
-- an autonomous literature/repository acquisition executor;
-- non-code research actions such as dataset acquisition or standalone
-  diagnostic experiments as first-class runnable jobs;
+- independent `REPLICATE`, `ACQUIRE_EVIDENCE`, or standalone diagnostic
+  experiment executors (their job states and budget vocabulary exist, but this
+  is not execution capability);
 - semantic closure or robust mechanism/failure clustering;
 - cross-campaign transfer validation;
 - learned research-policy promotion from held-out discovery outcomes;

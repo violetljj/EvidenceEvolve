@@ -1,7 +1,7 @@
 schema_version: '1.0'
 campaign:
   id: onnx_rewrite_r0
-  base_commit: 50d33777f1b5d9138ceb76fc535a6fb57874b08b
+  base_commit: 0d6fbe81867348c2fc1086f70493a885e9bdc9d1
   research_question: Can bounded ONNX rewrite passes reduce graph cost while preserving
     exact task behavior?
   claim_scope: engineering_harness_canary_only
@@ -25,8 +25,8 @@ evidence_sources:
   path: research/evidence_policies/onnx_rewrite_dev_manifest.json
   permissions:
   - DEV
-  - CLAIM
   - CONFIRM
+  - CLAIM
   sha256: 9ee146efbc2a33c9fddf1faf070855077c8bfc6ff1716df6cb2d78cc2fcff36f
 frozen_assets:
 - asset_id: onnx-rewrite-evaluator-r0
@@ -44,7 +44,7 @@ frozen_assets:
 - asset_id: harness-models-r0
   kind: harness_core
   path: evidence_evolve/models.py
-  sha256: f4ffdcd59058937b425b1e25c5325d7f08d2964ffeaf3e1ae38624d0adb5be7a
+  sha256: 056bb7d1208a0b12d490218e1a8948fa876bfe4c1775fd31508108eb6171b618
 - asset_id: harness-archive-r0
   kind: harness_core
   path: evidence_evolve/archive.py
@@ -52,11 +52,11 @@ frozen_assets:
 - asset_id: harness-research-memory-r0
   kind: harness_core
   path: evidence_evolve/research_memory.py
-  sha256: 6dba80f63bccee3774b29687c1be5cf7a3478e5ef93f2a0eba43d99c0d97346e
+  sha256: dc9cf63a9c88f4f9d3a9ede105665fd5f2c1be2a2f570ae0ca0c6c13990a6f32
 - asset_id: harness-artifacts-r0
   kind: harness_core
   path: evidence_evolve/artifacts.py
-  sha256: 55802baa517a93b1a8a2bef9f351c4b6b0c47433663e09a70c215e6ed632e3be
+  sha256: b59a1e65729e5c8c0bdea32ff568acb872fbbc95d8731dea6ab105998d399e10
 - asset_id: harness-budgets-r0
   kind: harness_core
   path: evidence_evolve/budgets.py
@@ -136,7 +136,11 @@ budgets:
   proxy_runs: 3
   confirmation_runs: 1
   device_runs: 0
+  literature_searches: 0
+  repository_inspections: 0
+  replications: 0
+  evidence_acquisitions: 0
 closure_registry: research/closures/closure_registry.yaml
 lock:
   algorithm: sha256
-  content_sha256: faba4a72f9b01b0fa2d7fc832a6f17cf14146bc595e8759bf8a56124f8b019bd
+  content_sha256: de5a3760c61afa1b63272c7e75666887ef7d7a1ff2a26d2ceabcf24d1d6ee132

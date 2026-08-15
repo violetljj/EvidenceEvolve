@@ -100,4 +100,8 @@ budgets:
   proxy_runs: 0
   confirmation_runs: 0
   device_runs: 0
+  literature_searches: 0
+  repository_inspections: 0
+  replications: 0
+  evidence_acquisitions: 0
 closure_registry: research/closures/closure_registry.yaml

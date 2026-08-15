@@ -73,6 +73,9 @@ class ResearchPolicyGenome(StrictModel):
     )
     max_parallel_proposals: int = Field(default=1, ge=1, le=32)
     max_parallel_evaluations: int = Field(default=1, ge=1, le=32)
+    literature_papers_per_action: int = Field(default=5, ge=0, le=25)
+    repositories_per_action: int = Field(default=2, ge=0, le=10)
+    source_files_per_repository: int = Field(default=3, ge=0, le=20)
     code_parent_dispositions: list[SearchDisposition] = Field(
         default_factory=lambda: [
             SearchDisposition.CODE_PARENT,

@@ -213,6 +213,10 @@ class Budgets(StrictModel):
     proxy_runs: Annotated[int, Field(ge=0)] = 0
     confirmation_runs: Annotated[int, Field(ge=0)] = 0
     device_runs: Annotated[int, Field(ge=0)] = 0
+    literature_searches: Annotated[int, Field(ge=0)] = 0
+    repository_inspections: Annotated[int, Field(ge=0)] = 0
+    replications: Annotated[int, Field(ge=0)] = 0
+    evidence_acquisitions: Annotated[int, Field(ge=0)] = 0
 
     @model_validator(mode="after")
     def has_finite_work(self) -> "Budgets":
