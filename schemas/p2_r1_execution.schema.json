@@ -616,6 +616,11 @@
           "title": "Protocol Sha256",
           "type": "string"
         },
+        "provider_admission": {
+          "additionalProperties": true,
+          "title": "Provider Admission",
+          "type": "object"
+        },
         "remote_calls_permitted": {
           "title": "Remote Calls Permitted",
           "type": "boolean"
@@ -676,6 +681,7 @@
         "frozen_asset_hashes",
         "request_metadata",
         "baseline_admission",
+        "provider_admission",
         "resources"
       ],
       "title": "P2R1StartManifest",

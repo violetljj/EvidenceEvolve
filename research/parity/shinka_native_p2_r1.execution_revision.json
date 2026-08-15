@@ -15,6 +15,7 @@
     "three identical-payload transport attempts per scientific slot",
     "receipt-driven crash/resume without completed-slot rerun or proposal resampling",
     "immutable start manifest before provider invocation",
+    "compatible Node runtime plus frozen headless/Codex version and OAuth admission",
     "zero-remote-call dry-run admission",
     "automatic construction of P2R1AnalysisInput and frozen parity analysis"
   ],

@@ -2,6 +2,9 @@ from __future__ import annotations
 
 import json
 import os
+import re
+import shlex
+import shutil
 import sqlite3
 import subprocess
 import sys
@@ -120,6 +123,7 @@ class P2R1StartManifest(StrictModel):
     frozen_asset_hashes: dict[str, str]
     request_metadata: dict[str, Any]
     baseline_admission: dict[str, Any]
+    provider_admission: dict[str, Any]
     resources: dict[str, Any]
     scientific_slots_total: Literal[100] = 100
     transport_attempts_per_slot_max: Literal[3] = 3
@@ -482,7 +486,75 @@ class P2R1ExecutionDriver:
         create_once_json(receipt_path, receipt)
         return receipt
 
-    def _start_manifest(self, baseline_admission: dict[str, Any]) -> P2R1StartManifest:
+    def _provider_admission(self) -> dict[str, Any]:
+        candidates = set()
+        path_node = shutil.which("node")
+        if path_node:
+            candidates.add(Path(path_node).resolve())
+        candidates.update(Path("/opt").glob("node-*-linux-x64/bin/node"))
+        compatible: list[tuple[tuple[int, int, int], Path, str]] = []
+        for candidate in candidates:
+            completed = subprocess.run(
+                [str(candidate), "--version"],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            match = re.fullmatch(r"v(\d+)\.(\d+)\.(\d+)", completed.stdout.strip())
+            if completed.returncode == 0 and match and int(match.group(1)) >= 18:
+                compatible.append(
+                    (
+                        tuple(int(match.group(index)) for index in (1, 2, 3)),
+                        candidate.resolve(),
+                        completed.stdout.strip(),
+                    )
+                )
+        if not compatible:
+            raise RuntimeError("P2-R1 requires an available Node.js >=18 runtime")
+        _version_tuple, node_path, node_version = max(
+            compatible, key=lambda item: (item[0], str(item[1]))
+        )
+        environment = os.environ.copy()
+        environment["PATH"] = os.pathsep.join(
+            [str(node_path.parent), environment.get("PATH", "")]
+        )
+        command = [*shlex.split(self.protocol.provider.headless_command), "--check"]
+        completed = subprocess.run(
+            command,
+            cwd=self.repo,
+            env=environment,
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+        output = f"{completed.stdout}\n{completed.stderr}"
+        expected_codex = self.protocol.provider.codex_cli_version.removeprefix(
+            "codex-cli "
+        )
+        codex_row = re.search(
+            rf"\|\s*codex\s*\|\s*✓\s*\|\s*oauth\s*\|\s*{re.escape(expected_codex)}\s*\|",
+            output,
+        )
+        if completed.returncode != 0 or codex_row is None:
+            raise RuntimeError(
+                "frozen headless/Codex transport is unavailable or has wrong auth/version"
+            )
+        return {
+            "node_executable": str(node_path),
+            "node_version": node_version,
+            "headless_check_command": command,
+            "headless_check_output_sha256": sha256_bytes(output.encode("utf-8")),
+            "codex_cli_version": self.protocol.provider.codex_cli_version,
+            "codex_auth": "oauth",
+            "remote_model_calls": 0,
+        }
+
+    def _start_manifest(
+        self,
+        baseline_admission: dict[str, Any],
+        provider_admission: dict[str, Any],
+    ) -> P2R1StartManifest:
         resources = _resource_receipt()
         resources["max_parallel_blocks"] = self._parallelism(resources)
         return P2R1StartManifest(
@@ -514,6 +586,7 @@ class P2R1ExecutionDriver:
                 "remote_invocation_in_dry_run": False,
             },
             baseline_admission=baseline_admission,
+            provider_admission=provider_admission,
             resources=resources,
         )
 
@@ -535,7 +608,8 @@ class P2R1ExecutionDriver:
         self._prepare_task()
         self._claim_namespaces()
         baseline_admission = self._baseline_admission()
-        proposed = self._start_manifest(baseline_admission)
+        provider_admission = self._provider_admission()
+        proposed = self._start_manifest(baseline_admission, provider_admission)
         if self.start_manifest_path.exists():
             existing = P2R1StartManifest.model_validate_json(
                 self.start_manifest_path.read_text(encoding="utf-8")
@@ -617,6 +691,16 @@ class P2R1ExecutionDriver:
 
     def _environment(self, run: P2R1RunSpec) -> dict[str, str]:
         environment = os.environ.copy()
+        node_dir = str(
+            Path(
+                _load_json(self.start_manifest_path)["provider_admission"][
+                    "node_executable"
+                ]
+            ).parent
+        )
+        environment["PATH"] = os.pathsep.join(
+            [node_dir, environment.get("PATH", "")]
+        )
         runtime_dir = self.repo / "research/parity/p2_r1_runtime"
         current_pythonpath = environment.get("PYTHONPATH")
         paths = [str(runtime_dir), str(self.repo)]

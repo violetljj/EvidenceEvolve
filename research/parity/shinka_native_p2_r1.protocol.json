@@ -4,7 +4,7 @@
   "protocol_status": "P2_R1_EXECUTION_COMPLETE_FROZEN_COMMITTED_NOT_STARTED",
   "execution_started": false,
   "remote_model_calls_at_freeze": 0,
-  "protocol_sha256": "c9f1778607d9c688c26f9c93a33bc5e93b7452ce7fd46f5570fb54087c4696e2",
+  "protocol_sha256": "88589be3c0d6f6991cb4cf2be8b31c9db20c7fe89dad04ac73b9e903c922860e",
   "repository_base_commit": "2887dd19f1d80de3f198c09433d7de7156aa53f9",
   "claim_scope": "REAL_PROVIDER_MATCHED_BLOCK_NON_INFERIORITY",
   "lineage": [
@@ -112,7 +112,7 @@
     },
     "execution_driver": {
       "path": "evidence_evolve/proposals/p2_r1_execution.py",
-      "sha256": "3f101065c4c9cbe36fbdd30ff6fa04843f0a114ab3230f6b9717e84149246886"
+      "sha256": "d463c885d2b10f5dd34dab4a02b271803731fef9b936e3b3d42fe72398b2d194"
     },
     "transport_audit": {
       "path": "evidence_evolve/proposals/p2_r1_transport.py",
@@ -128,11 +128,11 @@
     },
     "execution_manifest_schema": {
       "path": "schemas/p2_r1_execution.schema.json",
-      "sha256": "1a2cd200f3f8745b32dc9f77eb6b0f5cbb8efeac49ad756cf5a934b3a40d1891"
+      "sha256": "bf4a9562eb0d03a957b087755899afbc7b4f9010d10edd08c0fb651537253437"
     },
     "execution_revision": {
       "path": "research/parity/shinka_native_p2_r1.execution_revision.json",
-      "sha256": "c5a98655f44f18cf60552613670f15f6aa3d3226fb30f1219a0d87ad9737cb54"
+      "sha256": "22379f8fdf3465ca92fed06f64e60caffdc995e995ef5f9ced87946414334411"
     }
   },
   "upstream_assets": {

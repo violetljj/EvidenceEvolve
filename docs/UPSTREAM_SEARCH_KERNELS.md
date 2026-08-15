@@ -188,6 +188,10 @@ fourth transport attempt, and automatically constructs `P2R1AnalysisInput` for
 the frozen analyzer. Completed database-receipted slots are never rerun. A
 pending successful response is replayed locally after a crash; an unresolved
 attempt consumes one of the three identical-payload transport attempts.
+Admission also selects an actually available Node.js 18+ runtime and verifies
+the frozen headless command, Codex CLI version, and OAuth status before any
+proposal call; the selected executable and check-output hash enter the start
+manifest.
 
 Clean-checkout admission without remote generation is:
 
