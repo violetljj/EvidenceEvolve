@@ -134,3 +134,36 @@ candidate failures, not mechanics failures. This permits separately freezing a
 P2-R1 protocol, but does not establish non-inferiority or start that campaign.
 The records are `research/parity/shinka_native_p2_r0.result.json` and
 `research/parity/shinka_native_p2_m0.result.json`.
+
+P2-R1 is now protocol-frozen as a fresh lineage and remains unstarted. Its
+machine-validated record is
+`research/parity/shinka_native_p2_r1.protocol.json`; freezing the protocol made
+zero remote model calls. It binds `P2-R0 -> CLOSED_NOT_EVALUABLE /
+NOT_EVALUABLE_DATA` and `P2-M0 -> MECHANICS_PASS / no scientific authority`
+without reopening or reinterpreting either record.
+
+The two arms each receive ten matched runs and five scheduled proposal slots
+per run (50 model invocations, the same output-token ceiling, and the same
+wall-time ceiling per arm). Blocks use paired local seeds and a frozen AB/BA
+order. The subscription transport still exposes no model-generation seed; that
+gap is recorded symmetrically and is not represented as exact model-rollout
+pairing. Failed, missing, or evaluator-invalid slots consume their declared
+budget and cannot be replaced.
+
+Every run reports the full scheduled -> model-started -> response -> extraction
+-> materialization -> compile -> evaluator-reached -> evaluator-valid -> useful
+funnel. The primary score trajectory starts at the frozen baseline and carries
+the previous best through every invalid or missing slot. The primary estimand is
+the median matched-block normalized final-best-score delta, with a -1% margin
+and a frozen one-sided 95% paired-bootstrap lower-bound rule. Two hard
+guardrails cannot be rescued by that score: Native evaluator-invalid rate may
+be at most 10 absolute percentage points above Official, and Native useful
+candidate rate per scheduled slot may be at most 10 points below Official. Ten
+points equals five of the 50 predeclared slots per arm; larger attrition is
+treated as operationally material. Valid-only score distributions remain
+mandatory descriptive output and are never the primary denominator.
+
+The frozen generation model is `gpt-5.6-terra` at high effort and temperature
+zero. `gpt-5.5` is explicitly forbidden. A supported R1 result has a
+`PARITY_ONLY` claim ceiling: it does not imply `POSITIVE_HEADROOM`, scientific
+superiority, product authority, safety authority, or deployment readiness.

@@ -1,0 +1,296 @@
+{
+  "schema_version": "1.0",
+  "protocol_id": "SHINKA_NATIVE_P2_R1",
+  "protocol_status": "FROZEN_NOT_STARTED",
+  "execution_started": false,
+  "remote_model_calls_at_freeze": 0,
+  "protocol_sha256": "dc98bd75714cd0b37409b4de319bba1a5f9e1fceb05221fe94f3fe9d7044523e",
+  "claim_scope": "REAL_PROVIDER_MATCHED_BLOCK_NON_INFERIORITY",
+  "lineage": [
+    {
+      "run_id": "SHINKA_NATIVE_P2_R0",
+      "relationship": "PREDECESSOR",
+      "disposition": "CLOSED_NOT_EVALUABLE",
+      "scientific_outcome": "NOT_EVALUABLE_DATA",
+      "scientific_outcome_authority": "SCIENTIFIC",
+      "artifact": {
+        "path": "research/parity/shinka_native_p2_r0.closure.json",
+        "sha256": "9269955809701d2f5a29c26bd06953be3dcd2114852aa24007e8c15b4a5bc303"
+      }
+    },
+    {
+      "run_id": "SHINKA_NATIVE_P2_M0_R0",
+      "relationship": "MECHANICS_ADMISSION",
+      "disposition": "MECHANICS_PASS",
+      "scientific_outcome": null,
+      "scientific_outcome_authority": "NONE",
+      "artifact": {
+        "path": "research/parity/shinka_native_p2_m0.result.json",
+        "sha256": "7b0ae12d2a2f4755c4bd3696521b0986d439e31f6645e8365dcbbeb702c15928"
+      }
+    }
+  ],
+  "upstream": {
+    "repository": "https://github.com/SakanaAI/ShinkaEvolve",
+    "distribution": "shinka-evolve",
+    "source_commit": "c4568adde253cacf185be3a8412c3c2142761ebe",
+    "version": "0.0.7"
+  },
+  "frozen_assets": {
+    "config": {
+      "path": "research/parity/shinka_native_p2_r1.config.yaml",
+      "sha256": "0ea5582d1ad3c5dabfc2af56f6bf8fdcb480fac10982c3578d03ceaccd0ab044"
+    },
+    "initial_program": {
+      "path": "research/parity/shinka_native_p2_r0.target_program.py",
+      "sha256": "09da8428a85792a94a9c6cc2193b6a0db1090ce598a17b75bc0db48d0953d098"
+    },
+    "evaluator": {
+      "path": "research/parity/shinka_native_p2_m0.evaluator.py",
+      "sha256": "eb8b9787dc25dee24a5f5305d1e3bd876e5c336cded1c9bab7fb204612928b4d"
+    },
+    "seed_layer": {
+      "path": "research/parity/shinka_native_p2_r1.sitecustomize.py",
+      "sha256": "d713070353db3a392e82acbe6b229f0d63eb12b6b32a2b0a7263342486c31303"
+    },
+    "materializer": {
+      "path": "evidence_evolve/proposals/materializer.py",
+      "sha256": "d66dffa7fd8d274e73a702cddada4e4ed93031d2c3a20e2923ebc18f69d61189"
+    },
+    "shinka_adapter": {
+      "path": "evidence_evolve/proposals/shinka_adapter.py",
+      "sha256": "07a562930708fad7b88a9e98079bc8f80064e80ebb2df37421252760652cebe4"
+    },
+    "native_engine": {
+      "path": "evidence_evolve/search/shinka_native.py",
+      "sha256": "1551e3aef92c153e88de01bcea2fdef35fc31ff811d557c6906b8867c064f62d"
+    },
+    "protocol_validator": {
+      "path": "evidence_evolve/proposals/non_inferiority.py",
+      "sha256": "b752f837a2db8af1eb572c8f56238e60fac84420739aeffd5184d8ffa16f6ff0"
+    },
+    "statistical_analyzer": {
+      "path": "evidence_evolve/proposals/parity_analysis.py",
+      "sha256": "7c591dcaaa1f7da9773032acc2312cfbf05792418c8d5254a57914d4a8375201"
+    }
+  },
+  "provider": {
+    "transport": "ChatGPT subscription-backed Codex CLI through @roberttlange/headless",
+    "model": "gpt-5.6-terra",
+    "forbidden_models": [
+      "gpt-5.5"
+    ],
+    "reasoning_effort": "high",
+    "temperature": 0.0,
+    "max_output_tokens_per_call": 32768,
+    "model_generation_seed": null,
+    "model_seed_gap": "Subscription-backed Codex does not expose a generation seed; both arms use the same unavailable-seed policy and paired local seeds.",
+    "retry_failed_model_call": false
+  },
+  "design": {
+    "arms": [
+      "official",
+      "native"
+    ],
+    "matched_blocks": 10,
+    "proposal_slots_per_run": 5,
+    "proposal_slots_per_arm": 50,
+    "arm_budgets": {
+      "official": {
+        "proposal_model_calls": 50,
+        "max_output_tokens_per_call": 32768,
+        "max_output_tokens_total": 1638400,
+        "wall_seconds_per_run": 1800,
+        "wall_seconds_total": 18000,
+        "generation_slots_including_baseline_per_run": 6,
+        "proposal_slots_per_run": 5,
+        "matched_runs": 10
+      },
+      "native": {
+        "proposal_model_calls": 50,
+        "max_output_tokens_per_call": 32768,
+        "max_output_tokens_total": 1638400,
+        "wall_seconds_per_run": 1800,
+        "wall_seconds_total": 18000,
+        "generation_slots_including_baseline_per_run": 6,
+        "proposal_slots_per_run": 5,
+        "matched_runs": 10
+      }
+    },
+    "schedule": [
+      {
+        "block": 1,
+        "local_seed": 2026081501,
+        "order": [
+          "official",
+          "native"
+        ]
+      },
+      {
+        "block": 2,
+        "local_seed": 2026081502,
+        "order": [
+          "native",
+          "official"
+        ]
+      },
+      {
+        "block": 3,
+        "local_seed": 2026081503,
+        "order": [
+          "official",
+          "native"
+        ]
+      },
+      {
+        "block": 4,
+        "local_seed": 2026081504,
+        "order": [
+          "native",
+          "official"
+        ]
+      },
+      {
+        "block": 5,
+        "local_seed": 2026081505,
+        "order": [
+          "official",
+          "native"
+        ]
+      },
+      {
+        "block": 6,
+        "local_seed": 2026081506,
+        "order": [
+          "native",
+          "official"
+        ]
+      },
+      {
+        "block": 7,
+        "local_seed": 2026081507,
+        "order": [
+          "official",
+          "native"
+        ]
+      },
+      {
+        "block": 8,
+        "local_seed": 2026081508,
+        "order": [
+          "native",
+          "official"
+        ]
+      },
+      {
+        "block": 9,
+        "local_seed": 2026081509,
+        "order": [
+          "official",
+          "native"
+        ]
+      },
+      {
+        "block": 10,
+        "local_seed": 2026081510,
+        "order": [
+          "native",
+          "official"
+        ]
+      }
+    ],
+    "parent_selection_strategy": "weighted",
+    "archive_selection_strategy": "fitness",
+    "proposal_target_mode": "fixed",
+    "initial_parent_identical_within_block": true,
+    "local_seed_identical_within_block": true,
+    "no_post_hoc_replacement": true,
+    "failed_or_invalid_slot_consumes_budget": true,
+    "resume_may_add_proposal_slots": false
+  },
+  "funnel": {
+    "denominator": "SCHEDULED_PROPOSAL_SLOTS",
+    "stages": [
+      "scheduled",
+      "model_invocation_started",
+      "proposal_received",
+      "proposal_extracted",
+      "materialized",
+      "compiled",
+      "evaluator_reached",
+      "evaluator_valid",
+      "useful"
+    ],
+    "report_by": [
+      "run",
+      "arm",
+      "overall"
+    ],
+    "report_counts_and_rates": true,
+    "baseline_evaluations_excluded_from_proposal_funnel": true
+  },
+  "invalid_handling": {
+    "evaluator_invalid_remains_in_primary_denominator": true,
+    "pre_evaluator_failure_remains_in_primary_denominator": true,
+    "missing_response_remains_in_primary_denominator": true,
+    "invalid_or_missing_slot_score_rule": "CARRY_FORWARD_PREVIOUS_BEST",
+    "baseline_initializes_score_trajectory": true,
+    "evaluator_valid_subset_is_descriptive_only": true,
+    "useful_candidate_definition": "EVALUATOR_VALID_AND_SCORE_GT_FROZEN_BASELINE_PLUS_1E-12",
+    "evaluator_invalid_rate_denominator": "EVALUATOR_REACHED",
+    "intent_to_evaluate_success_denominator": "SCHEDULED_PROPOSAL_SLOTS",
+    "no_valid_only_resampling": true
+  },
+  "analysis": {
+    "primary_metric": "PAIRED_NORMALIZED_FINAL_BEST_SCORE_DELTA",
+    "per_block_formula": "(native_final_best-official_final_best)/max(abs(official_final_best),1e-12)",
+    "aggregation": "MEDIAN_ACROSS_MATCHED_BLOCKS",
+    "non_inferiority_margin": -0.01,
+    "pass_rule": "ONE_SIDED_95_PERCENT_LOWER_BOUND_STRICTLY_GT_MARGIN_AND_ALL_GUARDRAILS_PASS",
+    "bootstrap": {
+      "method": "PAIRED_BLOCK_BOOTSTRAP",
+      "resamples": 100000,
+      "seed": 2026081599,
+      "confidence": 0.95,
+      "side": "LOWER_ONE_SIDED"
+    },
+    "ties": "DELTA_ZERO",
+    "minimum_complete_matched_blocks": 10,
+    "equal_started_model_calls_per_arm_required": true,
+    "scheduled_model_calls_per_arm_required": 50,
+    "hard_guardrails": [
+      {
+        "metric": "evaluator_invalid_rate_delta_native_minus_official",
+        "min": null,
+        "max": 0.1,
+        "margin_unit": "ABSOLUTE_RATE"
+      },
+      {
+        "metric": "intent_to_evaluate_useful_rate_delta_native_minus_official",
+        "min": -0.1,
+        "max": null,
+        "margin_unit": "ABSOLUTE_RATE"
+      }
+    ],
+    "mandatory_secondary_metrics": [
+      "best_so_far_auc_with_carry_forward",
+      "first_valid_improvement_with_right_censoring",
+      "evaluator_valid_subset_score_distribution",
+      "cost_per_scheduled_slot",
+      "observed_tokens_per_scheduled_slot",
+      "wall_time_per_scheduled_slot",
+      "resume_consistency",
+      "all_funnel_stage_counts_and_rates"
+    ],
+    "aggregate_score_cannot_rescue_guardrail": true
+  },
+  "outcome_policy": {
+    "supported_assessment": "NON_INFERIORITY_SUPPORTED",
+    "supported_claim_ceiling": "PARITY_ONLY",
+    "positive_headroom_claim_permitted": false,
+    "eligible_gate_failure": "VALID_NEGATIVE",
+    "missing_eligible_truth": "NOT_EVALUABLE_DATA",
+    "mechanics_or_protocol_failure": "INVALID_MECHANICS_OR_ADAPTER",
+    "unknown_is_negative": false
+  }
+}
