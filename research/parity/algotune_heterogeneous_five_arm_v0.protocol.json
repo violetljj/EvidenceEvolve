@@ -1,0 +1,83 @@
+{
+  "schema_version": "1.0",
+  "campaign": "algotune_heterogeneous_five_arm_v0",
+  "authority": "FROZEN_BEFORE_FORMAL_SEARCH",
+  "upstream": {
+    "repository": "https://github.com/oripress/AlgoTune.git",
+    "commit": "dff9914c10800c7a031c9e8c3d4d1c8cd1b38906"
+  },
+  "tasks": [
+    {
+      "task": "articulation_points",
+      "class": "ArticulationPoints",
+      "category": "graph",
+      "problem_size": 600,
+      "source_sha256": "5f2a2e4dfa235b3e4415ae71c820ae295a97ea2ef77bb2702c21b173511d98f7"
+    },
+    {
+      "task": "job_shop_scheduling",
+      "class": "JobShopScheduling",
+      "category": "scheduling",
+      "problem_size": 15,
+      "source_sha256": "10f616b3f6f80a121b9631485181bd5629430aa7136390a06985385a0de2b66a"
+    },
+    {
+      "task": "stable_matching",
+      "class": "StableMatchingTask",
+      "category": "combinatorial_matching",
+      "problem_size": 1000,
+      "source_sha256": "581a4451712ba946b89c83667a2bcbe7446d9ec74d53f4e232a583ef967e2ece"
+    },
+    {
+      "task": "cumulative_simpson_1d",
+      "class": "CumulativeSimpson1D",
+      "category": "numerical",
+      "problem_size": 2000000,
+      "source_sha256": "6fc1029a78acd0bea57adc46f11c51362e2ea68929509c5e6b05dabe42246b4f"
+    }
+  ],
+  "arms": ["shinka", "ada", "vanilla", "evidence_evolve", "evox"],
+  "common_conditions": {
+    "model": "gpt-5.6-terra",
+    "reasoning_effort": "high",
+    "generations": 3,
+    "proposal_calls_per_arm": 3,
+    "observed_token_ceiling_per_arm": 600000,
+    "wall_seconds_per_arm": 7200,
+    "single_final_candidate": true,
+    "development_seeds": {
+      "first": 0,
+      "last": 19,
+      "count": 20
+    },
+    "development_repeats": 3,
+    "heldout_seed_count": 100,
+    "heldout_repeats": 10,
+    "heldout_seed_generation": "OS_CSPRNG_AFTER_ALL_CANDIDATE_HASHES_LOCKED",
+    "test_visibility_during_search": "NONE",
+    "candidate_retries_or_replacement_samples": false
+  },
+  "resources": {
+    "cpu_affinity_count": 18,
+    "cgroup_cpu_quota_cores": 18,
+    "evaluator_worker_ceiling": 18,
+    "blas_threads_per_worker": 1,
+    "arm_wall_time_policy": "fixed_equivalent_resource_quota_when_wall_time_is_compared"
+  },
+  "mechanics_admission": {
+    "completed_before_formal_search": true,
+    "all_selected_task_generators_ran": true,
+    "all_selected_reference_solvers_ran": true,
+    "all_selected_verifiers_accepted_reference_output": true,
+    "scientific_authority": "MECHANICS_ONLY"
+  },
+  "excluded_after_admission": [
+    {
+      "task": "multi_dim_knapsack",
+      "reason": "The upstream solver accepts FEASIBLE and the verifier re-solves, so the admission did not establish a stable exact optimality oracle."
+    }
+  ],
+  "claim_scope": "CROSS_TASK_BLIND_ALGORITHM_DISCOVERY_PILOT",
+  "superiority_claim_permitted": false,
+  "mechanism_claim_permitted": false
+}
