@@ -1,0 +1,4 @@
+{
+  "available": false,
+  "reason": "The selected upstream task exposes only a public evaluator in this environment."
+}

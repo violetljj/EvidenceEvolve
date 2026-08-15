@@ -1,0 +1,10 @@
+{
+  "repository": "https://github.com/skydiscover-ai/skydiscover.git",
+  "commit": "8a840394e19ee4bfb3fb0a62762b902561a7efeb",
+  "task": "benchmarks/math/minimizing_max_min_dist/2",
+  "upstream_initial_sha256": "472d8d85ad99226f7716f7cbd009f367b860aa0716e4ef2eb8e1358c7f394a95",
+  "upstream_evaluator_sha256": "bc65981dc88d129a6965dde15dd9abdf7f3ab55903847231dd09c57097dd7566",
+  "upstream_config_sha256": "efb4e712d8f16e2455539ac76d1fb68a9b489ebf238869e4477cb0a1d335e238",
+  "visibility": "PUBLIC_DEVELOPMENT_ONLY",
+  "blind_confirmation_available": false
+}

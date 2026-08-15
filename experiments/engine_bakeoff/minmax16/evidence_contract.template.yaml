@@ -1,0 +1,139 @@
+schema_version: "1.0"
+campaign:
+  id: minmax16_evidence_smoke_001
+  base_commit: HEAD
+  research_question: >-
+    Improve the public SkyDiscover minimizing_max_min_dist task for 16 planar points.
+    The editable function min_max_dist_dim2_16 must return a deterministic 16-by-2
+    NumPy array. Maximize squared minimum pairwise distance divided by squared maximum
+    pairwise distance; the frozen public baseline combined_score is 0.01979112384555867.
+  claim_scope: public_skydiscover_development_benchmark_only
+authority:
+  protocol_mutable: false
+  evaluator_mutable: false
+  confirmation_visible_to_agents: false
+  final_merge_requires_human: true
+editable_scope:
+  allow:
+    - experiments/engine_bakeoff/minmax16/initial.py
+  deny:
+    - evidence_evolve/**
+    - experiments/engine_bakeoff/minmax16/evaluate.py
+    - experiments/engine_bakeoff/minmax16/upstream_evaluator.py
+    - experiments/engine_bakeoff/minmax16/evidence_adapter.py
+    - experiments/engine_bakeoff/minmax16/evidence_contract.template.yaml
+    - experiments/engine_bakeoff/minmax16/evidence_policy.yaml
+    - experiments/engine_bakeoff/minmax16/run_evidence_smoke.py
+    - experiments/engine_bakeoff/minmax16/source_manifest.json
+    - experiments/engine_bakeoff/minmax16/confirmation_unavailable.json
+    - prompts/**
+    - research/**
+    - confirmation/**
+evidence_sources:
+  - source_id: skydiscover-minmax16-public-dev-v0
+    grade: B
+    path: experiments/engine_bakeoff/minmax16/source_manifest.json
+    permissions: [DEV]
+frozen_assets:
+  - asset_id: minmax16-public-evaluator-v0
+    kind: evaluator
+    path: experiments/engine_bakeoff/minmax16/evaluate.py
+  - asset_id: minmax16-evidence-adapter-v0
+    kind: adapter
+    path: experiments/engine_bakeoff/minmax16/evidence_adapter.py
+  - asset_id: minmax16-source-manifest-v0
+    kind: model
+    path: experiments/engine_bakeoff/minmax16/source_manifest.json
+  - asset_id: minmax16-confirmation-unavailable-v0
+    kind: confirmation
+    path: experiments/engine_bakeoff/minmax16/confirmation_unavailable.json
+  - asset_id: harness-models-v0
+    kind: harness_core
+    path: evidence_evolve/models.py
+  - asset_id: harness-archive-v0
+    kind: harness_core
+    path: evidence_evolve/archive.py
+  - asset_id: harness-research-memory-v0
+    kind: harness_core
+    path: evidence_evolve/research_memory.py
+  - asset_id: harness-artifacts-v0
+    kind: harness_core
+    path: evidence_evolve/artifacts.py
+  - asset_id: harness-budgets-v0
+    kind: harness_core
+    path: evidence_evolve/budgets.py
+  - asset_id: harness-campaign-runner-v0
+    kind: harness_core
+    path: evidence_evolve/discovery/campaign.py
+  - asset_id: harness-autonomous-runner-v0
+    kind: harness_core
+    path: evidence_evolve/discovery/autonomous.py
+  - asset_id: harness-population-store-v0
+    kind: harness_core
+    path: evidence_evolve/discovery/population.py
+  - asset_id: harness-codex-backend-v0
+    kind: harness_core
+    path: evidence_evolve/backends/codex_cli.py
+  - asset_id: harness-worktrees-v0
+    kind: harness_core
+    path: evidence_evolve/worktrees.py
+  - asset_id: harness-candidate-auditor-v0
+    kind: harness_core
+    path: evidence_evolve/governance/candidate_auditor.py
+  - asset_id: harness-gate-engine-v0
+    kind: harness_core
+    path: evidence_evolve/governance/gate_engine.py
+  - asset_id: harness-protocol-lock-v0
+    kind: harness_core
+    path: evidence_evolve/governance/protocol_lock.py
+  - asset_id: harness-evidence-policy-v0
+    kind: harness_core
+    path: evidence_evolve/governance/evidence_policy.py
+  - asset_id: harness-closure-v0
+    kind: harness_core
+    path: evidence_evolve/governance/closure_registry.py
+  - asset_id: harness-scope-v0
+    kind: harness_core
+    path: evidence_evolve/governance/scope.py
+  - asset_id: harness-hashing-v0
+    kind: harness_core
+    path: evidence_evolve/hashing.py
+  - asset_id: harness-replay-v0
+    kind: harness_core
+    path: evidence_evolve/replay.py
+  - asset_id: explorer-prompt-v0
+    kind: protocol
+    path: prompts/explorer.md
+  - asset_id: implementer-prompt-v0
+    kind: protocol
+    path: prompts/implementer.md
+  - asset_id: closure-registry-v0
+    kind: protocol
+    path: research/closures/closure_registry.yaml
+metrics:
+  hard_constraints:
+    invalid_candidate_rate:
+      max: 0.0
+    nonreproducible_rate:
+      max: 0.0
+  pareto_objectives:
+    combined_score: maximize
+    min_max_ratio: maximize
+    relative_improvement: maximize
+required_controls:
+  - upstream_evaluator_completed
+  - finite_score
+  - deterministic_candidate
+  - public_development_only
+budgets:
+  proposal_calls: 1
+  implementations: 1
+  mechanics_runs: 1
+  proxy_runs: 0
+  confirmation_runs: 0
+  device_runs: 0
+  literature_searches: 0
+  repository_inspections: 0
+  replications: 0
+  evidence_acquisitions: 0
+closure_registry: research/closures/closure_registry.yaml
