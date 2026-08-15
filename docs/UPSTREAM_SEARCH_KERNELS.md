@@ -91,8 +91,20 @@ Five separate checks are required:
 3. **Real-provider smoke.** Run one paired official/native example with the same
    provider, model, temperature, initial program, evaluator, configuration,
    budget, concurrency, and machine. Compare candidate/valid counts, best score,
-   evaluator and LLM calls, tokens, cost, wall time, and resume. This check has
-   not run and no API spend is implied by P0.
+   evaluator and LLM calls, tokens, cost, wall time, and resume. P1 ran the
+   pinned upstream circle-packing example through subscription-backed Codex CLI
+   (`gpt-5.5`, high effort), with one proposal/evaluator worker and no dollar
+   ceiling. Both arms made five proposal LLM calls and exercised resume through
+   the official runner. Direct upstream completed 6/6 generation slots;
+   `SHINKA_NATIVE` completed 5/6 because generation 2 produced a native
+   `patch_apply_failed` attempt that the runner preserved and did not
+   oversample. The wrapper raised no distinct exception, retained the native
+   database/checkpoint, and wrote its non-authoritative receipts after both
+   phases. This passes the real-provider integration smoke, not score, token,
+   cost, or statistical parity. Failed-attempt tokens were absent from the
+   upstream attempt log, and one unseeded stochastic pair cannot establish
+   non-inferiority. The bounded record is
+   `research/parity/shinka_native_p1_r0.result.json`.
 4. **Real non-inferiority.** On the official circle-packing task with paired
    seeds, identical model/config/evaluator/budget/hardware, the median normalized
    best score must not fall more than 1% below direct Shinka. Best-so-far AUC,
@@ -102,9 +114,10 @@ Five separate checks are required:
    `SHINKA_NATIVE` on at least three tasks and five seeds per task before it can
    become the default.
 
-Construction parity and the deterministic P0 runner surface are satisfied. The
-unseeded random-archive branch, real-provider smoke, and circle-packing
-non-inferiority are not. No promotion gate has passed. The engine integration is
-not evidence that ALE-Bench, algorithm discovery, or scientific superiority
-passed. The bounded result record is
-`research/parity/shinka_native_parity_r0.result.json`.
+Construction parity, the deterministic P0 runner surface, and the P1
+real-provider integration smoke are satisfied. The unseeded random-archive
+branch and circle-packing multi-seed non-inferiority are not. No promotion gate
+has passed. The engine integration is not evidence that ALE-Bench, algorithm
+discovery, or scientific superiority passed. The bounded P0 and P1 records are
+`research/parity/shinka_native_parity_r0.result.json` and
+`research/parity/shinka_native_p1_r0.result.json`.

@@ -1,0 +1,174 @@
+{
+  "schema_version": "1.0",
+  "protocol_id": "SHINKA_NATIVE_PARITY_P1_R0",
+  "claim_scope": "REAL_PROVIDER_UPSTREAM_INTEGRATION_SMOKE_ONLY",
+  "status": "PASS_INTEGRATION_SMOKE_NOT_STATISTICAL_PARITY",
+  "p1_smoke_gate_passed": true,
+  "promotion_gate_passed": false,
+  "upstream": {
+    "repository": "https://github.com/SakanaAI/ShinkaEvolve",
+    "distribution": "shinka-evolve",
+    "version": "0.0.7",
+    "source_commit": "c4568adde253cacf185be3a8412c3c2142761ebe"
+  },
+  "provider": {
+    "transport": "subscription-backed Codex CLI through @roberttlange/headless",
+    "model": "gpt-5.5",
+    "reasoning_effort": "high",
+    "codex_cli_version": "0.147.0",
+    "headless_version": "0.6.1",
+    "authentication_observed": "Logged in using ChatGPT",
+    "api_key_required_for_run": false,
+    "dollar_ceiling": null,
+    "upstream_max_api_costs": null,
+    "reported_cost_semantics": "API_LIST_PRICE_ESTIMATE_NOT_SUBSCRIPTION_CHARGE"
+  },
+  "environment": {
+    "python": "3.11.9",
+    "platform": "Microsoft Windows NT 10.0.26200.0",
+    "repository_head_at_recording": "347d88b59d5574ffaa710ab112f815a9cda6ab97"
+  },
+  "frozen_inputs": {
+    "task": "pinned upstream examples/circle_packing",
+    "initial_program_sha256": "edc7f3d6fa3682214c9a41964176576ea7c141f937c2db71fe3ba10b43b2bf9d",
+    "evaluator_sha256": "1e6a045e7b3562738be2d870f42211ea64833d331240ee79404aa1d3e6c1af47",
+    "config_path": "research/parity/shinka_native_p1_r0.config.yaml",
+    "config_sha256": "ca86b048a6254136cf7d582ffca19ef275b717552b21cd5cd7b5da9c68189240",
+    "temperature": 0.0,
+    "max_tokens": 32768,
+    "max_proposal_jobs": 1,
+    "max_evaluation_jobs": 1,
+    "max_db_workers": 1,
+    "phase_1_target_completed_generations": 3,
+    "resume_target_completed_generations": 6,
+    "shared_deterministic_seed": null,
+    "seed_gap": "Subscription-backed Codex generation and upstream SQLite random archive sampling do not expose one shared deterministic seed in the pinned stack."
+  },
+  "official": {
+    "entrypoint": "python -m shinka.cli.run",
+    "phase_1_exit_code": 0,
+    "phase_1_wall_seconds": 300.437,
+    "resume_exit_code": 0,
+    "resume_wall_seconds": 726.354,
+    "total_wall_seconds": 1026.791,
+    "completed_generation_slots": 6,
+    "missing_generations": [],
+    "program_rows_including_initial": 6,
+    "materialized_proposals": 5,
+    "proposal_llm_calls": 5,
+    "proposal_evaluator_calls": 5,
+    "valid_materialized_proposals": 4,
+    "invalid_materialized_proposals": 1,
+    "valid_rate_per_llm_call": 0.8,
+    "best_combined_score": 2.6302148013997146,
+    "first_valid_improvement_generation": 1,
+    "first_valid_improvement_elapsed_seconds": 262.62834191322327,
+    "program_metadata_usage": {
+      "input_tokens": 191264,
+      "output_tokens": 40872,
+      "thinking_tokens": 14037,
+      "api_list_price_estimate": 2.8436
+    },
+    "best_so_far_by_generation": [
+      0.9597642169962064,
+      2.5414213302373097,
+      2.5414213302373097,
+      2.630214541407,
+      2.6302148013997146,
+      2.6302148013997146
+    ],
+    "resume_observation": "Resumed at generation 3 and completed generations 3 through 5 without replaying generations 0 through 2."
+  },
+  "shinka_native": {
+    "entrypoint": "python -m evidence_evolve search shinka-native",
+    "phase_1_exit_code": 0,
+    "phase_1_wall_seconds": 480.084,
+    "resume_exit_code": 0,
+    "resume_wall_seconds": 688.621,
+    "total_wall_seconds": 1168.705,
+    "completed_generation_slots": 5,
+    "missing_generations": [2],
+    "program_rows_including_initial": 5,
+    "materialized_proposals": 4,
+    "proposal_llm_calls": 5,
+    "proposal_evaluator_calls": 4,
+    "valid_materialized_proposals": 2,
+    "invalid_materialized_proposals": 2,
+    "valid_rate_per_llm_call": 0.4,
+    "best_combined_score": 2.5414213562113095,
+    "first_valid_improvement_generation": 3,
+    "first_valid_improvement_elapsed_seconds": 715.2152440547943,
+    "program_metadata_usage": {
+      "input_tokens_observed": 89886,
+      "output_tokens_observed": 26441,
+      "thinking_tokens_observed": 15829,
+      "api_list_price_estimate": 1.5761
+    },
+    "failed_attempt_usage": {
+      "generation": 2,
+      "failure_stage": "proposal",
+      "failure_class": "patch_apply_failed",
+      "failure_reason": "SEARCH text not found in editable regions",
+      "input_tokens": null,
+      "output_tokens": null,
+      "thinking_tokens": null,
+      "api_list_price_estimate": 0.707232
+    },
+    "known_total_api_list_price_estimate": 2.283332,
+    "best_so_far_by_generation": [
+      0.9597642169962064,
+      0.9597642169962064,
+      0.9597642169962064,
+      2.5414213562113095,
+      2.5414213562113095,
+      2.5414213562113095
+    ],
+    "resume_observation": "The official runner rejected duplicate generation 2 work, resumed at generation 3, preserved the failed-attempt record, and stopped at 5 of 6 completed slots without oversampling."
+  },
+  "paired_observations": {
+    "identical_task_assets": true,
+    "identical_yaml_and_concurrency": true,
+    "identical_model_and_effort": true,
+    "proposal_llm_call_count_equal": true,
+    "native_wall_time_delta_percent": 13.821118416503463,
+    "native_best_score_delta_percent": -3.375900901369433,
+    "score_difference_interpretation": "OBSERVATIONAL_ONLY_UNSEEDED_SINGLE_PAIR",
+    "wrapper_specific_exception_observed": false,
+    "native_database_and_resume_preserved": true,
+    "evidence_evolve_receipt_created_after_each_native_phase": true
+  },
+  "gate_checks": {
+    "subscription_backed_real_provider_executed": "PASS",
+    "official_runner_and_evaluator_executed_in_both_arms": "PASS",
+    "same_fixed_inputs_and_compute_concurrency": "PASS",
+    "native_receipt_remained_non_authoritative": "PASS",
+    "native_resume_preserved_upstream_failure_and_checkpoint_state": "PASS",
+    "equal_target_completion": "NOT_OBSERVED_NATIVE_GENERATION_2_PATCH_APPLY_FAILURE",
+    "exact_token_parity": "NOT_EVALUABLE_FAILED_ATTEMPT_TOKENS_ABSENT_FROM_UPSTREAM_ATTEMPT_LOG",
+    "statistical_non_inferiority": "NOT_EVALUATED_SINGLE_UNSEEDED_PAIR"
+  },
+  "artifacts": {
+    "runtime_root": "runs/shinka_native_p1_r0",
+    "official_database": "runs/shinka_native_p1_r0/official/programs.sqlite",
+    "official_phase_1_snapshot": "runs/shinka_native_p1_r0/official_phase1.sqlite",
+    "native_database": "runs/shinka_native_p1_r0/native/programs.sqlite",
+    "native_phase_1_snapshot": "runs/shinka_native_p1_r0/native_phase1.sqlite",
+    "native_phase_1_receipt": "runs/shinka_native_p1_r0/native/evidence_evolve/receipts/p1-native-phase1.json",
+    "native_resume_receipt": "runs/shinka_native_p1_r0/native/evidence_evolve/receipts/p1-native-resume.json"
+  },
+  "authority": {
+    "search_score_authority": "SHINKA_SCHEDULING_ONLY",
+    "scientific_outcome_authority": "NONE",
+    "superiority_claim_permitted": false,
+    "p2_required_before_native_non_inferiority_claim": true
+  },
+  "validation": {
+    "artifact_parse": "PASS",
+    "git_diff_check": "PASS",
+    "targeted_command": ".venv\\Scripts\\python.exe -m pytest tests\\test_shinka_native.py tests\\test_shinka_native_semantic_parity.py -q",
+    "targeted_result": "3 passed"
+  },
+  "source_hashes": {
+    "evidence_evolve/search/shinka_native.py": "d930ca6c112fa7de2611a7c1739b581dbdef7147332a12d9bb89c7b27de4a929"
+  }
+}

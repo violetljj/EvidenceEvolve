@@ -246,9 +246,14 @@ The native `combined_score` remains `SHINKA_SCHEDULING_ONLY`. The import receipt
 has no scientific-outcome authority and cannot support a superiority claim.
 Deterministic construction parity and the single-worker actual-runner P0 surface
 are tested against the pinned upstream CLI. Upstream's unseeded SQLite random
-archive-inspiration branch remains outside exact sequence parity; real-provider
-smoke and multi-seed circle-packing non-inferiority are still unmet promotion
-gates. See
+archive-inspiration branch remains outside exact sequence parity. The P1
+real-provider integration smoke also ran on the upstream circle-packing task
+through subscription-backed Codex CLI (`gpt-5.5`, high effort): both entrypoints
+made five proposal LLM calls and resumed native state, while one native-arm
+proposal failed official patch application and left that arm at 5/6 completed
+generation slots. P1 therefore passes as an integration smoke only; its single
+unseeded trajectories do not prove score/token/cost parity. Multi-seed
+circle-packing non-inferiority remains an unmet promotion gate. See
 [`docs/UPSTREAM_SEARCH_KERNELS.md`](docs/UPSTREAM_SEARCH_KERNELS.md).
 
 ## R1 generation interface
