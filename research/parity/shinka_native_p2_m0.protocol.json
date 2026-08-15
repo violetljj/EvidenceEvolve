@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0",
+  "protocol_id": "SHINKA_NATIVE_P2_M0_R0",
+  "source_campaign": "SHINKA_NATIVE_P2_R0",
+  "corpus_path": "research/parity/shinka_native_p2_r0.failures.jsonl",
+  "corpus_sha256": "889c6d36a2f2db368a1a60406c521cb2497e7122fa0bfd39858eb3bbefd4544b",
+  "target_program_path": "research/parity/shinka_native_p2_r0.target_program.py",
+  "target_program_sha256": "09da8428a85792a94a9c6cc2193b6a0db1090ce598a17b75bc0db48d0953d098",
+  "evaluator_path": "research/parity/shinka_native_p2_m0.evaluator.py",
+  "evaluator_sha256": "eb8b9787dc25dee24a5f5305d1e3bd876e5c336cded1c9bab7fb204612928b4d",
+  "language": "python",
+  "baseline_score": 0.9597642169962064,
+  "case_ids": [
+    "p2r0-b01-official-g1",
+    "p2r0-b01-native-g1",
+    "p2r0-b02-native-g1",
+    "p2r0-b02-official-g1",
+    "p2r0-b03-official-g1",
+    "p2r0-b03-native-g1",
+    "p2r0-b04-native-g1",
+    "p2r0-b04-official-g1",
+    "p2r0-b05-official-g1",
+    "p2r0-b05-native-g1",
+    "p2r0-b06-native-g1",
+    "p2r0-b06-official-g1",
+    "p2r0-b07-official-g1",
+    "p2r0-b07-native-g1",
+    "p2r0-b08-native-g1",
+    "p2r0-b08-official-g1",
+    "p2r0-b09-official-g1",
+    "p2r0-b09-native-g1",
+    "p2r0-b10-native-g1",
+    "p2r0-b10-official-g1"
+  ],
+  "thresholds": {
+    "patch_apply_success_rate_min": 0.9,
+    "candidate_compile_success_rate_min": 0.9,
+    "evaluator_reached_rate_min": 0.8,
+    "nonbaseline_candidate_score_required_per_arm": 1
+  },
+  "evaluator_timeout_seconds": 120,
+  "remote_model_calls_permitted": false
+}

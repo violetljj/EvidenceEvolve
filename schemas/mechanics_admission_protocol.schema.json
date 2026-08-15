@@ -1,0 +1,135 @@
+{
+  "$defs": {
+    "MechanicsAdmissionThresholds": {
+      "additionalProperties": false,
+      "properties": {
+        "candidate_compile_success_rate_min": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Candidate Compile Success Rate Min",
+          "type": "number"
+        },
+        "evaluator_reached_rate_min": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Evaluator Reached Rate Min",
+          "type": "number"
+        },
+        "nonbaseline_candidate_score_required_per_arm": {
+          "minimum": 1,
+          "title": "Nonbaseline Candidate Score Required Per Arm",
+          "type": "integer"
+        },
+        "patch_apply_success_rate_min": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Patch Apply Success Rate Min",
+          "type": "number"
+        }
+      },
+      "required": [
+        "patch_apply_success_rate_min",
+        "candidate_compile_success_rate_min",
+        "evaluator_reached_rate_min",
+        "nonbaseline_candidate_score_required_per_arm"
+      ],
+      "title": "MechanicsAdmissionThresholds",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "baseline_score": {
+      "title": "Baseline Score",
+      "type": "number"
+    },
+    "case_ids": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Case Ids",
+      "type": "array"
+    },
+    "corpus_path": {
+      "title": "Corpus Path",
+      "type": "string"
+    },
+    "corpus_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Corpus Sha256",
+      "type": "string"
+    },
+    "evaluator_path": {
+      "title": "Evaluator Path",
+      "type": "string"
+    },
+    "evaluator_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Evaluator Sha256",
+      "type": "string"
+    },
+    "evaluator_timeout_seconds": {
+      "exclusiveMinimum": 0,
+      "maximum": 3600,
+      "title": "Evaluator Timeout Seconds",
+      "type": "integer"
+    },
+    "language": {
+      "const": "python",
+      "default": "python",
+      "title": "Language",
+      "type": "string"
+    },
+    "protocol_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{1,127}$",
+      "title": "Protocol Id",
+      "type": "string"
+    },
+    "remote_model_calls_permitted": {
+      "const": false,
+      "default": false,
+      "title": "Remote Model Calls Permitted",
+      "type": "boolean"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_campaign": {
+      "minLength": 1,
+      "title": "Source Campaign",
+      "type": "string"
+    },
+    "target_program_path": {
+      "title": "Target Program Path",
+      "type": "string"
+    },
+    "target_program_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Target Program Sha256",
+      "type": "string"
+    },
+    "thresholds": {
+      "$ref": "#/$defs/MechanicsAdmissionThresholds"
+    }
+  },
+  "required": [
+    "protocol_id",
+    "source_campaign",
+    "corpus_path",
+    "corpus_sha256",
+    "target_program_path",
+    "target_program_sha256",
+    "evaluator_path",
+    "evaluator_sha256",
+    "baseline_score",
+    "case_ids",
+    "thresholds",
+    "evaluator_timeout_seconds"
+  ],
+  "title": "MechanicsAdmissionProtocol",
+  "type": "object"
+}

@@ -1,4 +1,14 @@
 {
+  "$defs": {
+    "ProposalMaterializerMode": {
+      "enum": [
+        "UPSTREAM_STRICT",
+        "EVIDENCE_EVOLVE_V1"
+      ],
+      "title": "ProposalMaterializerMode",
+      "type": "string"
+    }
+  },
   "additionalProperties": false,
   "properties": {
     "config_fname": {
@@ -67,6 +77,10 @@
       "exclusiveMinimum": 0,
       "title": "Num Generations",
       "type": "integer"
+    },
+    "proposal_materializer": {
+      "$ref": "#/$defs/ProposalMaterializerMode",
+      "default": "UPSTREAM_STRICT"
     },
     "results_dir": {
       "format": "path",

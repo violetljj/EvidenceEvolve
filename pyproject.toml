@@ -19,6 +19,7 @@ dependencies = [
 dev = [
   "pytest>=8.3,<10",
   "pytest-cov>=6,<8",
+  "pytest-xdist>=3.6,<4",
 ]
 shinka = [
   "shinka-evolve @ git+https://github.com/SakanaAI/ShinkaEvolve.git@c4568adde253cacf185be3a8412c3c2142761ebe",

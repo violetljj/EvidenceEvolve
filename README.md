@@ -256,6 +256,16 @@ unseeded trajectories do not prove score/token/cost parity. Multi-seed
 circle-packing non-inferiority remains an unmet promotion gate. See
 [`docs/UPSTREAM_SEARCH_KERNELS.md`](docs/UPSTREAM_SEARCH_KERNELS.md).
 
+P2-R0 is preserved as `CLOSED_NOT_EVALUABLE`: all 68 real proposals failed in
+the shared upstream patch executor before any proposal candidate reached the
+evaluator. P2-M0 traced this to SEARCH blocks omitting blank lines and admitted
+a conservative shared materializer on 20 frozen replays (20/20 patchable,
+20/20 compilable, 20/20 evaluator reached; no model calls). Both the official
+CLI wrapper and `SHINKA_NATIVE` can use that same adapter without modifying
+upstream files. This mechanics PASS has no search-quality authority, and P2-R1
+has not run. Future remote generation must not use `gpt-5.5`; if explicitly
+required, the frozen fallback is `gpt-5.6-terra`.
+
 ## R1 generation interface
 
 Export the JSON Schemas first; `campaign_candidate.schema.json` describes every pool entry and `research_policy.schema.json` describes the mutable policy genome:

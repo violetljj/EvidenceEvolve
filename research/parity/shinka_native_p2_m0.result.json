@@ -1,0 +1,102 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "SHINKA_NATIVE_P2_M0_R0",
+  "source_campaign": "SHINKA_NATIVE_P2_R0",
+  "source_campaign_commit": "0b666e98b58e65f55446827aca796a12ce99256d",
+  "mechanics_status": "PASS",
+  "admitted_for_expensive_search": true,
+  "scientific_outcome_authority": "NONE",
+  "p2_r0_state_after_admission": "CLOSED_NOT_EVALUABLE",
+  "p2_r0_scientific_outcome_after_admission": "NOT_EVALUABLE_DATA",
+  "conclusion": "The shared proposal-to-candidate adapter, not either search arm, caused P2-R0 to be non-evaluable. A conservative blank-line-only materializer passes the frozen mechanics gate. This result does not establish search non-inferiority and does not itself start P2-R1.",
+  "diagnosis": {
+    "failure_domain": "SHARED_PROPOSAL_TO_CANDIDATE_ADAPTER",
+    "frozen_corpus_proposals": 68,
+    "search_replace_edits": 91,
+    "upstream_strict_apply_success": 0,
+    "proposal_ir_extracted": 68,
+    "exact_unique_edits": 1,
+    "ignore_blank_lines_unique_edits": 90,
+    "conservative_materialization_success": 68,
+    "candidate_compile_success": 68,
+    "materializer_rule": "Use an exact, complete-line, unique match first. Otherwise ignore blank lines only when all remaining nonblank lines, including indentation and trailing whitespace, match exactly and uniquely inside an EVOLVE region. Reject ambiguity, content drift, immutable edits, marker injection, and target hash drift."
+  },
+  "frozen_sample": {
+    "selection": "Earliest proposal generation from each arm in each of 10 AB/BA blocks",
+    "cases": 20,
+    "official_cases": 10,
+    "native_cases": 10,
+    "remote_model_calls": 0,
+    "workers": 20,
+    "available_cpu_quota": 18,
+    "host_logical_cpus": 256,
+    "per_evaluator_blas_threads": 1,
+    "elapsed_seconds": 3.42114494740963
+  },
+  "candidate_survival_funnel": {
+    "proposal": 20,
+    "proposal_ir": 20,
+    "patchable": 20,
+    "runnable": 20,
+    "evaluator_reached": 20,
+    "evaluator_valid": 13,
+    "nonbaseline_score_observed": 20
+  },
+  "per_arm": {
+    "official": {
+      "proposal": 10,
+      "patchable": 10,
+      "runnable": 10,
+      "evaluator_reached": 10,
+      "evaluator_valid": 6,
+      "nonbaseline_score_observed": 10
+    },
+    "native": {
+      "proposal": 10,
+      "patchable": 10,
+      "runnable": 10,
+      "evaluator_reached": 10,
+      "evaluator_valid": 7,
+      "nonbaseline_score_observed": 10
+    }
+  },
+  "threshold_checks": {
+    "patch_apply_success_rate_gte_0_90": true,
+    "candidate_compile_success_rate_gte_0_90": true,
+    "evaluator_reached_rate_gte_0_80": true,
+    "nonbaseline_candidate_score_per_arm_gte_1": true
+  },
+  "production_integration": {
+    "official_entrypoint": "evolve search shinka-official-materialized -- <official Shinka arguments>",
+    "native_mode": "--proposal-materializer EVIDENCE_EVOLVE_V1",
+    "shared_adapter_for_both_arms": true,
+    "upstream_files_modified": false,
+    "upstream_search_selection_database_preserved": true,
+    "adapter_scope": "proposal extraction and candidate materialization only",
+    "per_proposal_ir_and_materialization_receipt_emitted": true
+  },
+  "evaluator_invalid_interpretation": "Seven candidates reached the frozen evaluator and were rejected for candidate-level geometry validity. They are evaluator-invalid proposals, not patch, adapter, compile, or infrastructure failures.",
+  "remote_model_policy": {
+    "gpt_5_5_permitted": false,
+    "fallback_if_future_remote_generation_is_explicitly_required": "gpt-5.6-terra"
+  },
+  "verification": {
+    "targeted_mechanics_and_shinka_integration_tests": "15 passed in 9.84s with 18 workers",
+    "full_pytest_parallel": "70 passed in 10.29s with 18 workers",
+    "synthetic_canary": "PASS",
+    "synthetic_canary_summary_sha256": "62ebb0842828d702dc25a6e4ffc469c132238eae082aefeccf1093a5e9ecc81f"
+  },
+  "artifacts": {
+    "protocol": "research/parity/shinka_native_p2_m0.protocol.json",
+    "protocol_file_sha256": "b637408c758d6c0660cd3c5e41bc72011c6affa068452c9faa503da4144b3bea",
+    "evaluator": "research/parity/shinka_native_p2_m0.evaluator.py",
+    "evaluator_sha256": "eb8b9787dc25dee24a5f5305d1e3bd876e5c336cded1c9bab7fb204612928b4d",
+    "receipt": "research/parity/shinka_native_p2_m0.receipt.json",
+    "receipt_sha256": "02b715f67ec71ad6a8cd67dc2966fa213d72af4276688a716561dd0a795aee86",
+    "proposal_ir_source_sha256": "f8e227b9f2250a3b766a2dd07dc695e0b59c3c9d6c33162b9bb8af69534c0d36",
+    "materializer_source_sha256": "d66dffa7fd8d274e73a702cddada4e4ed93031d2c3a20e2923ebc18f69d61189",
+    "admission_source_sha256": "9a885da994536753edb4c2dd26b9e13212ce6d29d0330b03c971347b260b3d3f",
+    "shinka_adapter_source_sha256": "07a562930708fad7b88a9e98079bc8f80064e80ebb2df37421252760652cebe4",
+    "shinka_native_wiring_source_sha256": "1551e3aef92c153e88de01bcea2fdef35fc31ff811d557c6906b8867c064f62d"
+  }
+}

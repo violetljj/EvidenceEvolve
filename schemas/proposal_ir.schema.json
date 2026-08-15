@@ -1,0 +1,116 @@
+{
+  "$defs": {
+    "SearchReplaceEdit": {
+      "additionalProperties": false,
+      "properties": {
+        "replace": {
+          "title": "Replace",
+          "type": "string"
+        },
+        "search": {
+          "title": "Search",
+          "type": "string"
+        }
+      },
+      "required": [
+        "search",
+        "replace"
+      ],
+      "title": "SearchReplaceEdit",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "description": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Description"
+    },
+    "dialect": {
+      "const": "SEARCH_REPLACE",
+      "default": "SEARCH_REPLACE",
+      "title": "Dialect",
+      "type": "string"
+    },
+    "edits": {
+      "items": {
+        "$ref": "#/$defs/SearchReplaceEdit"
+      },
+      "minItems": 1,
+      "title": "Edits",
+      "type": "array"
+    },
+    "extracted_patch_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Extracted Patch Sha256",
+      "type": "string"
+    },
+    "language": {
+      "const": "python",
+      "default": "python",
+      "title": "Language",
+      "type": "string"
+    },
+    "metadata": {
+      "additionalProperties": true,
+      "title": "Metadata",
+      "type": "object"
+    },
+    "name": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Name"
+    },
+    "proposal_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{1,127}$",
+      "title": "Proposal Id",
+      "type": "string"
+    },
+    "raw_response_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Raw Response Sha256",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_system": {
+      "minLength": 1,
+      "title": "Source System",
+      "type": "string"
+    },
+    "target_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Target Sha256",
+      "type": "string"
+    }
+  },
+  "required": [
+    "proposal_id",
+    "source_system",
+    "target_sha256",
+    "raw_response_sha256",
+    "extracted_patch_sha256",
+    "edits"
+  ],
+  "title": "ProposalIR",
+  "type": "object"
+}

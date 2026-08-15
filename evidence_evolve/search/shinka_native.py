@@ -9,6 +9,8 @@ from typing import Any, Callable
 
 from evidence_evolve.artifacts import create_once_json, environment_receipt
 from evidence_evolve.hashing import sha256_file, sha256_object
+from evidence_evolve.proposals.models import ProposalMaterializerMode
+from evidence_evolve.proposals.shinka_adapter import installed_shinka_materializer
 from evidence_evolve.search.models import (
     SearchRunReceipt,
     SearchRunRequest,
@@ -303,7 +305,8 @@ class ShinkaNativeEngine:
         else:
             runner_factory = self.runner_factory
         runner = runner_factory(**kwargs)
-        runner.run()
+        with installed_shinka_materializer(request.proposal_materializer):
+            runner.run()
 
         imported = import_shinka_run(request.results_dir)
         task_assets = {
@@ -331,8 +334,20 @@ class ShinkaNativeEngine:
                 }
             ),
             imported=imported,
+            proposal_materializer=request.proposal_materializer,
+            claim_scope=(
+                "UPSTREAM_NATIVE_EXECUTION_AND_IMPORT_ONLY"
+                if request.proposal_materializer
+                == ProposalMaterializerMode.UPSTREAM_STRICT
+                else "UPSTREAM_SEARCH_WITH_EVIDENCE_EVOLVE_MATERIALIZATION_AND_IMPORT"
+            ),
             metadata={
-                "adapter_behavior": "UPSTREAM_CLI_CONSTRUCTION_AND_NATIVE_RUNNER",
+                "adapter_behavior": (
+                    "UPSTREAM_CLI_CONSTRUCTION_AND_NATIVE_RUNNER"
+                    if request.proposal_materializer
+                    == ProposalMaterializerMode.UPSTREAM_STRICT
+                    else "UPSTREAM_SEARCH_SHARED_EVIDENCE_EVOLVE_MATERIALIZER"
+                ),
                 "upstream_database_preserved": True,
                 "upstream_webui_compatible": True,
                 "confirmation_evidence_imported": False,

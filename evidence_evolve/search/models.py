@@ -7,6 +7,7 @@ from typing import Any, Literal
 from pydantic import Field, field_validator
 
 from evidence_evolve.models import EnvironmentReceipt, StrictModel
+from evidence_evolve.proposals.models import ProposalMaterializerMode
 
 
 class SearchEngineMode(StrEnum):
@@ -30,6 +31,9 @@ class SearchRunRequest(StrictModel):
     max_db_workers: int | None = Field(default=None, gt=0)
     verbose: bool | None = None
     debug: bool = False
+    proposal_materializer: ProposalMaterializerMode = (
+        ProposalMaterializerMode.UPSTREAM_STRICT
+    )
 
     @field_validator("task_dir", "results_dir")
     @classmethod
@@ -82,7 +86,13 @@ class SearchRunReceipt(StrictModel):
         "SHINKA_SCHEDULING_ONLY"
     )
     scientific_outcome_authority: Literal["NONE"] = "NONE"
-    claim_scope: Literal["UPSTREAM_NATIVE_EXECUTION_AND_IMPORT_ONLY"] = (
+    proposal_materializer: ProposalMaterializerMode = (
+        ProposalMaterializerMode.UPSTREAM_STRICT
+    )
+    claim_scope: Literal[
+        "UPSTREAM_NATIVE_EXECUTION_AND_IMPORT_ONLY",
+        "UPSTREAM_SEARCH_WITH_EVIDENCE_EVOLVE_MATERIALIZATION_AND_IMPORT",
+    ] = (
         "UPSTREAM_NATIVE_EXECUTION_AND_IMPORT_ONLY"
     )
     superiority_claim_permitted: Literal[False] = False

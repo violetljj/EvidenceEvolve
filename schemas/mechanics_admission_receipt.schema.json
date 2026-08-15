@@ -1,0 +1,422 @@
+{
+  "$defs": {
+    "CandidateSurvivalFunnel": {
+      "additionalProperties": false,
+      "properties": {
+        "candidate_compile_success_rate": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Candidate Compile Success Rate",
+          "type": "number"
+        },
+        "evaluator_reached": {
+          "minimum": 0,
+          "title": "Evaluator Reached",
+          "type": "integer"
+        },
+        "evaluator_reached_rate": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Evaluator Reached Rate",
+          "type": "number"
+        },
+        "evaluator_valid": {
+          "minimum": 0,
+          "title": "Evaluator Valid",
+          "type": "integer"
+        },
+        "nonbaseline_score": {
+          "minimum": 0,
+          "title": "Nonbaseline Score",
+          "type": "integer"
+        },
+        "patch_apply_success_rate": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Patch Apply Success Rate",
+          "type": "number"
+        },
+        "patchable": {
+          "minimum": 0,
+          "title": "Patchable",
+          "type": "integer"
+        },
+        "proposal_extracted": {
+          "minimum": 0,
+          "title": "Proposal Extracted",
+          "type": "integer"
+        },
+        "proposals": {
+          "minimum": 1,
+          "title": "Proposals",
+          "type": "integer"
+        },
+        "runnable": {
+          "minimum": 0,
+          "title": "Runnable",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "proposals",
+        "proposal_extracted",
+        "patchable",
+        "runnable",
+        "evaluator_reached",
+        "evaluator_valid",
+        "nonbaseline_score",
+        "patch_apply_success_rate",
+        "candidate_compile_success_rate",
+        "evaluator_reached_rate"
+      ],
+      "title": "CandidateSurvivalFunnel",
+      "type": "object"
+    },
+    "EnvironmentReceipt": {
+      "additionalProperties": false,
+      "properties": {
+        "executable": {
+          "title": "Executable",
+          "type": "string"
+        },
+        "extra": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Extra",
+          "type": "object"
+        },
+        "platform": {
+          "title": "Platform",
+          "type": "string"
+        },
+        "python": {
+          "title": "Python",
+          "type": "string"
+        }
+      },
+      "required": [
+        "python",
+        "platform",
+        "executable"
+      ],
+      "title": "EnvironmentReceipt",
+      "type": "object"
+    },
+    "MatchMode": {
+      "enum": [
+        "EXACT_UNIQUE",
+        "IGNORE_BLANK_LINES_UNIQUE"
+      ],
+      "title": "MatchMode",
+      "type": "string"
+    },
+    "MechanicsAdmissionThresholds": {
+      "additionalProperties": false,
+      "properties": {
+        "candidate_compile_success_rate_min": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Candidate Compile Success Rate Min",
+          "type": "number"
+        },
+        "evaluator_reached_rate_min": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Evaluator Reached Rate Min",
+          "type": "number"
+        },
+        "nonbaseline_candidate_score_required_per_arm": {
+          "minimum": 1,
+          "title": "Nonbaseline Candidate Score Required Per Arm",
+          "type": "integer"
+        },
+        "patch_apply_success_rate_min": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Patch Apply Success Rate Min",
+          "type": "number"
+        }
+      },
+      "required": [
+        "patch_apply_success_rate_min",
+        "candidate_compile_success_rate_min",
+        "evaluator_reached_rate_min",
+        "nonbaseline_candidate_score_required_per_arm"
+      ],
+      "title": "MechanicsAdmissionThresholds",
+      "type": "object"
+    },
+    "MechanicsCaseReceipt": {
+      "additionalProperties": false,
+      "properties": {
+        "arm": {
+          "title": "Arm",
+          "type": "string"
+        },
+        "candidate_compiled": {
+          "title": "Candidate Compiled",
+          "type": "boolean"
+        },
+        "candidate_path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Candidate Path"
+        },
+        "candidate_score": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Candidate Score"
+        },
+        "candidate_sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Candidate Sha256"
+        },
+        "case_id": {
+          "title": "Case Id",
+          "type": "string"
+        },
+        "evaluator_invoked": {
+          "title": "Evaluator Invoked",
+          "type": "boolean"
+        },
+        "evaluator_reached": {
+          "title": "Evaluator Reached",
+          "type": "boolean"
+        },
+        "evaluator_results_dir": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Evaluator Results Dir"
+        },
+        "evaluator_valid": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Evaluator Valid"
+        },
+        "failure_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Failure Reason"
+        },
+        "failure_stage": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Failure Stage"
+        },
+        "match_modes": {
+          "items": {
+            "$ref": "#/$defs/MatchMode"
+          },
+          "title": "Match Modes",
+          "type": "array"
+        },
+        "nonbaseline_score": {
+          "default": false,
+          "title": "Nonbaseline Score",
+          "type": "boolean"
+        },
+        "patch_applied": {
+          "title": "Patch Applied",
+          "type": "boolean"
+        },
+        "proposal_extracted": {
+          "title": "Proposal Extracted",
+          "type": "boolean"
+        },
+        "target_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Target Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "case_id",
+        "arm",
+        "proposal_extracted",
+        "patch_applied",
+        "candidate_compiled",
+        "evaluator_invoked",
+        "evaluator_reached",
+        "target_sha256"
+      ],
+      "title": "MechanicsCaseReceipt",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "admitted_for_expensive_search": {
+      "title": "Admitted For Expensive Search",
+      "type": "boolean"
+    },
+    "cases": {
+      "items": {
+        "$ref": "#/$defs/MechanicsCaseReceipt"
+      },
+      "title": "Cases",
+      "type": "array"
+    },
+    "elapsed_seconds": {
+      "minimum": 0.0,
+      "title": "Elapsed Seconds",
+      "type": "number"
+    },
+    "environment": {
+      "$ref": "#/$defs/EnvironmentReceipt"
+    },
+    "failure_outcome": {
+      "anyOf": [
+        {
+          "const": "INVALID_MECHANICS_OR_ADAPTER",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Failure Outcome"
+    },
+    "funnel": {
+      "$ref": "#/$defs/CandidateSurvivalFunnel"
+    },
+    "implementation_hashes": {
+      "additionalProperties": {
+        "pattern": "^[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "title": "Implementation Hashes",
+      "type": "object"
+    },
+    "mechanics_status": {
+      "enum": [
+        "PASS",
+        "FAIL"
+      ],
+      "title": "Mechanics Status",
+      "type": "string"
+    },
+    "observation": {
+      "title": "Observation",
+      "type": "string"
+    },
+    "per_arm_funnel": {
+      "additionalProperties": {
+        "$ref": "#/$defs/CandidateSurvivalFunnel"
+      },
+      "title": "Per Arm Funnel",
+      "type": "object"
+    },
+    "protocol_id": {
+      "title": "Protocol Id",
+      "type": "string"
+    },
+    "protocol_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Protocol Sha256",
+      "type": "string"
+    },
+    "remote_model_calls": {
+      "const": 0,
+      "default": 0,
+      "title": "Remote Model Calls",
+      "type": "integer"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scientific_outcome_authority": {
+      "const": "NONE",
+      "default": "NONE",
+      "title": "Scientific Outcome Authority",
+      "type": "string"
+    },
+    "source_campaign": {
+      "title": "Source Campaign",
+      "type": "string"
+    },
+    "threshold_checks": {
+      "additionalProperties": {
+        "type": "boolean"
+      },
+      "title": "Threshold Checks",
+      "type": "object"
+    },
+    "thresholds": {
+      "$ref": "#/$defs/MechanicsAdmissionThresholds"
+    }
+  },
+  "required": [
+    "protocol_id",
+    "protocol_sha256",
+    "source_campaign",
+    "mechanics_status",
+    "admitted_for_expensive_search",
+    "elapsed_seconds",
+    "implementation_hashes",
+    "environment",
+    "thresholds",
+    "funnel",
+    "per_arm_funnel",
+    "threshold_checks",
+    "cases",
+    "observation"
+  ],
+  "title": "MechanicsAdmissionReceipt",
+  "type": "object"
+}

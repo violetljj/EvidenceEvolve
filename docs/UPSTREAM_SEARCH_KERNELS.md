@@ -121,3 +121,16 @@ has passed. The engine integration is not evidence that ALE-Bench, algorithm
 discovery, or scientific superiority passed. The bounded P0 and P1 records are
 `research/parity/shinka_native_parity_r0.result.json` and
 `research/parity/shinka_native_p1_r0.result.json`.
+
+P2-R0 is separately frozen as `CLOSED_NOT_EVALUABLE`, not as a native-arm
+failure: 68/68 proposals failed shared patch application and 0 reached the
+evaluator. P2-M0 replays the frozen earliest proposal from each arm/block with
+no model calls. Its shared Proposal IR/materializer admits only exact unique
+line matches or unique blank-line-only normalization inside EVOLVE regions; it
+rejects ambiguity, content/indentation drift, immutable edits, marker changes,
+and target hash drift. The 20-case gate passed 20/20 patch, compile, and
+evaluator-reached checks. Seven evaluator-invalid geometry candidates remain
+candidate failures, not mechanics failures. This permits separately freezing a
+P2-R1 protocol, but does not establish non-inferiority or start that campaign.
+The records are `research/parity/shinka_native_p2_r0.result.json` and
+`research/parity/shinka_native_p2_m0.result.json`.

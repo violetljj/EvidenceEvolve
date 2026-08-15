@@ -31,6 +31,14 @@
       "title": "EnvironmentReceipt",
       "type": "object"
     },
+    "ProposalMaterializerMode": {
+      "enum": [
+        "UPSTREAM_STRICT",
+        "EVIDENCE_EVOLVE_V1"
+      ],
+      "title": "ProposalMaterializerMode",
+      "type": "string"
+    },
     "ShinkaImportSummary": {
       "additionalProperties": false,
       "properties": {
@@ -138,8 +146,11 @@
   "additionalProperties": false,
   "properties": {
     "claim_scope": {
-      "const": "UPSTREAM_NATIVE_EXECUTION_AND_IMPORT_ONLY",
       "default": "UPSTREAM_NATIVE_EXECUTION_AND_IMPORT_ONLY",
+      "enum": [
+        "UPSTREAM_NATIVE_EXECUTION_AND_IMPORT_ONLY",
+        "UPSTREAM_SEARCH_WITH_EVIDENCE_EVOLVE_MATERIALIZATION_AND_IMPORT"
+      ],
       "title": "Claim Scope",
       "type": "string"
     },
@@ -174,6 +185,10 @@
       "default": "SHINKA_NATIVE",
       "title": "Mode",
       "type": "string"
+    },
+    "proposal_materializer": {
+      "$ref": "#/$defs/ProposalMaterializerMode",
+      "default": "UPSTREAM_STRICT"
     },
     "request_sha256": {
       "pattern": "^[0-9a-f]{64}$",

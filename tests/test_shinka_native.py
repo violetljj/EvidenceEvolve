@@ -11,6 +11,11 @@ upstream_cli = pytest.importorskip("shinka.cli.run")
 
 from evidence_evolve.search.models import SearchRunRequest
 from evidence_evolve.search.shinka_native import ShinkaNativeEngine
+from evidence_evolve.proposals.models import ProposalMaterializerMode
+from evidence_evolve.proposals.shinka_adapter import (
+    apply_evidence_diff_patch,
+    run_official_shinka_with_materializer,
+)
 
 
 def _make_task(tmp_path: Path) -> Path:
@@ -130,6 +135,16 @@ class _CapturingRunner:
         _write_native_database(Path(evo.results_dir))
 
 
+class _MaterializerObservingRunner(_CapturingRunner):
+    observed_materializer = None
+
+    def run(self):
+        import shinka.edit.async_apply as async_apply
+
+        self.__class__.observed_materializer = async_apply.apply_diff_patch
+        super().run()
+
+
 def _normalized_kwargs(kwargs: dict) -> dict:
     return {
         "evo": {
@@ -235,3 +250,51 @@ def test_shinka_native_passes_all_current_upstream_namespaces_without_replacing_
     assert kwargs["max_proposal_jobs"] == 9
     assert kwargs["max_db_workers"] == 2
     assert kwargs["verbose"] is True
+
+
+def test_shinka_native_installs_shared_materializer_only_for_the_run(
+    tmp_path: Path,
+) -> None:
+    import shinka.edit.async_apply as async_apply
+
+    task = _make_task(tmp_path)
+    original = async_apply.apply_diff_patch
+    request = SearchRunRequest(
+        run_id="materialized-001",
+        task_dir=task,
+        results_dir=tmp_path / "results",
+        num_generations=1,
+        config_fname="shinka.yaml",
+        proposal_materializer=ProposalMaterializerMode.EVIDENCE_EVOLVE_V1,
+    )
+
+    receipt = ShinkaNativeEngine(
+        runner_factory=_MaterializerObservingRunner
+    ).run(request)
+
+    assert _MaterializerObservingRunner.observed_materializer is apply_evidence_diff_patch
+    assert async_apply.apply_diff_patch is original
+    assert receipt.proposal_materializer == ProposalMaterializerMode.EVIDENCE_EVOLVE_V1
+    assert (
+        receipt.claim_scope
+        == "UPSTREAM_SEARCH_WITH_EVIDENCE_EVOLVE_MATERIALIZATION_AND_IMPORT"
+    )
+
+
+def test_official_shinka_entrypoint_installs_the_same_shared_materializer(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    import shinka.edit.async_apply as async_apply
+
+    original = async_apply.apply_diff_patch
+    observed = []
+
+    def fake_main(arguments: list[str]) -> int:
+        observed.append((arguments, async_apply.apply_diff_patch))
+        return 0
+
+    monkeypatch.setattr(upstream_cli, "main", fake_main)
+
+    assert run_official_shinka_with_materializer(["--help"]) == 0
+    assert observed == [(["--help"], apply_evidence_diff_patch)]
+    assert async_apply.apply_diff_patch is original

@@ -71,6 +71,16 @@ from evidence_evolve.benchmarks.protocol import (
     load_benchmark_protocol,
 )
 from evidence_evolve.benchmarks.runner import ThreeArmBenchmarkRunner
+from evidence_evolve.proposals.admission import run_mechanics_admission
+from evidence_evolve.proposals.models import (
+    MechanicsAdmissionProtocol,
+    MechanicsAdmissionReceipt,
+    ProposalIR,
+    ProposalMaterializerMode,
+)
+from evidence_evolve.proposals.shinka_adapter import (
+    run_official_shinka_with_materializer,
+)
 from evidence_evolve.search.models import SearchRunReceipt, SearchRunRequest
 from evidence_evolve.search.shinka_native import ShinkaNativeEngine
 
@@ -379,6 +389,13 @@ def command_export_schemas(args: argparse.Namespace) -> int:
         ),
         "search_run_request.schema.json": SearchRunRequest.model_json_schema(),
         "search_run_receipt.schema.json": SearchRunReceipt.model_json_schema(),
+        "proposal_ir.schema.json": ProposalIR.model_json_schema(),
+        "mechanics_admission_protocol.schema.json": (
+            MechanicsAdmissionProtocol.model_json_schema()
+        ),
+        "mechanics_admission_receipt.schema.json": (
+            MechanicsAdmissionReceipt.model_json_schema()
+        ),
         "policy_promotion_protocol.schema.json": (
             PolicyPromotionProtocol.model_json_schema()
         ),
@@ -616,9 +633,30 @@ def command_search_shinka_native(args: argparse.Namespace) -> int:
         max_db_workers=args.max_db_workers,
         verbose=args.verbose,
         debug=args.debug,
+        proposal_materializer=args.proposal_materializer,
     )
     print(_json(ShinkaNativeEngine().run(request)))
     return 0
+
+
+def command_search_shinka_official_materialized(args: argparse.Namespace) -> int:
+    ShinkaBackend().require()
+    upstream_args = list(args.upstream_args)
+    if upstream_args and upstream_args[0] == "--":
+        upstream_args = upstream_args[1:]
+    return run_official_shinka_with_materializer(upstream_args)
+
+
+def command_search_mechanics_admission(args: argparse.Namespace) -> int:
+    receipt = run_mechanics_admission(
+        protocol_path=Path(args.protocol),
+        repo=_repo_root(args.repo),
+        run_dir=Path(args.run_dir),
+        max_workers=args.max_workers,
+        python_executable=args.python_executable,
+    )
+    print(_json(receipt))
+    return 0 if receipt.admitted_for_expensive_search else 8
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -817,7 +855,7 @@ def build_parser() -> argparse.ArgumentParser:
     search_commands = search.add_subparsers(dest="search_command", required=True)
     shinka_native = search_commands.add_parser(
         "shinka-native",
-        help="run the pinned official ShinkaEvolve runner without changing search behavior",
+        help="run pinned Shinka search, optionally with shared proposal materialization",
     )
     shinka_native.add_argument("--run-id", required=True)
     shinka_native.add_argument("--task-dir", required=True)
@@ -834,7 +872,32 @@ def build_parser() -> argparse.ArgumentParser:
         "--verbose", action=argparse.BooleanOptionalAction, default=None
     )
     shinka_native.add_argument("--debug", action="store_true")
+    shinka_native.add_argument(
+        "--proposal-materializer",
+        type=ProposalMaterializerMode,
+        choices=list(ProposalMaterializerMode),
+        default=ProposalMaterializerMode.UPSTREAM_STRICT,
+    )
     shinka_native.set_defaults(handler=command_search_shinka_native)
+    shinka_official = search_commands.add_parser(
+        "shinka-official-materialized",
+        help="run official Shinka with the shared EvidenceEvolve materializer",
+    )
+    shinka_official.add_argument("upstream_args", nargs=argparse.REMAINDER)
+    shinka_official.set_defaults(
+        handler=command_search_shinka_official_materialized
+    )
+    mechanics_admission = search_commands.add_parser(
+        "mechanics-admission",
+        help="replay frozen proposals through the candidate survival funnel",
+    )
+    mechanics_admission.add_argument("protocol")
+    mechanics_admission.add_argument("--run-dir", required=True)
+    mechanics_admission.add_argument("--max-workers", type=int)
+    mechanics_admission.add_argument(
+        "--python-executable", default=sys.executable
+    )
+    mechanics_admission.set_defaults(handler=command_search_mechanics_admission)
     policy = subparsers.add_parser(
         "policy", help="evaluate research-policy evidence without auto-promoting"
     )
