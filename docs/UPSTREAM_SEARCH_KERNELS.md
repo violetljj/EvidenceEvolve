@@ -135,7 +135,7 @@ P2-R1 protocol, but does not establish non-inferiority or start that campaign.
 The records are `research/parity/shinka_native_p2_r0.result.json` and
 `research/parity/shinka_native_p2_m0.result.json`.
 
-P2-R1 is now protocol-frozen as a fresh lineage and remains unstarted. Its
+P2-R1 is now execution-complete frozen as a fresh lineage and remains unstarted. Its
 machine-validated record is
 `research/parity/shinka_native_p2_r1.protocol.json`; freezing the protocol made
 zero remote model calls. It binds `P2-R0 -> CLOSED_NOT_EVALUABLE /
@@ -177,6 +177,28 @@ delay and 1200-second per-attempt timeout; those attempts remain one scientific
 slot. Changed-payload retry, post-hoc replacement, and scientific resampling are
 forbidden. Provider-managed hidden instructions are not visible and therefore
 remain explicitly outside the reproducible freeze boundary.
+
+The execution-only admission revision adds the formal `evolve search p2-r1`
+driver. It reconstructs all 20 arm-runs and 100 scientific slots from
+`protocol.design.schedule`; no second handwritten schedule exists. It writes an
+immutable start manifest before any provider invocation, claims disjoint
+arm/block state namespaces, verifies the frozen baseline at the first-call
+boundary, persists every response for deterministic crash recovery, forbids a
+fourth transport attempt, and automatically constructs `P2R1AnalysisInput` for
+the frozen analyzer. Completed database-receipted slots are never rerun. A
+pending successful response is replayed locally after a crash; an unresolved
+attempt consumes one of the three identical-payload transport attempts.
+
+Clean-checkout admission without remote generation is:
+
+```text
+evolve search p2-r1 --dry-run --run-root runs/shinka_native_p2_r1_dry_run
+```
+
+The lineage is `2887dd19... / EXECUTION_DRIVER_NOT_FROZEN` to
+`P2_R1_EXECUTION_COMPLETE_FROZEN_COMMITTED_NOT_STARTED`. The revision made zero
+remote proposal calls and changed no scientific parameter, hypothesis, metric,
+margin, allocation, seed policy, model policy, or decision rule.
 
 The frozen generation model is `gpt-5.6-terra` at high effort and temperature
 zero. `gpt-5.5` is explicitly forbidden. A supported R1 result has a

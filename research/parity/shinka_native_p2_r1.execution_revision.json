@@ -1,0 +1,29 @@
+{
+  "revision_id": "P2-R1 Execution Driver Admission Revision",
+  "revision_kind": "EXECUTION_ONLY_FREEZE_COMPLETION",
+  "parent_commit": "2887dd19f1d80de3f198c09433d7de7156aa53f9",
+  "prior_state": "P2_R1_REMOTE_ANCHORED_NOT_STARTED / EXECUTION_DRIVER_NOT_FROZEN",
+  "new_state": "P2_R1_EXECUTION_COMPLETE_FROZEN_COMMITTED_NOT_STARTED",
+  "remote_proposal_calls_before_revision": 0,
+  "scientific_protocol_changed": false,
+  "statement": "No scientific parameter, hypothesis, metric, margin, schedule allocation, seed policy, model policy, or decision rule was changed. No remote proposal had been generated before this revision.",
+  "admitted_scope": [
+    "protocol-derived 20-run Official/Native execution schedule",
+    "disjoint arm/block results, database, audit, and state namespaces",
+    "frozen-incumbent baseline verification",
+    "per-slot prompt, request, retry, terminal-funnel, protocol, and executor receipts",
+    "three identical-payload transport attempts per scientific slot",
+    "receipt-driven crash/resume without completed-slot rerun or proposal resampling",
+    "immutable start manifest before provider invocation",
+    "zero-remote-call dry-run admission",
+    "automatic construction of P2R1AnalysisInput and frozen parity analysis"
+  ],
+  "excluded_scope": [
+    "scientific hypothesis or outcome semantics",
+    "slot counts, block counts, AB/BA allocation, or seeds",
+    "margin, confidence bound, bootstrap count, or guardrails",
+    "carry-forward rules or funnel taxonomy",
+    "evaluator, task, prompt, Official, or Native algorithm semantics",
+    "generation model or PARITY_ONLY claim ceiling"
+  ]
+}

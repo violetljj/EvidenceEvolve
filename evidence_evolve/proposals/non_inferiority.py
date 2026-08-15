@@ -280,7 +280,9 @@ class OutcomePolicy(StrictModel):
 class P2R1Protocol(StrictModel):
     schema_version: Literal["1.0"] = "1.0"
     protocol_id: Literal["SHINKA_NATIVE_P2_R1"]
-    protocol_status: Literal["FROZEN_NOT_STARTED"]
+    protocol_status: Literal[
+        "P2_R1_EXECUTION_COMPLETE_FROZEN_COMMITTED_NOT_STARTED"
+    ]
     execution_started: Literal[False]
     remote_model_calls_at_freeze: Literal[0]
     protocol_sha256: Sha256
@@ -342,6 +344,12 @@ class P2R1Protocol(StrictModel):
             "synthetic_canary_evaluator",
             "synthetic_canary_runner",
             "gate_engine",
+            "execution_driver",
+            "transport_audit",
+            "runtime_bootstrap",
+            "execution_tests",
+            "execution_manifest_schema",
+            "execution_revision",
         }
         if set(self.frozen_assets) != required_assets:
             raise ValueError("P2-R1 frozen asset set is incomplete or expanded")

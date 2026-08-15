@@ -81,6 +81,7 @@ from evidence_evolve.proposals.models import (
 from evidence_evolve.proposals.shinka_adapter import (
     run_official_shinka_with_materializer,
 )
+from evidence_evolve.proposals.p2_r1_execution import run_p2_r1_execution
 from evidence_evolve.search.models import SearchRunReceipt, SearchRunRequest
 from evidence_evolve.search.shinka_native import ShinkaNativeEngine
 
@@ -659,6 +660,18 @@ def command_search_mechanics_admission(args: argparse.Namespace) -> int:
     return 0 if receipt.admitted_for_expensive_search else 8
 
 
+def command_search_p2_r1(args: argparse.Namespace) -> int:
+    result = run_p2_r1_execution(
+        repo=_repo_root(args.repo),
+        protocol_path=Path(args.protocol),
+        run_root=Path(args.run_root),
+        dry_run=args.dry_run,
+        max_parallel_blocks=args.max_parallel_blocks,
+    )
+    print(_json(result))
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="evolve",
@@ -898,6 +911,18 @@ def build_parser() -> argparse.ArgumentParser:
         "--python-executable", default=sys.executable
     )
     mechanics_admission.set_defaults(handler=command_search_mechanics_admission)
+    p2_r1 = search_commands.add_parser(
+        "p2-r1",
+        help="run or dry-run the frozen P2-R1 Official/Native schedule",
+    )
+    p2_r1.add_argument(
+        "--protocol",
+        default="research/parity/shinka_native_p2_r1.protocol.json",
+    )
+    p2_r1.add_argument("--run-root", required=True)
+    p2_r1.add_argument("--dry-run", action="store_true")
+    p2_r1.add_argument("--max-parallel-blocks", type=int)
+    p2_r1.set_defaults(handler=command_search_p2_r1)
     policy = subparsers.add_parser(
         "policy", help="evaluate research-policy evidence without auto-promoting"
     )

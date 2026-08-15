@@ -1,0 +1,1106 @@
+{
+  "$defs": {
+    "ArmRun": {
+      "additionalProperties": false,
+      "properties": {
+        "arm": {
+          "enum": [
+            "official",
+            "native"
+          ],
+          "title": "Arm",
+          "type": "string"
+        },
+        "baseline_score": {
+          "title": "Baseline Score",
+          "type": "number"
+        },
+        "block": {
+          "maximum": 10,
+          "minimum": 1,
+          "title": "Block",
+          "type": "integer"
+        },
+        "config_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Config Sha256",
+          "type": "string"
+        },
+        "evaluator_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Evaluator Sha256",
+          "type": "string"
+        },
+        "initial_incumbent_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Initial Incumbent Sha256",
+          "type": "string"
+        },
+        "initial_program_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Initial Program Sha256",
+          "type": "string"
+        },
+        "observed_cost": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observed Cost"
+        },
+        "observed_input_tokens": {
+          "minimum": 0,
+          "title": "Observed Input Tokens",
+          "type": "integer"
+        },
+        "observed_output_tokens": {
+          "minimum": 0,
+          "title": "Observed Output Tokens",
+          "type": "integer"
+        },
+        "resume_consistent": {
+          "title": "Resume Consistent",
+          "type": "boolean"
+        },
+        "slots": {
+          "items": {
+            "$ref": "#/$defs/ProposalSlot"
+          },
+          "maxItems": 5,
+          "minItems": 5,
+          "title": "Slots",
+          "type": "array"
+        },
+        "state_namespace": {
+          "title": "State Namespace",
+          "type": "string"
+        },
+        "wall_seconds": {
+          "minimum": 0.0,
+          "title": "Wall Seconds",
+          "type": "number"
+        }
+      },
+      "required": [
+        "block",
+        "arm",
+        "baseline_score",
+        "initial_program_sha256",
+        "evaluator_sha256",
+        "config_sha256",
+        "initial_incumbent_sha256",
+        "state_namespace",
+        "slots",
+        "observed_input_tokens",
+        "observed_output_tokens",
+        "wall_seconds",
+        "resume_consistent"
+      ],
+      "title": "ArmRun",
+      "type": "object"
+    },
+    "P2R1RunManifest": {
+      "additionalProperties": false,
+      "properties": {
+        "command": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Command",
+          "type": "array"
+        },
+        "command_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Command Sha256",
+          "type": "string"
+        },
+        "executor_commit": {
+          "pattern": "^[0-9a-f]{40}$",
+          "title": "Executor Commit",
+          "type": "string"
+        },
+        "protocol_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Protocol Sha256",
+          "type": "string"
+        },
+        "run": {
+          "$ref": "#/$defs/P2R1RunSpec"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "start_manifest_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Start Manifest Sha256",
+          "type": "string"
+        },
+        "task_asset_hashes": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Task Asset Hashes",
+          "type": "object"
+        }
+      },
+      "required": [
+        "protocol_sha256",
+        "executor_commit",
+        "start_manifest_sha256",
+        "run",
+        "command",
+        "command_sha256",
+        "task_asset_hashes"
+      ],
+      "title": "P2R1RunManifest",
+      "type": "object"
+    },
+    "P2R1RunReceipt": {
+      "additionalProperties": false,
+      "properties": {
+        "analysis_run": {
+          "$ref": "#/$defs/ArmRun"
+        },
+        "arm": {
+          "enum": [
+            "official",
+            "native"
+          ],
+          "title": "Arm",
+          "type": "string"
+        },
+        "block": {
+          "title": "Block",
+          "type": "integer"
+        },
+        "database_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Database Sha256",
+          "type": "string"
+        },
+        "executor_commit": {
+          "pattern": "^[0-9a-f]{40}$",
+          "title": "Executor Commit",
+          "type": "string"
+        },
+        "exit_code": {
+          "title": "Exit Code",
+          "type": "integer"
+        },
+        "finished_at": {
+          "title": "Finished At",
+          "type": "string"
+        },
+        "paired_local_seed": {
+          "title": "Paired Local Seed",
+          "type": "integer"
+        },
+        "protocol_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Protocol Sha256",
+          "type": "string"
+        },
+        "resume_semantics": {
+          "const": "RECEIPT_AND_DATABASE_DETERMINISTIC_NO_COMPLETED_SLOT_RERUN",
+          "default": "RECEIPT_AND_DATABASE_DETERMINISTIC_NO_COMPLETED_SLOT_RERUN",
+          "title": "Resume Semantics",
+          "type": "string"
+        },
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "run_manifest_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Run Manifest Sha256",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scientific_slots": {
+          "items": {
+            "$ref": "#/$defs/P2R1ScientificSlotReceipt"
+          },
+          "maxItems": 5,
+          "minItems": 5,
+          "title": "Scientific Slots",
+          "type": "array"
+        },
+        "started_at": {
+          "title": "Started At",
+          "type": "string"
+        },
+        "state_namespace": {
+          "title": "State Namespace",
+          "type": "string"
+        },
+        "transport_ledger_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Transport Ledger Sha256",
+          "type": "string"
+        },
+        "wall_seconds": {
+          "minimum": 0,
+          "title": "Wall Seconds",
+          "type": "number"
+        }
+      },
+      "required": [
+        "protocol_sha256",
+        "executor_commit",
+        "run_id",
+        "block",
+        "arm",
+        "paired_local_seed",
+        "state_namespace",
+        "run_manifest_sha256",
+        "exit_code",
+        "started_at",
+        "finished_at",
+        "wall_seconds",
+        "transport_ledger_sha256",
+        "analysis_run",
+        "scientific_slots",
+        "database_sha256"
+      ],
+      "title": "P2R1RunReceipt",
+      "type": "object"
+    },
+    "P2R1RunSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "arm": {
+          "enum": [
+            "official",
+            "native"
+          ],
+          "title": "Arm",
+          "type": "string"
+        },
+        "audit_dir": {
+          "title": "Audit Dir",
+          "type": "string"
+        },
+        "block": {
+          "maximum": 10,
+          "minimum": 1,
+          "title": "Block",
+          "type": "integer"
+        },
+        "database_path": {
+          "title": "Database Path",
+          "type": "string"
+        },
+        "paired_local_seed": {
+          "title": "Paired Local Seed",
+          "type": "integer"
+        },
+        "position_in_block": {
+          "maximum": 2,
+          "minimum": 1,
+          "title": "Position In Block",
+          "type": "integer"
+        },
+        "results_dir": {
+          "title": "Results Dir",
+          "type": "string"
+        },
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "sequence": {
+          "maximum": 20,
+          "minimum": 1,
+          "title": "Sequence",
+          "type": "integer"
+        },
+        "slots": {
+          "items": {
+            "$ref": "#/$defs/P2R1SlotSpec"
+          },
+          "maxItems": 5,
+          "minItems": 5,
+          "title": "Slots",
+          "type": "array"
+        },
+        "state_namespace": {
+          "title": "State Namespace",
+          "type": "string"
+        }
+      },
+      "required": [
+        "run_id",
+        "sequence",
+        "block",
+        "position_in_block",
+        "arm",
+        "paired_local_seed",
+        "state_namespace",
+        "results_dir",
+        "database_path",
+        "audit_dir",
+        "slots"
+      ],
+      "title": "P2R1RunSpec",
+      "type": "object"
+    },
+    "P2R1Schedule": {
+      "additionalProperties": false,
+      "properties": {
+        "protocol_id": {
+          "const": "SHINKA_NATIVE_P2_R1",
+          "title": "Protocol Id",
+          "type": "string"
+        },
+        "protocol_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Protocol Sha256",
+          "type": "string"
+        },
+        "runs": {
+          "items": {
+            "$ref": "#/$defs/P2R1RunSpec"
+          },
+          "maxItems": 20,
+          "minItems": 20,
+          "title": "Runs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "protocol_id",
+        "protocol_sha256",
+        "runs"
+      ],
+      "title": "P2R1Schedule",
+      "type": "object"
+    },
+    "P2R1ScientificSlotReceipt": {
+      "additionalProperties": false,
+      "properties": {
+        "arm": {
+          "enum": [
+            "official",
+            "native"
+          ],
+          "title": "Arm",
+          "type": "string"
+        },
+        "block": {
+          "maximum": 10,
+          "minimum": 1,
+          "title": "Block",
+          "type": "integer"
+        },
+        "executor_commit": {
+          "pattern": "^[0-9a-f]{40}$",
+          "title": "Executor Commit",
+          "type": "string"
+        },
+        "model": {
+          "const": "gpt-5.6-terra",
+          "title": "Model",
+          "type": "string"
+        },
+        "paired_local_seed": {
+          "title": "Paired Local Seed",
+          "type": "integer"
+        },
+        "protocol_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Protocol Sha256",
+          "type": "string"
+        },
+        "rendered_system_prompt_sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rendered System Prompt Sha256"
+        },
+        "rendered_user_prompt_sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rendered User Prompt Sha256"
+        },
+        "request_payload_sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Request Payload Sha256"
+        },
+        "slot": {
+          "maximum": 5,
+          "minimum": 1,
+          "title": "Slot",
+          "type": "integer"
+        },
+        "slot_id": {
+          "title": "Slot Id",
+          "type": "string"
+        },
+        "state_namespace": {
+          "title": "State Namespace",
+          "type": "string"
+        },
+        "terminal_funnel_state": {
+          "enum": [
+            "MODEL_INVOCATION_NOT_STARTED",
+            "MODEL_RESPONSE_MISSING",
+            "PROPOSAL_EXTRACTION_FAILED",
+            "MATERIALIZATION_FAILED",
+            "COMPILE_FAILED",
+            "EVALUATOR_NOT_REACHED",
+            "EVALUATOR_INVALID",
+            "EVALUATOR_VALID_NOT_USEFUL",
+            "USEFUL"
+          ],
+          "title": "Terminal Funnel State",
+          "type": "string"
+        },
+        "transport_attempt_count": {
+          "maximum": 3,
+          "minimum": 0,
+          "title": "Transport Attempt Count",
+          "type": "integer"
+        },
+        "transport_attempt_payload_sha256s": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 3,
+          "title": "Transport Attempt Payload Sha256S",
+          "type": "array"
+        }
+      },
+      "required": [
+        "slot_id",
+        "block",
+        "arm",
+        "slot",
+        "paired_local_seed",
+        "model",
+        "transport_attempt_count",
+        "transport_attempt_payload_sha256s",
+        "terminal_funnel_state",
+        "state_namespace",
+        "executor_commit",
+        "protocol_sha256"
+      ],
+      "title": "P2R1ScientificSlotReceipt",
+      "type": "object"
+    },
+    "P2R1SlotSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "arm": {
+          "enum": [
+            "official",
+            "native"
+          ],
+          "title": "Arm",
+          "type": "string"
+        },
+        "block": {
+          "maximum": 10,
+          "minimum": 1,
+          "title": "Block",
+          "type": "integer"
+        },
+        "model": {
+          "const": "gpt-5.6-terra",
+          "title": "Model",
+          "type": "string"
+        },
+        "paired_local_seed": {
+          "title": "Paired Local Seed",
+          "type": "integer"
+        },
+        "slot": {
+          "maximum": 5,
+          "minimum": 1,
+          "title": "Slot",
+          "type": "integer"
+        },
+        "slot_id": {
+          "title": "Slot Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "slot_id",
+        "slot",
+        "block",
+        "arm",
+        "paired_local_seed",
+        "model"
+      ],
+      "title": "P2R1SlotSpec",
+      "type": "object"
+    },
+    "P2R1StartManifest": {
+      "additionalProperties": false,
+      "properties": {
+        "baseline_admission": {
+          "additionalProperties": true,
+          "title": "Baseline Admission",
+          "type": "object"
+        },
+        "created_at": {
+          "title": "Created At",
+          "type": "string"
+        },
+        "dry_run": {
+          "title": "Dry Run",
+          "type": "boolean"
+        },
+        "executor_commit": {
+          "pattern": "^[0-9a-f]{40}$",
+          "title": "Executor Commit",
+          "type": "string"
+        },
+        "executor_parent_lineage": {
+          "pattern": "^[0-9a-f]{40}$",
+          "title": "Executor Parent Lineage",
+          "type": "string"
+        },
+        "frozen_asset_hashes": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Frozen Asset Hashes",
+          "type": "object"
+        },
+        "protocol_id": {
+          "const": "SHINKA_NATIVE_P2_R1",
+          "title": "Protocol Id",
+          "type": "string"
+        },
+        "protocol_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Protocol Sha256",
+          "type": "string"
+        },
+        "remote_calls_permitted": {
+          "title": "Remote Calls Permitted",
+          "type": "boolean"
+        },
+        "request_metadata": {
+          "additionalProperties": true,
+          "title": "Request Metadata",
+          "type": "object"
+        },
+        "resources": {
+          "additionalProperties": true,
+          "title": "Resources",
+          "type": "object"
+        },
+        "schedule": {
+          "$ref": "#/$defs/P2R1Schedule"
+        },
+        "schedule_source": {
+          "const": "protocol.design.schedule",
+          "title": "Schedule Source",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scientific_resampling_permitted": {
+          "const": false,
+          "default": false,
+          "title": "Scientific Resampling Permitted",
+          "type": "boolean"
+        },
+        "scientific_slots_total": {
+          "const": 100,
+          "default": 100,
+          "title": "Scientific Slots Total",
+          "type": "integer"
+        },
+        "transport_attempts_per_slot_max": {
+          "const": 3,
+          "default": 3,
+          "title": "Transport Attempts Per Slot Max",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "protocol_id",
+        "protocol_sha256",
+        "executor_commit",
+        "executor_parent_lineage",
+        "created_at",
+        "dry_run",
+        "remote_calls_permitted",
+        "schedule_source",
+        "schedule",
+        "frozen_asset_hashes",
+        "request_metadata",
+        "baseline_admission",
+        "resources"
+      ],
+      "title": "P2R1StartManifest",
+      "type": "object"
+    },
+    "ProposalSlot": {
+      "additionalProperties": false,
+      "properties": {
+        "compiled": {
+          "title": "Compiled",
+          "type": "boolean"
+        },
+        "evaluator_reached": {
+          "title": "Evaluator Reached",
+          "type": "boolean"
+        },
+        "evaluator_valid": {
+          "title": "Evaluator Valid",
+          "type": "boolean"
+        },
+        "materialized": {
+          "title": "Materialized",
+          "type": "boolean"
+        },
+        "model_invocation_started": {
+          "title": "Model Invocation Started",
+          "type": "boolean"
+        },
+        "proposal_extracted": {
+          "title": "Proposal Extracted",
+          "type": "boolean"
+        },
+        "proposal_received": {
+          "title": "Proposal Received",
+          "type": "boolean"
+        },
+        "rendered_system_prompt_sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rendered System Prompt Sha256"
+        },
+        "rendered_user_prompt_sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rendered User Prompt Sha256"
+        },
+        "request_payload_sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Request Payload Sha256"
+        },
+        "score": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Score"
+        },
+        "slot": {
+          "maximum": 5,
+          "minimum": 1,
+          "title": "Slot",
+          "type": "integer"
+        },
+        "transport_attempt_payload_sha256s": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 3,
+          "title": "Transport Attempt Payload Sha256S",
+          "type": "array"
+        }
+      },
+      "required": [
+        "slot",
+        "model_invocation_started",
+        "proposal_received",
+        "proposal_extracted",
+        "materialized",
+        "compiled",
+        "evaluator_reached",
+        "evaluator_valid"
+      ],
+      "title": "ProposalSlot",
+      "type": "object"
+    },
+    "ScientificSlotRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "arm": {
+          "enum": [
+            "official",
+            "native"
+          ],
+          "title": "Arm",
+          "type": "string"
+        },
+        "attempts": {
+          "items": {
+            "$ref": "#/$defs/TransportAttemptRecord"
+          },
+          "maxItems": 3,
+          "title": "Attempts",
+          "type": "array"
+        },
+        "block": {
+          "maximum": 10,
+          "minimum": 1,
+          "title": "Block",
+          "type": "integer"
+        },
+        "executor_commit": {
+          "pattern": "^[0-9a-f]{40}$",
+          "title": "Executor Commit",
+          "type": "string"
+        },
+        "model": {
+          "title": "Model",
+          "type": "string"
+        },
+        "paired_local_seed": {
+          "title": "Paired Local Seed",
+          "type": "integer"
+        },
+        "protocol_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Protocol Sha256",
+          "type": "string"
+        },
+        "rendered_system_prompt_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Rendered System Prompt Sha256",
+          "type": "string"
+        },
+        "rendered_user_prompt_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Rendered User Prompt Sha256",
+          "type": "string"
+        },
+        "request_payload_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Request Payload Sha256",
+          "type": "string"
+        },
+        "scientific_state": {
+          "default": "PENDING",
+          "enum": [
+            "PENDING",
+            "COMPLETE"
+          ],
+          "title": "Scientific State",
+          "type": "string"
+        },
+        "slot": {
+          "maximum": 5,
+          "minimum": 1,
+          "title": "Slot",
+          "type": "integer"
+        },
+        "slot_id": {
+          "title": "Slot Id",
+          "type": "string"
+        },
+        "state_namespace": {
+          "title": "State Namespace",
+          "type": "string"
+        },
+        "terminal_funnel_state": {
+          "anyOf": [
+            {
+              "enum": [
+                "MODEL_INVOCATION_NOT_STARTED",
+                "MODEL_RESPONSE_MISSING",
+                "PROPOSAL_EXTRACTION_FAILED",
+                "MATERIALIZATION_FAILED",
+                "COMPILE_FAILED",
+                "EVALUATOR_NOT_REACHED",
+                "EVALUATOR_INVALID",
+                "EVALUATOR_VALID_NOT_USEFUL",
+                "USEFUL"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Terminal Funnel State"
+        },
+        "transport_state": {
+          "default": "PENDING",
+          "enum": [
+            "PENDING",
+            "SUCCEEDED",
+            "EXHAUSTED",
+            "PROTOCOL_VIOLATION"
+          ],
+          "title": "Transport State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "slot_id",
+        "slot",
+        "block",
+        "arm",
+        "paired_local_seed",
+        "state_namespace",
+        "executor_commit",
+        "protocol_sha256",
+        "rendered_system_prompt_sha256",
+        "rendered_user_prompt_sha256",
+        "request_payload_sha256",
+        "model"
+      ],
+      "title": "ScientificSlotRecord",
+      "type": "object"
+    },
+    "TransportAttemptRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "attempt": {
+          "maximum": 3,
+          "minimum": 1,
+          "title": "Attempt",
+          "type": "integer"
+        },
+        "error_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error Type"
+        },
+        "finished_at": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Finished At"
+        },
+        "payload_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Payload Sha256",
+          "type": "string"
+        },
+        "response_path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Response Path"
+        },
+        "response_sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Response Sha256"
+        },
+        "started_at": {
+          "title": "Started At",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "STARTED",
+            "FAILED",
+            "SUCCEEDED",
+            "UNRESOLVED"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "attempt",
+        "payload_sha256",
+        "status",
+        "started_at"
+      ],
+      "title": "TransportAttemptRecord",
+      "type": "object"
+    },
+    "TransportLedgerRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "arm": {
+          "enum": [
+            "official",
+            "native"
+          ],
+          "title": "Arm",
+          "type": "string"
+        },
+        "block": {
+          "maximum": 10,
+          "minimum": 1,
+          "title": "Block",
+          "type": "integer"
+        },
+        "executor_commit": {
+          "pattern": "^[0-9a-f]{40}$",
+          "title": "Executor Commit",
+          "type": "string"
+        },
+        "paired_local_seed": {
+          "title": "Paired Local Seed",
+          "type": "integer"
+        },
+        "protocol_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Protocol Sha256",
+          "type": "string"
+        },
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "slots": {
+          "items": {
+            "$ref": "#/$defs/ScientificSlotRecord"
+          },
+          "maxItems": 5,
+          "title": "Slots",
+          "type": "array"
+        },
+        "start_manifest_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Start Manifest Sha256",
+          "type": "string"
+        },
+        "state_namespace": {
+          "title": "State Namespace",
+          "type": "string"
+        }
+      },
+      "required": [
+        "run_id",
+        "block",
+        "arm",
+        "paired_local_seed",
+        "state_namespace",
+        "protocol_sha256",
+        "executor_commit",
+        "start_manifest_sha256"
+      ],
+      "title": "TransportLedgerRecord",
+      "type": "object"
+    }
+  },
+  "$id": "https://evidence-evolve.local/schemas/p2_r1_execution.schema.json",
+  "anyOf": [
+    {
+      "$ref": "#/$defs/P2R1Schedule"
+    },
+    {
+      "$ref": "#/$defs/P2R1StartManifest"
+    },
+    {
+      "$ref": "#/$defs/P2R1RunManifest"
+    },
+    {
+      "$ref": "#/$defs/P2R1RunReceipt"
+    },
+    {
+      "$ref": "#/$defs/TransportLedgerRecord"
+    }
+  ],
+  "title": "P2-R1 Execution Manifests, Transport Ledgers, and Receipts"
+}

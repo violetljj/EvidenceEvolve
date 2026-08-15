@@ -148,7 +148,10 @@ def _input(
 def test_repository_p2_r1_protocol_is_frozen_and_hash_valid() -> None:
     protocol = _protocol()
 
-    assert protocol.protocol_status == "FROZEN_NOT_STARTED"
+    assert (
+        protocol.protocol_status
+        == "P2_R1_EXECUTION_COMPLETE_FROZEN_COMMITTED_NOT_STARTED"
+    )
     assert protocol.execution_started is False
     assert protocol.remote_model_calls_at_freeze == 0
     assert protocol.provider.model == "gpt-5.6-terra"

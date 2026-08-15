@@ -263,7 +263,7 @@ a conservative shared materializer on 20 frozen replays (20/20 patchable,
 20/20 compilable, 20/20 evaluator reached; no model calls). Both the official
 CLI wrapper and `SHINKA_NATIVE` can use that same adapter without modifying
 upstream files. This mechanics PASS has no search-quality authority, and P2-R1
-has not run. P2-R1 is now frozen as a fresh, unstarted lineage with symmetric
+has not run. P2-R1 is now execution-complete frozen as a fresh, unstarted lineage with symmetric
 50-call arm budgets, full candidate-survival denominators, no post-hoc
 replacement, carry-forward handling for invalid/missing slots, a paired -1%
 primary non-inferiority gate over ten block-pair inference units, isolated
@@ -271,6 +271,12 @@ arm/block state, request-level prompt/payload receipts, and separate
 invalid/useful-rate hard guardrails.
 Future remote generation must not use `gpt-5.5`; the frozen R1 model is
 `gpt-5.6-terra`.
+
+The formal schedule is generated only from the frozen protocol and can be
+admitted without remote calls using `evolve search p2-r1 --dry-run --run-root
+runs/shinka_native_p2_r1_dry_run`. The driver freezes disjoint state, exact
+retry/crash semantics, start/run manifests, slot receipts, and automatic parity
+analysis; this execution-only revision did not change the scientific protocol.
 
 ## R1 generation interface
 
