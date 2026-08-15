@@ -1,0 +1,152 @@
+schema_version: '1.0'
+campaign:
+  id: onnx_rewrite_r1
+  base_commit: 2da08797d11274f7707b6fdbeafc751529f5b7b6
+  research_question: Can a bounded two-generation Codex loop discover ONNX rewrite
+    improvements while preserving exact task behavior?
+  claim_scope: autonomous_engineering_harness_canary_only
+authority:
+  protocol_mutable: false
+  evaluator_mutable: false
+  confirmation_visible_to_agents: false
+  final_merge_requires_human: true
+editable_scope:
+  allow:
+  - tasks/onnx_rewrite/candidates/candidate.py
+  deny:
+  - evidence_evolve/**
+  - tasks/onnx_rewrite/evaluator.py
+  - tasks/onnx_rewrite/model_factory.py
+  - tasks/onnx_rewrite/autonomous_adapter.py
+  - prompts/**
+  - research/**
+  - confirmation/**
+evidence_sources:
+- source_id: onnx-rewrite-dev-b-r1
+  grade: B
+  path: research/evidence_policies/onnx_rewrite_dev_manifest.json
+  permissions:
+  - DEV
+  - CLAIM
+  - CONFIRM
+  sha256: 9ee146efbc2a33c9fddf1faf070855077c8bfc6ff1716df6cb2d78cc2fcff36f
+frozen_assets:
+- asset_id: onnx-rewrite-evaluator-r1
+  kind: evaluator
+  path: tasks/onnx_rewrite/evaluator.py
+  sha256: a4c6d4c02ed544fba905b1bf4129a7da0d5b85d7b80fbbfc1987b35f429a1738
+- asset_id: onnx-rewrite-autonomous-adapter-r1
+  kind: adapter
+  path: tasks/onnx_rewrite/autonomous_adapter.py
+  sha256: 1e00d83c33c68c1fb577f6f188e85807564ddc440ee211e58e6f5044594ca764
+- asset_id: onnx-rewrite-observation-builder-r1
+  kind: adapter
+  path: evidence_evolve/onnx_campaign.py
+  sha256: 44806d2a042e1d8f77cf2013c5e060db7132d4dfd9f44b458a057fd688ddb713
+- asset_id: onnx-rewrite-model-factory-r1
+  kind: model
+  path: tasks/onnx_rewrite/model_factory.py
+  sha256: 9664b18857c3fdec804466a179402b6189cbe23c3c87d41a5f5c56657f5e54b6
+- asset_id: harness-models-r1
+  kind: harness_core
+  path: evidence_evolve/models.py
+  sha256: 756335fbb0af2254d345c48e384b86fd34ee64a367d01eb549bc506a6c8af8d7
+- asset_id: harness-archive-r1
+  kind: harness_core
+  path: evidence_evolve/archive.py
+  sha256: 2047c2f060ee83c27e149eddc5a410f71cd91a4aea1a51e604b0420028e52330
+- asset_id: harness-artifacts-r1
+  kind: harness_core
+  path: evidence_evolve/artifacts.py
+  sha256: 55802baa517a93b1a8a2bef9f351c4b6b0c47433663e09a70c215e6ed632e3be
+- asset_id: harness-budgets-r1
+  kind: harness_core
+  path: evidence_evolve/budgets.py
+  sha256: 05194da10dd70816a55f97a356d208cd8fbdc5b8c35d06acd8d82ade7f8914d9
+- asset_id: harness-campaign-runner-r1
+  kind: harness_core
+  path: evidence_evolve/discovery/campaign.py
+  sha256: 1d715df3cf40968dabe21197820f909adfc8c79f0682b807d16481fb1fe3c077
+- asset_id: harness-autonomous-runner-r1
+  kind: harness_core
+  path: evidence_evolve/discovery/autonomous.py
+  sha256: 04509c32e0150b82190583a7c944dc13cd8f81d34df7085ff30f1132d901da19
+- asset_id: harness-codex-backend-r1
+  kind: harness_core
+  path: evidence_evolve/backends/codex_cli.py
+  sha256: 8faf7574a8ce217d24103d21d3daeb9518ccc93b169cfc3d96d7f3ab323b9760
+- asset_id: harness-hashing-r1
+  kind: harness_core
+  path: evidence_evolve/hashing.py
+  sha256: 22b96285699877ffb3695caf0a5c6d6fa518d0ccbb1f91df3ac332fb66094be7
+- asset_id: harness-replay-r1
+  kind: harness_core
+  path: evidence_evolve/replay.py
+  sha256: ba01faa83bdfd6c4e1268be7cafaae374bc10483950212aa5941aec882afc0b5
+- asset_id: harness-worktrees-r1
+  kind: harness_core
+  path: evidence_evolve/worktrees.py
+  sha256: 94e8a0e870e1314c42671e5a942308f016d292c0af7eb76b4a688b7df8b3b782
+- asset_id: harness-candidate-auditor-r1
+  kind: harness_core
+  path: evidence_evolve/governance/candidate_auditor.py
+  sha256: e2cd67a69701200b3e7b239f6350683cea6219b8689ff6e1cd4791c8e6db61fe
+- asset_id: harness-gate-engine-r1
+  kind: harness_core
+  path: evidence_evolve/governance/gate_engine.py
+  sha256: d77c238f577cd9ea53266b26636e5867ba66806aa5964ad57209a30485dd8495
+- asset_id: harness-protocol-lock-r1
+  kind: harness_core
+  path: evidence_evolve/governance/protocol_lock.py
+  sha256: 71b627ae808c6ecb2b0aec1cc2976f2c8a98fc7a2bc0b2b1eac8199ab946f0e1
+- asset_id: harness-evidence-policy-r1
+  kind: harness_core
+  path: evidence_evolve/governance/evidence_policy.py
+  sha256: f53c2030af94b39f515b1ef99d2a121f7f02e020eca1782197fad153d86db9e5
+- asset_id: harness-closure-r1
+  kind: harness_core
+  path: evidence_evolve/governance/closure_registry.py
+  sha256: f2ed509179769aeb1b626ae300b3c0949154ca2b03e3d65b9bd2bb887e73f6ff
+- asset_id: harness-scope-r1
+  kind: harness_core
+  path: evidence_evolve/governance/scope.py
+  sha256: de9c394f933d52687eeac79e739d52ebfc535f4a2555087b6f22cf0658040d7b
+- asset_id: explorer-prompt-r1
+  kind: protocol
+  path: prompts/explorer.md
+  sha256: 261c9ad30a7c65e88012d5541f8bc58ce7a1e60357ef16c1a65001b2fee1ab8c
+- asset_id: implementer-prompt-r1
+  kind: protocol
+  path: prompts/implementer.md
+  sha256: f060c16fc9d2712ded46aca21475200b53490fc3f69fa631650b3e693c08da2c
+- asset_id: closure-registry-r1
+  kind: protocol
+  path: research/closures/closure_registry.yaml
+  sha256: bc216c30dcdcc9a55a057f01d7ba67644bbddced5ad0d47929d02e85c86b0099
+- asset_id: onnx-rewrite-confirmation-r1
+  kind: confirmation
+  path: confirmation/onnx_rewrite_hidden_manifest.json
+  sha256: 39609799c190c6d368b9a071283a5ddee8ac2e28d3f16d45f07a30db1b90d330
+metrics:
+  hard_constraints:
+    checker_failure:
+      max: 0.0
+    max_abs_error:
+      max: 1.0e-05
+    output_shape_mismatch:
+      max: 0.0
+  pareto_objectives:
+    node_count: minimize
+    model_bytes: minimize
+    latency_ms: minimize
+budgets:
+  proposal_calls: 4
+  implementations: 3
+  mechanics_runs: 3
+  proxy_runs: 0
+  confirmation_runs: 0
+  device_runs: 0
+closure_registry: research/closures/closure_registry.yaml
+lock:
+  algorithm: sha256
+  content_sha256: 3b6efc859d785b96c786c70ea5c51f16070e7c6be03ebf763d2ef87319723080

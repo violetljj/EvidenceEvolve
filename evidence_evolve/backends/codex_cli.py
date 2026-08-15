@@ -117,6 +117,8 @@ class CodexCliBackend:
             output_path=output_path,
         )
         events_path.parent.mkdir(parents=True, exist_ok=True)
+        stderr_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
         try:
             completed = subprocess.run(
                 command,
@@ -130,6 +132,16 @@ class CodexCliBackend:
             events_path.write_text(exc.stdout or "", encoding="utf-8")
             stderr_path.write_text(exc.stderr or "", encoding="utf-8")
             return {"status": "TIMEOUT", "command": command}
+        except OSError as exc:
+            events_path.write_text("", encoding="utf-8")
+            stderr_path.write_text(
+                f"{type(exc).__name__}: {exc}", encoding="utf-8"
+            )
+            return {
+                "status": "UNAVAILABLE",
+                "command": command,
+                "error": f"{type(exc).__name__}:{exc}",
+            }
         events_path.write_text(completed.stdout, encoding="utf-8")
         stderr_path.write_text(completed.stderr, encoding="utf-8")
         event_types: list[str] = []

@@ -13,3 +13,16 @@ __all__ = [
     "CampaignRunner",
     "EvaluationRun",
 ]
+from evidence_evolve.discovery.autonomous import (
+    AutonomousCampaignResult,
+    AutonomousCampaignRunner,
+    AutonomousEvaluationContext,
+    ImplementationManifest,
+)
+
+__all__ = [
+    "AutonomousCampaignResult",
+    "AutonomousCampaignRunner",
+    "AutonomousEvaluationContext",
+    "ImplementationManifest",
+]

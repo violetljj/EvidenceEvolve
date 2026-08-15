@@ -55,3 +55,25 @@ def test_discovered_but_unstartable_codex_is_not_available(monkeypatch) -> None:
     assert status["discovered"] is True
     assert status["usable"] is False
     assert CodexCliBackend().available() is False
+
+
+def test_run_reports_unavailable_executable(monkeypatch, tmp_path) -> None:
+    def denied(*args, **kwargs):
+        raise PermissionError("access denied")
+
+    monkeypatch.setattr(
+        "evidence_evolve.backends.codex_cli.subprocess.run",
+        denied,
+    )
+    result = CodexCliBackend().run(
+        role=CodexRole("hypothesis_explorer"),
+        prompt="propose",
+        workdir=tmp_path,
+        output_schema=tmp_path / "schema.json",
+        output_path=tmp_path / "candidate.json",
+        events_path=tmp_path / "events.jsonl",
+        stderr_path=tmp_path / "stderr.log",
+        timeout_seconds=1,
+    )
+    assert result["status"] == "UNAVAILABLE"
+    assert "PermissionError" in (tmp_path / "stderr.log").read_text(encoding="utf-8")

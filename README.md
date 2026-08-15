@@ -42,7 +42,49 @@ The repository now also contains the first executable slice of **EvidenceEvolve 
 - mechanism assessments are explicitly `SCHEDULING_ONLY`; they cannot change the four scientific outcomes;
 - policy candidates can be compared on blind held-out meta-benchmark observations, but passing only yields `ELIGIBLE_FOR_HUMAN_PROMOTION`.
 
-This is a working orchestration and causal-credit core, not a claim that open-ended discovery has already succeeded. Still missing are automatic Codex/Shinka proposal and isolated implementation adapters, a real ChronoDiscovery task suite, literature reproduction/mechanism cards, policy mutation campaigns, and any blind evidence that R1 discovers algorithms more efficiently than the baselines.
+This is a working orchestration and causal-credit core, not a claim that open-ended discovery has already succeeded. Beyond the bounded Codex slice below, live Shinka evolution, a real ChronoDiscovery task suite, literature reproduction/mechanism cards, policy mutation campaigns, and any blind evidence that R1 discovers algorithms more efficiently than the baselines are still missing.
+
+## R1 autonomous loop slice
+
+The first bounded Codex loop is now implemented:
+
+```text
+Codex proposal (read-only, schema-bound)
+  -> policy and closure admission
+  -> candidate-specific Git worktree
+  -> Codex implementation (workspace-write)
+  -> frozen task observation adapter
+  -> CampaignRunner / GateEngine verdict and immutable receipt
+  -> archived verdict and mechanism feedback in the next proposal
+```
+
+Candidate IDs are fixed by generation and proposal slot before Codex runs, so
+proposal and implementation budget reservations remain idempotent across resume.
+Codex cannot provide reference metrics, verified reopen evidence, a confirmation
+stage, or a verdict. The implementer is limited to the candidate worktree; actual
+changed paths are independently audited before the frozen evaluator result reaches
+the gate.
+
+Run two ONNX mechanics generations with a Codex CLI login (ChatGPT-managed login is
+supported; an API key is not required):
+
+```powershell
+evolve campaign autonomous research/contracts/onnx_rewrite_r1.locked.yaml `
+  --policy research/policies/r1_default.yaml `
+  --adapter tasks.onnx_rewrite.autonomous_adapter:evaluate_candidate `
+  --run-dir runs/onnx_rewrite_r1 `
+  --generations 2
+```
+
+Use `--codex-executable PATH` when `codex` does not resolve to a usable standalone
+CLI. The command fails closed before proposal when the executable cannot start.
+The loop is resumable by rerunning the same command: validated proposals,
+implementations, receipts, and budget reservations are reused rather than counted
+again.
+
+This slice establishes executable mechanics, not autonomous-discovery evidence.
+No real Codex campaign, blind confirmation, algorithm novelty, or superiority over
+a baseline is claimed until those external runs occur.
 
 ## Setup
 

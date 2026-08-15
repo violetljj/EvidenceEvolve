@@ -22,6 +22,11 @@ from evidence_evolve.discovery.campaign import (
     CampaignRunner,
     EvaluationRun,
 )
+from evidence_evolve.discovery.autonomous import (
+    AutonomousCampaignRunner,
+    AutonomousEvaluationContext,
+    ImplementationManifest,
+)
 from evidence_evolve.governance.candidate_auditor import audit_candidate
 from evidence_evolve.governance.closure_registry import ClosureRegistry
 from evidence_evolve.governance.protocol_lock import (
@@ -248,6 +253,9 @@ def command_export_schemas(args: argparse.Namespace) -> int:
         "verdict.schema.json": GateVerdict.model_json_schema(),
         "research_policy.schema.json": ResearchPolicyGenome.model_json_schema(),
         "campaign_candidate.schema.json": CampaignCandidate.model_json_schema(),
+        "implementation_manifest.schema.json": (
+            ImplementationManifest.model_json_schema()
+        ),
         "evaluation_run.schema.json": EvaluationRun.model_json_schema(),
         "policy_benchmark.schema.json": PolicyBenchmarkResult.model_json_schema(),
         "policy_promotion_protocol.schema.json": (
@@ -323,6 +331,65 @@ def command_campaign_run(args: argparse.Namespace) -> int:
         candidates=candidates,
         evaluate=evaluate,
         max_evaluations=args.max_evaluations,
+        signature_tolerance=args.signature_tolerance,
+    )
+    print(_json(result))
+    return 0
+
+
+def command_campaign_autonomous(args: argparse.Namespace) -> int:
+    repo = _repo_root(args.repo)
+    contract = load_contract(Path(args.contract).resolve())
+    ProtocolLock(repo).assert_valid(contract)
+    policy = ResearchPolicyGenome.model_validate(
+        _load_payload(Path(args.policy).resolve())
+    )
+    adapter = _load_frozen_campaign_adapter(
+        args.adapter,
+        contract=contract,
+        repo=repo,
+    )
+    reference_metrics = (
+        _load_payload(Path(args.reference_metrics).resolve())
+        if args.reference_metrics
+        else {}
+    )
+    if not isinstance(reference_metrics, dict) or any(
+        not isinstance(value, (int, float)) for value in reference_metrics.values()
+    ):
+        raise ValueError("reference metrics must be a JSON/YAML object of numbers")
+
+    def evaluate(context: AutonomousEvaluationContext) -> EvaluationRun:
+        return EvaluationRun.model_validate(adapter(context))
+
+    backend = CodexCliBackend(args.codex_executable)
+    status = backend.status()
+    if not status["usable"]:
+        raise RuntimeError(
+            "Codex CLI is not usable; pass --codex-executable with a working "
+            f"Codex CLI path. Backend status: {status.get('error')}"
+        )
+    runner = AutonomousCampaignRunner(
+        contract=contract,
+        closure_registry=ClosureRegistry.load(repo / contract.closure_registry),
+        policy=policy,
+        repo_root=repo,
+        run_dir=Path(args.run_dir).resolve(),
+        evaluate=evaluate,
+        backend=backend,
+        worktree_root=(
+            Path(args.worktree_root).resolve() if args.worktree_root else None
+        ),
+        reference_metrics={
+            str(key): float(value) for key, value in reference_metrics.items()
+        },
+        timeout_seconds=args.timeout_seconds,
+    )
+    result = runner.run(
+        generations=args.generations,
+        proposals_per_generation=args.proposals_per_generation,
+        max_evaluations_per_generation=args.max_evaluations_per_generation,
+        generation_prefix=args.generation_prefix,
         signature_tolerance=args.signature_tolerance,
     )
     print(_json(result))
@@ -452,6 +519,25 @@ def build_parser() -> argparse.ArgumentParser:
         campaign_run.add_argument("--signature-tolerance", type=float, default=0.0)
         campaign_run.set_defaults(handler=command_campaign_run)
 
+    autonomous = campaign_commands.add_parser(
+        "autonomous",
+        help="run or resume a bounded multi-generation Codex discovery loop",
+    )
+    autonomous.add_argument("contract")
+    autonomous.add_argument("--policy", required=True)
+    autonomous.add_argument("--adapter", required=True)
+    autonomous.add_argument("--run-dir", required=True)
+    autonomous.add_argument("--generations", type=int, default=2)
+    autonomous.add_argument("--proposals-per-generation", type=int, default=1)
+    autonomous.add_argument("--max-evaluations-per-generation", type=int)
+    autonomous.add_argument("--generation-prefix", default="GEN")
+    autonomous.add_argument("--signature-tolerance", type=float, default=0.0)
+    autonomous.add_argument("--reference-metrics")
+    autonomous.add_argument("--timeout-seconds", type=int, default=1800)
+    autonomous.add_argument("--codex-executable", default="codex")
+    autonomous.add_argument("--worktree-root")
+    autonomous.set_defaults(handler=command_campaign_autonomous)
+
     policy = subparsers.add_parser(
         "policy", help="evaluate research-policy evidence without auto-promoting"
     )
@@ -472,7 +558,13 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     try:
         return int(args.handler(args))
-    except (ValidationError, ContractValidationError, FileNotFoundError, ValueError) as exc:
+    except (
+        ValidationError,
+        ContractValidationError,
+        FileNotFoundError,
+        RuntimeError,
+        ValueError,
+    ) as exc:
         payload: dict[str, object] = {"error": type(exc).__name__, "message": str(exc)}
         if isinstance(exc, ContractValidationError):
             payload["validation"] = exc.report.model_dump(mode="json")
