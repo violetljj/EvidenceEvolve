@@ -24,6 +24,7 @@ from evidence_evolve.models import (
     MechanicsStatus,
     ResearchStage,
     ScientificOutcome,
+    SearchDisposition,
 )
 from evidence_evolve.understanding.signatures import MechanismSupport
 
@@ -153,6 +154,10 @@ def test_campaign_runner_gates_then_records_mechanism_and_resumes(
     assert summary["total"] == 1
     assert summary["scheduled_candidates"] == 1
     assert summary["by_mechanism_support"] == {"INTERVENTION_SUPPORTED": 1}
+    memory = ArchiveStore(tmp_path / "run" / "research.db").scientific_memory()
+    assert memory[0]["hypothesis"] == candidate.hypothesis
+    assert memory[0]["scientific_outcome"] == "POSITIVE_HEADROOM"
+    assert memory[0]["mechanism_support"] == "INTERVENTION_SUPPORTED"
 
 
 def test_missing_reference_keeps_mechanism_inconclusive(
@@ -201,6 +206,63 @@ def test_missing_reference_keeps_mechanism_inconclusive(
         .reason
         == "REFERENCE_METRIC_MISSING"
     )
+
+
+def test_one_candidate_failure_does_not_abort_the_generation(
+    tmp_path, contract, candidate
+) -> None:
+    broken = candidate.model_copy(update={"candidate_id": "BROKEN-CANDIDATE"})
+    working = candidate.model_copy(update={"candidate_id": "WORKING-CANDIDATE"})
+    candidates = [
+        CampaignCandidate(
+            acquisition=CandidateAcquisition(candidate=item, signals=_signals()),
+            stage=ResearchStage.M0_MECHANICS,
+        )
+        for item in (broken, working)
+    ]
+    runner = CampaignRunner(
+        contract=contract.model_copy(
+            update={
+                "budgets": contract.budgets.model_copy(
+                    update={"proposal_calls": 2, "mechanics_runs": 2}
+                )
+            }
+        ),
+        closure_registry=ClosureRegistry(),
+        policy=ResearchPolicyGenome(policy_id="POLICY-FAILURE-ISOLATION"),
+        run_dir=tmp_path / "run",
+    )
+
+    def evaluate(scheduled: CampaignCandidate) -> EvaluationRun:
+        current = scheduled.acquisition.candidate
+        if current.candidate_id == "BROKEN-CANDIDATE":
+            raise RuntimeError("candidate-local implementation error")
+        return EvaluationRun(
+            evaluation=EvaluationInput(
+                contract_sha256=contract.lock.content_sha256,
+                candidate=current,
+                stage=scheduled.stage,
+                mechanics_status=MechanicsStatus.PASS,
+                data_eligible=True,
+                metrics={
+                    "clearance_mae_delta": -0.1,
+                    "false_block_delta_pp": 0.0,
+                },
+                controls={"wrong_factor": True, "zero_factor": True},
+                scientific_outcome=ScientificOutcome.POSITIVE_HEADROOM,
+            ),
+            command=["fake-evaluator"],
+            elapsed_seconds=0.01,
+        )
+
+    result = runner.run_generation(
+        generation_id="GEN-FAILURE-ISOLATION",
+        candidates=candidates,
+        evaluate=evaluate,
+    )
+    assert [item.candidate_id for item in result.failures] == ["BROKEN-CANDIDATE"]
+    assert [item.candidate_id for item in result.evaluations] == ["WORKING-CANDIDATE"]
+    assert result.evaluations[0].search_disposition is SearchDisposition.CODE_PARENT
 
 
 def _policy_benchmark(policy_id: str, **updates: object) -> PolicyBenchmarkResult:

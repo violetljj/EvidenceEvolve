@@ -1,3 +1,4 @@
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -77,3 +78,40 @@ def test_run_reports_unavailable_executable(monkeypatch, tmp_path) -> None:
     )
     assert result["status"] == "UNAVAILABLE"
     assert "PermissionError" in (tmp_path / "stderr.log").read_text(encoding="utf-8")
+
+
+def test_run_decodes_codex_event_stream_as_utf8(monkeypatch, tmp_path) -> None:
+    observed: dict[str, object] = {}
+
+    def completed(command, **kwargs):
+        observed.update(kwargs)
+        return subprocess.CompletedProcess(
+            command,
+            0,
+            stdout='{"type":"item.completed","message":"second — generation"}\n',
+            stderr="实现完成\n",
+        )
+
+    monkeypatch.setattr(
+        "evidence_evolve.backends.codex_cli.subprocess.run",
+        completed,
+    )
+    events_path = tmp_path / "events.jsonl"
+    stderr_path = tmp_path / "stderr.log"
+    result = CodexCliBackend().run(
+        role=CodexRole("implementer", writable=True),
+        prompt="implement",
+        workdir=tmp_path,
+        output_schema=tmp_path / "schema.json",
+        output_path=tmp_path / "candidate.json",
+        events_path=events_path,
+        stderr_path=stderr_path,
+        timeout_seconds=1,
+    )
+
+    assert observed["encoding"] == "utf-8"
+    assert observed["errors"] == "replace"
+    assert result["status"] == "PASS"
+    assert result["event_types"] == ["item.completed"]
+    assert "—" in events_path.read_text(encoding="utf-8")
+    assert stderr_path.read_text(encoding="utf-8") == "实现完成\n"

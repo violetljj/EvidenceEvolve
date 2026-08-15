@@ -69,6 +69,18 @@
           "title": "Family",
           "type": "string"
         },
+        "genetic_parent_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Genetic Parent Id"
+        },
         "hypothesis": {
           "minLength": 12,
           "title": "Hypothesis",
@@ -110,6 +122,7 @@
         },
         "required_controls": {
           "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$",
             "type": "string"
           },
           "minItems": 1,
@@ -247,6 +260,7 @@
       "properties": {
         "improve": {
           "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$",
             "type": "string"
           },
           "minItems": 1,
@@ -255,6 +269,7 @@
         },
         "unchanged": {
           "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$",
             "type": "string"
           },
           "title": "Unchanged",
@@ -350,6 +365,18 @@
       "default": null,
       "title": "Candidate Commit"
     },
+    "candidate_ref": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Candidate Ref"
+    },
     "command": {
       "items": {
         "type": "string"
@@ -364,6 +391,43 @@
     },
     "evaluation": {
       "$ref": "#/$defs/EvaluationInput"
+    },
+    "genetic_parent_commit": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Genetic Parent Commit"
+    },
+    "genetic_parent_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Genetic Parent Id"
+    },
+    "parent_patch_sha256": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Parent Patch Sha256"
     },
     "patch_sha256": {
       "anyOf": [

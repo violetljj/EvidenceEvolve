@@ -65,3 +65,29 @@ class WorktreeManager:
     def audit(self, worktree: Path, base_commit: str, scope: EditableScope) -> list[str]:
         return audit_paths(scope, self.changed_files(worktree, base_commit))
 
+    def pin_commit(self, namespace: str, candidate_id: str, commit: str) -> str:
+        """Keep a detached candidate commit reachable through an immutable local ref."""
+        safe_namespace = self._safe_candidate_name(namespace)
+        safe_candidate = self._safe_candidate_name(candidate_id)
+        reference = f"refs/evidence-evolve/{safe_namespace}/{safe_candidate}"
+        existing = subprocess.run(
+            ["git", "rev-parse", "--verify", reference],
+            cwd=self.repo_root,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        if existing.returncode == 0:
+            if existing.stdout.strip() != commit:
+                raise ValueError(
+                    f"candidate ref already points to another commit: {reference}"
+                )
+            return reference
+        subprocess.run(
+            ["git", "update-ref", reference, commit, "0" * 40],
+            cwd=self.repo_root,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        return reference

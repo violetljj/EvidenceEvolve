@@ -33,6 +33,24 @@ def audit_candidate(
     violations.extend(
         f"DECLARED_{violation}" for violation in declared_scope_violations
     )
+    frozen_controls = set(contract.required_controls)
+    declared_controls = set(candidate.required_controls)
+    violations.extend(
+        f"REQUIRED_CONTROL_NOT_FROZEN:{control}"
+        for control in sorted(declared_controls - frozen_controls)
+    )
+    violations.extend(
+        f"FROZEN_REQUIRED_CONTROL_MISSING:{control}"
+        for control in sorted(frozen_controls - declared_controls)
+    )
+    frozen_metrics = set(contract.metrics.pareto_objectives)
+    declared_metrics = set(candidate.expected_signature.improve) | set(
+        candidate.expected_signature.unchanged
+    )
+    violations.extend(
+        f"EXPECTED_SIGNATURE_METRIC_NOT_FROZEN:{metric}"
+        for metric in sorted(declared_metrics - frozen_metrics)
+    )
     closure = audit_candidate_closures(
         candidate,
         registry,
@@ -45,4 +63,3 @@ def audit_candidate(
         matched_closures=closure.matched_closures,
         satisfied_reopen_conditions=closure.satisfied_conditions,
     )
-

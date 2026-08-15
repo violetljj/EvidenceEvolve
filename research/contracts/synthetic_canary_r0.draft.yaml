@@ -84,6 +84,9 @@ metrics:
   pareto_objectives:
     clearance_mae_delta: minimize
     false_block_delta_pp: minimize
+required_controls:
+- wrong_factor
+- zero_factor
 budgets:
   proposal_calls: 5
   implementations: 0

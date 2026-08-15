@@ -18,14 +18,22 @@ from evidence_evolve.backends.codex_cli import CodexCliBackend, CodexRole
 from evidence_evolve.budgets import BudgetLedger
 from evidence_evolve.discovery.campaign import (
     CampaignCandidate,
+    CandidateExecutionFailure,
     CampaignGenerationResult,
     CampaignRunner,
     EvaluationRun,
 )
 from evidence_evolve.governance.candidate_auditor import audit_candidate
 from evidence_evolve.governance.closure_registry import ClosureRegistry
-from evidence_evolve.meta_evolution.policy import ResearchPolicyGenome
-from evidence_evolve.models import ResearchContract, ResearchStage, StrictModel
+from evidence_evolve.governance.protocol_lock import dump_contract, load_contract
+from evidence_evolve.hashing import sha256_bytes
+from evidence_evolve.meta_evolution.policy import (
+    DiscoveryMode,
+    PolicyEffectTrace,
+    ResearchPolicyGenome,
+    mutation_schedule,
+)
+from evidence_evolve.models import MutationType, ResearchContract, ResearchStage, StrictModel
 from evidence_evolve.worktrees import WorktreeManager
 
 
@@ -50,6 +58,56 @@ class ImplementationManifest(StrictModel):
     tests: list[str] = Field(default_factory=list)
 
 
+_CODEX_UNSUPPORTED_SCHEMA_KEYS = {
+    "contains",
+    "default",
+    "maxContains",
+    "maxLength",
+    "maxProperties",
+    "minContains",
+    "minLength",
+    "minProperties",
+    "title",
+    "uniqueItems",
+}
+
+
+def _codex_output_schema(schema: dict[str, object]) -> dict[str, object]:
+    """Return the strict JSON Schema subset accepted by ``codex exec``.
+
+    Pydantic leaves defaulted fields out of ``required`` and represents free-form
+    mappings with typed ``additionalProperties``. Structured Outputs requires every
+    declared property and forbids unspecified object keys, so free-form mappings are
+    intentionally narrowed to empty objects at this external generation boundary.
+    The validated domain models still apply their normal defaults after generation.
+    """
+    normalized = copy.deepcopy(schema)
+
+    def visit(node: object) -> None:
+        if isinstance(node, list):
+            for item in node:
+                visit(item)
+            return
+        if not isinstance(node, dict):
+            return
+
+        for key in _CODEX_UNSUPPORTED_SCHEMA_KEYS:
+            node.pop(key, None)
+        if node.get("type") == "object":
+            properties = node.get("properties")
+            if not isinstance(properties, dict):
+                properties = {}
+                node["properties"] = properties
+            node["required"] = list(properties)
+            node["additionalProperties"] = False
+
+        for value in node.values():
+            visit(value)
+
+    visit(normalized)
+    return normalized
+
+
 @dataclass(frozen=True)
 class AutonomousEvaluationContext:
     generation_id: str
@@ -58,6 +116,8 @@ class AutonomousEvaluationContext:
     repo_root: Path
     worktree: Path
     run_dir: Path
+    genetic_parent_id: str
+    genetic_parent_commit: str
 
 
 AutonomousEvaluationAdapter = Callable[[AutonomousEvaluationContext], EvaluationRun]
@@ -67,6 +127,7 @@ class AutonomousCampaignResult(StrictModel):
     campaign_id: str
     policy_id: str
     generations: list[CampaignGenerationResult]
+    policy_effect_traces: list[PolicyEffectTrace]
     budgets: dict[str, dict[str, int]]
 
 
@@ -101,11 +162,13 @@ class AutonomousCampaignRunner:
         self.repo_root = repo_root.resolve()
         self.run_dir = run_dir.resolve()
         self.run_dir.mkdir(parents=True, exist_ok=True)
+        self._bind_run_contract()
         self.evaluate = evaluate
         self.backend = backend or CodexCliBackend()
         self.worktrees = WorktreeManager(self.repo_root, worktree_root)
         self.reference_metrics = dict(reference_metrics or {})
         self.timeout_seconds = timeout_seconds
+        self._parent_commits = {"SEED": self.contract.campaign.base_commit}
         self.database = self.run_dir / "research.db"
         self.budgets = BudgetLedger(self.database, contract.budgets)
         self.archive = ArchiveStore(self.database)
@@ -115,6 +178,35 @@ class AutonomousCampaignRunner:
             policy=policy,
             run_dir=self.run_dir,
         )
+
+    def _bind_run_contract(self) -> None:
+        if self.contract.lock is None:  # pragma: no cover - guarded above
+            raise ValueError("autonomous campaign requires a locked research contract")
+        contract_path = self.run_dir / "contract.locked.yaml"
+        if contract_path.exists():
+            bound = load_contract(contract_path)
+            if bound != self.contract:
+                raise ValueError("run directory is bound to a different contract")
+        else:
+            dump_contract(self.contract, contract_path)
+
+        manifest = {
+            "campaign_id": self.contract.campaign.id,
+            "contract_sha256": self.contract.lock.content_sha256,
+            "base_commit": self.contract.campaign.base_commit,
+            "claim_scope": self.contract.campaign.claim_scope,
+            "policy_id": self.policy.policy_id,
+            "policy_sha256": hashlib.sha256(
+                self.policy.model_dump_json().encode("utf-8")
+            ).hexdigest(),
+        }
+        manifest_path = self.run_dir / "run_manifest.json"
+        if manifest_path.exists():
+            existing = json.loads(manifest_path.read_text(encoding="utf-8"))
+            if existing != manifest:
+                raise ValueError("run manifest is bound to a different contract")
+        else:
+            create_once_json(manifest_path, manifest)
 
     def run(
         self,
@@ -133,41 +225,160 @@ class AutonomousCampaignRunner:
             raise ValueError("generation_prefix is not a safe identifier")
 
         completed: list[CampaignGenerationResult] = []
+        policy_effect_traces: list[PolicyEffectTrace] = []
         eligible_parents = ["SEED"]
+        stagnant_generations = 0
         for generation_index in range(1, generations + 1):
             generation_id = f"{generation_prefix}-{generation_index:03d}"
             feedback = self._feedback_context(completed)
-            candidates = [
-                self._propose_candidate(
-                    generation_id=generation_id,
-                    slot=slot,
-                    eligible_parents=eligible_parents,
-                    feedback=feedback,
-                )
-                for slot in range(1, proposals_per_generation + 1)
-            ]
-            result = self.campaign.run_generation(
-                generation_id=generation_id,
-                candidates=candidates,
-                evaluate=lambda item, generation_id=generation_id: (
-                    self._implement_and_evaluate(generation_id, item)
-                ),
-                max_evaluations=max_evaluations_per_generation,
-                signature_tolerance=signature_tolerance,
+            mode = (
+                DiscoveryMode.BREAKTHROUGH
+                if stagnant_generations >= self.policy.stagnation_generations
+                else DiscoveryMode.NORMAL
             )
-            completed.append(result)
-            evaluated_ids = [item.candidate_id for item in result.evaluations]
-            if generation_index < generations:
-                if not evaluated_ids:
-                    raise RuntimeError(
-                        f"generation {generation_id} produced no evaluated parent"
+            moonshot_count = (
+                0
+                if mode is DiscoveryMode.BREAKTHROUGH
+                else int(proposals_per_generation * self.policy.moonshot_fraction)
+            )
+            normal_count = proposals_per_generation - moonshot_count
+            assignments = mutation_schedule(
+                (
+                    self.policy.breakthrough_mutation_mix
+                    if mode is DiscoveryMode.BREAKTHROUGH
+                    else self.policy.mutation_operator_mix
+                ),
+                count=normal_count,
+                offset=(generation_index - 1) * proposals_per_generation,
+            )
+            assignments.extend(
+                mutation_schedule(
+                    self.policy.breakthrough_mutation_mix,
+                    count=moonshot_count,
+                    offset=(generation_index - 1) * max(moonshot_count, 1),
+                )
+            )
+            moonshot_candidate_ids = [
+                f"{generation_id}-C{slot:02d}"
+                for slot in range(normal_count + 1, proposals_per_generation + 1)
+            ]
+            candidates: list[CampaignCandidate] = []
+            proposal_failures: list[CandidateExecutionFailure] = []
+            for slot, required_mutation in enumerate(assignments, start=1):
+                candidate_id = f"{generation_id}-C{slot:02d}"
+                proposal_mode = (
+                    DiscoveryMode.BREAKTHROUGH
+                    if candidate_id in moonshot_candidate_ids
+                    else mode
+                )
+                try:
+                    candidates.append(
+                        self._propose_candidate(
+                            generation_id=generation_id,
+                            slot=slot,
+                            eligible_parents=eligible_parents,
+                            feedback=feedback,
+                            required_mutation=required_mutation,
+                            mode=proposal_mode,
+                        )
                     )
-                eligible_parents = evaluated_ids
+                except Exception as exc:
+                    proposal_failures.append(
+                        CandidateExecutionFailure(
+                            candidate_id=candidate_id,
+                            phase="PROPOSAL",
+                            error_type=type(exc).__name__,
+                            error=str(exc),
+                        )
+                    )
+
+            trace = PolicyEffectTrace(
+                generation_id=generation_id,
+                policy_id=self.policy.policy_id,
+                mode=mode,
+                reasons=(
+                    [
+                        "STAGNATION_THRESHOLD_REACHED",
+                        self.policy.stagnation_response,
+                    ]
+                    if mode is DiscoveryMode.BREAKTHROUGH
+                    else ["NORMAL_SEARCH"]
+                ),
+                eligible_parent_ids=eligible_parents,
+                mutation_assignments={
+                    f"{generation_id}-C{slot:02d}": mutation
+                    for slot, mutation in enumerate(assignments, start=1)
+                },
+                moonshot_candidate_ids=moonshot_candidate_ids,
+                parent_selector=self.policy.parent_selector,
+                context_compiler=self.policy.context_compiler,
+            )
+            trace_path = (
+                self.run_dir
+                / "generations"
+                / generation_id
+                / "policy_effect_trace.json"
+            )
+            if trace_path.exists():
+                existing_trace = PolicyEffectTrace.model_validate_json(
+                    trace_path.read_text(encoding="utf-8")
+                )
+                if existing_trace != trace:
+                    raise ValueError(
+                        f"policy effect trace drift for generation {generation_id}"
+                    )
+            else:
+                create_once_json(trace_path, trace)
+            policy_effect_traces.append(trace)
+
+            if candidates:
+                result = self.campaign.run_generation(
+                    generation_id=generation_id,
+                    candidates=candidates,
+                    evaluate=lambda item, generation_id=generation_id: (
+                        self._implement_and_evaluate(generation_id, item)
+                    ),
+                    max_evaluations=max_evaluations_per_generation,
+                    signature_tolerance=signature_tolerance,
+                )
+                if proposal_failures:
+                    result = result.model_copy(
+                        update={"failures": proposal_failures + result.failures}
+                    )
+            else:
+                result = CampaignGenerationResult(
+                    generation_id=generation_id,
+                    policy_id=self.policy.policy_id,
+                    decisions=[],
+                    failures=proposal_failures,
+                )
+            completed.append(result)
+            for evaluation in result.evaluations:
+                if evaluation.candidate_commit:
+                    self._parent_commits[evaluation.candidate_id] = (
+                        evaluation.candidate_commit
+                    )
+            new_parents = [
+                item.candidate_id
+                for item in result.evaluations
+                if item.candidate_commit
+                and item.search_disposition in self.policy.code_parent_dispositions
+            ]
+            if new_parents:
+                eligible_parents = new_parents
+            if any(
+                item.search_disposition.value == "CODE_PARENT"
+                for item in result.evaluations
+            ):
+                stagnant_generations = 0
+            else:
+                stagnant_generations += 1
 
         return AutonomousCampaignResult(
             campaign_id=self.contract.campaign.id,
             policy_id=self.policy.policy_id,
             generations=completed,
+            policy_effect_traces=policy_effect_traces,
             budgets=self.budgets.snapshot(),
         )
 
@@ -178,6 +389,8 @@ class AutonomousCampaignRunner:
         slot: int,
         eligible_parents: list[str],
         feedback: dict[str, object],
+        required_mutation: MutationType,
+        mode: DiscoveryMode,
     ) -> CampaignCandidate:
         candidate_id = f"{generation_id}-C{slot:02d}"
         generation_dir = self.run_dir / "generations" / generation_id
@@ -186,7 +399,13 @@ class AutonomousCampaignRunner:
             candidate = CampaignCandidate.model_validate_json(
                 proposal_path.read_text(encoding="utf-8")
             )
-            self._validate_proposal_identity(candidate, candidate_id, eligible_parents)
+            self._validate_proposal_identity(
+                candidate,
+                candidate_id,
+                eligible_parents,
+                required_mutation,
+            )
+            self._validate_proposal_vocabulary(candidate)
             return candidate.model_copy(
                 update={"reference_metrics": dict(self.reference_metrics)}
             )
@@ -194,7 +413,11 @@ class AutonomousCampaignRunner:
         reservation_key = f"proposal_calls:{generation_id}:{candidate_id}"
         self.budgets.reserve("proposal_calls", 1, reservation_key)
         schema_path = generation_dir / "schemas" / f"{candidate_id}.schema.json"
-        schema = self._proposal_schema(candidate_id, eligible_parents)
+        schema = self._proposal_schema(
+            candidate_id,
+            eligible_parents,
+            required_mutation,
+        )
         atomic_write_json(schema_path, schema)
 
         raw_path = generation_dir / "raw" / f"{candidate_id}.json"
@@ -206,6 +429,8 @@ class AutonomousCampaignRunner:
             generation_id=generation_id,
             eligible_parents=eligible_parents,
             feedback=feedback,
+            required_mutation=required_mutation,
+            mode=mode,
         )
         result = self.backend.run(
             role=CodexRole("hypothesis_explorer"),
@@ -226,7 +451,13 @@ class AutonomousCampaignRunner:
         candidate = CampaignCandidate.model_validate_json(
             raw_path.read_text(encoding="utf-8")
         )
-        self._validate_proposal_identity(candidate, candidate_id, eligible_parents)
+        self._validate_proposal_identity(
+            candidate,
+            candidate_id,
+            eligible_parents,
+            required_mutation,
+        )
+        self._validate_proposal_vocabulary(candidate)
         if candidate.reference_metrics:
             raise ValueError("Codex proposals cannot supply reference metrics")
         declared = audit_candidate(
@@ -254,6 +485,12 @@ class AutonomousCampaignRunner:
         self, generation_id: str, item: CampaignCandidate
     ) -> EvaluationRun:
         candidate = item.acquisition.candidate
+        genetic_parent_id = candidate.genetic_parent_id or candidate.parent_ids[0]
+        genetic_parent_commit = self._parent_commits.get(genetic_parent_id)
+        if genetic_parent_commit is None:
+            raise ValueError(
+                f"genetic parent has no evaluated code artifact: {genetic_parent_id}"
+            )
         candidate_dir = self.run_dir / "candidates" / candidate.candidate_id
         implementation_path = candidate_dir / "implementation.json"
         run_hash = hashlib.sha256(str(self.run_dir).encode("utf-8")).hexdigest()[:8]
@@ -263,9 +500,10 @@ class AutonomousCampaignRunner:
         worktree = self.worktrees.candidate_path(worktree_key)
         if not worktree.exists():
             worktree = self.worktrees.create(
-                worktree_key, self.contract.campaign.base_commit
+                worktree_key, genetic_parent_commit
             )
         self._assert_worktree_descends_from_base(worktree)
+        self._assert_worktree_contains_parent(worktree, genetic_parent_commit)
 
         if implementation_path.exists():
             manifest = ImplementationManifest.model_validate_json(
@@ -278,7 +516,7 @@ class AutonomousCampaignRunner:
                 f"implementations:{generation_id}:{candidate.candidate_id}",
             )
             schema_path = candidate_dir / "implementation.schema.json"
-            atomic_write_json(schema_path, ImplementationManifest.model_json_schema())
+            atomic_write_json(schema_path, self._implementation_schema())
             raw_path = candidate_dir / "implementation.raw.json"
             result = self.backend.run(
                 role=CodexRole("implementer", writable=True),
@@ -310,8 +548,22 @@ class AutonomousCampaignRunner:
                 f"Codex implementer blocked for {candidate.candidate_id}: "
                 f"{manifest.summary}"
             )
-        self._commit_valid_candidate_changes(worktree, item)
-        return self.evaluate(
+        candidate_commit = self._commit_valid_candidate_changes(
+            worktree,
+            item,
+            genetic_parent_commit,
+        )
+        if candidate_commit == genetic_parent_commit:
+            raise ValueError(
+                f"candidate {candidate.candidate_id} produced no parent-relative code "
+                "change; no candidate effect can be attributed"
+            )
+        candidate_ref = self.worktrees.pin_commit(
+            run_hash,
+            candidate.candidate_id,
+            candidate_commit,
+        )
+        run = self.evaluate(
             AutonomousEvaluationContext(
                 generation_id=generation_id,
                 candidate=item,
@@ -319,11 +571,36 @@ class AutonomousCampaignRunner:
                 repo_root=self.repo_root,
                 worktree=worktree,
                 run_dir=self.run_dir,
+                genetic_parent_id=genetic_parent_id,
+                genetic_parent_commit=genetic_parent_commit,
             )
+        )
+        baseline_patch = self._diff_bytes(
+            worktree,
+            self.contract.campaign.base_commit,
+            candidate_commit,
+        )
+        parent_patch = self._diff_bytes(
+            worktree,
+            genetic_parent_commit,
+            candidate_commit,
+        )
+        return run.model_copy(
+            update={
+                "genetic_parent_id": genetic_parent_id,
+                "genetic_parent_commit": genetic_parent_commit,
+                "candidate_commit": candidate_commit,
+                "candidate_ref": candidate_ref,
+                "patch_sha256": sha256_bytes(baseline_patch),
+                "parent_patch_sha256": sha256_bytes(parent_patch),
+            }
         )
 
     def _proposal_schema(
-        self, candidate_id: str, eligible_parents: list[str]
+        self,
+        candidate_id: str,
+        eligible_parents: list[str],
+        required_mutation: MutationType,
     ) -> dict[str, object]:
         schema = copy.deepcopy(CampaignCandidate.model_json_schema())
         definitions = schema.get("$defs")
@@ -342,8 +619,35 @@ class AutonomousCampaignRunner:
         }
         parent_ids = properties.get("parent_ids")
         if isinstance(parent_ids, dict):
-            parent_ids["contains"] = {"enum": eligible_parents}
-            parent_ids["minContains"] = 1
+            parent_ids["items"] = {"enum": eligible_parents, "type": "string"}
+        properties["genetic_parent_id"] = {
+            "enum": eligible_parents,
+            "type": "string",
+        }
+        properties["mutation_type"] = {
+            "const": required_mutation.value,
+            "type": "string",
+        }
+        properties["required_controls"] = {
+            "items": {
+                "enum": sorted(self.contract.required_controls),
+                "type": "string",
+            },
+            "maxItems": len(self.contract.required_controls),
+            "minItems": len(self.contract.required_controls),
+            "type": "array",
+        }
+        expected_signature = definitions.get("ExpectedSignature")
+        if not isinstance(expected_signature, dict):
+            raise RuntimeError("CampaignCandidate schema is missing ExpectedSignature")
+        signature_properties = expected_signature.get("properties")
+        if not isinstance(signature_properties, dict):
+            raise RuntimeError("ExpectedSignature schema is missing properties")
+        metric_ids = sorted(self.contract.metrics.pareto_objectives)
+        for field in ("improve", "unchanged"):
+            signature = signature_properties.get(field)
+            if isinstance(signature, dict):
+                signature["items"] = {"enum": metric_ids, "type": "string"}
         root_properties = schema.get("properties")
         if isinstance(root_properties, dict):
             root_properties["stage"] = {
@@ -362,13 +666,18 @@ class AutonomousCampaignRunner:
                 verified = acquisition_properties.get("verified_reopen_conditions")
                 if isinstance(verified, dict):
                     verified["maxItems"] = 0
-        return schema
+        return _codex_output_schema(schema)
+
+    @staticmethod
+    def _implementation_schema() -> dict[str, object]:
+        return _codex_output_schema(ImplementationManifest.model_json_schema())
 
     @staticmethod
     def _validate_proposal_identity(
         candidate: CampaignCandidate,
         expected_id: str,
         eligible_parents: list[str],
+        required_mutation: MutationType,
     ) -> None:
         genome = candidate.acquisition.candidate
         if genome.candidate_id != expected_id:
@@ -380,11 +689,45 @@ class AutonomousCampaignRunner:
             raise ValueError(
                 f"proposal {expected_id} does not descend from an evaluated parent"
             )
+        if genome.genetic_parent_id not in eligible_parents:
+            raise ValueError(
+                f"proposal {expected_id} has an ineligible genetic parent: "
+                f"{genome.genetic_parent_id}"
+            )
+        if genome.mutation_type is not required_mutation:
+            raise ValueError(
+                f"proposal {expected_id} ignored policy mutation assignment: "
+                f"expected={required_mutation.value} actual={genome.mutation_type.value}"
+            )
         if candidate.stage is not ResearchStage.M0_MECHANICS:
             raise ValueError("autonomous discovery proposals must start at M0_MECHANICS")
         if candidate.acquisition.verified_reopen_conditions:
             raise ValueError(
                 "Codex proposals cannot supply verified reopen conditions"
+            )
+
+    def _validate_proposal_vocabulary(self, candidate: CampaignCandidate) -> None:
+        genome = candidate.acquisition.candidate
+        frozen_controls = set(self.contract.required_controls)
+        declared_controls = set(genome.required_controls)
+        if (
+            declared_controls != frozen_controls
+            or len(genome.required_controls) != len(frozen_controls)
+        ):
+            raise ValueError(
+                "proposal required controls do not match the frozen contract: "
+                f"expected={self.contract.required_controls} "
+                f"actual={genome.required_controls}"
+            )
+        frozen_metrics = set(self.contract.metrics.pareto_objectives)
+        declared_metrics = set(genome.expected_signature.improve) | set(
+            genome.expected_signature.unchanged
+        )
+        unknown_metrics = sorted(declared_metrics - frozen_metrics)
+        if unknown_metrics:
+            raise ValueError(
+                "proposal expected signature uses metrics not frozen as Pareto "
+                f"objectives: {unknown_metrics}"
             )
 
     def _proposal_prompt(
@@ -394,11 +737,14 @@ class AutonomousCampaignRunner:
         generation_id: str,
         eligible_parents: list[str],
         feedback: dict[str, object],
+        required_mutation: MutationType,
+        mode: DiscoveryMode,
     ) -> str:
         contract_context = {
             "campaign": self.contract.campaign.model_dump(mode="json"),
             "editable_scope": self.contract.editable_scope.model_dump(mode="json"),
             "metrics": self.contract.metrics.model_dump(mode="json"),
+            "required_controls": self.contract.required_controls,
             "eligible_development_sources": [
                 {
                     "source_id": source.source_id,
@@ -418,10 +764,17 @@ class AutonomousCampaignRunner:
             f"Required candidate_id: {candidate_id}\n"
             f"Generation: {generation_id}\n"
             f"Use at least one parent_id from: {json.dumps(eligible_parents)}\n"
-            "Do not provide reference_metrics; the frozen harness supplies them. "
-            "Do not access confirmation assets or claim reopen evidence. Propose one "
+            f"Set genetic_parent_id to the one parent whose code is inherited.\n"
+            f"Required mutation_type: {required_mutation.value}\n"
+            f"Discovery mode: {mode.value}\n"
+            "Set reference_metrics to an empty object; the frozen harness replaces it. "
+            "Set verified_reopen_conditions to an empty array. Do not access confirmation "
+            "assets or claim reopen evidence. Propose one "
             "falsifiable mechanism change inside editable_scope.allow and list exact "
-            "editable_files, controls, expected signatures, and a falsifier.\n"
+            "editable_files and a falsifier. Copy required_controls exactly from "
+            "the frozen context. Use only frozen pareto_objective IDs in both "
+            "expected_signature lists. In BREAKTHROUGH mode, avoid local parameter-only "
+            "changes and propose a structural, representational, or cross-family jump.\n"
             "Frozen context:\n"
             + json.dumps(contract_context, ensure_ascii=False, sort_keys=True)
             + "\nPrior evaluated feedback (SCHEDULING_ONLY where marked):\n"
@@ -454,6 +807,7 @@ class AutonomousCampaignRunner:
     ) -> dict[str, object]:
         return {
             "archive_summary": self.archive.summary(),
+            "scientific_memory": self.archive.scientific_memory(limit=20),
             "completed_generations": [
                 item.model_dump(mode="json") for item in completed
             ],
@@ -496,14 +850,48 @@ class AutonomousCampaignRunner:
                 f"candidate worktree does not descend from frozen base: {worktree}"
             )
 
-    def _commit_valid_candidate_changes(
-        self, worktree: Path, item: CampaignCandidate
-    ) -> None:
-        changed_files = self.worktrees.changed_files(
-            worktree, self.contract.campaign.base_commit
+    @staticmethod
+    def _assert_worktree_contains_parent(worktree: Path, parent_commit: str) -> None:
+        completed = subprocess.run(
+            ["git", "merge-base", "--is-ancestor", parent_commit, "HEAD"],
+            cwd=worktree,
+            check=False,
+            capture_output=True,
+            text=True,
         )
-        if not changed_files:
-            return
+        if completed.returncode != 0:
+            raise ValueError(
+                f"candidate worktree does not inherit genetic parent {parent_commit}"
+            )
+
+    @staticmethod
+    def _diff_bytes(worktree: Path, base_commit: str, head_commit: str) -> bytes:
+        return subprocess.run(
+            ["git", "diff", "--binary", base_commit, head_commit, "--"],
+            cwd=worktree,
+            check=True,
+            capture_output=True,
+        ).stdout
+
+    def _commit_valid_candidate_changes(
+        self,
+        worktree: Path,
+        item: CampaignCandidate,
+        genetic_parent_commit: str,
+    ) -> str:
+        changed_files = self.worktrees.changed_files(
+            worktree, genetic_parent_commit
+        )
+        inherited_scope_violations = self.worktrees.audit(
+            worktree,
+            self.contract.campaign.base_commit,
+            self.contract.editable_scope,
+        )
+        if inherited_scope_violations:
+            raise ValueError(
+                "candidate lineage violates frozen editable scope: "
+                + ",".join(inherited_scope_violations)
+            )
         audit = audit_candidate(
             self.contract,
             item.acquisition.candidate,
@@ -512,7 +900,17 @@ class AutonomousCampaignRunner:
             verified_reopen_conditions=item.acquisition.verified_reopen_conditions,
         )
         if not audit.valid:
-            return
+            raise ValueError(
+                "candidate implementation audit failed: " + ",".join(audit.violations)
+            )
+        if not changed_files:
+            return subprocess.run(
+                ["git", "rev-parse", "HEAD"],
+                cwd=worktree,
+                check=True,
+                capture_output=True,
+                text=True,
+            ).stdout.strip()
         subprocess.run(["git", "add", "--all"], cwd=worktree, check=True)
         staged = subprocess.run(
             ["git", "diff", "--cached", "--quiet"],
@@ -520,7 +918,13 @@ class AutonomousCampaignRunner:
             check=False,
         )
         if staged.returncode == 0:
-            return
+            return subprocess.run(
+                ["git", "rev-parse", "HEAD"],
+                cwd=worktree,
+                check=True,
+                capture_output=True,
+                text=True,
+            ).stdout.strip()
         if staged.returncode != 1:
             raise RuntimeError("failed to inspect staged candidate changes")
         subprocess.run(
@@ -539,3 +943,12 @@ class AutonomousCampaignRunner:
             capture_output=True,
             text=True,
         )
+        candidate_commit = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=worktree,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        self._assert_worktree_contains_parent(worktree, genetic_parent_commit)
+        return candidate_commit

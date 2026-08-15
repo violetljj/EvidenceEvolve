@@ -13,7 +13,7 @@ from evidence_evolve.artifacts import (
     load_receipt,
     write_receipt,
 )
-from evidence_evolve.budgets import BudgetLedger
+from evidence_evolve.budgets import BudgetExceeded, BudgetLedger
 from evidence_evolve.governance.candidate_auditor import audit_candidate
 from evidence_evolve.governance.closure_registry import ClosureRegistry
 from evidence_evolve.governance.gate_engine import GateEngine
@@ -28,8 +28,11 @@ from evidence_evolve.models import (
     EvaluationReceipt,
     FrozenAssetKind,
     GateVerdict,
+    ClaimCeiling,
     ResearchContract,
     ResearchStage,
+    ScientificOutcome,
+    SearchDisposition,
     StrictModel,
 )
 from evidence_evolve.understanding.signatures import (
@@ -49,8 +52,14 @@ class EvaluationRun(StrictModel):
     command: list[str]
     elapsed_seconds: float = Field(ge=0.0)
     seed: int = 0
+    genetic_parent_id: str | None = None
+    genetic_parent_commit: str | None = None
     candidate_commit: str | None = None
+    candidate_ref: str | None = None
     patch_sha256: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
+    parent_patch_sha256: str | None = Field(
+        default=None, pattern=r"^[0-9a-f]{64}$"
+    )
     ablation_results: dict[str, bool] = Field(default_factory=dict)
 
 
@@ -59,7 +68,17 @@ class CandidateRunResult(StrictModel):
     receipt_path: str
     verdict: GateVerdict
     mechanism: MechanismAssessment | None = None
+    search_disposition: SearchDisposition
+    claim_ceiling: ClaimCeiling
+    candidate_commit: str | None = None
     resumed: bool = False
+
+
+class CandidateExecutionFailure(StrictModel):
+    candidate_id: str
+    phase: str
+    error_type: str
+    error: str
 
 
 class CampaignGenerationResult(StrictModel):
@@ -67,6 +86,7 @@ class CampaignGenerationResult(StrictModel):
     policy_id: str
     decisions: list[AcquisitionDecision]
     evaluations: list[CandidateRunResult] = Field(default_factory=list)
+    failures: list[CandidateExecutionFailure] = Field(default_factory=list)
 
 
 EvaluationAdapter = Callable[[CampaignCandidate], EvaluationRun]
@@ -79,6 +99,30 @@ _STAGE_BUDGET = {
     ResearchStage.C0_CONFIRMATION: "confirmation_runs",
     ResearchStage.D0_DEPLOYMENT: "device_runs",
 }
+
+
+def search_disposition(verdict: GateVerdict) -> SearchDisposition:
+    """Translate evidence into search rights without changing the evidence verdict."""
+    if verdict.scientific_outcome is ScientificOutcome.POSITIVE_HEADROOM:
+        return SearchDisposition.CODE_PARENT
+    if verdict.scientific_outcome is ScientificOutcome.VALID_NEGATIVE:
+        return SearchDisposition.FAILURE_DIRECTED_SEED
+    if verdict.scientific_outcome is ScientificOutcome.NOT_EVALUABLE_DATA:
+        return SearchDisposition.IDEA_INSPIRATION
+    return SearchDisposition.QUARANTINE
+
+
+def claim_ceiling(verdict: GateVerdict, stage: ResearchStage) -> ClaimCeiling:
+    """Derive a conservative claim ceiling without granting a claim automatically."""
+    if verdict.scientific_outcome is not ScientificOutcome.POSITIVE_HEADROOM:
+        return ClaimCeiling.DEVELOPMENT_ONLY
+    ceilings = {
+        ResearchStage.H0_REAL_HEADROOM: ClaimCeiling.TRAINING_ELIGIBLE,
+        ResearchStage.T0_LEARNED_CANDIDATE: ClaimCeiling.CONFIRMATION_ELIGIBLE,
+        ResearchStage.C0_CONFIRMATION: ClaimCeiling.CLAIM_ELIGIBLE_FOR_HUMAN,
+        ResearchStage.D0_DEPLOYMENT: ClaimCeiling.DEPLOYMENT_ELIGIBLE_FOR_HUMAN,
+    }
+    return ceilings.get(stage, ClaimCeiling.DEVELOPMENT_ONLY)
 
 
 class CampaignRunner:
@@ -148,21 +192,35 @@ class CampaignRunner:
             selected = selected[:max_evaluations]
 
         results: list[CandidateRunResult] = []
+        failures: list[CandidateExecutionFailure] = []
         for decision in selected:
             item = by_id[decision.candidate_id]
-            results.append(
-                self._evaluate_candidate(
-                    generation_id=generation_id,
-                    item=item,
-                    evaluate=evaluate,
-                    signature_tolerance=signature_tolerance,
+            try:
+                results.append(
+                    self._evaluate_candidate(
+                        generation_id=generation_id,
+                        item=item,
+                        evaluate=evaluate,
+                        signature_tolerance=signature_tolerance,
+                    )
                 )
-            )
+            except BudgetExceeded:
+                raise
+            except Exception as exc:
+                failures.append(
+                    CandidateExecutionFailure(
+                        candidate_id=decision.candidate_id,
+                        phase="IMPLEMENT_OR_EVALUATE",
+                        error_type=type(exc).__name__,
+                        error=str(exc),
+                    )
+                )
         return CampaignGenerationResult(
             generation_id=generation_id,
             policy_id=self.policy.policy_id,
             decisions=decisions,
             evaluations=results,
+            failures=failures,
         )
 
     def _evaluate_candidate(
@@ -206,6 +264,12 @@ class CampaignRunner:
                 receipt_path=relative_receipt.as_posix(),
                 verdict=envelope.receipt.verdict,
                 mechanism=mechanism,
+                search_disposition=search_disposition(envelope.receipt.verdict),
+                claim_ceiling=claim_ceiling(
+                    envelope.receipt.verdict,
+                    envelope.receipt.evaluation_input.stage,
+                ),
+                candidate_commit=envelope.receipt.candidate_commit,
                 resumed=True,
             )
 
@@ -244,8 +308,12 @@ class CampaignRunner:
             campaign_id=self.contract.campaign.id,
             candidate_id=candidate.candidate_id,
             base_commit=self.contract.campaign.base_commit,
+            genetic_parent_id=run.genetic_parent_id or candidate.genetic_parent_id,
+            genetic_parent_commit=run.genetic_parent_commit,
             candidate_commit=run.candidate_commit,
+            candidate_ref=run.candidate_ref,
             patch_sha256=run.patch_sha256,
+            parent_patch_sha256=run.parent_patch_sha256,
             evaluator_hashes={
                 asset.asset_id: asset.sha256 or ""
                 for asset in self.contract.frozen_assets
@@ -290,4 +358,7 @@ class CampaignRunner:
             receipt_path=relative_receipt.as_posix(),
             verdict=verdict,
             mechanism=mechanism,
+            search_disposition=search_disposition(verdict),
+            claim_ceiling=claim_ceiling(verdict, item.stage),
+            candidate_commit=run.candidate_commit,
         )

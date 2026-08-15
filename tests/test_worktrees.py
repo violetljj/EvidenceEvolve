@@ -54,3 +54,7 @@ def test_candidate_worktrees_are_isolated_and_scope_audited(tmp_path) -> None:
         "DENIED_PATH:evaluators/evaluate.py"
     ]
 
+    reference = manager.pin_commit("test-run", "CANDIDATE-ONE", base)
+    assert reference == "refs/evidence-evolve/test-run/CANDIDATE-ONE"
+    assert _git(repo, "rev-parse", reference) == base
+    assert manager.pin_commit("test-run", "CANDIDATE-ONE", base) == reference

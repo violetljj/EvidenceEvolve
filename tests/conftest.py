@@ -110,6 +110,7 @@ def contract() -> ResearchContract:
                 "false_block_delta_pp": ObjectiveDirection.MINIMIZE,
             },
         ),
+        required_controls=["wrong_factor", "zero_factor"],
         budgets=Budgets(proposal_calls=2, mechanics_runs=2),
         closure_registry="protocols/closures.yaml",
     )

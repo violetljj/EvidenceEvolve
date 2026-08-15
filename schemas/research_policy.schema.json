@@ -61,36 +61,50 @@
       ],
       "title": "MutationType",
       "type": "string"
+    },
+    "SearchDisposition": {
+      "description": "Scheduling value that is deliberately separate from scientific authority.",
+      "enum": [
+        "CODE_PARENT",
+        "FAILURE_DIRECTED_SEED",
+        "IDEA_INSPIRATION",
+        "QUARANTINE"
+      ],
+      "title": "SearchDisposition",
+      "type": "string"
     }
   },
   "additionalProperties": false,
   "properties": {
-    "ablation_trigger": {
-      "default": "signature_supported",
-      "title": "Ablation Trigger",
-      "type": "string"
+    "breakthrough_mutation_mix": {
+      "additionalProperties": {
+        "type": "number"
+      },
+      "propertyNames": {
+        "$ref": "#/$defs/MutationType"
+      },
+      "title": "Breakthrough Mutation Mix",
+      "type": "object"
     },
-    "abstraction_selector": {
-      "default": "stagnation_adaptive",
-      "title": "Abstraction Selector",
-      "type": "string"
+    "code_parent_dispositions": {
+      "items": {
+        "$ref": "#/$defs/SearchDisposition"
+      },
+      "title": "Code Parent Dispositions",
+      "type": "array"
     },
     "context_compiler": {
+      "const": "lineage_plus_failure_signature",
       "default": "lineage_plus_failure_signature",
       "title": "Context Compiler",
       "type": "string"
     },
-    "evaluation_cascade": {
-      "items": {
-        "type": "string"
-      },
-      "title": "Evaluation Cascade",
-      "type": "array"
-    },
-    "inspiration_selector": {
-      "default": "mechanism_diverse",
-      "title": "Inspiration Selector",
-      "type": "string"
+    "moonshot_fraction": {
+      "default": 0.1,
+      "maximum": 0.5,
+      "minimum": 0.0,
+      "title": "Moonshot Fraction",
+      "type": "number"
     },
     "mutation_operator_mix": {
       "additionalProperties": {
@@ -103,7 +117,8 @@
       "type": "object"
     },
     "parent_selector": {
-      "default": "pareto_complementary",
+      "const": "search_rights_recent",
+      "default": "search_rights_recent",
       "title": "Parent Selector",
       "type": "string"
     },
@@ -117,7 +132,14 @@
       "title": "Schema Version",
       "type": "string"
     },
+    "stagnation_generations": {
+      "default": 3,
+      "minimum": 1,
+      "title": "Stagnation Generations",
+      "type": "integer"
+    },
     "stagnation_response": {
+      "const": "cross_family_structural_restart",
       "default": "cross_family_structural_restart",
       "title": "Stagnation Response",
       "type": "string"

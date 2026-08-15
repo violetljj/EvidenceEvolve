@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from enum import StrEnum
 from typing import Literal
 
 from pydantic import Field, model_validator
@@ -8,7 +9,29 @@ from evidence_evolve.governance.closure_registry import (
     ClosureRegistry,
     audit_candidate_closures,
 )
-from evidence_evolve.models import CandidateGenome, MutationType, StrictModel
+from evidence_evolve.models import (
+    CandidateGenome,
+    MutationType,
+    SearchDisposition,
+    StrictModel,
+)
+
+
+class DiscoveryMode(StrEnum):
+    NORMAL = "NORMAL"
+    BREAKTHROUGH = "BREAKTHROUGH"
+
+
+class PolicyEffectTrace(StrictModel):
+    generation_id: str
+    policy_id: str
+    mode: DiscoveryMode
+    reasons: list[str] = Field(default_factory=list)
+    eligible_parent_ids: list[str]
+    mutation_assignments: dict[str, MutationType]
+    moonshot_candidate_ids: list[str] = Field(default_factory=list)
+    parent_selector: str
+    context_compiler: str
 
 
 class AcquisitionWeights(StrictModel):
@@ -24,13 +47,21 @@ class AcquisitionWeights(StrictModel):
 class ResearchPolicyGenome(StrictModel):
     schema_version: Literal["1.0"] = "1.0"
     policy_id: str
-    parent_selector: str = "pareto_complementary"
-    inspiration_selector: str = "mechanism_diverse"
-    abstraction_selector: str = "stagnation_adaptive"
-    context_compiler: str = "lineage_plus_failure_signature"
-    evaluation_cascade: list[str] = Field(default_factory=lambda: ["M0_MECHANICS"])
-    ablation_trigger: str = "signature_supported"
-    stagnation_response: str = "cross_family_structural_restart"
+    parent_selector: Literal["search_rights_recent"] = "search_rights_recent"
+    context_compiler: Literal[
+        "lineage_plus_failure_signature"
+    ] = "lineage_plus_failure_signature"
+    stagnation_response: Literal[
+        "cross_family_structural_restart"
+    ] = "cross_family_structural_restart"
+    stagnation_generations: int = Field(default=3, ge=1)
+    moonshot_fraction: float = Field(default=0.1, ge=0.0, le=0.5)
+    code_parent_dispositions: list[SearchDisposition] = Field(
+        default_factory=lambda: [
+            SearchDisposition.CODE_PARENT,
+            SearchDisposition.FAILURE_DIRECTED_SEED,
+        ]
+    )
     mutation_operator_mix: dict[MutationType, float] = Field(
         default_factory=lambda: {
             MutationType.MECHANISM: 0.4,
@@ -38,17 +69,32 @@ class ResearchPolicyGenome(StrictModel):
             MutationType.FAILURE_DIRECTED: 0.3,
         }
     )
+    breakthrough_mutation_mix: dict[MutationType, float] = Field(
+        default_factory=lambda: {
+            MutationType.REPRESENTATION: 0.4,
+            MutationType.CROSS_FAMILY: 0.35,
+            MutationType.RESTART: 0.25,
+        }
+    )
     weights: AcquisitionWeights = Field(default_factory=AcquisitionWeights)
 
     @model_validator(mode="after")
     def mutation_mix_is_a_distribution(self) -> "ResearchPolicyGenome":
-        if not self.mutation_operator_mix:
-            raise ValueError("mutation_operator_mix cannot be empty")
-        if any(weight < 0 for weight in self.mutation_operator_mix.values()):
-            raise ValueError("mutation operator weights cannot be negative")
-        total = sum(self.mutation_operator_mix.values())
-        if abs(total - 1.0) > 1e-9:
-            raise ValueError("mutation operator weights must sum to 1.0")
+        for name, mix in (
+            ("mutation_operator_mix", self.mutation_operator_mix),
+            ("breakthrough_mutation_mix", self.breakthrough_mutation_mix),
+        ):
+            if not mix:
+                raise ValueError(f"{name} cannot be empty")
+            if any(weight < 0 for weight in mix.values()):
+                raise ValueError(f"{name} weights cannot be negative")
+            total = sum(mix.values())
+            if abs(total - 1.0) > 1e-9:
+                raise ValueError(f"{name} weights must sum to 1.0")
+        if not self.code_parent_dispositions:
+            raise ValueError("code_parent_dispositions cannot be empty")
+        if SearchDisposition.QUARANTINE in self.code_parent_dispositions:
+            raise ValueError("quarantined candidates cannot receive code parent rights")
         return self
 
 
@@ -73,6 +119,35 @@ class AcquisitionDecision(StrictModel):
     eligible: bool
     acquisition_score: float | None = None
     reasons: list[str] = Field(default_factory=list)
+
+
+def mutation_schedule(
+    mix: dict[MutationType, float],
+    *,
+    count: int,
+    offset: int = 0,
+) -> list[MutationType]:
+    """Deterministically turn policy weights into behavior for proposal slots."""
+    if count < 0:
+        raise ValueError("count must be non-negative")
+    if not mix:
+        raise ValueError("mutation mix cannot be empty")
+    ordered = sorted(mix, key=lambda item: item.value)
+    assigned = {item: 0 for item in ordered}
+    result: list[MutationType] = []
+    for index in range(count + offset):
+        chosen = max(
+            ordered,
+            key=lambda item: (
+                mix[item] * (index + 1) - assigned[item],
+                mix[item],
+                item.value,
+            ),
+        )
+        assigned[chosen] += 1
+        if index >= offset:
+            result.append(chosen)
+    return result
 
 
 def _score(policy: ResearchPolicyGenome, item: CandidateAcquisition) -> float:

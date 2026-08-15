@@ -1,0 +1,191 @@
+# EvidenceEvolve discovery architecture
+
+## Objective
+
+EvidenceEvolve optimizes expected discovery value per unit of time, compute, and
+agent budget. It does not optimize the amount of governance performed.
+
+```text
+maximize useful novelty, information gain, and robust improvement per cost
+subject to evaluator integrity, blind evidence isolation, traceability, and
+evidence-bounded claims
+```
+
+The operating principle is **maximum creativity internally, maximum rigor at the
+claim boundary**. Early development may be fast, approximate, and mechanism-unknown.
+Final claims may not be.
+
+## Two-layer system
+
+### Discovery Engine
+
+The Discovery Engine owns proposal, code inheritance, mutation allocation,
+stepping stones, failure-directed search, scientific memory, stagnation detection,
+and future island or crossover scheduling. Its scores and mechanism assessments are
+only scheduling inputs.
+
+### Evidence Kernel
+
+The Evidence Kernel owns the frozen evaluator, evidence eligibility, immutable
+receipts, hard constraints, the four scientific outcomes, blind confirmation, and
+claim ceilings. A discovery policy cannot modify the active campaign's Evidence
+Kernel.
+
+The four scientific outcomes remain exactly:
+
+- `POSITIVE_HEADROOM`
+- `VALID_NEGATIVE`
+- `NOT_EVALUABLE_DATA`
+- `INVALID_MECHANICS_OR_ADAPTER`
+
+`UNKNOWN` or missing eligible truth is never converted into a negative.
+
+## Three independent planes
+
+Every evaluated candidate has three different meanings:
+
+1. Evidence plane: the frozen `GateVerdict` and scientific outcome.
+2. Search plane: whether the artifact is a `CODE_PARENT`,
+   `FAILURE_DIRECTED_SEED`, `IDEA_INSPIRATION`, or `QUARANTINE` item.
+3. Claim plane: the conservative maximum progression allowed by the stage, such as
+   `DEVELOPMENT_ONLY` or `CONFIRMATION_ELIGIBLE`.
+
+A valid negative can therefore remain useful as a failure-directed genetic seed
+without becoming a positive scientific claim. A mechanics positive can be a code
+parent while remaining development-only.
+
+## Discovery funnel
+
+The existing research stages implement a progressively stricter funnel:
+
+| Discovery level | EvidenceEvolve stage | Minimum purpose |
+| --- | --- | --- |
+| Wild search | `M0_MECHANICS` | Runs, preserves frozen controls, produces metrics |
+| Signal | repeated `M0` or task-defined DEV evaluation | Check that signal is not an immediate accident |
+| Candidate | `H0_REAL_HEADROOM` | Stronger baseline and eligible real headroom |
+| Scientific candidate | `T0_LEARNED_CANDIDATE` | Training, targeted ablation, robustness |
+| Claim boundary | `C0_CONFIRMATION` | Blind confirmation and claim eligibility |
+| Deployment boundary | `D0_DEPLOYMENT` | Separate device or deployment evidence |
+
+Not every early candidate needs full ablation, mechanism proof, fresh seeds, or
+confirmation. Those costs grow only when evidence justifies promotion.
+
+## Implemented R1.1 semantics
+
+The autonomous loop currently implements the following executable behavior:
+
+- `authority_base_commit` remains the contract's frozen `campaign.base_commit`.
+- every candidate declares one `genetic_parent_id` among its cited parents;
+- its worktree is created from that parent's evaluated `candidate_commit`;
+- committed candidates are pinned under immutable local `refs/evidence-evolve/...`
+  refs so worktree cleanup does not erase genetic artifacts;
+- receipts bind the genetic parent ID and commit, the cumulative baseline-relative
+  patch hash, and the parent-relative patch hash;
+- an empty parent-relative patch cannot receive a new candidate effect attribution;
+- valid negatives may receive failure-directed parent rights;
+- invalid mechanics or protocol artifacts are quarantined;
+- one proposal or implementation failure is recorded in the generation result and
+  does not terminate other candidates;
+- the normal and breakthrough mutation mixes are converted into deterministic slot
+  assignments rather than remaining decorative policy fields;
+- policy fields without an executable parent, context, budget, or mutation effect
+  have been removed from the formal schema instead of pretending to evolve;
+- every generation writes a `policy_effect_trace.json` binding mode, parent pool,
+  mutation assignments, context compiler, and moonshot slots;
+- after the configured number of generations without a code-parent positive, the
+  loop enters `BREAKTHROUGH` mode and uses structural, cross-family, or restart
+  mutations;
+- the configured moonshot fraction reserves proposal slots for breakthrough-style
+  mutations even before global stagnation;
+- the archive compiles hypotheses, interventions, assumptions, failure risks,
+  outcomes, and mechanism assessments into retrievable scientific memory.
+
+These mechanics do not prove that the search is better than a baseline. They make
+that comparison possible.
+
+## Next executable slices
+
+The order below is intentional. A feature is admitted only when it changes behavior
+and has a focused test or campaign measurement.
+
+### R1.2 Population and islands
+
+- persistent multi-island population rather than only the last eligible generation;
+- elite, novelty, and failure-directed parent sampling;
+- behavior-descriptor diversity and duplicate-code rejection;
+- explicit stepping-stone retention;
+- bounded asynchronous proposal and evaluation queues;
+- migration between islands.
+
+### R1.3 Research intelligence
+
+- sanitized code-context compiler containing relevant source and lineage diffs;
+- literature mechanism cards with source and applicability metadata;
+- similarity retrieval over prior mechanisms, assumptions, and failure signatures;
+- calibrated proposer predictions rather than self-awarded utility scores;
+- independent acquisition using cost, calibration, redundancy, diversity, and
+  portfolio coverage.
+
+### R1.4 Research Action Grammar
+
+The scheduler should eventually choose among executable actions rather than always
+creating a new code candidate:
+
+```text
+MUTATE  REPLICATE  ABLATE  FALSIFY  GENERATE_COUNTEREXAMPLE
+TRANSFER  SIMPLIFY  UNDERSTAND  ACQUIRE_NEW_EVIDENCE  CLOSE_FAMILY
+```
+
+Each action needs its own executor and attribution rules. These names must not be
+added as decorative schema fields before the executor exists.
+
+### R1.5 Explorer, Scientist, and Red Queen
+
+- Explorer populations optimize discovery and may retain mechanism-unknown
+  performance signals.
+- Scientist populations replicate, simplify, ablate, and explain promising
+  artifacts.
+- Red Queen populations generate candidate counterexamples and evaluator attacks.
+  A frozen validity checker must approve any generated DEV adversarial case before
+  it enters evaluation.
+
+### R1.6 Semantic closure and calibrated research economy
+
+- semantic closure should block renamed repetitions of the same failed mechanism;
+- genuinely new supervision, representation, assumption, or observable signal may
+  support a separately verified reopen request;
+- proposers should predict outcome distributions and failure families;
+- proper scoring rules should update proposer credibility;
+- the research director should allocate token, compute, and experiment budgets by
+  observed discovery value rather than prose confidence.
+
+## Evaluation program
+
+Architecture is not success evidence. A frozen task suite must compare at least:
+
+```text
+random mutation
+vanilla Codex iteration
+external evolutionary search kernel
+EvidenceEvolve without scientific memory
+full EvidenceEvolve
+```
+
+Primary measurements are valid blind improvement per cost, fresh-set robustness,
+confirmation success, redundant experiment rate, proposal calibration, closure
+violations, invalid candidate rate, and reproducibility. Aggregate scheduling scores
+never rescue a failed hard constraint.
+
+## Feature admission test
+
+Before adding a governance or research mechanism, ask whether it measurably does at
+least one of the following:
+
+- increases useful discovery or information gain;
+- reduces redundant search;
+- helps escape local optima;
+- prevents evaluator or evidence manipulation;
+- protects blind confirmation;
+- makes final claims more trustworthy.
+
+If none applies, the mechanism does not belong on the main execution path.

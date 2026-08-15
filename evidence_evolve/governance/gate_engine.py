@@ -49,7 +49,7 @@ class GateEngine:
 
     def evaluate(self, evaluation: EvaluationInput) -> GateVerdict:
         constraints = self._constraints(evaluation)
-        required_controls = set(evaluation.candidate.required_controls)
+        required_controls = set(self.contract.required_controls)
         controls_complete = all(
             evaluation.controls.get(control) is True for control in required_controls
         )

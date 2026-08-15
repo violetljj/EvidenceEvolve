@@ -25,6 +25,14 @@ READ_ONLY_ROLES = {
 }
 
 
+def _utf8_text(value: str | bytes | None) -> str:
+    if value is None:
+        return ""
+    if isinstance(value, bytes):
+        return value.decode("utf-8", errors="replace")
+    return value
+
+
 class CodexCliBackend:
     def __init__(self, executable: str = "codex"):
         self.executable = executable
@@ -45,6 +53,8 @@ class CodexCliBackend:
                 check=False,
                 capture_output=True,
                 text=True,
+                encoding="utf-8",
+                errors="replace",
                 timeout=10,
             )
         except (OSError, subprocess.TimeoutExpired) as exc:
@@ -126,11 +136,13 @@ class CodexCliBackend:
                 check=False,
                 capture_output=True,
                 text=True,
+                encoding="utf-8",
+                errors="replace",
                 timeout=timeout_seconds,
             )
         except subprocess.TimeoutExpired as exc:
-            events_path.write_text(exc.stdout or "", encoding="utf-8")
-            stderr_path.write_text(exc.stderr or "", encoding="utf-8")
+            events_path.write_text(_utf8_text(exc.stdout), encoding="utf-8")
+            stderr_path.write_text(_utf8_text(exc.stderr), encoding="utf-8")
             return {"status": "TIMEOUT", "command": command}
         except OSError as exc:
             events_path.write_text("", encoding="utf-8")
@@ -142,10 +154,12 @@ class CodexCliBackend:
                 "command": command,
                 "error": f"{type(exc).__name__}:{exc}",
             }
-        events_path.write_text(completed.stdout, encoding="utf-8")
-        stderr_path.write_text(completed.stderr, encoding="utf-8")
+        stdout = _utf8_text(completed.stdout)
+        stderr = _utf8_text(completed.stderr)
+        events_path.write_text(stdout, encoding="utf-8")
+        stderr_path.write_text(stderr, encoding="utf-8")
         event_types: list[str] = []
-        for line in completed.stdout.splitlines():
+        for line in stdout.splitlines():
             try:
                 event = json.loads(line)
             except json.JSONDecodeError:

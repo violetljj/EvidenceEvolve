@@ -293,6 +293,71 @@ class ArchiveStore:
             ],
         }
 
+    def scientific_memory(self, limit: int = 20) -> list[dict[str, object]]:
+        """Compile receipts into context that a later researcher can actually use."""
+        if limit <= 0:
+            return []
+        with self._connect() as connection:
+            rows = connection.execute(
+                """
+                SELECT er.candidate_id, er.parent_ids_json, er.island, er.family,
+                       er.mutation_type, er.archive_class, er.gate_decision,
+                       er.scientific_outcome,
+                       (
+                           SELECT ad.candidate_json
+                           FROM acquisition_decisions AS ad
+                           WHERE ad.candidate_id = er.candidate_id
+                           ORDER BY ad.created_at_utc DESC
+                           LIMIT 1
+                       ) AS candidate_json,
+                       ma.assessment_json
+                FROM evaluation_receipts AS er
+                LEFT JOIN mechanism_assessments AS ma
+                  ON ma.receipt_id = er.receipt_id
+                ORDER BY er.created_at_utc DESC, er.receipt_id DESC
+                LIMIT ?
+                """,
+                (limit,),
+            ).fetchall()
+        memory: list[dict[str, object]] = []
+        for (
+            candidate_id,
+            parent_ids_json,
+            island,
+            family,
+            mutation_type,
+            archive_class,
+            gate_decision,
+            scientific_outcome,
+            candidate_json,
+            assessment_json,
+        ) in rows:
+            acquisition = json.loads(candidate_json) if candidate_json else {}
+            candidate = acquisition.get("candidate", acquisition)
+            assessment = json.loads(assessment_json) if assessment_json else {}
+            memory.append(
+                {
+                    "candidate_id": candidate_id,
+                    "parent_ids": json.loads(parent_ids_json),
+                    "genetic_parent_id": candidate.get("genetic_parent_id"),
+                    "island": island,
+                    "family": family,
+                    "mutation_type": mutation_type,
+                    "hypothesis": candidate.get("hypothesis"),
+                    "intervention": candidate.get("intervention"),
+                    "mechanism_claims": candidate.get("mechanism_claims", []),
+                    "assumptions": candidate.get("assumptions", []),
+                    "failure_risks": candidate.get("failure_risks", []),
+                    "behavior_descriptor": candidate.get("behavior_descriptor", {}),
+                    "scientific_outcome": scientific_outcome,
+                    "archive_class": archive_class,
+                    "gate_decision": gate_decision,
+                    "mechanism_support": assessment.get("support"),
+                    "mechanism_reasons": assessment.get("reasons", []),
+                }
+            )
+        return memory
+
     @staticmethod
     def _legacy_summary(connection: sqlite3.Connection) -> dict[str, object]:
         total = connection.execute("SELECT COUNT(*) FROM candidates").fetchone()[0]

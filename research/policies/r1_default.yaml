@@ -1,18 +1,21 @@
 schema_version: "1.0"
 policy_id: r1_default
-parent_selector: pareto_complementary
-inspiration_selector: mechanism_diverse
-abstraction_selector: stagnation_adaptive
+parent_selector: search_rights_recent
 context_compiler: lineage_plus_failure_signature
-evaluation_cascade:
-  - M0_MECHANICS
-  - H0_REAL_HEADROOM
-ablation_trigger: signature_supported
 stagnation_response: cross_family_structural_restart
+stagnation_generations: 3
+moonshot_fraction: 0.1
+code_parent_dispositions:
+  - CODE_PARENT
+  - FAILURE_DIRECTED_SEED
 mutation_operator_mix:
   mechanism_mutation: 0.4
   representation_mutation: 0.3
   failure_directed_mutation: 0.3
+breakthrough_mutation_mix:
+  representation_mutation: 0.4
+  cross_family: 0.35
+  restart: 0.25
 weights:
   admit_probability: 1.0
   expected_improvement: 1.0

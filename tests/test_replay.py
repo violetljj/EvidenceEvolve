@@ -19,6 +19,8 @@ def test_synthetic_evaluation_replay_reexecutes_frozen_evaluator(tmp_path) -> No
     assert summary["passed"] is True
     assert resumed["passed"] is True
     assert resumed["archive"]["total"] == 5
+    first_receipt = receipt_paths(run_dir)[0]
+    first_receipt.with_suffix(".mechanism.json").write_text("{}\n", encoding="utf-8")
     assert len(receipt_paths(run_dir)) == 5
     assert replay_verdict(run_dir, repo) == {
         "mode": "VERDICT_REPLAY",

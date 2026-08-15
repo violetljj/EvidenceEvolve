@@ -56,6 +56,9 @@ frozen_assets:
   - asset_id: harness-autonomous-runner-r1
     kind: harness_core
     path: evidence_evolve/discovery/autonomous.py
+  - asset_id: harness-research-policy-r1
+    kind: harness_core
+    path: evidence_evolve/meta_evolution/policy.py
   - asset_id: harness-codex-backend-r1
     kind: harness_core
     path: evidence_evolve/backends/codex_cli.py
@@ -110,6 +113,10 @@ metrics:
     node_count: minimize
     model_bytes: minimize
     latency_ms: minimize
+required_controls:
+- onnx_checker
+- deterministic_rewrite
+- semantic_parity
 budgets:
   proposal_calls: 4
   implementations: 3

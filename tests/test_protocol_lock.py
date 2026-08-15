@@ -106,6 +106,7 @@ def test_lock_hashes_assets_and_detects_drift(tmp_path) -> None:
             hard_constraints={"false_block": MetricConstraint(max=0)},
             pareto_objectives={"quality": ObjectiveDirection.MAXIMIZE},
         ),
+        required_controls=["fixed_control"],
         budgets=Budgets(proposal_calls=1),
         closure_registry="protocols/closures.yaml",
     )

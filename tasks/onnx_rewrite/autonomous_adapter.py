@@ -18,7 +18,7 @@ def evaluate_candidate(context: AutonomousEvaluationContext) -> EvaluationRun:
     )
     manager = WorktreeManager(context.repo_root)
     changed_files = manager.changed_files(
-        context.worktree, context.contract.campaign.base_commit
+        context.worktree, context.genetic_parent_commit
     )
     started = perf_counter()
     raw = evaluate(candidate_path, confirmation=False)
@@ -36,7 +36,7 @@ def evaluate_candidate(context: AutonomousEvaluationContext) -> EvaluationRun:
             "git",
             "diff",
             "--binary",
-            context.contract.campaign.base_commit,
+            context.genetic_parent_commit,
             "--",
         ],
         cwd=context.worktree,

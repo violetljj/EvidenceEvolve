@@ -383,6 +383,15 @@
     "metrics": {
       "$ref": "#/$defs/MetricsPolicy"
     },
+    "required_controls": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$",
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Required Controls",
+      "type": "array"
+    },
     "schema_version": {
       "const": "1.0",
       "default": "1.0",
@@ -396,6 +405,7 @@
     "evidence_sources",
     "frozen_assets",
     "metrics",
+    "required_controls",
     "budgets",
     "closure_registry"
   ],

@@ -7,6 +7,11 @@ from typing import Annotated, Literal
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 
+MachineId = Annotated[
+    str, Field(pattern=r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$")
+]
+
+
 class StrictModel(BaseModel):
     model_config = ConfigDict(extra="forbid", validate_assignment=True)
 
@@ -87,6 +92,25 @@ class SearchAbstraction(StrEnum):
     UNCERTAINTY_RULE = "uncertainty_rule"
     SYSTEM_SCHEDULE = "system_schedule"
     HYBRID_PIPELINE = "hybrid_pipeline"
+
+
+class SearchDisposition(StrEnum):
+    """Scheduling value that is deliberately separate from scientific authority."""
+
+    CODE_PARENT = "CODE_PARENT"
+    FAILURE_DIRECTED_SEED = "FAILURE_DIRECTED_SEED"
+    IDEA_INSPIRATION = "IDEA_INSPIRATION"
+    QUARANTINE = "QUARANTINE"
+
+
+class ClaimCeiling(StrEnum):
+    """Maximum claim progression implied by frozen evidence, never an auto-claim."""
+
+    DEVELOPMENT_ONLY = "DEVELOPMENT_ONLY"
+    TRAINING_ELIGIBLE = "TRAINING_ELIGIBLE"
+    CONFIRMATION_ELIGIBLE = "CONFIRMATION_ELIGIBLE"
+    CLAIM_ELIGIBLE_FOR_HUMAN = "CLAIM_ELIGIBLE_FOR_HUMAN"
+    DEPLOYMENT_ELIGIBLE_FOR_HUMAN = "DEPLOYMENT_ELIGIBLE_FOR_HUMAN"
 
 
 class ObjectiveDirection(StrEnum):
@@ -210,6 +234,7 @@ class ResearchContract(StrictModel):
     evidence_sources: Annotated[list[EvidenceSource], Field(min_length=1)]
     frozen_assets: Annotated[list[FrozenAsset], Field(min_length=1)]
     metrics: MetricsPolicy
+    required_controls: Annotated[list[MachineId], Field(min_length=1)]
     budgets: Budgets
     closure_registry: str
     lock: ContractLock | None = None
@@ -218,8 +243,8 @@ class ResearchContract(StrictModel):
 
 
 class ExpectedSignature(StrictModel):
-    improve: Annotated[list[str], Field(min_length=1)]
-    unchanged: list[str] = Field(default_factory=list)
+    improve: Annotated[list[MachineId], Field(min_length=1)]
+    unchanged: list[MachineId] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def metrics_are_disjoint(self) -> "ExpectedSignature":
@@ -236,6 +261,7 @@ class CandidateGenome(StrictModel):
     schema_version: Literal["1.0"] = "1.0"
     candidate_id: Annotated[str, Field(pattern=r"^[A-Za-z0-9][A-Za-z0-9_.-]{1,127}$")]
     parent_ids: Annotated[list[str], Field(min_length=1)]
+    genetic_parent_id: str | None = None
     island: str
     family: str
     mutation_type: MutationType
@@ -246,7 +272,7 @@ class CandidateGenome(StrictModel):
     assumptions: list[str] = Field(default_factory=list)
     expected_signature: ExpectedSignature
     falsifier: Annotated[str, Field(min_length=8)]
-    required_controls: Annotated[list[str], Field(min_length=1)]
+    required_controls: Annotated[list[MachineId], Field(min_length=1)]
     behavior_descriptor: dict[str, str] = Field(default_factory=dict)
     ablation_plan: list[str] = Field(default_factory=list)
     transfer_motifs: list[str] = Field(default_factory=list)
@@ -260,6 +286,20 @@ class CandidateGenome(StrictModel):
     @classmethod
     def normalize_editable_files(cls, values: list[str]) -> list[str]:
         return [_validate_relative_path(value) for value in values]
+
+    @model_validator(mode="after")
+    def genetic_parent_is_explicit_and_valid(self) -> "CandidateGenome":
+        if len(set(self.parent_ids)) != len(self.parent_ids):
+            raise ValueError("parent_ids must be unique")
+        if self.genetic_parent_id is None:
+            if len(self.parent_ids) != 1:
+                raise ValueError(
+                    "genetic_parent_id is required when multiple parents are declared"
+                )
+            object.__setattr__(self, "genetic_parent_id", self.parent_ids[0])
+        elif self.genetic_parent_id not in self.parent_ids:
+            raise ValueError("genetic_parent_id must be included in parent_ids")
+        return self
 
 
 class EvaluationInput(StrictModel):
@@ -311,8 +351,14 @@ class EvaluationReceipt(StrictModel):
     campaign_id: str
     candidate_id: str
     base_commit: str
+    genetic_parent_id: str | None = None
+    genetic_parent_commit: str | None = None
     candidate_commit: str | None = None
+    candidate_ref: str | None = None
     patch_sha256: Annotated[str | None, Field(pattern=r"^[0-9a-f]{64}$")] = None
+    parent_patch_sha256: Annotated[
+        str | None, Field(pattern=r"^[0-9a-f]{64}$")
+    ] = None
     evaluator_hashes: dict[str, str]
     data_hashes: dict[str, str]
     seed: int

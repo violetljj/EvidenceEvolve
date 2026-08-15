@@ -3,6 +3,7 @@ from evidence_evolve.governance.closure_registry import (
     ClosureRegistry,
     audit_candidate_closures,
 )
+from evidence_evolve.governance.candidate_auditor import audit_candidate
 from evidence_evolve.governance.scope import audit_paths
 
 
@@ -57,3 +58,13 @@ def test_renamed_closed_family_pattern_is_rejected(candidate) -> None:
         "CLOSED_FAMILY:CLOSE_SCALE"
     ]
 
+
+def test_candidate_vocabulary_must_match_frozen_contract(contract, candidate) -> None:
+    candidate.required_controls = ["invented_control"]
+    candidate.expected_signature.improve = ["invented_metric"]
+    audit = audit_candidate(contract, candidate, ClosureRegistry())
+    assert not audit.valid
+    assert "FROZEN_REQUIRED_CONTROL_MISSING:wrong_factor" in audit.violations
+    assert "FROZEN_REQUIRED_CONTROL_MISSING:zero_factor" in audit.violations
+    assert "REQUIRED_CONTROL_NOT_FROZEN:invented_control" in audit.violations
+    assert "EXPECTED_SIGNATURE_METRIC_NOT_FROZEN:invented_metric" in audit.violations

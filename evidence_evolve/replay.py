@@ -13,7 +13,11 @@ from evidence_evolve.models import EvaluationInput, ReceiptEnvelope, ResearchSta
 
 
 def receipt_paths(run_dir: Path) -> list[Path]:
-    current = (run_dir / "candidates").glob("*/receipts/*.json")
+    current = (
+        path
+        for path in (run_dir / "candidates").glob("*/receipts/*.json")
+        if not path.name.endswith(".mechanism.json")
+    )
     legacy = (run_dir / "candidates").glob("*/reproducibility_receipt.json")
     return sorted({*current, *legacy})
 
@@ -207,6 +211,7 @@ def replay_evaluation(run_dir: Path, repo_root: Path) -> dict[str, object]:
     dispatch = {
         "synthetic_canary_r0": _replay_synthetic,
         "onnx_rewrite_r0": _replay_onnx,
+        "onnx_rewrite_r1": _replay_onnx,
     }
     replay_adapter = dispatch.get(contract.campaign.id)
     if replay_adapter is None:

@@ -60,10 +60,27 @@ Codex proposal (read-only, schema-bound)
 
 Candidate IDs are fixed by generation and proposal slot before Codex runs, so
 proposal and implementation budget reservations remain idempotent across resume.
+Each candidate now names one `genetic_parent_id`; the candidate worktree starts at
+that evaluated parent's commit rather than restarting from the authority baseline.
+Receipts preserve both the immutable comparison base and the actual genetic parent,
+plus baseline-relative and parent-relative patch hashes. Valid negatives can remain
+failure-directed search seeds, while invalid artifacts are quarantined; neither
+search role changes the frozen scientific outcome or claim ceiling.
+
+The default policy also executes its mutation mix, records a per-generation policy
+effect trace, reserves a small moonshot fraction, and enters structural
+`BREAKTHROUGH` search after bounded stagnation. One candidate-local proposal or
+implementation failure no longer aborts the rest of the generation. Historical
+hypotheses, conditions, failure risks, verdicts, and mechanism assessments are
+compiled into scheduling-only scientific memory for later proposals.
+
 Codex cannot provide reference metrics, verified reopen evidence, a confirmation
 stage, or a verdict. The implementer is limited to the candidate worktree; actual
 changed paths are independently audited before the frozen evaluator result reaches
 the gate.
+
+The design boundary, implemented R1.1 semantics, and ordered next slices are in
+[`docs/DISCOVERY_ARCHITECTURE.md`](docs/DISCOVERY_ARCHITECTURE.md).
 
 Run two ONNX mechanics generations with a Codex CLI login (ChatGPT-managed login is
 supported; an API key is not required):
@@ -82,9 +99,11 @@ The loop is resumable by rerunning the same command: validated proposals,
 implementations, receipts, and budget reservations are reused rather than counted
 again.
 
-This slice establishes executable mechanics, not autonomous-discovery evidence.
-No real Codex campaign, blind confirmation, algorithm novelty, or superiority over
-a baseline is claimed until those external runs occur.
+This slice establishes executable search mechanics, not autonomous-discovery
+evidence. Persistent islands, crossover, asynchronous evaluation, literature cards,
+Research Action executors, Red Queen populations, blind confirmation, algorithm
+novelty, and superiority over a baseline remain unproven or unimplemented until the
+named code and external campaigns exist.
 
 ## Setup
 

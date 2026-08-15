@@ -72,6 +72,15 @@ def test_missing_control_is_invalid_mechanics(contract, candidate) -> None:
     assert verdict.scientific_outcome is ScientificOutcome.INVALID_MECHANICS_OR_ADAPTER
 
 
+def test_gate_uses_frozen_controls_not_candidate_claims(contract, candidate) -> None:
+    candidate.required_controls = ["wrong_factor"]
+    verdict = GateEngine(contract).evaluate(
+        evaluation(contract, candidate, controls={"wrong_factor": True})
+    )
+    assert verdict.decision is GateDecision.REPAIR_IMPLEMENTATION
+    assert verdict.reasons == ["REQUIRED_CONTROLS_INCOMPLETE:zero_factor"]
+
+
 def test_mechanics_not_run_cannot_advance(contract, candidate) -> None:
     verdict = GateEngine(contract).evaluate(
         evaluation(contract, candidate, mechanics_status=MechanicsStatus.NOT_RUN)
@@ -83,4 +92,3 @@ def test_positive_outcome_requires_all_hard_gates(contract, candidate) -> None:
     verdict = GateEngine(contract).evaluate(evaluation(contract, candidate))
     assert verdict.decision is GateDecision.ADMIT
     assert verdict.scientific_outcome is ScientificOutcome.POSITIVE_HEADROOM
-

@@ -149,6 +149,18 @@
           "title": "Family",
           "type": "string"
         },
+        "genetic_parent_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Genetic Parent Id"
+        },
         "hypothesis": {
           "minLength": 12,
           "title": "Hypothesis",
@@ -190,6 +202,7 @@
         },
         "required_controls": {
           "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$",
             "type": "string"
           },
           "minItems": 1,
@@ -236,6 +249,7 @@
       "properties": {
         "improve": {
           "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$",
             "type": "string"
           },
           "minItems": 1,
@@ -244,6 +258,7 @@
         },
         "unchanged": {
           "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$",
             "type": "string"
           },
           "title": "Unchanged",
