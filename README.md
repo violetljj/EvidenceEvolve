@@ -272,11 +272,12 @@ invalid/useful-rate hard guardrails.
 Future remote generation must not use `gpt-5.5`; the frozen R1 model is
 `gpt-5.6-terra`.
 
-The formal schedule is generated only from the frozen protocol and can be
-admitted without remote calls using `evolve search p2-r1 --dry-run --run-root
-runs/shinka_native_p2_r1_dry_run`. The driver freezes disjoint state, exact
-retry/crash semantics, start/run manifests, slot receipts, and automatic parity
-analysis; this execution-only revision did not change the scientific protocol.
+The formal schedule is generated only from the frozen protocol. Formal budget
+is locked until the same production path first completes a 100-slot local
+transport E2E through the frozen analyzer, then a separate one-slot-per-arm real
+provider smoke. Run these with `--mode ZERO_CALL_E2E` and
+`--mode REMOTE_SMOKE`; `--mode FORMAL` requires both receipt paths. Smoke data
+has no scientific authority and cannot be reused as a formal slot.
 
 ## R1 generation interface
 

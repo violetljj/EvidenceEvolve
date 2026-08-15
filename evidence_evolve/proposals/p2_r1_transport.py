@@ -29,6 +29,7 @@ MODEL_ENV = "EVIDENCE_EVOLVE_P2_R1_MODEL"
 BLOCK_ENV = "EVIDENCE_EVOLVE_P2_R1_BLOCK"
 ARM_ENV = "EVIDENCE_EVOLVE_P2_R1_ARM"
 STATE_NAMESPACE_ENV = "EVIDENCE_EVOLVE_P2_R1_STATE_NAMESPACE"
+TRANSPORT_MODE_ENV = "EVIDENCE_EVOLVE_P2_R1_TRANSPORT_MODE"
 
 
 def _utc_now() -> str:
@@ -163,6 +164,18 @@ class TransportLedger:
             raise ExecutionProtocolViolation("start manifest is absent before remote call")
         if sha256_file(start_manifest_path) != start_manifest_sha256:
             raise ExecutionProtocolViolation("start manifest hash changed before remote call")
+        manifest = json.loads(start_manifest_path.read_text(encoding="utf-8"))
+        transport_mode = _required_manifest_field(manifest, "transport_mode")
+        if transport_mode not in {"LOCAL_DETERMINISTIC", "REMOTE"}:
+            raise ExecutionProtocolViolation("start manifest has an invalid transport mode")
+        if run_id not in _required_manifest_field(manifest, "authorized_run_ids"):
+            raise ExecutionProtocolViolation("run is not authorized by the start manifest")
+        self.max_slots = int(_required_manifest_field(manifest, "slot_budget_per_run"))
+        if self.max_slots not in {1, 5}:
+            raise ExecutionProtocolViolation("start manifest has an invalid per-run slot budget")
+        if transport_mode == "REMOTE" and not manifest.get("remote_calls_permitted"):
+            raise ExecutionProtocolViolation("remote transport is locked by the start manifest")
+        self.transport_mode = transport_mode
         expected = TransportLedgerRecord(
             run_id=run_id,
             block=block,
@@ -320,9 +333,9 @@ class TransportLedger:
                         "scientific slot is closed by a protocol violation"
                     )
                 return pending.slot, "REMOTE"
-            if len(record.slots) >= MAX_SCIENTIFIC_SLOTS:
+            if len(record.slots) >= self.max_slots:
                 raise ExecutionProtocolViolation(
-                    "a sixth scientific proposal slot is forbidden"
+                    "the start-manifest slot budget for this run is exhausted"
                 )
             slot = ScientificSlotRecord(
                 slot_id=f"{record.run_id}-slot-{len(record.slots) + 1:02d}",
@@ -470,6 +483,12 @@ def _required_env(name: str) -> str:
     return value
 
 
+def _required_manifest_field(manifest: dict[str, Any], name: str) -> Any:
+    if name not in manifest:
+        raise ExecutionProtocolViolation(f"start manifest lacks required field: {name}")
+    return manifest[name]
+
+
 def install_transport_audit_from_environment() -> None:
     global _INSTALLED
     if _INSTALLED:
@@ -496,6 +515,9 @@ def install_transport_audit_from_environment() -> None:
 
     original_high_level = llm_module.AsyncLLMClient.query
     original_transport = llm_module.query_async
+    transport_mode = _required_env(TRANSPORT_MODE_ENV)
+    if transport_mode != ledger.transport_mode:
+        raise ExecutionProtocolViolation("environment transport mode differs from manifest")
 
     async def audited_high_level(
         client: Any,
@@ -606,10 +628,45 @@ def install_transport_audit_from_environment() -> None:
         actual_sha256 = sha256_object(actual_payload)
         if actual_sha256 != expected_payload:
             raise ExecutionProtocolViolation("transport payload differs from slot payload")
+
+        async def invoke() -> Any:
+            if transport_mode == "REMOTE":
+                return await original_transport(*args, **kwargs)
+            if transport_mode != "LOCAL_DETERMINISTIC":
+                raise ExecutionProtocolViolation("unknown execution transport mode")
+            from shinka.llm.providers import QueryResult
+
+            content = (
+                "<NAME>zero_call_contract_probe</NAME>\n"
+                "<DESCRIPTION>Exercise the real post-transport production path.</DESCRIPTION>\n"
+                "<DIFF>\n<<<<<<< SEARCH\n"
+                "__EVIDENCE_EVOLVE_ZERO_CALL_SENTINEL__\n"
+                "=======\n__EVIDENCE_EVOLVE_ZERO_CALL_SENTINEL__\n"
+                ">>>>>>> REPLACE\n</DIFF>"
+            )
+            return QueryResult(
+                content=content,
+                msg=kwargs["msg"],
+                system_msg=kwargs["system_msg"],
+                new_msg_history=[
+                    *kwargs.get("msg_history", []),
+                    {"role": "assistant", "content": content},
+                ],
+                model_name=str(kwargs.get("model_name", "")),
+                kwargs={
+                    key: value
+                    for key, value in kwargs.items()
+                    if key not in {"msg", "system_msg", "msg_history"}
+                },
+                input_tokens=0,
+                output_tokens=0,
+                cost=0.0,
+            )
+
         return await ledger.call_transport(
             slot_number=slot,
             payload_sha256=actual_sha256,
-            call=lambda: original_transport(*args, **kwargs),
+            call=invoke,
         )
 
     llm_module.AsyncLLMClient.query = audited_high_level

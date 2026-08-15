@@ -105,6 +105,85 @@
       "title": "ArmRun",
       "type": "object"
     },
+    "P2R1RemoteSmokeReceipt": {
+      "additionalProperties": false,
+      "properties": {
+        "arms": {
+          "items": {
+            "$ref": "#/$defs/P2R1SmokeArmReceipt"
+          },
+          "maxItems": 2,
+          "minItems": 2,
+          "title": "Arms",
+          "type": "array"
+        },
+        "executor_commit": {
+          "pattern": "^[0-9a-f]{40}$",
+          "title": "Executor Commit",
+          "type": "string"
+        },
+        "protocol_id": {
+          "const": "SHINKA_NATIVE_P2_R1",
+          "title": "Protocol Id",
+          "type": "string"
+        },
+        "protocol_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Protocol Sha256",
+          "type": "string"
+        },
+        "remote_scientific_slots": {
+          "const": 2,
+          "default": 2,
+          "title": "Remote Scientific Slots",
+          "type": "integer"
+        },
+        "reusable_as_scientific_evidence": {
+          "const": false,
+          "default": false,
+          "title": "Reusable As Scientific Evidence",
+          "type": "boolean"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scientific_outcome_authority": {
+          "const": "NONE",
+          "default": "NONE",
+          "title": "Scientific Outcome Authority",
+          "type": "string"
+        },
+        "slots_per_arm": {
+          "const": 1,
+          "default": 1,
+          "title": "Slots Per Arm",
+          "type": "integer"
+        },
+        "start_manifest_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Start Manifest Sha256",
+          "type": "string"
+        },
+        "status": {
+          "const": "PASS",
+          "default": "PASS",
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "protocol_id",
+        "protocol_sha256",
+        "executor_commit",
+        "start_manifest_sha256",
+        "arms"
+      ],
+      "title": "P2R1RemoteSmokeReceipt",
+      "type": "object"
+    },
     "P2R1RunManifest": {
       "additionalProperties": false,
       "properties": {
@@ -573,9 +652,74 @@
       "title": "P2R1SlotSpec",
       "type": "object"
     },
+    "P2R1SmokeArmReceipt": {
+      "additionalProperties": false,
+      "properties": {
+        "arm": {
+          "enum": [
+            "official",
+            "native"
+          ],
+          "title": "Arm",
+          "type": "string"
+        },
+        "evaluator_reached": {
+          "const": true,
+          "default": true,
+          "title": "Evaluator Reached",
+          "type": "boolean"
+        },
+        "request_payload_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Request Payload Sha256",
+          "type": "string"
+        },
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "scientific_slots": {
+          "const": 1,
+          "default": 1,
+          "title": "Scientific Slots",
+          "type": "integer"
+        },
+        "state_namespace": {
+          "title": "State Namespace",
+          "type": "string"
+        },
+        "terminal_funnel_state": {
+          "title": "Terminal Funnel State",
+          "type": "string"
+        },
+        "transport_attempts": {
+          "maximum": 3,
+          "minimum": 1,
+          "title": "Transport Attempts",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "arm",
+        "run_id",
+        "state_namespace",
+        "transport_attempts",
+        "request_payload_sha256",
+        "terminal_funnel_state"
+      ],
+      "title": "P2R1SmokeArmReceipt",
+      "type": "object"
+    },
     "P2R1StartManifest": {
       "additionalProperties": false,
       "properties": {
+        "authorized_run_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Authorized Run Ids",
+          "type": "array"
+        },
         "baseline_admission": {
           "additionalProperties": true,
           "title": "Baseline Admission",
@@ -588,6 +732,15 @@
         "dry_run": {
           "title": "Dry Run",
           "type": "boolean"
+        },
+        "execution_mode": {
+          "enum": [
+            "ZERO_CALL_E2E",
+            "REMOTE_SMOKE",
+            "FORMAL"
+          ],
+          "title": "Execution Mode",
+          "type": "string"
         },
         "executor_commit": {
           "pattern": "^[0-9a-f]{40}$",
@@ -604,6 +757,13 @@
             "type": "string"
           },
           "title": "Frozen Asset Hashes",
+          "type": "object"
+        },
+        "gate_receipt_hashes": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Gate Receipt Hashes",
           "type": "object"
         },
         "protocol_id": {
@@ -624,6 +784,15 @@
         "remote_calls_permitted": {
           "title": "Remote Calls Permitted",
           "type": "boolean"
+        },
+        "remote_slot_budget": {
+          "enum": [
+            0,
+            2,
+            100
+          ],
+          "title": "Remote Slot Budget",
+          "type": "integer"
         },
         "request_metadata": {
           "additionalProperties": true,
@@ -661,11 +830,27 @@
           "title": "Scientific Slots Total",
           "type": "integer"
         },
+        "slot_budget_per_run": {
+          "enum": [
+            1,
+            5
+          ],
+          "title": "Slot Budget Per Run",
+          "type": "integer"
+        },
         "transport_attempts_per_slot_max": {
           "const": 3,
           "default": 3,
           "title": "Transport Attempts Per Slot Max",
           "type": "integer"
+        },
+        "transport_mode": {
+          "enum": [
+            "LOCAL_DETERMINISTIC",
+            "REMOTE"
+          ],
+          "title": "Transport Mode",
+          "type": "string"
         }
       },
       "required": [
@@ -674,8 +859,14 @@
         "executor_commit",
         "executor_parent_lineage",
         "created_at",
+        "execution_mode",
         "dry_run",
         "remote_calls_permitted",
+        "transport_mode",
+        "remote_slot_budget",
+        "slot_budget_per_run",
+        "authorized_run_ids",
+        "gate_receipt_hashes",
         "schedule_source",
         "schedule",
         "frozen_asset_hashes",
@@ -685,6 +876,93 @@
         "resources"
       ],
       "title": "P2R1StartManifest",
+      "type": "object"
+    },
+    "P2R1ZeroCallE2EReceipt": {
+      "additionalProperties": false,
+      "properties": {
+        "analysis_input_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Analysis Input Sha256",
+          "type": "string"
+        },
+        "analysis_result_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Analysis Result Sha256",
+          "type": "string"
+        },
+        "executor_commit": {
+          "pattern": "^[0-9a-f]{40}$",
+          "title": "Executor Commit",
+          "type": "string"
+        },
+        "production_path": {
+          "const": "DRIVER_ENGINE_STATE_PROMPT_RECEIPT_COLLECTOR_FROZEN_ANALYZER_FINAL_ASSESSMENT",
+          "title": "Production Path",
+          "type": "string"
+        },
+        "protocol_id": {
+          "const": "SHINKA_NATIVE_P2_R1",
+          "title": "Protocol Id",
+          "type": "string"
+        },
+        "protocol_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Protocol Sha256",
+          "type": "string"
+        },
+        "remote_model_calls": {
+          "const": 0,
+          "default": 0,
+          "title": "Remote Model Calls",
+          "type": "integer"
+        },
+        "run_count": {
+          "const": 20,
+          "default": 20,
+          "title": "Run Count",
+          "type": "integer"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scientific_outcome_authority": {
+          "const": "NONE",
+          "default": "NONE",
+          "title": "Scientific Outcome Authority",
+          "type": "string"
+        },
+        "slot_count": {
+          "const": 100,
+          "default": 100,
+          "title": "Slot Count",
+          "type": "integer"
+        },
+        "start_manifest_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Start Manifest Sha256",
+          "type": "string"
+        },
+        "status": {
+          "const": "PASS",
+          "default": "PASS",
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "protocol_id",
+        "protocol_sha256",
+        "executor_commit",
+        "production_path",
+        "start_manifest_sha256",
+        "analysis_input_sha256",
+        "analysis_result_sha256"
+      ],
+      "title": "P2R1ZeroCallE2EReceipt",
       "type": "object"
     },
     "ProposalSlot": {
@@ -1105,8 +1383,14 @@
       "$ref": "#/$defs/P2R1RunReceipt"
     },
     {
+      "$ref": "#/$defs/P2R1ZeroCallE2EReceipt"
+    },
+    {
+      "$ref": "#/$defs/P2R1RemoteSmokeReceipt"
+    },
+    {
       "$ref": "#/$defs/TransportLedgerRecord"
     }
   ],
-  "title": "P2-R1 Execution Manifests, Transport Ledgers, and Receipts"
+  "title": "P2-R1 Execution Manifests, Admission Gates, Transport Ledgers, and Receipts"
 }

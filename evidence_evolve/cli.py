@@ -665,8 +665,14 @@ def command_search_p2_r1(args: argparse.Namespace) -> int:
         repo=_repo_root(args.repo),
         protocol_path=Path(args.protocol),
         run_root=Path(args.run_root),
-        dry_run=args.dry_run,
+        execution_mode=args.mode,
         max_parallel_blocks=args.max_parallel_blocks,
+        zero_call_receipt=(
+            Path(args.zero_call_receipt) if args.zero_call_receipt else None
+        ),
+        remote_smoke_receipt=(
+            Path(args.remote_smoke_receipt) if args.remote_smoke_receipt else None
+        ),
     )
     print(_json(result))
     return 0
@@ -913,14 +919,20 @@ def build_parser() -> argparse.ArgumentParser:
     mechanics_admission.set_defaults(handler=command_search_mechanics_admission)
     p2_r1 = search_commands.add_parser(
         "p2-r1",
-        help="run or dry-run the frozen P2-R1 Official/Native schedule",
+        help="admit, smoke, or formally run the frozen P2-R1 schedule",
     )
     p2_r1.add_argument(
         "--protocol",
         default="research/parity/shinka_native_p2_r1.protocol.json",
     )
     p2_r1.add_argument("--run-root", required=True)
-    p2_r1.add_argument("--dry-run", action="store_true")
+    p2_r1.add_argument(
+        "--mode",
+        choices=("ZERO_CALL_E2E", "REMOTE_SMOKE", "FORMAL"),
+        required=True,
+    )
+    p2_r1.add_argument("--zero-call-receipt")
+    p2_r1.add_argument("--remote-smoke-receipt")
     p2_r1.add_argument("--max-parallel-blocks", type=int)
     p2_r1.set_defaults(handler=command_search_p2_r1)
     policy = subparsers.add_parser(

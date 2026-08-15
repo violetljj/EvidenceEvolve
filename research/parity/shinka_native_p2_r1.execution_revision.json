@@ -1,5 +1,5 @@
 {
-  "revision_id": "P2-R1 Execution Driver Admission Revision",
+  "revision_id": "P2-R1 Execution Driver Admission Revision / E2E Gate Amendment",
   "revision_kind": "EXECUTION_ONLY_FREEZE_COMPLETION",
   "parent_commit": "2887dd19f1d80de3f198c09433d7de7156aa53f9",
   "prior_state": "P2_R1_REMOTE_ANCHORED_NOT_STARTED / EXECUTION_DRIVER_NOT_FROZEN",
@@ -16,8 +16,11 @@
     "receipt-driven crash/resume without completed-slot rerun or proposal resampling",
     "immutable start manifest before provider invocation",
     "compatible Node runtime plus frozen headless/Codex version and OAuth admission",
-    "zero-remote-call dry-run admission",
-    "automatic construction of P2R1AnalysisInput and frozen parity analysis"
+    "zero-remote-call execution through the real driver, engines, state, prompt audit, receipts, collector, frozen analyzer, and final assessment",
+    "isolated one-slot-per-arm real-provider smoke with no scientific authority",
+    "formal remote budget locked until both admission receipts bind the same protocol and executor",
+    "automatic construction of P2R1AnalysisInput and frozen parity analysis",
+    "driver namespace made identical to the frozen analyzer namespace contract"
   ],
   "excluded_scope": [
     "scientific hypothesis or outcome semantics",

@@ -193,11 +193,18 @@ the frozen headless command, Codex CLI version, and OAuth status before any
 proposal call; the selected executable and check-output hash enter the start
 manifest.
 
-Clean-checkout admission without remote generation is:
+Clean-checkout admission runs the real driver, both search engines, state,
+prompt/payload audit, receipts, collector, and frozen analyzer with a local
+deterministic transport and zero remote generation:
 
 ```text
-evolve search p2-r1 --dry-run --run-root runs/shinka_native_p2_r1_dry_run
+evolve search p2-r1 --mode ZERO_CALL_E2E --run-root runs/p2_r1_zero_call
+evolve search p2-r1 --mode REMOTE_SMOKE --run-root runs/p2_r1_smoke
 ```
+
+The second command is hard-limited to one isolated slot per arm. Formal mode
+will not create a remote-capable start manifest unless both PASS receipts from
+the same protocol hash and executor commit are supplied.
 
 The lineage is `2887dd19... / EXECUTION_DRIVER_NOT_FROZEN` to
 `P2_R1_EXECUTION_COMPLETE_FROZEN_COMMITTED_NOT_STARTED`. The revision made zero

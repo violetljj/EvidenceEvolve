@@ -4,7 +4,7 @@
   "protocol_status": "P2_R1_EXECUTION_COMPLETE_FROZEN_COMMITTED_NOT_STARTED",
   "execution_started": false,
   "remote_model_calls_at_freeze": 0,
-  "protocol_sha256": "88589be3c0d6f6991cb4cf2be8b31c9db20c7fe89dad04ac73b9e903c922860e",
+  "protocol_sha256": "50ce4d0c979e267fd98d09c74121b9c8f589b6503c72244630d8b879a16a472c",
   "repository_base_commit": "2887dd19f1d80de3f198c09433d7de7156aa53f9",
   "claim_scope": "REAL_PROVIDER_MATCHED_BLOCK_NON_INFERIORITY",
   "lineage": [
@@ -84,7 +84,7 @@
     },
     "cli_dispatch": {
       "path": "evidence_evolve/cli.py",
-      "sha256": "76d4677032f17c6df2ebe0e9b9f0e0a108d6c6dfa837e2f38badd2615363a082"
+      "sha256": "0dcb2d3b8ffe39b5dedaa82030b384876cec5b4e7ed0bc45f249e22ad62dd191"
     },
     "p2_r0_manifest": {
       "path": "research/parity/shinka_native_p2_r0.manifest.json",
@@ -112,11 +112,11 @@
     },
     "execution_driver": {
       "path": "evidence_evolve/proposals/p2_r1_execution.py",
-      "sha256": "d463c885d2b10f5dd34dab4a02b271803731fef9b936e3b3d42fe72398b2d194"
+      "sha256": "36f5482b86245898a99f3a89edfb50aa4543a3f781c7cd893a1fcb14d1fbced7"
     },
     "transport_audit": {
       "path": "evidence_evolve/proposals/p2_r1_transport.py",
-      "sha256": "1f1a31aef4fadfdb4fe84a71630978a1b95d656d2f9b9bdf6cac84abde285474"
+      "sha256": "82affdd58b3f913074ba5a69151e9e75c1d3f7108debfaccfc5b4b9de4734010"
     },
     "runtime_bootstrap": {
       "path": "research/parity/p2_r1_runtime/sitecustomize.py",
@@ -124,15 +124,15 @@
     },
     "execution_tests": {
       "path": "tests/test_p2_r1_execution.py",
-      "sha256": "b7f1f3fc384a121f345827ab197f921f57426421afd9b0c346130e54b207d013"
+      "sha256": "23f33b406ef039315e908c4e86950c4d5d58658c4e4f1a5f8c3d363d348fab4e"
     },
     "execution_manifest_schema": {
       "path": "schemas/p2_r1_execution.schema.json",
-      "sha256": "bf4a9562eb0d03a957b087755899afbc7b4f9010d10edd08c0fb651537253437"
+      "sha256": "5b09b6b3121e5ad33c319006cfe2ac526adfc0c85de90ecced11495111b3f49f"
     },
     "execution_revision": {
       "path": "research/parity/shinka_native_p2_r1.execution_revision.json",
-      "sha256": "22379f8fdf3465ca92fed06f64e60caffdc995e995ef5f9ced87946414334411"
+      "sha256": "0bbc861f7e695b0f35fbad7381bb00b54f04cdddeca78087e6e4b610a023c387"
     }
   },
   "upstream_assets": {

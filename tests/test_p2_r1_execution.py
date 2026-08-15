@@ -14,8 +14,15 @@ from evidence_evolve.proposals.non_inferiority import (
     load_and_validate_p2_r1_protocol,
 )
 from evidence_evolve.proposals.p2_r1_execution import (
+    P2R1StartManifest,
     P2R1Schedule,
     build_p2_r1_schedule,
+)
+from evidence_evolve.proposals.parity_analysis import (
+    ArmRun,
+    P2R1AnalysisInput,
+    ProposalSlot,
+    analyze_p2_r1,
 )
 from evidence_evolve.proposals.p2_r1_transport import (
     ExecutionProtocolViolation,
@@ -35,17 +42,25 @@ def _protocol():
     return load_and_validate_p2_r1_protocol(PROTOCOL_PATH, repo=REPO)
 
 
-def _ledger(tmp_path: Path) -> TransportLedger:
+def _ledger(tmp_path: Path, *, slot_budget_per_run: int = 5) -> TransportLedger:
     start = tmp_path / "start_manifest.json"
     if not start.exists():
-        create_once_json(start, {"remote_calls_permitted": True})
+        create_once_json(
+            start,
+            {
+                "remote_calls_permitted": True,
+                "transport_mode": "REMOTE",
+                "authorized_run_ids": ["p2-r1-b01-official"],
+                "slot_budget_per_run": slot_budget_per_run,
+            },
+        )
     return TransportLedger(
         audit_dir=tmp_path / "audit",
         run_id="p2-r1-b01-official",
         block=1,
         arm="official",
         paired_local_seed=2026081501,
-        state_namespace="p2-r1:block-01:arm-official",
+        state_namespace="p2-r1-block-01-official",
         protocol_sha256="a" * 64,
         executor_commit="b" * 40,
         start_manifest_path=start,
@@ -79,6 +94,79 @@ def test_schedule_is_exactly_reconstructed_from_protocol(tmp_path: Path) -> None
     assert [run.sequence for run in schedule.runs] == list(range(1, 21))
     assert sum(len(run.slots) for run in schedule.runs) == 100
     assert all(slot.model == "gpt-5.6-terra" for run in schedule.runs for slot in run.slots)
+
+
+def test_driver_schedule_is_consumed_directly_by_frozen_analyzer(tmp_path: Path) -> None:
+    protocol = _protocol()
+    schedule = build_p2_r1_schedule(protocol, run_root=tmp_path)
+    runs = []
+    for run in schedule.runs:
+        runs.append(
+            ArmRun(
+                block=run.block,
+                arm=run.arm,
+                baseline_score=1.0,
+                initial_program_sha256=protocol.frozen_assets["initial_program"].sha256,
+                evaluator_sha256=protocol.frozen_assets["evaluator"].sha256,
+                config_sha256=protocol.frozen_assets["config"].sha256,
+                initial_incumbent_sha256=protocol.frozen_assets["initial_program"].sha256,
+                state_namespace=run.state_namespace,
+                slots=[
+                    ProposalSlot(
+                        slot=slot,
+                        model_invocation_started=False,
+                        proposal_received=False,
+                        proposal_extracted=False,
+                        materialized=False,
+                        compiled=False,
+                        evaluator_reached=False,
+                        evaluator_valid=False,
+                    )
+                    for slot in range(1, 6)
+                ],
+                observed_input_tokens=0,
+                observed_output_tokens=0,
+                observed_cost=0.0,
+                wall_seconds=0.0,
+                resume_consistent=True,
+            )
+        )
+    analysis_input = P2R1AnalysisInput(
+        protocol_id=protocol.protocol_id,
+        protocol_sha256=protocol.protocol_sha256,
+        runs=runs,
+    )
+    result = analyze_p2_r1(analysis_input, protocol)
+    assert result.statistical_eligibility == "NOT_EVALUABLE_DATA"
+
+
+def test_formal_start_manifest_requires_both_gate_receipts(tmp_path: Path) -> None:
+    protocol = _protocol()
+    schedule = build_p2_r1_schedule(protocol, run_root=tmp_path)
+    payload = {
+        "protocol_id": protocol.protocol_id,
+        "protocol_sha256": protocol.protocol_sha256,
+        "executor_commit": "a" * 40,
+        "executor_parent_lineage": "b" * 40,
+        "created_at": "now",
+        "execution_mode": "FORMAL",
+        "dry_run": False,
+        "remote_calls_permitted": True,
+        "transport_mode": "REMOTE",
+        "remote_slot_budget": 100,
+        "slot_budget_per_run": 5,
+        "authorized_run_ids": [run.run_id for run in schedule.runs],
+        "gate_receipt_hashes": {},
+        "schedule_source": "protocol.design.schedule",
+        "schedule": schedule.model_dump(),
+        "frozen_asset_hashes": {},
+        "request_metadata": {},
+        "baseline_admission": {},
+        "provider_admission": {},
+        "resources": {},
+    }
+    with pytest.raises(ValidationError, match="both admission gate receipts"):
+        P2R1StartManifest.model_validate(payload)
 
 
 def test_schedule_rejects_injected_namespace_or_database_collision(tmp_path: Path) -> None:
@@ -117,7 +205,7 @@ def test_transport_retry_is_three_identical_attempts_and_one_slot(tmp_path: Path
     assert record.slots[0].block == 1
     assert record.slots[0].arm == "official"
     assert record.slots[0].paired_local_seed == 2026081501
-    assert record.slots[0].state_namespace == "p2-r1:block-01:arm-official"
+    assert record.slots[0].state_namespace == "p2-r1-block-01-official"
     assert record.slots[0].executor_commit == "b" * 40
     assert record.slots[0].protocol_sha256 == "a" * 64
     assert {attempt.payload_sha256 for attempt in record.slots[0].attempts} == {"c" * 64}
@@ -125,6 +213,16 @@ def test_transport_retry_is_three_identical_attempts_and_one_slot(tmp_path: Path
 
     with pytest.raises(TransportAttemptLimitReached, match="fourth"):
         ledger.begin_attempt(slot, "c" * 64)
+
+
+def test_smoke_manifest_hard_limits_each_arm_to_one_slot(tmp_path: Path) -> None:
+    ledger = _ledger(tmp_path, slot_budget_per_run=1)
+    slot = _slot(ledger)
+    record = TransportLedgerRecord.model_validate_json(ledger.path.read_text())
+    record.slots[slot - 1].scientific_state = "COMPLETE"
+    ledger._write(record)
+    with pytest.raises(ExecutionProtocolViolation, match="slot budget"):
+        _slot(ledger)
 
 
 def test_transport_payload_mutation_hard_fails_without_attempt(tmp_path: Path) -> None:
@@ -273,7 +371,7 @@ def test_start_manifest_must_exist_and_match_before_ledger_creation(tmp_path: Pa
             block=1,
             arm="official",
             paired_local_seed=2026081501,
-            state_namespace="p2-r1:block-01:arm-official",
+            state_namespace="p2-r1-block-01-official",
             protocol_sha256="a" * 64,
             executor_commit="b" * 40,
             start_manifest_path=absent,

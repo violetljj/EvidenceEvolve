@@ -35,6 +35,9 @@ from evidence_evolve.proposals.p2_r1_transport import TransportLedgerRecord
 
 
 RUN_STATUS = Literal["PLANNED", "RUNNING", "INTERRUPTED", "COMPLETE"]
+EXECUTION_MODE = Literal["ZERO_CALL_E2E", "REMOTE_SMOKE", "FORMAL"]
+
+
 def _utc_now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
@@ -64,7 +67,7 @@ class P2R1RunSpec(StrictModel):
     @model_validator(mode="after")
     def identity_is_canonical(self) -> "P2R1RunSpec":
         expected_run = f"p2-r1-b{self.block:02d}-{self.arm}"
-        expected_namespace = f"p2-r1:block-{self.block:02d}:arm-{self.arm}"
+        expected_namespace = f"p2-r1-block-{self.block:02d}-{self.arm}"
         if self.run_id != expected_run or self.state_namespace != expected_namespace:
             raise ValueError("run or state namespace is not protocol-derived")
         for slot in self.slots:
@@ -116,8 +119,14 @@ class P2R1StartManifest(StrictModel):
     executor_commit: str = Field(pattern=r"^[0-9a-f]{40}$")
     executor_parent_lineage: str = Field(pattern=r"^[0-9a-f]{40}$")
     created_at: str
+    execution_mode: EXECUTION_MODE
     dry_run: bool
     remote_calls_permitted: bool
+    transport_mode: Literal["LOCAL_DETERMINISTIC", "REMOTE"]
+    remote_slot_budget: Literal[0, 2, 100]
+    slot_budget_per_run: Literal[1, 5]
+    authorized_run_ids: list[str]
+    gate_receipt_hashes: dict[str, str]
     schedule_source: Literal["protocol.design.schedule"]
     schedule: P2R1Schedule
     frozen_asset_hashes: dict[str, str]
@@ -131,8 +140,100 @@ class P2R1StartManifest(StrictModel):
 
     @model_validator(mode="after")
     def dry_run_cannot_permit_remote_calls(self) -> "P2R1StartManifest":
-        if self.remote_calls_permitted == self.dry_run:
-            raise ValueError("dry-run and remote-call authority are inconsistent")
+        run_count = len(self.authorized_run_ids)
+        expected = {
+            "ZERO_CALL_E2E": (True, False, "LOCAL_DETERMINISTIC", 0, 5, 20),
+            "REMOTE_SMOKE": (False, True, "REMOTE", 2, 1, 2),
+            "FORMAL": (False, True, "REMOTE", 100, 5, 20),
+        }[self.execution_mode]
+        actual = (
+            self.dry_run,
+            self.remote_calls_permitted,
+            self.transport_mode,
+            self.remote_slot_budget,
+            self.slot_budget_per_run,
+            run_count,
+        )
+        if actual != expected or len(set(self.authorized_run_ids)) != run_count:
+            raise ValueError("execution mode and remote budget authority are inconsistent")
+        if self.execution_mode == "FORMAL":
+            if set(self.gate_receipt_hashes) != {"zero_call_e2e", "remote_smoke"}:
+                raise ValueError("formal execution lacks both admission gate receipts")
+        elif self.gate_receipt_hashes:
+            raise ValueError("pre-formal execution cannot carry a budget unlock")
+        return self
+
+
+class P2R1SmokeRunSpec(StrictModel):
+    run_id: str
+    block: int = Field(ge=1, le=10)
+    arm: Arm
+    paired_local_seed: int
+    state_namespace: str
+    results_dir: str
+    database_path: str
+    audit_dir: str
+
+    @model_validator(mode="after")
+    def smoke_is_visibly_non_scientific(self) -> "P2R1SmokeRunSpec":
+        suffix = f"-{self.arm}"
+        if not self.run_id.startswith("p2-r1-smoke-") or not self.run_id.endswith(
+            suffix
+        ):
+            raise ValueError("smoke run identity is not canonical")
+        if self.state_namespace != self.run_id:
+            raise ValueError("smoke state namespace must equal its isolated run id")
+        return self
+
+
+class P2R1ZeroCallE2EReceipt(StrictModel):
+    schema_version: Literal["1.0"] = "1.0"
+    protocol_id: Literal["SHINKA_NATIVE_P2_R1"]
+    protocol_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    executor_commit: str = Field(pattern=r"^[0-9a-f]{40}$")
+    status: Literal["PASS"] = "PASS"
+    remote_model_calls: Literal[0] = 0
+    production_path: Literal[
+        "DRIVER_ENGINE_STATE_PROMPT_RECEIPT_COLLECTOR_FROZEN_ANALYZER_FINAL_ASSESSMENT"
+    ]
+    run_count: Literal[20] = 20
+    slot_count: Literal[100] = 100
+    start_manifest_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    analysis_input_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    analysis_result_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    scientific_outcome_authority: Literal["NONE"] = "NONE"
+
+
+class P2R1SmokeArmReceipt(StrictModel):
+    arm: Arm
+    run_id: str
+    state_namespace: str
+    scientific_slots: Literal[1] = 1
+    transport_attempts: int = Field(ge=1, le=3)
+    request_payload_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    evaluator_reached: Literal[True] = True
+    terminal_funnel_state: str
+
+
+class P2R1RemoteSmokeReceipt(StrictModel):
+    schema_version: Literal["1.0"] = "1.0"
+    protocol_id: Literal["SHINKA_NATIVE_P2_R1"]
+    protocol_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    executor_commit: str = Field(pattern=r"^[0-9a-f]{40}$")
+    status: Literal["PASS"] = "PASS"
+    remote_scientific_slots: Literal[2] = 2
+    slots_per_arm: Literal[1] = 1
+    start_manifest_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    arms: Annotated[list[P2R1SmokeArmReceipt], Field(min_length=2, max_length=2)]
+    reusable_as_scientific_evidence: Literal[False] = False
+    scientific_outcome_authority: Literal["NONE"] = "NONE"
+
+    @model_validator(mode="after")
+    def arms_are_isolated(self) -> "P2R1RemoteSmokeReceipt":
+        if {item.arm for item in self.arms} != {"official", "native"} or len(
+            {item.state_namespace for item in self.arms}
+        ) != 2:
+            raise ValueError("smoke must contain two isolated arms")
         return self
 
 
@@ -271,9 +372,7 @@ def build_p2_r1_schedule(
                     position_in_block=position,
                     arm=arm,
                     paired_local_seed=matched_block.local_seed,
-                    state_namespace=(
-                        f"p2-r1:block-{matched_block.block:02d}:arm-{arm}"
-                    ),
+                    state_namespace=f"p2-r1-block-{matched_block.block:02d}-{arm}",
                     results_dir=str(results_dir),
                     database_path=str(results_dir / "programs.sqlite"),
                     audit_dir=str(audit_dir),
@@ -358,14 +457,23 @@ class P2R1ExecutionDriver:
         repo: Path,
         protocol_path: Path,
         run_root: Path,
-        dry_run: bool,
+        execution_mode: EXECUTION_MODE,
         max_parallel_blocks: int | None = None,
+        zero_call_receipt: Path | None = None,
+        remote_smoke_receipt: Path | None = None,
     ) -> None:
         self.repo = repo.resolve()
         self.protocol_path = protocol_path.resolve()
         self.run_root = run_root.resolve()
-        self.dry_run = dry_run
+        self.execution_mode = execution_mode
+        self.dry_run = execution_mode == "ZERO_CALL_E2E"
         self.max_parallel_blocks = max_parallel_blocks
+        self.zero_call_receipt = (
+            zero_call_receipt.resolve() if zero_call_receipt else None
+        )
+        self.remote_smoke_receipt = (
+            remote_smoke_receipt.resolve() if remote_smoke_receipt else None
+        )
         self.protocol = load_and_validate_p2_r1_protocol(
             self.protocol_path, repo=self.repo
         )
@@ -373,6 +481,53 @@ class P2R1ExecutionDriver:
         self.executor_commit = _git_output(self.repo, "rev-parse", "HEAD")
         self.start_manifest_path = self.run_root / "start_manifest.json"
         self.task_dir = self.run_root / "frozen_task"
+
+    def _smoke_runs(self) -> list[P2R1SmokeRunSpec]:
+        first = self.protocol.design.schedule[0]
+        runs = []
+        for arm in ("official", "native"):
+            run_id = f"p2-r1-smoke-{self.executor_commit[:12]}-{arm}"
+            results = self.run_root / "results" / arm
+            runs.append(
+                P2R1SmokeRunSpec(
+                    run_id=run_id,
+                    block=first.block,
+                    arm=arm,
+                    paired_local_seed=first.local_seed,
+                    state_namespace=run_id,
+                    results_dir=str(results),
+                    database_path=str(results / "programs.sqlite"),
+                    audit_dir=str(self.run_root / "audit" / arm),
+                )
+            )
+        return runs
+
+    def _gate_receipt_hashes(self) -> dict[str, str]:
+        if self.execution_mode != "FORMAL":
+            return {}
+        if self.zero_call_receipt is None or self.remote_smoke_receipt is None:
+            raise RuntimeError(
+                "formal budget is locked: zero-call and remote-smoke receipts are required"
+            )
+        zero = P2R1ZeroCallE2EReceipt.model_validate_json(
+            self.zero_call_receipt.read_text(encoding="utf-8")
+        )
+        smoke = P2R1RemoteSmokeReceipt.model_validate_json(
+            self.remote_smoke_receipt.read_text(encoding="utf-8")
+        )
+        expected = (
+            self.protocol.protocol_id,
+            self.protocol.protocol_sha256,
+            self.executor_commit,
+        )
+        if (zero.protocol_id, zero.protocol_sha256, zero.executor_commit) != expected:
+            raise RuntimeError("zero-call receipt does not bind this frozen executor")
+        if (smoke.protocol_id, smoke.protocol_sha256, smoke.executor_commit) != expected:
+            raise RuntimeError("remote-smoke receipt does not bind this frozen executor")
+        return {
+            "zero_call_e2e": sha256_file(self.zero_call_receipt),
+            "remote_smoke": sha256_file(self.remote_smoke_receipt),
+        }
 
     def _assert_clean_checkout(self) -> None:
         if _git_output(self.repo, "status", "--porcelain"):
@@ -410,7 +565,13 @@ class P2R1ExecutionDriver:
 
     def _claim_namespaces(self) -> None:
         claims = self.run_root / "state_namespaces"
-        for run in self.schedule.runs:
+        runs: list[P2R1RunSpec | P2R1SmokeRunSpec]
+        runs = (
+            self._smoke_runs()
+            if self.execution_mode == "REMOTE_SMOKE"
+            else self.schedule.runs
+        )
+        for run in runs:
             claim_path = claims / f"{sha256_object(run.state_namespace)}.json"
             payload = {
                 "state_namespace": run.state_namespace,
@@ -557,14 +718,34 @@ class P2R1ExecutionDriver:
     ) -> P2R1StartManifest:
         resources = _resource_receipt()
         resources["max_parallel_blocks"] = self._parallelism(resources)
+        smoke_runs = self._smoke_runs()
+        authorized_run_ids = (
+            [run.run_id for run in smoke_runs]
+            if self.execution_mode == "REMOTE_SMOKE"
+            else [run.run_id for run in self.schedule.runs]
+        )
         return P2R1StartManifest(
             protocol_id=self.protocol.protocol_id,
             protocol_sha256=self.protocol.protocol_sha256,
             executor_commit=self.executor_commit,
             executor_parent_lineage=self.protocol.repository_base_commit,
             created_at=_utc_now(),
+            execution_mode=self.execution_mode,
             dry_run=self.dry_run,
-            remote_calls_permitted=not self.dry_run,
+            remote_calls_permitted=self.execution_mode != "ZERO_CALL_E2E",
+            transport_mode=(
+                "LOCAL_DETERMINISTIC"
+                if self.execution_mode == "ZERO_CALL_E2E"
+                else "REMOTE"
+            ),
+            remote_slot_budget={
+                "ZERO_CALL_E2E": 0,
+                "REMOTE_SMOKE": 2,
+                "FORMAL": 100,
+            }[self.execution_mode],
+            slot_budget_per_run=(1 if self.execution_mode == "REMOTE_SMOKE" else 5),
+            authorized_run_ids=authorized_run_ids,
+            gate_receipt_hashes=self._gate_receipt_hashes(),
             schedule_source="protocol.design.schedule",
             schedule=self.schedule,
             frozen_asset_hashes={
@@ -583,7 +764,7 @@ class P2R1ExecutionDriver:
                     self.protocol.provider.headless_timeout_seconds_per_attempt
                 ),
                 "dynamic_prompt_hashes": "RECORDED_BEFORE_EACH_TRANSPORT_ATTEMPT",
-                "remote_invocation_in_dry_run": False,
+                "remote_invocation_in_zero_call_e2e": False,
             },
             baseline_admission=baseline_admission,
             provider_admission=provider_admission,
@@ -622,10 +803,10 @@ class P2R1ExecutionDriver:
         create_once_json(self.start_manifest_path, proposed)
         return proposed
 
-    def _command(self, run: P2R1RunSpec) -> list[str]:
-        generations = str(
-            self.protocol.design.arm_budgets[run.arm].generation_slots_including_baseline_per_run
-        )
+    def _command(
+        self, run: P2R1RunSpec | P2R1SmokeRunSpec, *, proposal_slots: int = 5
+    ) -> list[str]:
+        generations = str(proposal_slots + 1)
         common = [
             "--task-dir",
             str(self.task_dir),
@@ -689,7 +870,7 @@ class P2R1ExecutionDriver:
             create_once_json(path, manifest)
         return path, manifest
 
-    def _environment(self, run: P2R1RunSpec) -> dict[str, str]:
+    def _environment(self, run: P2R1RunSpec | P2R1SmokeRunSpec) -> dict[str, str]:
         environment = os.environ.copy()
         node_dir = str(
             Path(
@@ -730,6 +911,11 @@ class P2R1ExecutionDriver:
                 "EVIDENCE_EVOLVE_P2_R1_MODEL": (
                     f"headless/codex@{self.protocol.provider.model}"
                     f"?effort={self.protocol.provider.reasoning_effort}"
+                ),
+                "EVIDENCE_EVOLVE_P2_R1_TRANSPORT_MODE": (
+                    "LOCAL_DETERMINISTIC"
+                    if self.execution_mode == "ZERO_CALL_E2E"
+                    else "REMOTE"
                 ),
                 "EVIDENCE_EVOLVE_P2_R1_INITIAL_SHA256": (
                     self.protocol.frozen_assets["initial_program"].sha256
@@ -854,30 +1040,89 @@ class P2R1ExecutionDriver:
         block_runs.sort(key=lambda run: run.position_in_block)
         return [self._execute_one(run) for run in block_runs]
 
-    def run(self) -> dict[str, Any]:
-        manifest = self.admit()
-        for run in self.schedule.runs:
-            self._run_manifest(run)
-            if not self._status_path(run).exists():
-                self._write_status(run, "PLANNED")
-        if self.dry_run:
-            return {
-                "status": "DRY_RUN_ADMITTED",
-                "start_manifest": str(self.start_manifest_path),
-                "start_manifest_sha256": sha256_file(self.start_manifest_path),
-                "schedule_runs": len(self.schedule.runs),
-                "scientific_slots": sum(len(run.slots) for run in self.schedule.runs),
-                "remote_calls": 0,
-            }
-        workers = int(manifest.resources["max_parallel_blocks"])
-        receipts: list[P2R1RunReceipt] = []
-        with ThreadPoolExecutor(max_workers=workers) as executor:
-            futures = {
-                executor.submit(self._execute_block, block): block
-                for block in range(1, 11)
-            }
-            for future in as_completed(futures):
-                receipts.extend(future.result())
+    def _execute_smoke_one(self, run: P2R1SmokeRunSpec) -> P2R1SmokeArmReceipt:
+        audit_dir = Path(run.audit_dir)
+        audit_dir.mkdir(parents=True, exist_ok=True)
+        manifest_path = audit_dir / "run_manifest.json"
+        command = self._command(run, proposal_slots=1)
+        run_manifest = {
+            "schema_version": "1.0",
+            "protocol_sha256": self.protocol.protocol_sha256,
+            "executor_commit": self.executor_commit,
+            "start_manifest_sha256": sha256_file(self.start_manifest_path),
+            "run": run.model_dump(mode="json"),
+            "command": command,
+            "command_sha256": sha256_object(command),
+            "scientific_outcome_authority": "NONE",
+        }
+        if manifest_path.exists():
+            if _load_json(manifest_path) != run_manifest:
+                raise RuntimeError("smoke run manifest changed on resume")
+        else:
+            create_once_json(manifest_path, run_manifest)
+        log_path = audit_dir / "executor.log"
+        with log_path.open("a", encoding="utf-8") as log:
+            completed = subprocess.run(
+                command,
+                cwd=self.repo,
+                env=self._environment(run),
+                stdout=log,
+                stderr=subprocess.STDOUT,
+                check=False,
+            )
+        if completed.returncode != 0:
+            raise RuntimeError(f"P2-R1 smoke failed: {run.run_id} exit={completed.returncode}")
+        ledger = TransportLedgerRecord.model_validate_json(
+            (audit_dir / "transport_ledger.json").read_text(encoding="utf-8")
+        )
+        if len(ledger.slots) != 1:
+            raise RuntimeError("smoke did not consume exactly one slot")
+        programs, attempts = _read_database(Path(run.results_dir))
+        proposal = _slot_from_artifacts(1, ledger.slots[0], programs.get(1), attempts.get(1))
+        if not proposal.evaluator_reached:
+            raise RuntimeError(f"smoke did not reach the evaluator: {run.run_id}")
+        return P2R1SmokeArmReceipt(
+            arm=run.arm,
+            run_id=run.run_id,
+            state_namespace=run.state_namespace,
+            transport_attempts=len(ledger.slots[0].attempts),
+            request_payload_sha256=ledger.slots[0].request_payload_sha256,
+            evaluator_reached=True,
+            terminal_funnel_state=_terminal_class(
+                proposal,
+                float(programs[0]["combined_score"]),
+            ),
+        )
+
+    def _run_remote_smoke(self) -> dict[str, Any]:
+        self.admit()
+        runs = self._smoke_runs()
+        with ThreadPoolExecutor(max_workers=2) as executor:
+            arms = list(executor.map(self._execute_smoke_one, runs))
+        receipt = P2R1RemoteSmokeReceipt(
+            protocol_id=self.protocol.protocol_id,
+            protocol_sha256=self.protocol.protocol_sha256,
+            executor_commit=self.executor_commit,
+            start_manifest_sha256=sha256_file(self.start_manifest_path),
+            arms=arms,
+        )
+        receipt_path = self.run_root / "remote_smoke_receipt.json"
+        if receipt_path.exists():
+            existing = P2R1RemoteSmokeReceipt.model_validate_json(
+                receipt_path.read_text(encoding="utf-8")
+            )
+            if existing != receipt:
+                raise RuntimeError("remote smoke receipt changed on resume")
+        else:
+            create_once_json(receipt_path, receipt)
+        return {
+            "status": "REMOTE_SMOKE_PASS",
+            "remote_scientific_slots": 2,
+            "receipt": str(receipt_path),
+            "receipt_sha256": sha256_file(receipt_path),
+        }
+
+    def _analyze(self, receipts: list[P2R1RunReceipt]) -> tuple[Path, Path, Any]:
         receipts.sort(key=lambda receipt: (receipt.block, receipt.arm))
         analysis_input = P2R1AnalysisInput(
             protocol_id=self.protocol.protocol_id,
@@ -889,6 +1134,50 @@ class P2R1ExecutionDriver:
         result_path = self.run_root / "p2_r1_analysis_result.json"
         create_once_json(input_path, analysis_input)
         create_once_json(result_path, result)
+        return input_path, result_path, result
+
+    def run(self) -> dict[str, Any]:
+        if self.execution_mode == "REMOTE_SMOKE":
+            return self._run_remote_smoke()
+        manifest = self.admit()
+        for run in self.schedule.runs:
+            self._run_manifest(run)
+            if not self._status_path(run).exists():
+                self._write_status(run, "PLANNED")
+        workers = int(manifest.resources["max_parallel_blocks"])
+        receipts: list[P2R1RunReceipt] = []
+        with ThreadPoolExecutor(max_workers=workers) as executor:
+            futures = {
+                executor.submit(self._execute_block, block): block
+                for block in range(1, 11)
+            }
+            for future in as_completed(futures):
+                receipts.extend(future.result())
+        input_path, result_path, result = self._analyze(receipts)
+        if self.execution_mode == "ZERO_CALL_E2E":
+            receipt = P2R1ZeroCallE2EReceipt(
+                protocol_id=self.protocol.protocol_id,
+                protocol_sha256=self.protocol.protocol_sha256,
+                executor_commit=self.executor_commit,
+                production_path=(
+                    "DRIVER_ENGINE_STATE_PROMPT_RECEIPT_COLLECTOR_"
+                    "FROZEN_ANALYZER_FINAL_ASSESSMENT"
+                ),
+                start_manifest_sha256=sha256_file(self.start_manifest_path),
+                analysis_input_sha256=sha256_file(input_path),
+                analysis_result_sha256=sha256_file(result_path),
+            )
+            receipt_path = self.run_root / "zero_call_e2e_receipt.json"
+            create_once_json(receipt_path, receipt)
+            return {
+                "status": "ZERO_CALL_E2E_PASS",
+                "remote_calls": 0,
+                "run_count": 20,
+                "slot_count": 100,
+                "receipt": str(receipt_path),
+                "receipt_sha256": sha256_file(receipt_path),
+                "final_assessment": str(result_path),
+            }
         return {
             "status": "ANALYZED",
             "analysis_input": str(input_path),
@@ -1041,15 +1330,19 @@ def run_p2_r1_execution(
     repo: Path,
     protocol_path: Path,
     run_root: Path,
-    dry_run: bool,
+    execution_mode: EXECUTION_MODE,
     max_parallel_blocks: int | None,
+    zero_call_receipt: Path | None = None,
+    remote_smoke_receipt: Path | None = None,
 ) -> dict[str, Any]:
     return P2R1ExecutionDriver(
         repo=repo,
         protocol_path=protocol_path,
         run_root=run_root,
-        dry_run=dry_run,
+        execution_mode=execution_mode,
         max_parallel_blocks=max_parallel_blocks,
+        zero_call_receipt=zero_call_receipt,
+        remote_smoke_receipt=remote_smoke_receipt,
     ).run()
 
 
