@@ -23,6 +23,27 @@ def test_baseline_is_valid_and_deterministic() -> None:
     assert 0.0 <= float(first["false_block"]) <= 1.0
 
 
+def test_runtime_is_diagnostic_not_fitness(monkeypatch) -> None:
+    from tasks.scalefree_risk_fusion_v0 import locked_eval
+
+    original_predict = locked_eval._predict
+    runtime = iter((1.0, 1.0, 1000.0, 1000.0))
+
+    def noisy_runtime(function, features):
+        predicted, _ = original_predict(function, features)
+        return predicted, next(runtime)
+
+    monkeypatch.setattr(locked_eval, "_predict", noisy_runtime)
+    first = locked_eval.score_without_record(
+        str(TASK / "candidate.py"), seed=DEVELOPMENT_SEED
+    )
+    second = locked_eval.score_without_record(
+        str(TASK / "candidate.py"), seed=DEVELOPMENT_SEED
+    )
+    assert first["runtime_us_per_region"] != second["runtime_us_per_region"]
+    assert first["combined_score"] == second["combined_score"]
+
+
 def test_forbidden_import_is_rejected(tmp_path: Path) -> None:
     candidate = tmp_path / "candidate.py"
     candidate.write_text(

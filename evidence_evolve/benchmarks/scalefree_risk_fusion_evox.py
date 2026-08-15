@@ -252,6 +252,30 @@ def run(run_dir: Path, *, iterations: int) -> dict[str, Any]:
     )
     wall_seconds = time.perf_counter() - started
 
+    ledger_records = [
+        json.loads(line)
+        for line in (run_dir / "evaluations.jsonl").read_text(encoding="utf-8").splitlines()
+        if line
+    ]
+    expected_evaluations = iterations + 2  # baseline + N candidates + final best re-evaluation
+    if len(ledger_records) != expected_evaluations:
+        incomplete = {
+            "schema_version": "1.0",
+            "scientific_outcome": "INVALID_MECHANICS_OR_ADAPTER",
+            "mechanics_status": "FAIL",
+            "reason": "incomplete solution iteration ledger",
+            "iterations_requested": iterations,
+            "evaluations_expected": expected_evaluations,
+            "evaluations_observed": len(ledger_records),
+            "candidate_lock_created": False,
+            "wall_seconds": wall_seconds,
+            "token_usage": _token_usage(run_dir),
+        }
+        _write_json(run_dir / "incomplete_result.json", incomplete)
+        raise RuntimeError(
+            f"incomplete solution ledger: expected {expected_evaluations}, observed {len(ledger_records)}"
+        )
+
     best_path = run_dir / "best_candidate.py"
     best_path.write_text(result.best_solution or INITIAL.read_text(encoding="utf-8"), encoding="utf-8")
     candidate_lock = {
@@ -277,9 +301,7 @@ def run(run_dir: Path, *, iterations: int) -> dict[str, Any]:
         "mechanics_status": "PASS",
         "reason": "synthetic benchmark has no eligible real BlindAssist truth",
         "iterations_requested": iterations,
-        "solution_evaluations_observed": sum(
-            int(item["evox_iteration"] is not None) for item in summaries
-        ),
+        "solution_evaluations_observed": iterations,
         "best_candidate_sha256": _sha256(best_path),
         "upstream_best_score": result.best_score,
         "development_best": max(summaries, key=lambda item: item["combined_score"]),

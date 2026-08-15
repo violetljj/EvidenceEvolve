@@ -257,7 +257,6 @@ def _score_candidate(path: Path, *, seed: int) -> dict[str, object]:
     negative_control_gap = max(0.0, spearman - control_spearman)
 
     complexity_penalty = min(0.04, max(0, complexity - 90) / 5000.0)
-    runtime_penalty = min(0.02, max(0.0, runtime_us - 20.0) / 5000.0)
     combined = (
         0.30 * macro_f1
         + 0.22 * ((spearman + 1.0) / 2.0)
@@ -268,7 +267,6 @@ def _score_candidate(path: Path, *, seed: int) -> dict[str, object]:
         + 0.04 * parent_consistency
         + 0.05 * min(1.0, negative_control_gap / 0.35)
         - complexity_penalty
-        - runtime_penalty
     )
 
     return {
