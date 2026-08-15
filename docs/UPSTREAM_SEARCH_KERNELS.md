@@ -5,9 +5,10 @@
 EvidenceEvolve is a research operating system, not a reason to reimplement a
 weaker version of a mature search engine. The default admission rule is:
 
-> Integrate the pinned upstream implementation first. Do not replace it with an
-> EvidenceEvolve-native component until an external, equal-budget, multi-seed
-> non-inferiority test passes.
+> **Upstream Native Invariant.** For a mature, license-compatible upstream
+> research/search kernel, EvidenceEvolve must preserve a native execution path.
+> A replacement or enhancement cannot become the default until an external,
+> fixed-budget, multi-seed non-inferiority test passes.
 
 The intended modes are:
 
@@ -71,7 +72,7 @@ later resume/import stage; receipts are create-once.
 
 ## Upstream parity gate
 
-Four separate checks are required:
+Five separate checks are required:
 
 1. **Deterministic construction parity.** With a capturing runner, direct upstream
    CLI construction and `SHINKA_NATIVE` must receive identical effective config
@@ -79,18 +80,31 @@ Four separate checks are required:
    candidate, lineage, metric, cost, and token records. This check is covered by
    `tests/test_shinka_native.py`.
 2. **Deterministic runner parity.** The actual pinned runner, driven by the same
-   deterministic fake model/provider, must produce identical candidate/parent
-   sequences and metric events through the direct CLI and `SHINKA_NATIVE` paths.
-   This check is not yet implemented.
-3. **Real non-inferiority.** On the official circle-packing task with paired
+   deterministic provider, must produce identical normalized parent, top-k
+   inspiration, candidate, evaluator, archive, island, migration, stop, and
+   resume events through the direct CLI and `SHINKA_NATIVE` paths. The
+   single-worker deterministic surface passes in
+   `tests/test_shinka_native_semantic_parity.py`. UUIDs, timestamps, result paths,
+   and presentation output are normalized. Random archive-inspiration sequence
+   parity remains `NOT_EVALUABLE_SEED_GAP`: upstream uses SQLite
+   `ORDER BY RANDOM()`, which is not controlled by its Python/NumPy seed state.
+3. **Real-provider smoke.** Run one paired official/native example with the same
+   provider, model, temperature, initial program, evaluator, configuration,
+   budget, concurrency, and machine. Compare candidate/valid counts, best score,
+   evaluator and LLM calls, tokens, cost, wall time, and resume. This check has
+   not run and no API spend is implied by P0.
+4. **Real non-inferiority.** On the official circle-packing task with paired
    seeds, identical model/config/evaluator/budget/hardware, the median normalized
    best score must not fall more than 1% below direct Shinka. Best-so-far AUC,
    first valid improvement, cost, invalid rate, rejection rate, throughput, and
    resume consistency must also be reported.
-4. **Evidence enhancement.** `SHINKA_EVIDENCE` must be non-inferior to
+5. **Evidence enhancement.** `SHINKA_EVIDENCE` must be non-inferior to
    `SHINKA_NATIVE` on at least three tasks and five seeds per task before it can
    become the default.
 
-Only construction parity is currently satisfied. No promotion gate has passed.
-The engine integration is not evidence that circle packing, ALE-Bench, algorithm
-discovery, or scientific superiority passed.
+Construction parity and the deterministic P0 runner surface are satisfied. The
+unseeded random-archive branch, real-provider smoke, and circle-packing
+non-inferiority are not. No promotion gate has passed. The engine integration is
+not evidence that ALE-Bench, algorithm discovery, or scientific superiority
+passed. The bounded result record is
+`research/parity/shinka_native_parity_r0.result.json`.

@@ -244,9 +244,11 @@ evolve search shinka-native `
 
 The native `combined_score` remains `SHINKA_SCHEDULING_ONLY`. The import receipt
 has no scientific-outcome authority and cannot support a superiority claim.
-Deterministic construction parity is tested against the pinned upstream CLI
-construction path. Actual-runner fake-provider parity and real multi-seed
-circle-packing non-inferiority are still unmet promotion gates. See
+Deterministic construction parity and the single-worker actual-runner P0 surface
+are tested against the pinned upstream CLI. Upstream's unseeded SQLite random
+archive-inspiration branch remains outside exact sequence parity; real-provider
+smoke and multi-seed circle-packing non-inferiority are still unmet promotion
+gates. See
 [`docs/UPSTREAM_SEARCH_KERNELS.md`](docs/UPSTREAM_SEARCH_KERNELS.md).
 
 ## R1 generation interface

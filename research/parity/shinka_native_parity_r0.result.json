@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.0",
+  "protocol_id": "SHINKA_NATIVE_PARITY_R0",
+  "claim_scope": "PINNED_RUNNER_DETERMINISTIC_PROVIDER_MECHANICS_ONLY",
+  "status": "PASS_DETERMINISTIC_SURFACE_WITH_DECLARED_SEED_GAP",
+  "promotion_gate_passed": false,
+  "upstream": {
+    "repository": "https://github.com/SakanaAI/ShinkaEvolve",
+    "distribution": "shinka-evolve",
+    "version": "0.0.7",
+    "source_commit": "c4568adde253cacf185be3a8412c3c2142761ebe"
+  },
+  "environment": {
+    "python": "3.11.9",
+    "platform": "Microsoft Windows NT 10.0.26200.0",
+    "repository_base_head": "7c911c0ec118fc5d00a3ed1cdb7531b17455705b"
+  },
+  "execution": {
+    "command": ".venv\\Scripts\\python.exe -m pytest tests/test_shinka_native_semantic_parity.py -q",
+    "result": "1 passed",
+    "seed": 1729,
+    "max_evaluation_jobs": 1,
+    "max_proposal_jobs": 1,
+    "max_db_workers": 1,
+    "initial_completed_generations": 2,
+    "resumed_completed_generations": 6
+  },
+  "observed_after_resume": {
+    "program_rows": 7,
+    "evaluated_generations": 6,
+    "proposal_count": 5,
+    "max_generation": 5,
+    "last_iteration": 5,
+    "top_k_inspiration_observed": true,
+    "migration_observed": true
+  },
+  "exact_semantic_checks": {
+    "parent_selection": "PASS",
+    "top_k_inspiration_selection": "PASS",
+    "proposal_count": "PASS",
+    "candidate_materialization": "PASS",
+    "evaluator_calls_and_metrics": "PASS",
+    "archive_membership": "PASS",
+    "island_assignment": "PASS",
+    "migration": "PASS",
+    "stop_condition": "PASS",
+    "resume_behavior": "PASS"
+  },
+  "normalization": [
+    "candidate UUIDs mapped by generation and insertion order",
+    "migration timestamps removed",
+    "result-directory paths excluded",
+    "presentation-only console output excluded"
+  ],
+  "harness_interventions_applied_to_both_arms": [
+    "LLM client replaced only at the upstream provider boundary",
+    "provider environment validation bypassed for the deterministic fake provider",
+    "Python random and NumPy RNG reset to the same seed before each arm and resume phase",
+    "Unicode presentation output redirected because the upstream logo and tables are not GBK-safe"
+  ],
+  "unmodified_upstream_surfaces": [
+    "ShinkaEvolveRunner",
+    "program database and checkpoints",
+    "parent and top-k inspiration selectors",
+    "proposal coordinator and stop logic",
+    "local scheduler and evaluator process",
+    "archive, island assignment, migration, and resume logic"
+  ],
+  "declared_gaps": {
+    "random_archive_inspiration_exact_sequence": "NOT_EVALUABLE_SEED_GAP: upstream SQLite ORDER BY RANDOM() is not controlled by Python or NumPy seed state",
+    "real_provider_smoke": "NOT_EVALUATED",
+    "official_circle_packing_multi_seed_non_inferiority": "NOT_EVALUATED",
+    "algorithm_discovery_or_scientific_superiority": "NOT_CLAIMED"
+  },
+  "source_hashes": {
+    "tests/test_shinka_native_semantic_parity.py": "55f6f7b0f704c7dd0d90debec49593c3438ef3ee2258e17539f864de8b63741c",
+    "evidence_evolve/search/shinka_native.py": "d930ca6c112fa7de2611a7c1739b581dbdef7147332a12d9bb89c7b27de4a929"
+  }
+}
