@@ -1,0 +1,92 @@
+{
+  "schema_version": "1.0",
+  "campaign": "algotune_set_cover_falsification_v1",
+  "claim_scope": "FALSIFICATION_ONLY",
+  "source_candidate": {
+    "arm": "evidence_evolve",
+    "sha256": "4e278d6b1968e54e1126366590bda6477396a330e9f1b4e9ccf902e9ace383a1",
+    "static_audit": {
+      "module_level_assignments": 0,
+      "cache_or_memo_symbols_found": false,
+      "file_network_subprocess_or_evaluator_access_found": false,
+      "solve_state_is_local": true
+    }
+  },
+  "protocol": {
+    "candidate_locked_before_new_seeds": true,
+    "seed_generator": "Python secrets.SystemRandom / OS CSPRNG",
+    "development_and_prior_heldout_seeds_excluded": true,
+    "fresh_process_per_solver_call": true,
+    "candidate_module_import_solver_construction_and_single_solve_timed": true,
+    "untimed_candidate_warmup": false,
+    "retries_or_replacement_samples": false,
+    "workers": 18,
+    "per_process_blas_threads": 1,
+    "timeout_seconds": 10.0
+  },
+  "cold_start": {
+    "result_sha256": "e1e22c891892d7cece5027f565481e8b62ec389d2721f489fbbd602ff52bcf77",
+    "trials_sha256": "98a54b076d7f0915bb780f4129ff739050e3ecdc1fc63afef8722987496d6768",
+    "candidate_lock_sha256": "950a9e69569ecc4e7021e38e10913e91c31127054288e583fca6d41ae8d1739e",
+    "seed_receipt_sha256": "963814eff513c9c0d2dc2f6863ca5434f806e0e8dddafce2d880872f815d383d",
+    "fresh_instance_processes": 1000,
+    "candidate_solves": 5000,
+    "wall_seconds": 30.589753534644842,
+    "child_cpu_seconds": 531.370137,
+    "mean_active_cpu_cores": 17.37085381868767,
+    "allocated_cpu_utilization": 0.9650474343715373,
+    "valid_rate_by_arm": {
+      "ada": 1.0,
+      "evidence_evolve": 1.0,
+      "evox": 1.0,
+      "shinka": 1.0,
+      "vanilla": 1.0
+    },
+    "raw_speedup_by_arm": {
+      "ada": 3.81955375989184,
+      "evidence_evolve": 42.89576285361576,
+      "evox": 1.6670591422469474,
+      "shinka": 2.428876108257638,
+      "vanilla": 3.8768719187353997
+    },
+    "scientific_outcome": "POSITIVE_HEADROOM"
+  },
+  "distribution_shift": {
+    "result_sha256": "197a7532db3bec5e6e1ba465deb635aa401a7a78dd38e0ddb64a7512dd6e78fe",
+    "trials_sha256": "dc966ed42fa04c618a4b82d4d7a55293559a3441aefd2381dbaf4f26c965ca27",
+    "candidate_lock_sha256": "8fe6a6a9537869e4a2896d381e58c7cfbb8d1b78b5e434cfcbb311682fc78dde",
+    "seed_receipt_sha256": "c1931d8ef78fb9459f9f0955740ee0a70aa2c5f98f3f1d404aac936882fee176",
+    "grid": {
+      "sizes": [40, 52, 64, 80, 100],
+      "densities": [0.08, 0.15, 0.3, 0.5],
+      "fresh_seeds_per_cell": 20,
+      "repeats_per_seed": 3
+    },
+    "wall_seconds": 513.9997444041073,
+    "child_cpu_seconds": 8981.536854,
+    "mean_active_cpu_cores": 17.47381579812363,
+    "allocated_cpu_utilization": 0.9707675443402017,
+    "fully_evaluable_cells": 8,
+    "fully_evaluable_cell_results": [
+      {"size": 40, "density": 0.08, "evidence_evolve_speedup": 22.382827618549612, "evidence_evolve_valid_rate": 1.0},
+      {"size": 40, "density": 0.15, "evidence_evolve_speedup": 41.64265559230754, "evidence_evolve_valid_rate": 1.0},
+      {"size": 40, "density": 0.3, "evidence_evolve_speedup": 39.62503922905717, "evidence_evolve_valid_rate": 1.0},
+      {"size": 40, "density": 0.5, "evidence_evolve_speedup": 10.766179707922557, "evidence_evolve_valid_rate": 1.0},
+      {"size": 52, "density": 0.3, "evidence_evolve_speedup": 42.49880863591003, "evidence_evolve_valid_rate": 1.0},
+      {"size": 52, "density": 0.5, "evidence_evolve_speedup": 22.17032336366493, "evidence_evolve_valid_rate": 1.0},
+      {"size": 64, "density": 0.5, "evidence_evolve_speedup": 69.61028162906314, "evidence_evolve_valid_rate": 1.0},
+      {"size": 80, "density": 0.5, "evidence_evolve_speedup": 191.20916203210194, "evidence_evolve_valid_rate": 1.0}
+    ],
+    "evidence_evolve_fastest_in_all_fully_evaluable_cells": true,
+    "non_fully_evaluable_cells": 12,
+    "non_fully_evaluable_outcome": "NOT_EVALUABLE_DATA",
+    "non_fully_evaluable_reason": "The frozen reference solver timed out on one or more required trials."
+  },
+  "conclusion": {
+    "whole_instance_memoization_hypothesis_supported": false,
+    "cold_start_signal_survived": true,
+    "distribution_shift_signal_survived_where_reference_truth_was_complete": true,
+    "superiority_claim_permitted": false,
+    "mechanism_claim_permitted": false
+  }
+}
