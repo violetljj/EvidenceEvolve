@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from importlib import metadata
 from pathlib import Path, PurePosixPath
 from typing import Annotated, Literal
 
@@ -24,6 +25,14 @@ def _relative_path(value: str) -> str:
 
 
 class FrozenBinding(StrictModel):
+    path: str
+    sha256: Sha256
+
+    _normalize_path = field_validator("path")(_relative_path)
+
+
+class InstalledDistributionBinding(StrictModel):
+    distribution: Literal["shinka-evolve"]
     path: str
     sha256: Sha256
 
@@ -55,7 +64,26 @@ class ProviderPolicy(StrictModel):
     max_output_tokens_per_call: Literal[32768]
     model_generation_seed: None
     model_seed_gap: str
-    retry_failed_model_call: Literal[False]
+    headless_command: Literal["npx -y @roberttlange/headless@0.6.1"]
+    headless_timeout_seconds_per_attempt: Literal[1200]
+    codex_cli_version: Literal["codex-cli 0.147.0"]
+    tool_access: Literal["READ_ONLY"]
+    structured_output: Literal[False]
+    transport_retry_same_request_permitted: Literal[True]
+    transport_attempts_per_scheduled_slot_max: Literal[3]
+    transport_retry_delay_seconds: Literal[1]
+    transport_retry_request_payload_must_be_identical: Literal[True]
+    transport_retries_count_as_one_scientific_slot: Literal[True]
+    scientific_resampling_permitted: Literal[False]
+    exhausted_transport_attempts_consume_slot: Literal[True]
+    rendered_system_prompt_sha256_required_per_started_slot: Literal[True]
+    rendered_user_prompt_sha256_required_per_started_slot: Literal[True]
+    request_payload_sha256_required_per_transport_attempt: Literal[True]
+    proposal_prompt_construction: Literal[
+        "PINNED_UPSTREAM_CODE_AND_HASHED_PROMPT_MODULES"
+    ]
+    provider_managed_hidden_instructions_visible: Literal[False]
+    provider_managed_hidden_instructions_inside_freeze_boundary: Literal[False]
 
     @field_validator("forbidden_models")
     @classmethod
@@ -111,6 +139,17 @@ class DesignPolicy(StrictModel):
     proposal_target_mode: Literal["fixed"]
     initial_parent_identical_within_block: Literal[True]
     local_seed_identical_within_block: Literal[True]
+    frozen_initial_program_identical_for_all_runs: Literal[True]
+    frozen_evaluator_identical_for_all_runs: Literal[True]
+    frozen_config_identical_for_all_runs: Literal[True]
+    previous_best_state_scope: Literal["ARM_WITHIN_MATCHED_BLOCK_ONLY"]
+    arm_results_directories_disjoint: Literal[True]
+    arm_databases_disjoint: Literal[True]
+    shared_mutable_search_state: Literal[False]
+    cross_arm_artifact_reads_permitted: Literal[False]
+    block_state_reset_from_frozen_initial: Literal[True]
+    execution_order_has_state_authority: Literal[False]
+    fresh_results_root_per_run: Literal[True]
     no_post_hoc_replacement: Literal[True]
     failed_or_invalid_slot_consumes_budget: Literal[True]
     resume_may_add_proposal_slots: Literal[False]
@@ -193,14 +232,17 @@ class AnalysisPolicy(StrictModel):
     aggregation: Literal["MEDIAN_ACROSS_MATCHED_BLOCKS"]
     non_inferiority_margin: Literal[-0.01]
     pass_rule: Literal[
-        "ONE_SIDED_95_PERCENT_LOWER_BOUND_STRICTLY_GT_MARGIN_AND_ALL_GUARDRAILS_PASS"
+        "ONE_SIDED_95_PERCENT_LOWER_BOUND_GTE_MARGIN_WITH_1E-12_ABS_TOLERANCE_AND_ALL_GUARDRAILS_PASS"
     ]
+    inference_unit: Literal["MATCHED_BLOCK_PAIR"]
+    slot_level_observations_are_independent_inference_units: Literal[False]
     bootstrap: BootstrapPolicy
     ties: Literal["DELTA_ZERO"]
     minimum_complete_matched_blocks: Literal[10]
     equal_started_model_calls_per_arm_required: Literal[True]
     scheduled_model_calls_per_arm_required: Literal[50]
     hard_guardrails: Annotated[list[Guardrail], Field(min_length=2, max_length=2)]
+    floating_comparison_absolute_tolerance: Literal[1e-12]
     mandatory_secondary_metrics: list[str]
     aggregate_score_cannot_rescue_guardrail: Literal[True]
 
@@ -242,10 +284,12 @@ class P2R1Protocol(StrictModel):
     execution_started: Literal[False]
     remote_model_calls_at_freeze: Literal[0]
     protocol_sha256: Sha256
+    repository_base_commit: Annotated[str, Field(pattern=r"^[0-9a-f]{40}$")]
     claim_scope: Literal["REAL_PROVIDER_MATCHED_BLOCK_NON_INFERIORITY"]
     lineage: Annotated[list[LineageBinding], Field(min_length=2, max_length=2)]
     upstream: UpstreamBinding
     frozen_assets: dict[str, FrozenBinding]
+    upstream_assets: dict[str, InstalledDistributionBinding]
     provider: ProviderPolicy
     design: DesignPolicy
     funnel: FunnelPolicy
@@ -289,9 +333,37 @@ class P2R1Protocol(StrictModel):
             "native_engine",
             "protocol_validator",
             "statistical_analyzer",
+            "proposal_models",
+            "search_models",
+            "cli_dispatch",
+            "p2_r0_manifest",
+            "freeze_review_tests",
+            "synthetic_canary_contract",
+            "synthetic_canary_evaluator",
+            "synthetic_canary_runner",
+            "gate_engine",
         }
         if set(self.frozen_assets) != required_assets:
             raise ValueError("P2-R1 frozen asset set is incomplete or expanded")
+        required_upstream_assets = {
+            "official_cli",
+            "async_runner",
+            "core_config",
+            "defaults",
+            "prompt_base",
+            "prompt_diff",
+            "prompt_fix",
+            "prompt_init",
+            "llm_client",
+            "headless_provider",
+            "llm_constants",
+            "llm_kwargs",
+            "llm_query",
+            "async_apply",
+            "scheduler",
+        }
+        if set(self.upstream_assets) != required_upstream_assets:
+            raise ValueError("P2-R1 upstream authority asset set is incomplete")
         return self
 
 
@@ -316,6 +388,12 @@ def load_and_validate_p2_r1_protocol(
         if not path.is_file() or sha256_file(path) != binding.sha256:
             raise ValueError(f"P2-R1 frozen artifact hash mismatch: {binding.path}")
 
+    distribution = metadata.distribution(protocol.upstream.distribution)
+    for binding in protocol.upstream_assets.values():
+        path = Path(distribution.locate_file(binding.path))
+        if not path.is_file() or sha256_file(path) != binding.sha256:
+            raise ValueError(f"P2-R1 upstream artifact hash mismatch: {binding.path}")
+
     config_path = repo / protocol.frozen_assets["config"].path
     config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
     expected_model = (
@@ -332,6 +410,17 @@ def load_and_validate_p2_r1_protocol(
         raise ValueError("P2-R1 config generation limits do not match protocol")
     if evo["patch_types"] != ["diff"] or evo["patch_type_probs"] != [1.0]:
         raise ValueError("P2-R1 requires the admitted SEARCH/REPLACE proposal dialect")
+    if any(
+        evo[name] != expected
+        for name, expected in {
+            "max_patch_resamples": 1,
+            "max_patch_attempts": 1,
+            "max_novelty_attempts": 1,
+            "evolve_prompts": False,
+            "proposal_target_mode": "fixed",
+        }.items()
+    ):
+        raise ValueError("P2-R1 retry or prompt policy does not match protocol")
     if config["job_config"]["time"] != "00:30:00":
         raise ValueError("P2-R1 run time budget does not match protocol")
     if any(

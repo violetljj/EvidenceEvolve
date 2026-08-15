@@ -12,6 +12,17 @@ from evidence_evolve.proposals.non_inferiority import P2R1Protocol
 
 
 Arm = Literal["official", "native"]
+TerminalClass = Literal[
+    "MODEL_INVOCATION_NOT_STARTED",
+    "MODEL_RESPONSE_MISSING",
+    "PROPOSAL_EXTRACTION_FAILED",
+    "MATERIALIZATION_FAILED",
+    "COMPILE_FAILED",
+    "EVALUATOR_NOT_REACHED",
+    "EVALUATOR_INVALID",
+    "EVALUATOR_VALID_NOT_USEFUL",
+    "USEFUL",
+]
 
 
 class ProposalSlot(StrictModel):
@@ -24,6 +35,18 @@ class ProposalSlot(StrictModel):
     evaluator_reached: bool
     evaluator_valid: bool
     score: float | None = None
+    rendered_system_prompt_sha256: str | None = Field(
+        default=None, pattern=r"^[0-9a-f]{64}$"
+    )
+    rendered_user_prompt_sha256: str | None = Field(
+        default=None, pattern=r"^[0-9a-f]{64}$"
+    )
+    request_payload_sha256: str | None = Field(
+        default=None, pattern=r"^[0-9a-f]{64}$"
+    )
+    transport_attempt_payload_sha256s: list[str] = Field(
+        default_factory=list, max_length=3
+    )
 
     @model_validator(mode="after")
     def stages_are_monotone(self) -> "ProposalSlot":
@@ -45,6 +68,25 @@ class ProposalSlot(StrictModel):
             raise ValueError("evaluator-valid slots require a finite score")
         if not self.evaluator_valid and self.score is not None:
             raise ValueError("invalid or missing slots cannot contribute a score")
+        prompt_hashes = (
+            self.rendered_system_prompt_sha256,
+            self.rendered_user_prompt_sha256,
+            self.request_payload_sha256,
+        )
+        if self.model_invocation_started:
+            if any(value is None for value in prompt_hashes):
+                raise ValueError("started slots require rendered prompt/request hashes")
+            if not 1 <= len(self.transport_attempt_payload_sha256s) <= 3:
+                raise ValueError("started slots require one to three transport attempts")
+            if any(
+                value != self.request_payload_sha256
+                for value in self.transport_attempt_payload_sha256s
+            ):
+                raise ValueError("transport retry changed the frozen request payload")
+        elif any(value is not None for value in prompt_hashes) or (
+            self.transport_attempt_payload_sha256s
+        ):
+            raise ValueError("unstarted slots cannot carry remote request hashes")
         return self
 
 
@@ -52,6 +94,11 @@ class ArmRun(StrictModel):
     block: int = Field(ge=1, le=10)
     arm: Arm
     baseline_score: float
+    initial_program_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    evaluator_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    config_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    initial_incumbent_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    state_namespace: str
     slots: Annotated[list[ProposalSlot], Field(min_length=5, max_length=5)]
     observed_input_tokens: int = Field(ge=0)
     observed_output_tokens: int = Field(ge=0)
@@ -110,8 +157,10 @@ class P2R1AnalysisResult(StrictModel):
     ineligibility_reasons: list[str]
     per_run_funnel: dict[str, ArmFunnel]
     per_run_funnel_rates: dict[str, dict[str, float]]
+    per_run_terminal_classes: dict[str, dict[str, int]]
     per_arm_funnel: dict[Arm, ArmFunnel]
     per_arm_funnel_rates: dict[Arm, dict[str, float]]
+    per_arm_terminal_classes: dict[Arm, dict[str, int]]
     final_best_by_block: dict[str, dict[Arm, float]]
     paired_normalized_deltas: list[float]
     primary_median_delta: float
@@ -128,6 +177,7 @@ class P2R1AnalysisResult(StrictModel):
     observed_cost_per_scheduled_slot_by_arm: dict[Arm, float | None]
     wall_seconds_per_scheduled_slot_by_arm: dict[Arm, float]
     resume_consistent_runs_by_arm: dict[Arm, int]
+    transport_attempts_by_arm: dict[Arm, int]
     primary_gate_passed: bool
     invalid_rate_guardrail_passed: bool
     useful_rate_guardrail_passed: bool
@@ -164,6 +214,57 @@ def _funnel_rates(funnel: ArmFunnel) -> dict[str, float]:
         for field, value in funnel.model_dump().items()
         if field != "scheduled"
     }
+
+
+def _terminal_class(slot: ProposalSlot, baseline_score: float) -> TerminalClass:
+    if not slot.model_invocation_started:
+        return "MODEL_INVOCATION_NOT_STARTED"
+    if not slot.proposal_received:
+        return "MODEL_RESPONSE_MISSING"
+    if not slot.proposal_extracted:
+        return "PROPOSAL_EXTRACTION_FAILED"
+    if not slot.materialized:
+        return "MATERIALIZATION_FAILED"
+    if not slot.compiled:
+        return "COMPILE_FAILED"
+    if not slot.evaluator_reached:
+        return "EVALUATOR_NOT_REACHED"
+    if not slot.evaluator_valid:
+        return "EVALUATOR_INVALID"
+    if slot.score is not None and slot.score > baseline_score + 1e-12:
+        return "USEFUL"
+    return "EVALUATOR_VALID_NOT_USEFUL"
+
+
+def _terminal_counts(runs: list[ArmRun]) -> dict[str, int]:
+    counts = {
+        terminal: 0
+        for terminal in (
+            "MODEL_INVOCATION_NOT_STARTED",
+            "MODEL_RESPONSE_MISSING",
+            "PROPOSAL_EXTRACTION_FAILED",
+            "MATERIALIZATION_FAILED",
+            "COMPILE_FAILED",
+            "EVALUATOR_NOT_REACHED",
+            "EVALUATOR_INVALID",
+            "EVALUATOR_VALID_NOT_USEFUL",
+            "USEFUL",
+        )
+    }
+    for run in runs:
+        for slot in run.slots:
+            counts[_terminal_class(slot, run.baseline_score)] += 1
+    if sum(counts.values()) != sum(len(run.slots) for run in runs):
+        raise AssertionError("terminal taxonomy must partition scheduled slots")
+    return counts
+
+
+def _gte_with_tolerance(value: float, threshold: float, tolerance: float) -> bool:
+    return value >= threshold - tolerance
+
+
+def _lte_with_tolerance(value: float, threshold: float, tolerance: float) -> bool:
+    return value <= threshold + tolerance
 
 
 def _score_trajectory(run: ArmRun) -> list[float]:
@@ -218,12 +319,31 @@ def analyze_p2_r1(
     if analysis_input.protocol_sha256 != protocol.protocol_sha256:
         raise ValueError("analysis input does not match the frozen P2-R1 protocol")
 
+    expected_hashes = {
+        "initial_program_sha256": protocol.frozen_assets["initial_program"].sha256,
+        "evaluator_sha256": protocol.frozen_assets["evaluator"].sha256,
+        "config_sha256": protocol.frozen_assets["config"].sha256,
+        "initial_incumbent_sha256": protocol.frozen_assets["initial_program"].sha256,
+    }
+    for run in analysis_input.runs:
+        for field, expected in expected_hashes.items():
+            if getattr(run, field) != expected:
+                raise ValueError(
+                    f"run does not match frozen {field}: block={run.block} arm={run.arm}"
+                )
+        expected_namespace = f"p2-r1-block-{run.block:02d}-{run.arm}"
+        if run.state_namespace != expected_namespace:
+            raise ValueError("run state namespace violates frozen arm/block isolation")
+
     runs_by_arm = {
         arm: [run for run in analysis_input.runs if run.arm == arm]
         for arm in ("official", "native")
     }
     funnels = {arm: _funnel(runs) for arm, runs in runs_by_arm.items()}
     funnel_rates = {arm: _funnel_rates(funnel) for arm, funnel in funnels.items()}
+    terminal_counts = {
+        arm: _terminal_counts(runs) for arm, runs in runs_by_arm.items()
+    }
     per_run_funnels = {
         f"block-{run.block:02d}-{run.arm}": _funnel([run])
         for run in analysis_input.runs
@@ -231,6 +351,10 @@ def analyze_p2_r1(
     per_run_funnel_rates = {
         run_id: _funnel_rates(funnel)
         for run_id, funnel in per_run_funnels.items()
+    }
+    per_run_terminal_counts = {
+        f"block-{run.block:02d}-{run.arm}": _terminal_counts([run])
+        for run in analysis_input.runs
     }
     trajectories = {
         f"block-{run.block:02d}-{run.arm}": _score_trajectory(run)
@@ -312,17 +436,35 @@ def analyze_p2_r1(
         arm: sum(run.resume_consistent for run in runs)
         for arm, runs in runs_by_arm.items()
     }
+    transport_attempts = {
+        arm: sum(
+            len(slot.transport_attempt_payload_sha256s)
+            for run in runs
+            for slot in run.slots
+        )
+        for arm, runs in runs_by_arm.items()
+    }
 
     ineligibility_reasons = []
+    for block in range(1, 11):
+        pair = [run for run in analysis_input.runs if run.block == block]
+        baselines = {run.baseline_score for run in pair}
+        if len(baselines) != 1:
+            ineligibility_reasons.append(f"BASELINE_MISMATCH:block-{block:02d}")
     for arm, funnel in funnels.items():
         if funnel.model_invocation_started != 50:
             ineligibility_reasons.append(f"UNEQUAL_OR_MISSING_MODEL_CALLS:{arm}")
         if funnel.evaluator_reached == 0:
             ineligibility_reasons.append(f"NO_PROPOSAL_REACHED_EVALUATOR:{arm}")
+        if funnel.evaluator_valid == 0:
+            ineligibility_reasons.append(f"NO_EVALUATOR_VALID_PROPOSAL:{arm}")
     eligible = not ineligibility_reasons
-    primary_pass = lower_bound > protocol.analysis.non_inferiority_margin
-    invalid_pass = invalid_delta <= 0.10
-    useful_pass = useful_delta >= -0.10
+    tolerance = protocol.analysis.floating_comparison_absolute_tolerance
+    primary_pass = _gte_with_tolerance(
+        lower_bound, protocol.analysis.non_inferiority_margin, tolerance
+    )
+    invalid_pass = _lte_with_tolerance(invalid_delta, 0.10, tolerance)
+    useful_pass = _gte_with_tolerance(useful_delta, -0.10, tolerance)
 
     if not eligible:
         assessment = "INCONCLUSIVE"
@@ -346,8 +488,10 @@ def analyze_p2_r1(
         ineligibility_reasons=sorted(ineligibility_reasons),
         per_run_funnel=per_run_funnels,
         per_run_funnel_rates=per_run_funnel_rates,
+        per_run_terminal_classes=per_run_terminal_counts,
         per_arm_funnel=funnels,
         per_arm_funnel_rates=funnel_rates,
+        per_arm_terminal_classes=terminal_counts,
         final_best_by_block=final_best,
         paired_normalized_deltas=deltas,
         primary_median_delta=median_delta,
@@ -364,6 +508,7 @@ def analyze_p2_r1(
         observed_cost_per_scheduled_slot_by_arm=cost_per_slot,
         wall_seconds_per_scheduled_slot_by_arm=wall_per_slot,
         resume_consistent_runs_by_arm=resume_consistency,
+        transport_attempts_by_arm=transport_attempts,
         primary_gate_passed=primary_pass,
         invalid_rate_guardrail_passed=invalid_pass,
         useful_rate_guardrail_passed=useful_pass,

@@ -147,21 +147,36 @@ per run (50 model invocations, the same output-token ceiling, and the same
 wall-time ceiling per arm). Blocks use paired local seeds and a frozen AB/BA
 order. The subscription transport still exposes no model-generation seed; that
 gap is recorded symmetrically and is not represented as exact model-rollout
-pairing. Failed, missing, or evaluator-invalid slots consume their declared
-budget and cannot be replaced.
+pairing. Each arm/block has a disjoint results directory, database, state
+namespace, and fresh frozen incumbent; AB/BA order has no state authority.
+Failed, missing, or evaluator-invalid slots consume their declared budget and
+cannot be replaced.
 
 Every run reports the full scheduled -> model-started -> response -> extraction
 -> materialization -> compile -> evaluator-reached -> evaluator-valid -> useful
 funnel. The primary score trajectory starts at the frozen baseline and carries
 the previous best through every invalid or missing slot. The primary estimand is
-the median matched-block normalized final-best-score delta, with a -1% margin
-and a frozen one-sided 95% paired-bootstrap lower-bound rule. Two hard
+the median matched-block normalized final-best-score delta. The ten matched
+block pairs are the only inference units; the 100 state-dependent proposal
+slots are not treated as independent. The gate uses a -1% margin and a frozen
+one-sided 95% paired-bootstrap lower-bound rule. Two hard
 guardrails cannot be rescued by that score: Native evaluator-invalid rate may
 be at most 10 absolute percentage points above Official, and Native useful
 candidate rate per scheduled slot may be at most 10 points below Official. Ten
 points equals five of the 50 predeclared slots per arm; larger attrition is
 treated as operationally material. Valid-only score distributions remain
 mandatory descriptive output and are never the primary denominator.
+
+The hash closure binds the task, evaluator, config, Proposal IR/materializer,
+both local execution paths, statistical analyzer, freeze-review tests, canary
+definition, gate engine, and the installed upstream prompt, LLM, scheduler, and
+official CLI modules. Each started slot must record the rendered system/user
+prompt hashes and the payload hash for every transport attempt. Upstream may
+retry the identical transport request up to three attempts with a one-second
+delay and 1200-second per-attempt timeout; those attempts remain one scientific
+slot. Changed-payload retry, post-hoc replacement, and scientific resampling are
+forbidden. Provider-managed hidden instructions are not visible and therefore
+remain explicitly outside the reproducible freeze boundary.
 
 The frozen generation model is `gpt-5.6-terra` at high effort and temperature
 zero. `gpt-5.5` is explicitly forbidden. A supported R1 result has a

@@ -4,7 +4,8 @@
   "protocol_status": "FROZEN_NOT_STARTED",
   "execution_started": false,
   "remote_model_calls_at_freeze": 0,
-  "protocol_sha256": "dc98bd75714cd0b37409b4de319bba1a5f9e1fceb05221fe94f3fe9d7044523e",
+  "protocol_sha256": "ebbc6b7c770778851142b417020c3add9189d8a5b4476c66261cd9a104701995",
+  "repository_base_commit": "f31ef2a72a186fc0b25b173a6b8c3362f6b65cfc",
   "claim_scope": "REAL_PROVIDER_MATCHED_BLOCK_NON_INFERIORITY",
   "lineage": [
     {
@@ -67,11 +68,124 @@
     },
     "protocol_validator": {
       "path": "evidence_evolve/proposals/non_inferiority.py",
-      "sha256": "b752f837a2db8af1eb572c8f56238e60fac84420739aeffd5184d8ffa16f6ff0"
+      "sha256": "2fe82895a3ee32898fbf0eaf24fd8d660df07cd820f38f6f58839f2debfb220a"
     },
     "statistical_analyzer": {
       "path": "evidence_evolve/proposals/parity_analysis.py",
-      "sha256": "7c591dcaaa1f7da9773032acc2312cfbf05792418c8d5254a57914d4a8375201"
+      "sha256": "4ee618a65793575b3f06bf4fa6aa730a6609e60cff4c472eb9e413a01acbc9da"
+    },
+    "proposal_models": {
+      "path": "evidence_evolve/proposals/models.py",
+      "sha256": "f8e227b9f2250a3b766a2dd07dc695e0b59c3c9d6c33162b9bb8af69534c0d36"
+    },
+    "search_models": {
+      "path": "evidence_evolve/search/models.py",
+      "sha256": "8185cc3bf7a6f709ed1931b42fd5e786783aa63b6702d8a4b8cff0b062cf053d"
+    },
+    "cli_dispatch": {
+      "path": "evidence_evolve/cli.py",
+      "sha256": "0ac1f5d40bd75267fbb968e2041b4c30a7381b59f2dfd63b89b0c72bf368652a"
+    },
+    "p2_r0_manifest": {
+      "path": "research/parity/shinka_native_p2_r0.manifest.json",
+      "sha256": "f39f87d13e071aaf26acbbb044fd266fc05e53c60cdbaea7dcb4fd56accbf59e"
+    },
+    "freeze_review_tests": {
+      "path": "tests/test_p2_r1_protocol.py",
+      "sha256": "19153af1fcc9c8536b765583b020c11af6110a6e79da47ae5234d49cb8935509"
+    },
+    "synthetic_canary_contract": {
+      "path": "research/contracts/synthetic_canary_r0.locked.yaml",
+      "sha256": "da32c043cf8c1792153b7424f60328a040d368a50c690abd36c4efc5beadbd08"
+    },
+    "synthetic_canary_evaluator": {
+      "path": "tasks/synthetic_canary/evaluator.py",
+      "sha256": "14f8ab8728eb303bf05eff9761e4e733ee8b76fdf2393ef2fbe0029140b1309c"
+    },
+    "synthetic_canary_runner": {
+      "path": "evidence_evolve/canary.py",
+      "sha256": "09b1dda501ab75f30cde8490df13ab231e9a1a50cf0ae0df14c4018a2dfebd0b"
+    },
+    "gate_engine": {
+      "path": "evidence_evolve/governance/gate_engine.py",
+      "sha256": "069eabba8e6331352f82a52db751aad7681d9db8b47e4e8cf7b6bd9b1591d3a4"
+    }
+  },
+  "upstream_assets": {
+    "official_cli": {
+      "distribution": "shinka-evolve",
+      "path": "shinka/cli/run.py",
+      "sha256": "2412a5052f2cf57d1dd7c74b39f0fc0d6b76fc84a2c13a94b9c3f19fc7c16a89"
+    },
+    "async_runner": {
+      "distribution": "shinka-evolve",
+      "path": "shinka/core/async_runner.py",
+      "sha256": "deebdee3b14e99b1d47edae00dc088cfc2fd471737285f593103574f2bbfb034"
+    },
+    "core_config": {
+      "distribution": "shinka-evolve",
+      "path": "shinka/core/config.py",
+      "sha256": "bf4c4b0f047135311b6a4b43a291a0a00ede05872f7331243fdaa3231bf27896"
+    },
+    "defaults": {
+      "distribution": "shinka-evolve",
+      "path": "shinka/defaults.py",
+      "sha256": "a4842f9ebdc07d7b602e7c9d72c0d04548deeecc0e893fd6578fdc918da0e0f2"
+    },
+    "prompt_base": {
+      "distribution": "shinka-evolve",
+      "path": "shinka/prompts/prompts_base.py",
+      "sha256": "b6ae7cdfdba1a6523ade260e793d346bce05bfbf9f1a1c372a99c48eb88edc58"
+    },
+    "prompt_diff": {
+      "distribution": "shinka-evolve",
+      "path": "shinka/prompts/prompts_diff.py",
+      "sha256": "a2b1c13289bed12c1edc40392c8585dd3e5fbc89149423737648a8846df744a4"
+    },
+    "prompt_fix": {
+      "distribution": "shinka-evolve",
+      "path": "shinka/prompts/prompts_fix.py",
+      "sha256": "3c425716e0059050478d8d5ce466bf07f49c4e8e6de5e5240d1bc7db6477db90"
+    },
+    "prompt_init": {
+      "distribution": "shinka-evolve",
+      "path": "shinka/prompts/prompts_init.py",
+      "sha256": "e5b7c0a48d6e6b385c9f262e0fc82fb290b461408f0cd7cde413ab58f5148db4"
+    },
+    "llm_client": {
+      "distribution": "shinka-evolve",
+      "path": "shinka/llm/llm.py",
+      "sha256": "4bedb30232a7a0da1716ae355d041ba3e75d63b6a4a378c85f61bfed8b7beacc"
+    },
+    "headless_provider": {
+      "distribution": "shinka-evolve",
+      "path": "shinka/llm/providers/headless.py",
+      "sha256": "c9a5295c615eb9dd2b6dfc353b1f6ca08dcbfb3536582f39dcad048ee6a8693f"
+    },
+    "llm_constants": {
+      "distribution": "shinka-evolve",
+      "path": "shinka/llm/constants.py",
+      "sha256": "59b3b06c0b239d04810de816599ad99328be562a6fc9687296d2fae5705b2693"
+    },
+    "llm_kwargs": {
+      "distribution": "shinka-evolve",
+      "path": "shinka/llm/kwargs.py",
+      "sha256": "14f6c71d9a7e15a18f0edf9f70066308658901c1110d9fa7171898a5a0b4cf56"
+    },
+    "llm_query": {
+      "distribution": "shinka-evolve",
+      "path": "shinka/llm/query.py",
+      "sha256": "d4aa3210033d453805fc67a6da12e31ab68dba11f1b9d47d9263ece8248259ce"
+    },
+    "async_apply": {
+      "distribution": "shinka-evolve",
+      "path": "shinka/edit/async_apply.py",
+      "sha256": "7522b5481acd40373bd5ce02023081800fbf51af9df3fbbddae4d06c93d18dbf"
+    },
+    "scheduler": {
+      "distribution": "shinka-evolve",
+      "path": "shinka/launch/scheduler.py",
+      "sha256": "9a0717337b4e2e4a4e9c80ca32672813b61ebeb8a0404457d9e885402f52bde8"
     }
   },
   "provider": {
@@ -85,7 +199,24 @@
     "max_output_tokens_per_call": 32768,
     "model_generation_seed": null,
     "model_seed_gap": "Subscription-backed Codex does not expose a generation seed; both arms use the same unavailable-seed policy and paired local seeds.",
-    "retry_failed_model_call": false
+    "headless_command": "npx -y @roberttlange/headless@0.6.1",
+    "headless_timeout_seconds_per_attempt": 1200,
+    "codex_cli_version": "codex-cli 0.147.0",
+    "tool_access": "READ_ONLY",
+    "structured_output": false,
+    "transport_retry_same_request_permitted": true,
+    "transport_attempts_per_scheduled_slot_max": 3,
+    "transport_retry_delay_seconds": 1,
+    "transport_retry_request_payload_must_be_identical": true,
+    "transport_retries_count_as_one_scientific_slot": true,
+    "scientific_resampling_permitted": false,
+    "exhausted_transport_attempts_consume_slot": true,
+    "rendered_system_prompt_sha256_required_per_started_slot": true,
+    "rendered_user_prompt_sha256_required_per_started_slot": true,
+    "request_payload_sha256_required_per_transport_attempt": true,
+    "proposal_prompt_construction": "PINNED_UPSTREAM_CODE_AND_HASHED_PROMPT_MODULES",
+    "provider_managed_hidden_instructions_visible": false,
+    "provider_managed_hidden_instructions_inside_freeze_boundary": false
   },
   "design": {
     "arms": [
@@ -204,6 +335,17 @@
     "proposal_target_mode": "fixed",
     "initial_parent_identical_within_block": true,
     "local_seed_identical_within_block": true,
+    "frozen_initial_program_identical_for_all_runs": true,
+    "frozen_evaluator_identical_for_all_runs": true,
+    "frozen_config_identical_for_all_runs": true,
+    "previous_best_state_scope": "ARM_WITHIN_MATCHED_BLOCK_ONLY",
+    "arm_results_directories_disjoint": true,
+    "arm_databases_disjoint": true,
+    "shared_mutable_search_state": false,
+    "cross_arm_artifact_reads_permitted": false,
+    "block_state_reset_from_frozen_initial": true,
+    "execution_order_has_state_authority": false,
+    "fresh_results_root_per_run": true,
     "no_post_hoc_replacement": true,
     "failed_or_invalid_slot_consumes_budget": true,
     "resume_may_add_proposal_slots": false
@@ -246,7 +388,9 @@
     "per_block_formula": "(native_final_best-official_final_best)/max(abs(official_final_best),1e-12)",
     "aggregation": "MEDIAN_ACROSS_MATCHED_BLOCKS",
     "non_inferiority_margin": -0.01,
-    "pass_rule": "ONE_SIDED_95_PERCENT_LOWER_BOUND_STRICTLY_GT_MARGIN_AND_ALL_GUARDRAILS_PASS",
+    "pass_rule": "ONE_SIDED_95_PERCENT_LOWER_BOUND_GTE_MARGIN_WITH_1E-12_ABS_TOLERANCE_AND_ALL_GUARDRAILS_PASS",
+    "inference_unit": "MATCHED_BLOCK_PAIR",
+    "slot_level_observations_are_independent_inference_units": false,
     "bootstrap": {
       "method": "PAIRED_BLOCK_BOOTSTRAP",
       "resamples": 100000,
@@ -272,6 +416,7 @@
         "margin_unit": "ABSOLUTE_RATE"
       }
     ],
+    "floating_comparison_absolute_tolerance": 1e-12,
     "mandatory_secondary_metrics": [
       "best_so_far_auc_with_carry_forward",
       "first_valid_improvement_with_right_censoring",

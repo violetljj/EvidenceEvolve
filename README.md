@@ -266,7 +266,9 @@ upstream files. This mechanics PASS has no search-quality authority, and P2-R1
 has not run. P2-R1 is now frozen as a fresh, unstarted lineage with symmetric
 50-call arm budgets, full candidate-survival denominators, no post-hoc
 replacement, carry-forward handling for invalid/missing slots, a paired -1%
-primary non-inferiority gate, and separate invalid/useful-rate hard guardrails.
+primary non-inferiority gate over ten block-pair inference units, isolated
+arm/block state, request-level prompt/payload receipts, and separate
+invalid/useful-rate hard guardrails.
 Future remote generation must not use `gpt-5.5`; the frozen R1 model is
 `gpt-5.6-terra`.
 
