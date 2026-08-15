@@ -259,6 +259,7 @@ def test_one_candidate_failure_does_not_abort_the_generation(
         generation_id="GEN-FAILURE-ISOLATION",
         candidates=candidates,
         evaluate=evaluate,
+        max_workers=2,
     )
     assert [item.candidate_id for item in result.failures] == ["BROKEN-CANDIDATE"]
     assert [item.candidate_id for item in result.evaluations] == ["WORKING-CANDIDATE"]

@@ -1,9 +1,10 @@
 from __future__ import annotations
 
+import re
 from enum import StrEnum
 from typing import Literal
 
-from pydantic import Field, model_validator
+from pydantic import Field, field_validator, model_validator
 
 from evidence_evolve.governance.closure_registry import (
     ClosureRegistry,
@@ -32,6 +33,12 @@ class PolicyEffectTrace(StrictModel):
     moonshot_candidate_ids: list[str] = Field(default_factory=list)
     parent_selector: str
     context_compiler: str
+    island_assignments: dict[str, str] = Field(default_factory=dict)
+    parent_pools_by_island: dict[str, list[str]] = Field(default_factory=dict)
+    parent_roles: dict[str, list[str]] = Field(default_factory=dict)
+    migrations: list[dict[str, str]] = Field(default_factory=list)
+    max_parallel_proposals: int = Field(default=1, ge=1)
+    max_parallel_evaluations: int = Field(default=1, ge=1)
 
 
 class AcquisitionWeights(StrictModel):
@@ -47,7 +54,7 @@ class AcquisitionWeights(StrictModel):
 class ResearchPolicyGenome(StrictModel):
     schema_version: Literal["1.0"] = "1.0"
     policy_id: str
-    parent_selector: Literal["search_rights_recent"] = "search_rights_recent"
+    parent_selector: Literal["island_stratified"] = "island_stratified"
     context_compiler: Literal[
         "lineage_plus_failure_signature"
     ] = "lineage_plus_failure_signature"
@@ -56,6 +63,16 @@ class ResearchPolicyGenome(StrictModel):
     ] = "cross_family_structural_restart"
     stagnation_generations: int = Field(default=3, ge=1)
     moonshot_fraction: float = Field(default=0.1, ge=0.0, le=0.5)
+    island_ids: list[str] = Field(default_factory=lambda: ["main"], min_length=1)
+    island_capacity: int = Field(default=32, ge=1)
+    parents_per_island: int = Field(default=4, ge=1)
+    migration_interval: int = Field(default=3, ge=1)
+    migration_count: int = Field(default=1, ge=0)
+    stepping_stone_min_information_gain: float = Field(
+        default=0.6, ge=0.0, le=1.0
+    )
+    max_parallel_proposals: int = Field(default=1, ge=1, le=32)
+    max_parallel_evaluations: int = Field(default=1, ge=1, le=32)
     code_parent_dispositions: list[SearchDisposition] = Field(
         default_factory=lambda: [
             SearchDisposition.CODE_PARENT,
@@ -78,6 +95,16 @@ class ResearchPolicyGenome(StrictModel):
     )
     weights: AcquisitionWeights = Field(default_factory=AcquisitionWeights)
 
+    @field_validator("island_ids")
+    @classmethod
+    def island_ids_are_safe_and_unique(cls, values: list[str]) -> list[str]:
+        if len(set(values)) != len(values):
+            raise ValueError("island_ids must be unique")
+        for value in values:
+            if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,63}", value):
+                raise ValueError(f"unsafe island id: {value}")
+        return values
+
     @model_validator(mode="after")
     def mutation_mix_is_a_distribution(self) -> "ResearchPolicyGenome":
         for name, mix in (
@@ -95,6 +122,8 @@ class ResearchPolicyGenome(StrictModel):
             raise ValueError("code_parent_dispositions cannot be empty")
         if SearchDisposition.QUARANTINE in self.code_parent_dispositions:
             raise ValueError("quarantined candidates cannot receive code parent rights")
+        if self.migration_count > self.island_capacity:
+            raise ValueError("migration_count cannot exceed island_capacity")
         return self
 
 

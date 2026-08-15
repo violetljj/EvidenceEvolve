@@ -5,11 +5,14 @@ import json
 import subprocess
 from pathlib import Path
 
+import pytest
+
 from evidence_evolve.discovery.autonomous import (
     AutonomousCampaignRunner,
     AutonomousEvaluationContext,
 )
 from evidence_evolve.discovery.campaign import CampaignCandidate, EvaluationRun
+from evidence_evolve.discovery.population import DuplicateCandidateCodeError
 from evidence_evolve.governance.closure_registry import ClosureRegistry
 from evidence_evolve.governance.protocol_lock import load_contract
 from evidence_evolve.hashing import sha256_object
@@ -64,6 +67,7 @@ class FakeCodexBackend:
             ]["const"]
             genome_properties = schema["$defs"]["CandidateGenome"]["properties"]
             parent = genome_properties["genetic_parent_id"]["enum"][0]
+            island = genome_properties["island"]["const"]
             mutation_type = genome_properties["mutation_type"]["const"]
             payload = {
                 "acquisition": {
@@ -71,7 +75,7 @@ class FakeCodexBackend:
                         "candidate_id": candidate_id,
                         "parent_ids": [parent],
                         "genetic_parent_id": parent,
-                        "island": "test",
+                        "island": island,
                         "family": f"family-{self.proposal_count}",
                         "mutation_type": mutation_type,
                         "hypothesis": "The bounded candidate change improves clearance metric.",
@@ -231,6 +235,15 @@ def test_two_generation_loop_uses_feedback_and_resumes_idempotently(
         "NORMAL",
         "BREAKTHROUGH",
     ]
+    assert result.policy_effect_traces[0].island_assignments == {
+        "GEN-001-C01": "main"
+    }
+    assert result.policy_effect_traces[1].parent_pools_by_island == {
+        "main": ["GEN-001-C01"]
+    }
+    assert "FAILURE" in result.policy_effect_traces[1].parent_roles[
+        "GEN-001-C01"
+    ]
     assert (
         result.policy_effect_traces[1].mutation_assignments["GEN-002-C01"]
         is MutationType.CROSS_FAMILY
@@ -281,6 +294,7 @@ def test_two_generation_loop_uses_feedback_and_resumes_idempotently(
         generation.evaluations[0].resumed for generation in resumed.generations
     )
     assert resumed.budgets == result.budgets
+    assert resumed.population == result.population
 
 
 def test_proposal_schema_binds_candidate_and_parent_ids(contract, tmp_path) -> None:
@@ -296,11 +310,16 @@ def test_proposal_schema_binds_candidate_and_parent_ids(contract, tmp_path) -> N
     )
     schema = runner._proposal_schema(
         "GEN-009-C03",
+        "test",
         ["PARENT-1"],
         MutationType.MECHANISM,
     )
     genome = schema["$defs"]["CandidateGenome"]
     assert genome["properties"]["candidate_id"]["const"] == "GEN-009-C03"
+    assert genome["properties"]["island"] == {
+        "const": "test",
+        "type": "string",
+    }
     assert genome["properties"]["parent_ids"]["items"] == {
         "enum": ["PARENT-1"],
         "type": "string",
@@ -377,3 +396,122 @@ def test_proposal_schema_binds_candidate_and_parent_ids(contract, tmp_path) -> N
         "summary",
         "tests",
     ]
+
+
+def test_exact_code_duplicate_skips_frozen_evaluator(tmp_path, contract, candidate) -> None:
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _git(repo, "init", "-b", "master")
+    candidate_file = repo / "candidates" / "model.py"
+    candidate_file.parent.mkdir(parents=True)
+    candidate_file.write_text("VALUE = 'seed'\n", encoding="utf-8")
+    prompts = repo / "prompts"
+    prompts.mkdir()
+    (prompts / "explorer.md").write_text("Explore safely.\n", encoding="utf-8")
+    (prompts / "implementer.md").write_text("Implement safely.\n", encoding="utf-8")
+    _git(repo, "add", ".")
+    _git(
+        repo,
+        "-c",
+        "user.name=Test",
+        "-c",
+        "user.email=test@example.com",
+        "commit",
+        "-m",
+        "baseline",
+    )
+    base_commit = _git(repo, "rev-parse", "HEAD")
+    contract = contract.model_copy(deep=True)
+    contract.campaign.base_commit = base_commit
+    contract.budgets = Budgets(implementations=2, mechanics_runs=2)
+    contract.lock = ContractLock(
+        content_sha256=sha256_object(
+            contract.model_dump(mode="python", exclude={"lock"})
+        )
+    )
+
+    class SameCodeBackend:
+        def run(self, *, role, workdir: Path, output_path: Path, **kwargs):
+            del kwargs
+            assert role.name == "implementer"
+            (workdir / "candidates" / "model.py").write_text(
+                "VALUE = 'same-code'\n", encoding="utf-8"
+            )
+            output_path.parent.mkdir(parents=True, exist_ok=True)
+            output_path.write_text(
+                json.dumps(
+                    {
+                        "status": "IMPLEMENTED",
+                        "summary": "implemented exact duplicate",
+                        "tests": [],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            return {"status": "PASS"}
+
+    evaluator_calls = 0
+
+    def evaluate(context: AutonomousEvaluationContext) -> EvaluationRun:
+        nonlocal evaluator_calls
+        evaluator_calls += 1
+        current = context.candidate.acquisition.candidate
+        return EvaluationRun(
+            evaluation=EvaluationInput(
+                contract_sha256=contract.lock.content_sha256,
+                candidate=current,
+                stage=context.candidate.stage,
+                changed_files=["candidates/model.py"],
+                mechanics_status=MechanicsStatus.PASS,
+                data_eligible=True,
+                metrics={
+                    "clearance_mae_delta": -0.1,
+                    "false_block_delta_pp": 0.0,
+                },
+                controls={"wrong_factor": True, "zero_factor": True},
+                scientific_outcome=ScientificOutcome.POSITIVE_HEADROOM,
+            ),
+            command=["fake-evaluator"],
+            elapsed_seconds=0.01,
+        )
+
+    run_dir = tmp_path / "run"
+    runner = AutonomousCampaignRunner(
+        contract=contract,
+        closure_registry=ClosureRegistry(),
+        policy=ResearchPolicyGenome(policy_id="POLICY-DUPLICATE"),
+        repo_root=repo,
+        run_dir=run_dir,
+        evaluate=evaluate,
+        backend=SameCodeBackend(),
+    )
+    items = [
+        CampaignCandidate(
+            acquisition={
+                "candidate": candidate.model_copy(
+                    update={"candidate_id": candidate_id, "island": "main"}
+                ),
+                "signals": {
+                    "admit_probability": 1.0,
+                    "expected_improvement": 0.0,
+                    "information_gain": 0.5,
+                    "novelty": 0.5,
+                },
+            }
+        )
+        for candidate_id in ("DUPLICATE-CANDIDATE-001", "DUPLICATE-CANDIDATE-002")
+    ]
+    runner._implement_and_evaluate("GEN-001", items[0])
+    with pytest.raises(DuplicateCandidateCodeError):
+        runner._implement_and_evaluate("GEN-001", items[1])
+    assert evaluator_calls == 1
+    rejection = json.loads(
+        (
+            run_dir
+            / "candidates"
+            / "DUPLICATE-CANDIDATE-002"
+            / "duplicate_code.json"
+        ).read_text(encoding="utf-8")
+    )
+    assert rejection["duplicate_of"] == "DUPLICATE-CANDIDATE-001"
+    assert rejection["evaluator_executed"] is False

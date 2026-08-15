@@ -104,7 +104,7 @@ class CodexCliBackend:
             str(output_schema),
             "--output-last-message",
             str(output_path),
-            prompt,
+            "-",
         ]
 
     def run(
@@ -135,6 +135,7 @@ class CodexCliBackend:
                 cwd=workdir,
                 check=False,
                 capture_output=True,
+                input=prompt,
                 text=True,
                 encoding="utf-8",
                 errors="replace",

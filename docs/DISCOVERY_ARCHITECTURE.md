@@ -97,25 +97,49 @@ The autonomous loop currently implements the following executable behavior:
   mutations;
 - the configured moonshot fraction reserves proposal slots for breakthrough-style
   mutations even before global stagnation;
-- the archive compiles hypotheses, interventions, assumptions, failure risks,
-  outcomes, and mechanism assessments into retrievable scientific memory.
+- the archive compiles immutable receipts into source-bound Result, Failure,
+  Mechanism, Lineage, Frontier, and Procedure cards; retrieval is role-scoped,
+  audited, and excludes confirmation evidence from agent memory;
+- the Research Director turns eligible cards into a persisted next-action decision
+  that changes mutation allocation while remaining `SCHEDULING_ONLY`.
 
 These mechanics do not prove that the search is better than a baseline. They make
 that comparison possible.
+
+## Implemented R1.2 population semantics
+
+R1.2 turns the last-generation parent list into a persistent, bounded population:
+
+- population candidates, genotype hashes, island memberships, and migrations live
+  in the resumable campaign SQLite database;
+- each proposal slot is assigned to a policy-defined island before Codex runs;
+- each island samples a bounded parent portfolio across `ELITE`, `NOVELTY`,
+  `FAILURE`, `STEPPING_STONE`, and `MIGRANT` scheduling roles;
+- novelty is keyed by a stable behavior-descriptor hash, with family, mutation type,
+  and search abstraction as the fallback descriptor;
+- a novel parent-rights artifact above the policy information-gain threshold is
+  retained explicitly as a stepping stone;
+- active island membership is capacity-bounded while deactivated history remains
+  persistent and auditable;
+- migration uses a snapshot of every source island and a deterministic ring, so a
+  candidate cannot cascade through multiple islands in one migration event;
+- the cumulative baseline-relative patch hash is claimed atomically before the
+  frozen evaluator runs; an exact duplicate is recorded and the evaluator is not
+  called again;
+- proposal and evaluation execution use finite policy-bounded worker pools, with
+  deterministic result ordering and candidate-local failure isolation;
+- the policy effect trace records island assignments, parent pools and roles,
+  migrations, mutation assignments, moonshots, and concurrency bounds.
+
+Elite, novelty, information-gain, stepping-stone, and migration labels remain
+search-plane scheduling metadata. They cannot alter the evidence-plane outcome or
+claim-plane ceiling. Proposal-supplied diversity descriptors are not independent
+novelty evidence; R1.3 must add calibrated and independently computed acquisition.
 
 ## Next executable slices
 
 The order below is intentional. A feature is admitted only when it changes behavior
 and has a focused test or campaign measurement.
-
-### R1.2 Population and islands
-
-- persistent multi-island population rather than only the last eligible generation;
-- elite, novelty, and failure-directed parent sampling;
-- behavior-descriptor diversity and duplicate-code rejection;
-- explicit stepping-stone retention;
-- bounded asynchronous proposal and evaluation queues;
-- migration between islands.
 
 ### R1.3 Research intelligence
 
@@ -128,16 +152,19 @@ and has a focused test or campaign measurement.
 
 ### R1.4 Research Action Grammar
 
-The scheduler should eventually choose among executable actions rather than always
-creating a new code candidate:
+The first vertical slice now records a scheduling-only Research Director decision
+and maps the executable code-backed subset into actual mutation allocation:
 
 ```text
 MUTATE  REPLICATE  ABLATE  FALSIFY  GENERATE_COUNTEREXAMPLE
 TRANSFER  SIMPLIFY  UNDERSTAND  ACQUIRE_NEW_EVIDENCE  CLOSE_FAMILY
 ```
 
-Each action needs its own executor and attribution rules. These names must not be
-added as decorative schema fields before the executor exists.
+`MUTATE`, `ABLATE`, `FALSIFY`, `GENERATE_COUNTEREXAMPLE`, `TRANSFER`, `SIMPLIFY`,
+and `BREAKTHROUGH` can currently alter candidate allocation and proposal context.
+Non-code actions such as literature search, evidence acquisition, replication, and
+standalone diagnosis remain explicitly blocked until they have source-bound
+executors and attribution rules; they are not silently disguised as mutations.
 
 ### R1.5 Explorer, Scientist, and Red Queen
 

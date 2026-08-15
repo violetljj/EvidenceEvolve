@@ -27,6 +27,7 @@ from evidence_evolve.discovery.autonomous import (
     AutonomousEvaluationContext,
     ImplementationManifest,
 )
+from evidence_evolve.discovery.director import ResearchDirectorDecision
 from evidence_evolve.governance.candidate_auditor import audit_candidate
 from evidence_evolve.governance.closure_registry import ClosureRegistry
 from evidence_evolve.governance.protocol_lock import (
@@ -44,6 +45,12 @@ from evidence_evolve.meta_evolution.promotion import (
 )
 from evidence_evolve.onnx_campaign import evaluate_onnx_candidate
 from evidence_evolve.replay import replay_evaluation, replay_verdict
+from evidence_evolve.research_memory import (
+    MemoryKind,
+    MemoryRole,
+    RoleScopedMemoryPacket,
+    ScientificMemoryCard,
+)
 
 
 def _json(value: Any) -> str:
@@ -204,6 +211,20 @@ def command_inspect(args: argparse.Namespace) -> int:
     return 0
 
 
+def command_memory_query(args: argparse.Namespace) -> int:
+    run_dir = Path(args.run_dir).resolve()
+    packet = ArchiveStore(run_dir / "research.db").research_memory_packet(
+        role=MemoryRole(args.role),
+        query=args.query,
+        campaign=args.campaign,
+        family=args.family,
+        kinds={MemoryKind(value) for value in args.kind} if args.kind else None,
+        limit=args.limit,
+    )
+    print(_json(packet))
+    return 0
+
+
 def command_explain(args: argparse.Namespace) -> int:
     run_dir = Path(args.run_dir).resolve()
     with sqlite3.connect(run_dir / "research.db") as connection:
@@ -260,6 +281,11 @@ def command_export_schemas(args: argparse.Namespace) -> int:
         "policy_benchmark.schema.json": PolicyBenchmarkResult.model_json_schema(),
         "policy_promotion_protocol.schema.json": (
             PolicyPromotionProtocol.model_json_schema()
+        ),
+        "scientific_memory_card.schema.json": ScientificMemoryCard.model_json_schema(),
+        "role_scoped_memory_packet.schema.json": RoleScopedMemoryPacket.model_json_schema(),
+        "research_director_decision.schema.json": (
+            ResearchDirectorDecision.model_json_schema()
         ),
     }
     for name, schema in schemas.items():
@@ -473,6 +499,25 @@ def build_parser() -> argparse.ArgumentParser:
     inspect = subparsers.add_parser("inspect", help="summarize a run archive")
     inspect.add_argument("run_dir")
     inspect.set_defaults(handler=command_inspect)
+
+    memory_query = subparsers.add_parser(
+        "memory-query",
+        help="query evidence-bound research memory with a role firewall",
+    )
+    memory_query.add_argument("run_dir")
+    memory_query.add_argument(
+        "--role",
+        choices=[role.value for role in MemoryRole],
+        default=MemoryRole.RESEARCH_DIRECTOR.value,
+    )
+    memory_query.add_argument("--query")
+    memory_query.add_argument("--campaign")
+    memory_query.add_argument("--family")
+    memory_query.add_argument(
+        "--kind", action="append", choices=[kind.value for kind in MemoryKind]
+    )
+    memory_query.add_argument("--limit", type=int, default=8)
+    memory_query.set_defaults(handler=command_memory_query)
 
     explain = subparsers.add_parser("explain", help="explain one deterministic verdict")
     explain.add_argument("run_dir")

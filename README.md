@@ -1,5 +1,7 @@
 # EvidenceEvolve
 
+Product direction: [EvidenceEvolve as an AI Research Operating System](docs/AI_RESEARCH_OS.md).
+
 EvidenceEvolve is an evidence-gated, reproducible algorithm discovery harness. It separates creative search from scientific authority:
 
 ```text
@@ -46,7 +48,7 @@ This is a working orchestration and causal-credit core, not a claim that open-en
 
 ## R1 autonomous loop slice
 
-The first bounded Codex loop is now implemented:
+The bounded Codex loop and its persistent R1.2 population layer are implemented:
 
 ```text
 Codex proposal (read-only, schema-bound)
@@ -71,26 +73,40 @@ The default policy also executes its mutation mix, records a per-generation poli
 effect trace, reserves a small moonshot fraction, and enters structural
 `BREAKTHROUGH` search after bounded stagnation. One candidate-local proposal or
 implementation failure no longer aborts the rest of the generation. Historical
-hypotheses, conditions, failure risks, verdicts, and mechanism assessments are
-compiled into scheduling-only scientific memory for later proposals.
+receipts are compiled into source-bound Result, Failure, Mechanism, Lineage,
+Frontier, and Procedure cards. Role-scoped FTS5/structured retrieval feeds the
+next proposal without exposing confirmation receipts or granting memory to the
+Gate Engine. A scheduling-only Research Director uses those cards to select a
+research action and can reallocate the next generation toward controls, ablations,
+failure-directed tests, transfer, or breakthrough mutations.
+
+R1.2 persists code artifacts and island memberships in the campaign database. Each
+slot is assigned to an island; parents are sampled across elite, novelty,
+failure-directed, explicit stepping-stone, and migrant roles; and bounded ring
+migration shares artifacts between islands. Active populations are capacity-limited
+without deleting history. Exact baseline-relative code duplicates are rejected
+before the frozen evaluator is called. Proposal and evaluation worker counts are
+finite policy effects recorded in the per-generation trace, with deterministic
+result ordering.
 
 Codex cannot provide reference metrics, verified reopen evidence, a confirmation
 stage, or a verdict. The implementer is limited to the candidate worktree; actual
 changed paths are independently audited before the frozen evaluator result reaches
 the gate.
 
-The design boundary, implemented R1.1 semantics, and ordered next slices are in
+The design boundary, implemented R1.1/R1.2 semantics, and ordered next slices are in
 [`docs/DISCOVERY_ARCHITECTURE.md`](docs/DISCOVERY_ARCHITECTURE.md).
 
-Run two ONNX mechanics generations with a Codex CLI login (ChatGPT-managed login is
-supported; an API key is not required):
+Run the five-island, five-generation ONNX mechanics campaign with a Codex CLI login
+(ChatGPT-managed login is supported; an API key is not required):
 
 ```powershell
 evolve campaign autonomous research/contracts/onnx_rewrite_r1.locked.yaml `
-  --policy research/policies/r1_default.yaml `
+  --policy research/policies/r1_2_islands_a0.yaml `
   --adapter tasks.onnx_rewrite.autonomous_adapter:evaluate_candidate `
-  --run-dir runs/onnx_rewrite_r1 `
-  --generations 2
+  --run-dir runs/onnx_rewrite_r1_2_a0 `
+  --generations 5 `
+  --proposals-per-generation 5
 ```
 
 Use `--codex-executable PATH` when `codex` does not resolve to a usable standalone
@@ -100,10 +116,10 @@ implementations, receipts, and budget reservations are reused rather than counte
 again.
 
 This slice establishes executable search mechanics, not autonomous-discovery
-evidence. Persistent islands, crossover, asynchronous evaluation, literature cards,
-Research Action executors, Red Queen populations, blind confirmation, algorithm
-novelty, and superiority over a baseline remain unproven or unimplemented until the
-named code and external campaigns exist.
+evidence. Crossover, independently calibrated novelty, literature cards, Research
+Action executors, Red Queen populations, blind confirmation, algorithm novelty, and
+superiority over a baseline remain unproven or unimplemented until the named code
+and external campaigns exist.
 
 ## Setup
 

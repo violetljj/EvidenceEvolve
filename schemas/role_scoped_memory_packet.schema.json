@@ -1,0 +1,427 @@
+{
+  "$defs": {
+    "ClaimCeiling": {
+      "description": "Maximum claim progression implied by frozen evidence, never an auto-claim.",
+      "enum": [
+        "DEVELOPMENT_ONLY",
+        "TRAINING_ELIGIBLE",
+        "CONFIRMATION_ELIGIBLE",
+        "CLAIM_ELIGIBLE_FOR_HUMAN",
+        "DEPLOYMENT_ELIGIBLE_FOR_HUMAN"
+      ],
+      "title": "ClaimCeiling",
+      "type": "string"
+    },
+    "MemoryContent": {
+      "additionalProperties": false,
+      "properties": {
+        "applicability": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Applicability",
+          "type": "object"
+        },
+        "assumptions": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Assumptions",
+          "type": "array"
+        },
+        "expected_signatures": {
+          "additionalProperties": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "title": "Expected Signatures",
+          "type": "object"
+        },
+        "failure_signature": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Failure Signature",
+          "type": "array"
+        },
+        "hypothesis": {
+          "title": "Hypothesis",
+          "type": "string"
+        },
+        "intervention": {
+          "title": "Intervention",
+          "type": "string"
+        },
+        "lineage": {
+          "additionalProperties": true,
+          "title": "Lineage",
+          "type": "object"
+        },
+        "mechanism_claims": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Mechanism Claims",
+          "type": "array"
+        },
+        "non_applicability": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Non Applicability",
+          "type": "array"
+        },
+        "observed_metrics": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "title": "Observed Metrics",
+          "type": "object"
+        },
+        "observed_signatures": {
+          "additionalProperties": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Observed Signatures",
+          "type": "object"
+        },
+        "procedure": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Procedure",
+          "type": "array"
+        },
+        "source_handles": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Source Handles",
+          "type": "array"
+        },
+        "unresolved_questions": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Unresolved Questions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "hypothesis",
+        "intervention"
+      ],
+      "title": "MemoryContent",
+      "type": "object"
+    },
+    "MemoryEpistemics": {
+      "additionalProperties": false,
+      "properties": {
+        "authority": {
+          "const": "SCHEDULING_ONLY",
+          "default": "SCHEDULING_ONLY",
+          "title": "Authority",
+          "type": "string"
+        },
+        "claim_ceiling": {
+          "$ref": "#/$defs/ClaimCeiling",
+          "default": "DEVELOPMENT_ONLY"
+        },
+        "mechanism_support": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mechanism Support"
+        },
+        "scientific_outcome": {
+          "$ref": "#/$defs/ScientificOutcome"
+        },
+        "source_binding_verified": {
+          "const": true,
+          "default": true,
+          "title": "Source Binding Verified",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "scientific_outcome"
+      ],
+      "title": "MemoryEpistemics",
+      "type": "object"
+    },
+    "MemoryKind": {
+      "enum": [
+        "RESULT",
+        "MECHANISM",
+        "FAILURE",
+        "PROCEDURE",
+        "FRONTIER",
+        "LINEAGE",
+        "TRANSFER"
+      ],
+      "title": "MemoryKind",
+      "type": "string"
+    },
+    "MemoryProvenance": {
+      "additionalProperties": false,
+      "properties": {
+        "candidate_commit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Candidate Commit"
+        },
+        "compiler_version": {
+          "const": "scientific-memory-v1",
+          "default": "scientific-memory-v1",
+          "title": "Compiler Version",
+          "type": "string"
+        },
+        "data_hashes": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Data Hashes",
+          "type": "object"
+        },
+        "evaluator_hashes": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Evaluator Hashes",
+          "type": "object"
+        },
+        "patch_sha256": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Patch Sha256"
+        },
+        "receipt_ids": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Receipt Ids",
+          "type": "array"
+        },
+        "receipt_sha256": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "minProperties": 1,
+          "title": "Receipt Sha256",
+          "type": "object"
+        }
+      },
+      "required": [
+        "receipt_ids",
+        "receipt_sha256"
+      ],
+      "title": "MemoryProvenance",
+      "type": "object"
+    },
+    "MemoryRole": {
+      "enum": [
+        "RESEARCH_DIRECTOR",
+        "HYPOTHESIS_EXPLORER",
+        "IMPLEMENTER",
+        "SCIENTIST",
+        "RED_QUEEN",
+        "GATE_ENGINE"
+      ],
+      "title": "MemoryRole",
+      "type": "string"
+    },
+    "MemoryScope": {
+      "additionalProperties": false,
+      "properties": {
+        "campaign": {
+          "title": "Campaign",
+          "type": "string"
+        },
+        "family": {
+          "title": "Family",
+          "type": "string"
+        },
+        "project": {
+          "default": "EvidenceEvolve",
+          "title": "Project",
+          "type": "string"
+        },
+        "stage": {
+          "$ref": "#/$defs/ResearchStage"
+        },
+        "visibility": {
+          "const": "DEVELOPMENT",
+          "default": "DEVELOPMENT",
+          "title": "Visibility",
+          "type": "string"
+        }
+      },
+      "required": [
+        "campaign",
+        "family",
+        "stage"
+      ],
+      "title": "MemoryScope",
+      "type": "object"
+    },
+    "MemoryStatus": {
+      "enum": [
+        "ACTIVE_SCHEDULING_MEMORY",
+        "EVIDENCE_BOUND",
+        "QUARANTINED",
+        "SUPERSEDED",
+        "RETIRED"
+      ],
+      "title": "MemoryStatus",
+      "type": "string"
+    },
+    "ResearchStage": {
+      "enum": [
+        "P0_PROTOCOL_LOCK",
+        "M0_MECHANICS",
+        "H0_REAL_HEADROOM",
+        "T0_LEARNED_CANDIDATE",
+        "C0_CONFIRMATION",
+        "D0_DEPLOYMENT"
+      ],
+      "title": "ResearchStage",
+      "type": "string"
+    },
+    "ScientificMemoryCard": {
+      "additionalProperties": false,
+      "properties": {
+        "content": {
+          "$ref": "#/$defs/MemoryContent"
+        },
+        "created_at_utc": {
+          "title": "Created At Utc",
+          "type": "string"
+        },
+        "epistemics": {
+          "$ref": "#/$defs/MemoryEpistemics"
+        },
+        "kind": {
+          "$ref": "#/$defs/MemoryKind"
+        },
+        "memory_id": {
+          "title": "Memory Id",
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/MemoryProvenance"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/MemoryScope"
+        },
+        "status": {
+          "$ref": "#/$defs/MemoryStatus"
+        },
+        "version": {
+          "default": 1,
+          "minimum": 1,
+          "title": "Version",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "memory_id",
+        "kind",
+        "status",
+        "scope",
+        "provenance",
+        "epistemics",
+        "content",
+        "created_at_utc"
+      ],
+      "title": "ScientificMemoryCard",
+      "type": "object"
+    },
+    "ScientificOutcome": {
+      "enum": [
+        "POSITIVE_HEADROOM",
+        "VALID_NEGATIVE",
+        "NOT_EVALUABLE_DATA",
+        "INVALID_MECHANICS_OR_ADAPTER"
+      ],
+      "title": "ScientificOutcome",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "authority": {
+      "const": "SCHEDULING_ONLY",
+      "default": "SCHEDULING_ONLY",
+      "title": "Authority",
+      "type": "string"
+    },
+    "cards": {
+      "items": {
+        "$ref": "#/$defs/ScientificMemoryCard"
+      },
+      "title": "Cards",
+      "type": "array"
+    },
+    "query": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Query"
+    },
+    "retrieval_event_id": {
+      "title": "Retrieval Event Id",
+      "type": "string"
+    },
+    "role": {
+      "$ref": "#/$defs/MemoryRole"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "retrieval_event_id",
+    "role"
+  ],
+  "title": "RoleScopedMemoryPacket",
+  "type": "object"
+}

@@ -1,0 +1,106 @@
+{
+  "$defs": {
+    "MutationType": {
+      "enum": [
+        "mechanism_mutation",
+        "representation_mutation",
+        "failure_directed_mutation",
+        "control_mutation",
+        "simplification",
+        "cross_family",
+        "restart"
+      ],
+      "title": "MutationType",
+      "type": "string"
+    },
+    "ResearchAction": {
+      "enum": [
+        "MUTATE",
+        "REPLICATE",
+        "ABLATE",
+        "FALSIFY",
+        "COUNTEREXAMPLE",
+        "TRANSFER",
+        "SIMPLIFY",
+        "UNDERSTAND",
+        "SEARCH_LITERATURE",
+        "REPRODUCE",
+        "ACQUIRE_EVIDENCE",
+        "CLOSE",
+        "REOPEN",
+        "BREAKTHROUGH"
+      ],
+      "title": "ResearchAction",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "authority": {
+      "const": "SCHEDULING_ONLY",
+      "default": "SCHEDULING_ONLY",
+      "title": "Authority",
+      "type": "string"
+    },
+    "blocked_actions": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "propertyNames": {
+        "$ref": "#/$defs/ResearchAction"
+      },
+      "title": "Blocked Actions",
+      "type": "object"
+    },
+    "evidence_memory_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Evidence Memory Ids",
+      "type": "array"
+    },
+    "executable_action": {
+      "$ref": "#/$defs/ResearchAction"
+    },
+    "generation_id": {
+      "title": "Generation Id",
+      "type": "string"
+    },
+    "primary_action": {
+      "$ref": "#/$defs/ResearchAction"
+    },
+    "rationale": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Rationale",
+      "type": "array"
+    },
+    "recommended_mutation_mix": {
+      "additionalProperties": {
+        "type": "number"
+      },
+      "propertyNames": {
+        "$ref": "#/$defs/MutationType"
+      },
+      "title": "Recommended Mutation Mix",
+      "type": "object"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "generation_id",
+    "primary_action",
+    "executable_action",
+    "rationale",
+    "recommended_mutation_mix"
+  ],
+  "title": "ResearchDirectorDecision",
+  "type": "object"
+}

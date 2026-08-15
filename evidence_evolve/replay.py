@@ -200,6 +200,14 @@ def _replay_onnx(
     )
 
 
+EVALUATION_REPLAY_ADAPTERS = {
+    "synthetic_canary_r0": _replay_synthetic,
+    "onnx_rewrite_r0": _replay_onnx,
+    "onnx_rewrite_r1": _replay_onnx,
+    "onnx_rewrite_r1_2_a0": _replay_onnx,
+}
+
+
 def replay_evaluation(run_dir: Path, repo_root: Path) -> dict[str, object]:
     contract = load_contract(run_dir / "contract.locked.yaml")
     report = ProtocolLock(repo_root).assert_valid(contract)
@@ -208,12 +216,7 @@ def replay_evaluation(run_dir: Path, repo_root: Path) -> dict[str, object]:
     failures: list[dict[str, object]] = []
     warnings: list[dict[str, object]] = []
     paths = receipt_paths(run_dir)
-    dispatch = {
-        "synthetic_canary_r0": _replay_synthetic,
-        "onnx_rewrite_r0": _replay_onnx,
-        "onnx_rewrite_r1": _replay_onnx,
-    }
-    replay_adapter = dispatch.get(contract.campaign.id)
+    replay_adapter = EVALUATION_REPLAY_ADAPTERS.get(contract.campaign.id)
     if replay_adapter is None:
         return {
             "mode": "EVALUATION_REPLAY",

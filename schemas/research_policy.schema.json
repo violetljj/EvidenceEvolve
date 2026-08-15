@@ -99,6 +99,46 @@
       "title": "Context Compiler",
       "type": "string"
     },
+    "island_capacity": {
+      "default": 32,
+      "minimum": 1,
+      "title": "Island Capacity",
+      "type": "integer"
+    },
+    "island_ids": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Island Ids",
+      "type": "array"
+    },
+    "max_parallel_evaluations": {
+      "default": 1,
+      "maximum": 32,
+      "minimum": 1,
+      "title": "Max Parallel Evaluations",
+      "type": "integer"
+    },
+    "max_parallel_proposals": {
+      "default": 1,
+      "maximum": 32,
+      "minimum": 1,
+      "title": "Max Parallel Proposals",
+      "type": "integer"
+    },
+    "migration_count": {
+      "default": 1,
+      "minimum": 0,
+      "title": "Migration Count",
+      "type": "integer"
+    },
+    "migration_interval": {
+      "default": 3,
+      "minimum": 1,
+      "title": "Migration Interval",
+      "type": "integer"
+    },
     "moonshot_fraction": {
       "default": 0.1,
       "maximum": 0.5,
@@ -117,10 +157,16 @@
       "type": "object"
     },
     "parent_selector": {
-      "const": "search_rights_recent",
-      "default": "search_rights_recent",
+      "const": "island_stratified",
+      "default": "island_stratified",
       "title": "Parent Selector",
       "type": "string"
+    },
+    "parents_per_island": {
+      "default": 4,
+      "minimum": 1,
+      "title": "Parents Per Island",
+      "type": "integer"
     },
     "policy_id": {
       "title": "Policy Id",
@@ -143,6 +189,13 @@
       "default": "cross_family_structural_restart",
       "title": "Stagnation Response",
       "type": "string"
+    },
+    "stepping_stone_min_information_gain": {
+      "default": 0.6,
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Stepping Stone Min Information Gain",
+      "type": "number"
     },
     "weights": {
       "$ref": "#/$defs/AcquisitionWeights"

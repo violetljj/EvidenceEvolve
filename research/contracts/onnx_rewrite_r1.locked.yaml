@@ -1,8 +1,8 @@
 schema_version: '1.0'
 campaign:
-  id: onnx_rewrite_r1
-  base_commit: 3ba4dd114c5d3da00db164e4f98afdde56f2b23f
-  research_question: Can a bounded two-generation Codex loop discover ONNX rewrite
+  id: onnx_rewrite_r1_2_a0
+  base_commit: 50d33777f1b5d9138ceb76fc535a6fb57874b08b
+  research_question: Can a persistent five-island Codex population discover ONNX rewrite
     improvements while preserving exact task behavior?
   claim_scope: autonomous_engineering_harness_canary_only
 authority:
@@ -26,8 +26,8 @@ evidence_sources:
   grade: B
   path: research/evidence_policies/onnx_rewrite_dev_manifest.json
   permissions:
-  - CLAIM
   - DEV
+  - CLAIM
   - CONFIRM
   sha256: 9ee146efbc2a33c9fddf1faf070855077c8bfc6ff1716df6cb2d78cc2fcff36f
 frozen_assets:
@@ -54,7 +54,11 @@ frozen_assets:
 - asset_id: harness-archive-r1
   kind: harness_core
   path: evidence_evolve/archive.py
-  sha256: 73575622c37cdaa775bf50401317a925b4e1bc76e8615fa005ec3100ccc51d18
+  sha256: 5f697252c90a4e4652b0a48feffc81c44afa4829c2106a98c291123bc48284a3
+- asset_id: harness-research-memory-r1
+  kind: harness_core
+  path: evidence_evolve/research_memory.py
+  sha256: 6dba80f63bccee3774b29687c1be5cf7a3478e5ef93f2a0eba43d99c0d97346e
 - asset_id: harness-artifacts-r1
   kind: harness_core
   path: evidence_evolve/artifacts.py
@@ -66,19 +70,27 @@ frozen_assets:
 - asset_id: harness-campaign-runner-r1
   kind: harness_core
   path: evidence_evolve/discovery/campaign.py
-  sha256: 56733cf39b46bba2756f9668bd39bbac9a420a8002f50549f230d191a6ba9df0
+  sha256: 40750c9469d866aff565e26e772d25bab8709b0221dd63a6dd288eb91fb1c0c3
+- asset_id: harness-population-store-r1
+  kind: harness_core
+  path: evidence_evolve/discovery/population.py
+  sha256: cdccf6479b10bafa2c162675ce51709f594a15304603e27182e9b012334e961f
 - asset_id: harness-autonomous-runner-r1
   kind: harness_core
   path: evidence_evolve/discovery/autonomous.py
-  sha256: 7be452343ed9fdddbe9fbfd990a8e43c1958f6cd58e62d690aed676a5f048cb4
+  sha256: 071a0d457939b12d2c4d46e50390f1bbba46707cf92c8d81a13967845f40c828
+- asset_id: harness-research-director-r1
+  kind: harness_core
+  path: evidence_evolve/discovery/director.py
+  sha256: f350f606381762048cdcf479b602903f6a3d5ca80efe674bec8308ce741ab11e
 - asset_id: harness-research-policy-r1
   kind: harness_core
   path: evidence_evolve/meta_evolution/policy.py
-  sha256: 86588b4bf6b1ff8476e4d4bbdeb22534994f713818ddffe7462026f67227a415
+  sha256: c67fbaeac5a5549532124c970640b2e0131e3fa0fa45c16ec36fd77d117708c5
 - asset_id: harness-codex-backend-r1
   kind: harness_core
   path: evidence_evolve/backends/codex_cli.py
-  sha256: 614f559bbf7ca964c0299cc52b35e6db523232dd048a5742e46277b735e629c3
+  sha256: 7865bed2fca8ea58d60e3251ebda42f6d4887aade404d1769843d1e174a06571
 - asset_id: harness-hashing-r1
   kind: harness_core
   path: evidence_evolve/hashing.py
@@ -86,7 +98,7 @@ frozen_assets:
 - asset_id: harness-replay-r1
   kind: harness_core
   path: evidence_evolve/replay.py
-  sha256: 4aaffc0df33bddef2e857952764ad84a0806c409a7e998a1a53a2838e6fb4f00
+  sha256: 4082ab783d677beef34826f873a8878b0001d54391e95c04f1c843d77967e462
 - asset_id: harness-worktrees-r1
   kind: harness_core
   path: evidence_evolve/worktrees.py
@@ -102,7 +114,7 @@ frozen_assets:
 - asset_id: harness-protocol-lock-r1
   kind: harness_core
   path: evidence_evolve/governance/protocol_lock.py
-  sha256: 71b627ae808c6ecb2b0aec1cc2976f2c8a98fc7a2bc0b2b1eac8199ab946f0e1
+  sha256: 254a08bc61f58b96edfeffe1eb62c18bf466c94eb4be2af75f83fbf5345f76c4
 - asset_id: harness-evidence-policy-r1
   kind: harness_core
   path: evidence_evolve/governance/evidence_policy.py
@@ -148,13 +160,13 @@ required_controls:
 - deterministic_rewrite
 - semantic_parity
 budgets:
-  proposal_calls: 4
-  implementations: 3
-  mechanics_runs: 3
+  proposal_calls: 25
+  implementations: 25
+  mechanics_runs: 25
   proxy_runs: 0
   confirmation_runs: 0
   device_runs: 0
 closure_registry: research/closures/closure_registry.yaml
 lock:
   algorithm: sha256
-  content_sha256: 02fb8425956f75b3ce2a3331392faaec67be34b5f3dfc12774db8deaf1a718a1
+  content_sha256: f179416871274f0e4d6449a279c94daf2686c7744cf9dcdb02f7ffa860198834

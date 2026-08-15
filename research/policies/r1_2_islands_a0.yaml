@@ -1,19 +1,23 @@
 schema_version: "1.0"
-policy_id: r1_default
+policy_id: r1_2_islands_a0
 parent_selector: island_stratified
 context_compiler: lineage_plus_failure_signature
 stagnation_response: cross_family_structural_restart
 stagnation_generations: 3
 moonshot_fraction: 0.1
 island_ids:
-  - main
-island_capacity: 32
+  - mechanism
+  - representation
+  - failure
+  - transfer
+  - frontier
+island_capacity: 24
 parents_per_island: 4
-migration_interval: 3
+migration_interval: 2
 migration_count: 1
 stepping_stone_min_information_gain: 0.6
-max_parallel_proposals: 1
-max_parallel_evaluations: 1
+max_parallel_proposals: 2
+max_parallel_evaluations: 2
 code_parent_dispositions:
   - CODE_PARENT
   - FAILURE_DIRECTED_SEED

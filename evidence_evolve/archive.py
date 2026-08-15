@@ -6,6 +6,12 @@ from pathlib import Path
 
 from evidence_evolve.meta_evolution.policy import AcquisitionDecision, CandidateAcquisition
 from evidence_evolve.models import CandidateGenome, ReceiptEnvelope
+from evidence_evolve.research_memory import (
+    MemoryKind,
+    MemoryRole,
+    ResearchMemoryStore,
+    RoleScopedMemoryPacket,
+)
 from evidence_evolve.understanding.signatures import MechanismAssessment
 
 
@@ -76,6 +82,7 @@ class ArchiveStore:
                     ON mechanism_assessments(candidate_id, support);
                 """
             )
+        self.research_memory = ResearchMemoryStore(database)
 
     def _connect(self) -> sqlite3.Connection:
         connection = sqlite3.connect(self.database, timeout=30)
@@ -246,6 +253,28 @@ class ArchiveStore:
                 ).fetchone()
                 if existing != values:
                     raise
+        self.research_memory.compile_receipt(receipt_id)
+
+    def research_memory_packet(
+        self,
+        *,
+        role: MemoryRole,
+        query: str | None = None,
+        campaign: str | None = None,
+        family: str | None = None,
+        kinds: set[MemoryKind] | None = None,
+        limit: int = 8,
+    ) -> RoleScopedMemoryPacket:
+        """Compile and retrieve a role-scoped, scheduling-only memory packet."""
+        self.research_memory.compile_history()
+        return self.research_memory.retrieve_packet(
+            role=role,
+            query=query,
+            campaign=campaign,
+            family=family,
+            kinds=kinds,
+            limit=limit,
+        )
 
     def summary(self) -> dict[str, object]:
         with self._connect() as connection:

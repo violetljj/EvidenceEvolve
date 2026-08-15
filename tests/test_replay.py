@@ -2,7 +2,16 @@ from pathlib import Path
 
 from evidence_evolve.canary import run_canary
 from evidence_evolve.governance.protocol_lock import ProtocolLock, dump_contract, load_contract
-from evidence_evolve.replay import replay_evaluation, replay_verdict, receipt_paths
+from evidence_evolve.replay import (
+    EVALUATION_REPLAY_ADAPTERS,
+    replay_evaluation,
+    replay_verdict,
+    receipt_paths,
+)
+
+
+def test_r1_2_campaign_has_evaluation_replay_adapter() -> None:
+    assert "onnx_rewrite_r1_2_a0" in EVALUATION_REPLAY_ADAPTERS
 
 
 def test_synthetic_evaluation_replay_reexecutes_frozen_evaluator(tmp_path) -> None:

@@ -17,6 +17,7 @@ def test_read_only_role_gets_read_only_sandbox() -> None:
     assert command[command.index("--sandbox") + 1] == "read-only"
     assert "--json" in command
     assert "--output-schema" in command
+    assert command[-1] == "-"
 
 
 def test_only_implementer_can_write() -> None:
@@ -111,6 +112,7 @@ def test_run_decodes_codex_event_stream_as_utf8(monkeypatch, tmp_path) -> None:
 
     assert observed["encoding"] == "utf-8"
     assert observed["errors"] == "replace"
+    assert observed["input"] == "implement"
     assert result["status"] == "PASS"
     assert result["event_types"] == ["item.completed"]
     assert "—" in events_path.read_text(encoding="utf-8")

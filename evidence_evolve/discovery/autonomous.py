@@ -6,6 +6,7 @@ import json
 import re
 import subprocess
 import tempfile
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable, Literal, Protocol
@@ -23,6 +24,16 @@ from evidence_evolve.discovery.campaign import (
     CampaignRunner,
     EvaluationRun,
 )
+from evidence_evolve.discovery.director import (
+    ResearchAction,
+    ResearchDirector,
+    ResearchDirectorDecision,
+    research_action_for_mutation,
+)
+from evidence_evolve.discovery.population import (
+    DuplicateCandidateCodeError,
+    PopulationStore,
+)
 from evidence_evolve.governance.candidate_auditor import audit_candidate
 from evidence_evolve.governance.closure_registry import ClosureRegistry
 from evidence_evolve.governance.protocol_lock import dump_contract, load_contract
@@ -34,6 +45,7 @@ from evidence_evolve.meta_evolution.policy import (
     mutation_schedule,
 )
 from evidence_evolve.models import MutationType, ResearchContract, ResearchStage, StrictModel
+from evidence_evolve.research_memory import MemoryRole, RoleScopedMemoryPacket
 from evidence_evolve.worktrees import WorktreeManager
 
 
@@ -129,6 +141,7 @@ class AutonomousCampaignResult(StrictModel):
     generations: list[CampaignGenerationResult]
     policy_effect_traces: list[PolicyEffectTrace]
     budgets: dict[str, dict[str, int]]
+    population: dict[str, list[dict[str, object]]] = Field(default_factory=dict)
 
 
 class AutonomousCampaignRunner:
@@ -172,6 +185,9 @@ class AutonomousCampaignRunner:
         self.database = self.run_dir / "research.db"
         self.budgets = BudgetLedger(self.database, contract.budgets)
         self.archive = ArchiveStore(self.database)
+        self.director = ResearchDirector()
+        self.population = PopulationStore(self.database)
+        self._parent_commits.update(self.population.parent_commits())
         self.campaign = CampaignRunner(
             contract=contract,
             closure_registry=closure_registry,
@@ -226,92 +242,49 @@ class AutonomousCampaignRunner:
 
         completed: list[CampaignGenerationResult] = []
         policy_effect_traces: list[PolicyEffectTrace] = []
-        eligible_parents = ["SEED"]
         stagnant_generations = 0
         for generation_index in range(1, generations + 1):
             generation_id = f"{generation_prefix}-{generation_index:03d}"
-            feedback = self._feedback_context(completed)
-            mode = (
-                DiscoveryMode.BREAKTHROUGH
-                if stagnant_generations >= self.policy.stagnation_generations
-                else DiscoveryMode.NORMAL
+            memory_packet = self.archive.research_memory_packet(
+                role=MemoryRole.HYPOTHESIS_EXPLORER,
+                query=self.contract.campaign.research_question,
+                campaign=self.contract.campaign.id,
+                limit=12,
             )
-            moonshot_count = (
-                0
-                if mode is DiscoveryMode.BREAKTHROUGH
-                else int(proposals_per_generation * self.policy.moonshot_fraction)
+            director_packet = self.archive.research_memory_packet(
+                role=MemoryRole.RESEARCH_DIRECTOR,
+                query=self.contract.campaign.research_question,
+                campaign=self.contract.campaign.id,
+                limit=16,
             )
-            normal_count = proposals_per_generation - moonshot_count
-            assignments = mutation_schedule(
-                (
-                    self.policy.breakthrough_mutation_mix
-                    if mode is DiscoveryMode.BREAKTHROUGH
-                    else self.policy.mutation_operator_mix
-                ),
-                count=normal_count,
-                offset=(generation_index - 1) * proposals_per_generation,
+            director_path = (
+                self.run_dir
+                / "generations"
+                / generation_id
+                / "research_director_decision.json"
             )
-            assignments.extend(
-                mutation_schedule(
-                    self.policy.breakthrough_mutation_mix,
-                    count=moonshot_count,
-                    offset=(generation_index - 1) * max(moonshot_count, 1),
+            if director_path.exists():
+                director_decision = ResearchDirectorDecision.model_validate_json(
+                    director_path.read_text(encoding="utf-8")
                 )
-            )
-            moonshot_candidate_ids = [
-                f"{generation_id}-C{slot:02d}"
-                for slot in range(normal_count + 1, proposals_per_generation + 1)
-            ]
-            candidates: list[CampaignCandidate] = []
-            proposal_failures: list[CandidateExecutionFailure] = []
-            for slot, required_mutation in enumerate(assignments, start=1):
-                candidate_id = f"{generation_id}-C{slot:02d}"
-                proposal_mode = (
-                    DiscoveryMode.BREAKTHROUGH
-                    if candidate_id in moonshot_candidate_ids
-                    else mode
+                if director_decision.generation_id != generation_id:
+                    raise ValueError(
+                        f"research director decision drift for {generation_id}"
+                    )
+            else:
+                director_decision = self.director.decide(
+                    generation_id=generation_id,
+                    packet=director_packet,
+                    stagnant_generations=stagnant_generations,
+                    stagnation_threshold=self.policy.stagnation_generations,
+                    default_mix=self.policy.mutation_operator_mix,
+                    breakthrough_mix=self.policy.breakthrough_mutation_mix,
                 )
-                try:
-                    candidates.append(
-                        self._propose_candidate(
-                            generation_id=generation_id,
-                            slot=slot,
-                            eligible_parents=eligible_parents,
-                            feedback=feedback,
-                            required_mutation=required_mutation,
-                            mode=proposal_mode,
-                        )
-                    )
-                except Exception as exc:
-                    proposal_failures.append(
-                        CandidateExecutionFailure(
-                            candidate_id=candidate_id,
-                            phase="PROPOSAL",
-                            error_type=type(exc).__name__,
-                            error=str(exc),
-                        )
-                    )
-
-            trace = PolicyEffectTrace(
-                generation_id=generation_id,
-                policy_id=self.policy.policy_id,
-                mode=mode,
-                reasons=(
-                    [
-                        "STAGNATION_THRESHOLD_REACHED",
-                        self.policy.stagnation_response,
-                    ]
-                    if mode is DiscoveryMode.BREAKTHROUGH
-                    else ["NORMAL_SEARCH"]
-                ),
-                eligible_parent_ids=eligible_parents,
-                mutation_assignments={
-                    f"{generation_id}-C{slot:02d}": mutation
-                    for slot, mutation in enumerate(assignments, start=1)
-                },
-                moonshot_candidate_ids=moonshot_candidate_ids,
-                parent_selector=self.policy.parent_selector,
-                context_compiler=self.policy.context_compiler,
+                create_once_json(director_path, director_decision)
+            feedback = self._feedback_context(
+                completed,
+                memory_packet=memory_packet,
+                director_decision=director_decision,
             )
             trace_path = (
                 self.run_dir
@@ -320,16 +293,175 @@ class AutonomousCampaignRunner:
                 / "policy_effect_trace.json"
             )
             if trace_path.exists():
-                existing_trace = PolicyEffectTrace.model_validate_json(
+                trace = PolicyEffectTrace.model_validate_json(
                     trace_path.read_text(encoding="utf-8")
                 )
-                if existing_trace != trace:
+                if trace.policy_id != self.policy.policy_id:
                     raise ValueError(
                         f"policy effect trace drift for generation {generation_id}"
                     )
+                expected_candidate_ids = {
+                    f"{generation_id}-C{slot:02d}"
+                    for slot in range(1, proposals_per_generation + 1)
+                }
+                if set(trace.mutation_assignments) != expected_candidate_ids:
+                    raise ValueError(
+                        f"proposal count drift for generation {generation_id}"
+                    )
             else:
+                mode = (
+                    DiscoveryMode.BREAKTHROUGH
+                    if director_decision.executable_action
+                    is ResearchAction.BREAKTHROUGH
+                    else DiscoveryMode.NORMAL
+                )
+                moonshot_count = (
+                    0
+                    if mode is DiscoveryMode.BREAKTHROUGH
+                    else int(proposals_per_generation * self.policy.moonshot_fraction)
+                )
+                normal_count = proposals_per_generation - moonshot_count
+                assignments = mutation_schedule(
+                    (
+                        self.policy.breakthrough_mutation_mix
+                        if mode is DiscoveryMode.BREAKTHROUGH
+                        else director_decision.recommended_mutation_mix
+                    ),
+                    count=normal_count,
+                    offset=(generation_index - 1) * proposals_per_generation,
+                )
+                assignments.extend(
+                    mutation_schedule(
+                        self.policy.breakthrough_mutation_mix,
+                        count=moonshot_count,
+                        offset=(generation_index - 1) * max(moonshot_count, 1),
+                    )
+                )
+                moonshot_candidate_ids = [
+                    f"{generation_id}-C{slot:02d}"
+                    for slot in range(normal_count + 1, proposals_per_generation + 1)
+                ]
+                migrations = self.population.migrate(
+                    generation_id=generation_id,
+                    generation_index=generation_index,
+                    island_ids=self.policy.island_ids,
+                    migration_interval=self.policy.migration_interval,
+                    migration_count=self.policy.migration_count,
+                    island_capacity=self.policy.island_capacity,
+                )
+                island_assignments = {
+                    f"{generation_id}-C{slot:02d}": self.policy.island_ids[
+                        (
+                            (generation_index - 1) * proposals_per_generation
+                            + slot
+                            - 1
+                        )
+                        % len(self.policy.island_ids)
+                    ]
+                    for slot in range(1, proposals_per_generation + 1)
+                }
+                parent_pools_by_island: dict[str, list[str]] = {}
+                parent_roles: dict[str, list[str]] = {}
+                for island in sorted(set(island_assignments.values())):
+                    sampled = self.population.sample_parents(
+                        island, self.policy.parents_per_island
+                    )
+                    parent_pools_by_island[island] = (
+                        [item.candidate_id for item in sampled] if sampled else ["SEED"]
+                    )
+                    for item in sampled:
+                        parent_roles[item.candidate_id] = [
+                            role.value for role in item.roles
+                        ]
+                eligible_parent_ids = sorted(
+                    {
+                        parent
+                        for pool in parent_pools_by_island.values()
+                        for parent in pool
+                    }
+                )
+                trace = PolicyEffectTrace(
+                    generation_id=generation_id,
+                    policy_id=self.policy.policy_id,
+                    mode=mode,
+                    reasons=(
+                        [
+                            "STAGNATION_THRESHOLD_REACHED",
+                            self.policy.stagnation_response,
+                        ]
+                        if mode is DiscoveryMode.BREAKTHROUGH
+                        else ["NORMAL_SEARCH"]
+                    ),
+                    eligible_parent_ids=eligible_parent_ids,
+                    mutation_assignments={
+                        f"{generation_id}-C{slot:02d}": mutation
+                        for slot, mutation in enumerate(assignments, start=1)
+                    },
+                    moonshot_candidate_ids=moonshot_candidate_ids,
+                    parent_selector=self.policy.parent_selector,
+                    context_compiler=self.policy.context_compiler,
+                    island_assignments=island_assignments,
+                    parent_pools_by_island=parent_pools_by_island,
+                    parent_roles=parent_roles,
+                    migrations=[
+                        item.model_dump(mode="json") for item in migrations
+                    ],
+                    max_parallel_proposals=self.policy.max_parallel_proposals,
+                    max_parallel_evaluations=self.policy.max_parallel_evaluations,
+                )
                 create_once_json(trace_path, trace)
             policy_effect_traces.append(trace)
+
+            def propose(slot: int) -> CampaignCandidate | CandidateExecutionFailure:
+                candidate_id = f"{generation_id}-C{slot:02d}"
+                island = trace.island_assignments.get(
+                    candidate_id, self.policy.island_ids[0]
+                )
+                eligible_parents = trace.parent_pools_by_island.get(
+                    island, trace.eligible_parent_ids
+                )
+                required_mutation = trace.mutation_assignments[candidate_id]
+                proposal_mode = (
+                    DiscoveryMode.BREAKTHROUGH
+                    if candidate_id in trace.moonshot_candidate_ids
+                    else trace.mode
+                )
+                try:
+                    return self._propose_candidate(
+                        generation_id=generation_id,
+                        slot=slot,
+                        island=island,
+                        eligible_parents=eligible_parents,
+                        feedback=feedback,
+                        required_mutation=required_mutation,
+                        research_action=research_action_for_mutation(required_mutation),
+                        mode=proposal_mode,
+                    )
+                except Exception as exc:
+                    return CandidateExecutionFailure(
+                        candidate_id=candidate_id,
+                        phase="PROPOSAL",
+                        error_type=type(exc).__name__,
+                        error=str(exc),
+                    )
+
+            slots = list(range(1, proposals_per_generation + 1))
+            self._proposal_workspace()
+            if self.policy.max_parallel_proposals == 1 or len(slots) <= 1:
+                proposed = [propose(slot) for slot in slots]
+            else:
+                with ThreadPoolExecutor(
+                    max_workers=self.policy.max_parallel_proposals
+                ) as executor:
+                    proposed = list(executor.map(propose, slots))
+            candidates = [
+                item for item in proposed if isinstance(item, CampaignCandidate)
+            ]
+            proposal_failures = [
+                item
+                for item in proposed
+                if isinstance(item, CandidateExecutionFailure)
+            ]
 
             if candidates:
                 result = self.campaign.run_generation(
@@ -339,6 +471,7 @@ class AutonomousCampaignRunner:
                         self._implement_and_evaluate(generation_id, item)
                     ),
                     max_evaluations=max_evaluations_per_generation,
+                    max_workers=self.policy.max_parallel_evaluations,
                     signature_tolerance=signature_tolerance,
                 )
                 if proposal_failures:
@@ -353,19 +486,35 @@ class AutonomousCampaignRunner:
                     failures=proposal_failures,
                 )
             completed.append(result)
+            candidates_by_id = {
+                item.acquisition.candidate.candidate_id: item for item in candidates
+            }
+            score_by_id = {
+                item.candidate_id: item.acquisition_score for item in result.decisions
+            }
             for evaluation in result.evaluations:
                 if evaluation.candidate_commit:
                     self._parent_commits[evaluation.candidate_id] = (
                         evaluation.candidate_commit
                     )
-            new_parents = [
-                item.candidate_id
-                for item in result.evaluations
-                if item.candidate_commit
-                and item.search_disposition in self.policy.code_parent_dispositions
-            ]
-            if new_parents:
-                eligible_parents = new_parents
+                item = candidates_by_id[evaluation.candidate_id]
+                if evaluation.candidate_commit and evaluation.code_sha256:
+                    self.population.admit(
+                        candidate=item.acquisition.candidate,
+                        generation_id=generation_id,
+                        candidate_commit=evaluation.candidate_commit,
+                        code_sha256=evaluation.code_sha256,
+                        search_disposition=evaluation.search_disposition,
+                        scientific_outcome=evaluation.verdict.scientific_outcome,
+                        acquisition_score=score_by_id.get(evaluation.candidate_id),
+                        information_gain=item.acquisition.signals.information_gain,
+                        novelty=item.acquisition.signals.novelty,
+                        parent_dispositions=set(self.policy.code_parent_dispositions),
+                        stepping_stone_min_information_gain=(
+                            self.policy.stepping_stone_min_information_gain
+                        ),
+                        island_capacity=self.policy.island_capacity,
+                    )
             if any(
                 item.search_disposition.value == "CODE_PARENT"
                 for item in result.evaluations
@@ -380,6 +529,7 @@ class AutonomousCampaignRunner:
             generations=completed,
             policy_effect_traces=policy_effect_traces,
             budgets=self.budgets.snapshot(),
+            population=self.population.snapshot(),
         )
 
     def _propose_candidate(
@@ -387,9 +537,11 @@ class AutonomousCampaignRunner:
         *,
         generation_id: str,
         slot: int,
+        island: str,
         eligible_parents: list[str],
         feedback: dict[str, object],
         required_mutation: MutationType,
+        research_action: ResearchAction,
         mode: DiscoveryMode,
     ) -> CampaignCandidate:
         candidate_id = f"{generation_id}-C{slot:02d}"
@@ -402,6 +554,7 @@ class AutonomousCampaignRunner:
             self._validate_proposal_identity(
                 candidate,
                 candidate_id,
+                island,
                 eligible_parents,
                 required_mutation,
             )
@@ -415,6 +568,7 @@ class AutonomousCampaignRunner:
         schema_path = generation_dir / "schemas" / f"{candidate_id}.schema.json"
         schema = self._proposal_schema(
             candidate_id,
+            island,
             eligible_parents,
             required_mutation,
         )
@@ -427,9 +581,11 @@ class AutonomousCampaignRunner:
         prompt = self._proposal_prompt(
             candidate_id=candidate_id,
             generation_id=generation_id,
+            island=island,
             eligible_parents=eligible_parents,
             feedback=feedback,
             required_mutation=required_mutation,
+            research_action=research_action,
             mode=mode,
         )
         result = self.backend.run(
@@ -454,6 +610,7 @@ class AutonomousCampaignRunner:
         self._validate_proposal_identity(
             candidate,
             candidate_id,
+            island,
             eligible_parents,
             required_mutation,
         )
@@ -563,6 +720,35 @@ class AutonomousCampaignRunner:
             candidate.candidate_id,
             candidate_commit,
         )
+        baseline_patch = self._diff_bytes(
+            worktree,
+            self.contract.campaign.base_commit,
+            candidate_commit,
+        )
+        parent_patch = self._diff_bytes(
+            worktree,
+            genetic_parent_commit,
+            candidate_commit,
+        )
+        code_sha256 = sha256_bytes(baseline_patch)
+        duplicate_of = self.population.claim_code(
+            candidate_id=candidate.candidate_id,
+            generation_id=generation_id,
+            code_sha256=code_sha256,
+        )
+        if duplicate_of is not None:
+            create_once_json(
+                candidate_dir / "duplicate_code.json",
+                {
+                    "candidate_id": candidate.candidate_id,
+                    "duplicate_of": duplicate_of,
+                    "code_sha256": code_sha256,
+                    "evaluator_executed": False,
+                },
+            )
+            raise DuplicateCandidateCodeError(
+                candidate.candidate_id, duplicate_of, code_sha256
+            )
         run = self.evaluate(
             AutonomousEvaluationContext(
                 generation_id=generation_id,
@@ -575,23 +761,13 @@ class AutonomousCampaignRunner:
                 genetic_parent_commit=genetic_parent_commit,
             )
         )
-        baseline_patch = self._diff_bytes(
-            worktree,
-            self.contract.campaign.base_commit,
-            candidate_commit,
-        )
-        parent_patch = self._diff_bytes(
-            worktree,
-            genetic_parent_commit,
-            candidate_commit,
-        )
         return run.model_copy(
             update={
                 "genetic_parent_id": genetic_parent_id,
                 "genetic_parent_commit": genetic_parent_commit,
                 "candidate_commit": candidate_commit,
                 "candidate_ref": candidate_ref,
-                "patch_sha256": sha256_bytes(baseline_patch),
+                "patch_sha256": code_sha256,
                 "parent_patch_sha256": sha256_bytes(parent_patch),
             }
         )
@@ -599,6 +775,7 @@ class AutonomousCampaignRunner:
     def _proposal_schema(
         self,
         candidate_id: str,
+        island: str,
         eligible_parents: list[str],
         required_mutation: MutationType,
     ) -> dict[str, object]:
@@ -617,6 +794,7 @@ class AutonomousCampaignRunner:
             "title": "Candidate Id",
             "type": "string",
         }
+        properties["island"] = {"const": island, "type": "string"}
         parent_ids = properties.get("parent_ids")
         if isinstance(parent_ids, dict):
             parent_ids["items"] = {"enum": eligible_parents, "type": "string"}
@@ -676,6 +854,7 @@ class AutonomousCampaignRunner:
     def _validate_proposal_identity(
         candidate: CampaignCandidate,
         expected_id: str,
+        expected_island: str,
         eligible_parents: list[str],
         required_mutation: MutationType,
     ) -> None:
@@ -684,6 +863,11 @@ class AutonomousCampaignRunner:
             raise ValueError(
                 f"proposal candidate id mismatch: expected={expected_id} "
                 f"actual={genome.candidate_id}"
+            )
+        if genome.island != expected_island:
+            raise ValueError(
+                f"proposal {expected_id} ignored island assignment: "
+                f"expected={expected_island} actual={genome.island}"
             )
         if not set(genome.parent_ids) & set(eligible_parents):
             raise ValueError(
@@ -735,9 +919,11 @@ class AutonomousCampaignRunner:
         *,
         candidate_id: str,
         generation_id: str,
+        island: str,
         eligible_parents: list[str],
         feedback: dict[str, object],
         required_mutation: MutationType,
+        research_action: ResearchAction,
         mode: DiscoveryMode,
     ) -> str:
         contract_context = {
@@ -763,9 +949,11 @@ class AutonomousCampaignRunner:
             "proposal and scheduling inputs only; do not claim scientific authority.\n"
             f"Required candidate_id: {candidate_id}\n"
             f"Generation: {generation_id}\n"
+            f"Required island: {island}\n"
             f"Use at least one parent_id from: {json.dumps(eligible_parents)}\n"
             f"Set genetic_parent_id to the one parent whose code is inherited.\n"
             f"Required mutation_type: {required_mutation.value}\n"
+            f"Required research action: {research_action.value}\n"
             f"Discovery mode: {mode.value}\n"
             "Set reference_metrics to an empty object; the frozen harness replaces it. "
             "Set verified_reopen_conditions to an empty array. Do not access confirmation "
@@ -803,13 +991,52 @@ class AutonomousCampaignRunner:
         return path.read_text(encoding="utf-8").strip()
 
     def _feedback_context(
-        self, completed: list[CampaignGenerationResult]
+        self,
+        completed: list[CampaignGenerationResult],
+        *,
+        memory_packet: RoleScopedMemoryPacket,
+        director_decision: ResearchDirectorDecision,
     ) -> dict[str, object]:
         return {
             "archive_summary": self.archive.summary(),
-            "scientific_memory": self.archive.scientific_memory(limit=20),
+            "research_memory": memory_packet.model_dump(mode="json"),
+            "research_director": director_decision.model_dump(mode="json"),
             "completed_generations": [
-                item.model_dump(mode="json") for item in completed
+                {
+                    "generation_id": item.generation_id,
+                    "evaluations": [
+                        {
+                            "candidate_id": evaluation.candidate_id,
+                            "scientific_outcome": (
+                                evaluation.verdict.scientific_outcome.value
+                            ),
+                            "gate_decision": evaluation.verdict.decision.value,
+                            "search_disposition": evaluation.search_disposition.value,
+                            "claim_ceiling": evaluation.claim_ceiling.value,
+                            "mechanism_support": (
+                                evaluation.mechanism.support.value
+                                if evaluation.mechanism is not None
+                                else None
+                            ),
+                            "mechanism_reasons": (
+                                evaluation.mechanism.reasons
+                                if evaluation.mechanism is not None
+                                else []
+                            ),
+                        }
+                        for evaluation in item.evaluations
+                    ],
+                    "failures": [
+                        {
+                            "candidate_id": failure.candidate_id,
+                            "phase": failure.phase,
+                            "error_type": failure.error_type,
+                            "error": failure.error[:400],
+                        }
+                        for failure in item.failures
+                    ],
+                }
+                for item in completed
             ],
         }
 

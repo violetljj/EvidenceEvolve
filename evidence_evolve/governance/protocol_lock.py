@@ -20,9 +20,11 @@ from evidence_evolve.models import (
 REQUIRED_HARNESS_CORE_PATHS = frozenset(
     {
         "evidence_evolve/archive.py",
+        "evidence_evolve/research_memory.py",
         "evidence_evolve/artifacts.py",
         "evidence_evolve/budgets.py",
         "evidence_evolve/discovery/campaign.py",
+        "evidence_evolve/discovery/population.py",
         "evidence_evolve/hashing.py",
         "evidence_evolve/models.py",
         "evidence_evolve/replay.py",

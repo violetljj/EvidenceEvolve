@@ -1,8 +1,8 @@
 schema_version: "1.0"
 campaign:
-  id: onnx_rewrite_r1
+  id: onnx_rewrite_r1_2_a0
   base_commit: HEAD
-  research_question: Can a bounded two-generation Codex loop discover ONNX rewrite improvements while preserving exact task behavior?
+  research_question: Can a persistent five-island Codex population discover ONNX rewrite improvements while preserving exact task behavior?
   claim_scope: autonomous_engineering_harness_canary_only
 authority:
   protocol_mutable: false
@@ -44,6 +44,9 @@ frozen_assets:
   - asset_id: harness-archive-r1
     kind: harness_core
     path: evidence_evolve/archive.py
+  - asset_id: harness-research-memory-r1
+    kind: harness_core
+    path: evidence_evolve/research_memory.py
   - asset_id: harness-artifacts-r1
     kind: harness_core
     path: evidence_evolve/artifacts.py
@@ -53,9 +56,15 @@ frozen_assets:
   - asset_id: harness-campaign-runner-r1
     kind: harness_core
     path: evidence_evolve/discovery/campaign.py
+  - asset_id: harness-population-store-r1
+    kind: harness_core
+    path: evidence_evolve/discovery/population.py
   - asset_id: harness-autonomous-runner-r1
     kind: harness_core
     path: evidence_evolve/discovery/autonomous.py
+  - asset_id: harness-research-director-r1
+    kind: harness_core
+    path: evidence_evolve/discovery/director.py
   - asset_id: harness-research-policy-r1
     kind: harness_core
     path: evidence_evolve/meta_evolution/policy.py
@@ -118,9 +127,9 @@ required_controls:
 - deterministic_rewrite
 - semantic_parity
 budgets:
-  proposal_calls: 4
-  implementations: 3
-  mechanics_runs: 3
+  proposal_calls: 25
+  implementations: 25
+  mechanics_runs: 25
   proxy_runs: 0
   confirmation_runs: 0
   device_runs: 0

@@ -32,6 +32,9 @@ frozen_assets:
   - asset_id: harness-archive-r0
     kind: harness_core
     path: evidence_evolve/archive.py
+  - asset_id: harness-research-memory-r0
+    kind: harness_core
+    path: evidence_evolve/research_memory.py
   - asset_id: harness-artifacts-r0
     kind: harness_core
     path: evidence_evolve/artifacts.py
@@ -41,6 +44,9 @@ frozen_assets:
   - asset_id: harness-campaign-runner-r1
     kind: harness_core
     path: evidence_evolve/discovery/campaign.py
+  - asset_id: harness-population-store-synthetic
+    kind: harness_core
+    path: evidence_evolve/discovery/population.py
   - asset_id: harness-models-r0
     kind: harness_core
     path: evidence_evolve/models.py

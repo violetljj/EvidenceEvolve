@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from concurrent.futures import ThreadPoolExecutor
 from collections.abc import Callable
 from datetime import datetime, timezone
 from pathlib import Path
@@ -71,6 +72,7 @@ class CandidateRunResult(StrictModel):
     search_disposition: SearchDisposition
     claim_ceiling: ClaimCeiling
     candidate_commit: str | None = None
+    code_sha256: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
     resumed: bool = False
 
 
@@ -159,12 +161,15 @@ class CampaignRunner:
         candidates: list[CampaignCandidate],
         evaluate: EvaluationAdapter,
         max_evaluations: int | None = None,
+        max_workers: int = 1,
         signature_tolerance: float = 0.0,
     ) -> CampaignGenerationResult:
         if not candidates:
             raise ValueError("generation candidate pool cannot be empty")
         if max_evaluations is not None and max_evaluations < 0:
             raise ValueError("max_evaluations must be non-negative")
+        if max_workers <= 0:
+            raise ValueError("max_workers must be positive")
 
         pool = [item.acquisition for item in candidates]
         decisions = rank_candidates(
@@ -191,30 +196,36 @@ class CampaignRunner:
         if max_evaluations is not None:
             selected = selected[:max_evaluations]
 
-        results: list[CandidateRunResult] = []
-        failures: list[CandidateExecutionFailure] = []
-        for decision in selected:
+        def execute(
+            decision: AcquisitionDecision,
+        ) -> CandidateRunResult | CandidateExecutionFailure:
             item = by_id[decision.candidate_id]
             try:
-                results.append(
-                    self._evaluate_candidate(
-                        generation_id=generation_id,
-                        item=item,
-                        evaluate=evaluate,
-                        signature_tolerance=signature_tolerance,
-                    )
+                return self._evaluate_candidate(
+                    generation_id=generation_id,
+                    item=item,
+                    evaluate=evaluate,
+                    signature_tolerance=signature_tolerance,
                 )
             except BudgetExceeded:
                 raise
             except Exception as exc:
-                failures.append(
-                    CandidateExecutionFailure(
-                        candidate_id=decision.candidate_id,
-                        phase="IMPLEMENT_OR_EVALUATE",
-                        error_type=type(exc).__name__,
-                        error=str(exc),
-                    )
+                return CandidateExecutionFailure(
+                    candidate_id=decision.candidate_id,
+                    phase="IMPLEMENT_OR_EVALUATE",
+                    error_type=type(exc).__name__,
+                    error=str(exc),
                 )
+
+        if max_workers == 1 or len(selected) <= 1:
+            executed = [execute(decision) for decision in selected]
+        else:
+            with ThreadPoolExecutor(max_workers=max_workers) as executor:
+                executed = list(executor.map(execute, selected))
+        results = [item for item in executed if isinstance(item, CandidateRunResult)]
+        failures = [
+            item for item in executed if isinstance(item, CandidateExecutionFailure)
+        ]
         return CampaignGenerationResult(
             generation_id=generation_id,
             policy_id=self.policy.policy_id,
@@ -270,6 +281,7 @@ class CampaignRunner:
                     envelope.receipt.evaluation_input.stage,
                 ),
                 candidate_commit=envelope.receipt.candidate_commit,
+                code_sha256=envelope.receipt.patch_sha256,
                 resumed=True,
             )
 
@@ -361,4 +373,5 @@ class CampaignRunner:
             search_disposition=search_disposition(verdict),
             claim_ceiling=claim_ceiling(verdict, item.stage),
             candidate_commit=run.candidate_commit,
+            code_sha256=run.patch_sha256,
         )
