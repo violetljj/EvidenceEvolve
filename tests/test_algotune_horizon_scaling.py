@@ -8,6 +8,7 @@ from evidence_evolve.benchmarks.algotune_horizon_scaling import (
     PROTOCOL,
     TASKS,
     _headless_usage_lines,
+    _extract_sky,
     _manifest,
 )
 
@@ -62,3 +63,41 @@ def test_scaling_manifest_is_safe_under_parallel_arm_start(tmp_path: Path) -> No
     legacy = json.loads((tmp_path / "manifest.json").read_text())
     assert legacy["task"] == manifest["task"]
     assert legacy["protocol_sha256"] == manifest["protocol_sha256"]
+
+
+def test_sky_extraction_uses_iteration_not_resettable_lineage_generation(
+    tmp_path: Path,
+) -> None:
+    arm_dir = tmp_path / "evox"
+    for horizon in HORIZONS:
+        checkpoint = arm_dir / "upstream" / "checkpoints" / f"checkpoint_{horizon}"
+        programs = checkpoint / "programs"
+        programs.mkdir(parents=True)
+        candidate_id = f"candidate-{horizon}"
+        (checkpoint / "best_program.py").write_text("class Solver: pass\n")
+        (checkpoint / "best_program_info.json").write_text(
+            json.dumps(
+                {
+                    "id": candidate_id,
+                    "generation": 0,
+                    "saved_at": float(horizon),
+                    "metrics": {"raw_speedup": float(horizon)},
+                }
+            )
+        )
+        (programs / f"{candidate_id}.json").write_text(
+            json.dumps(
+                {
+                    "id": candidate_id,
+                    "generation": 0,
+                    "iteration_found": horizon,
+                    "metrics": {"correct": True},
+                }
+            )
+        )
+    records = _extract_sky(
+        arm_dir,
+        {"arm": "evox", "tokens": 500, "wall_seconds": 50.0},
+        0.0,
+    )
+    assert [item["selected_generation"] for item in records] == list(HORIZONS)

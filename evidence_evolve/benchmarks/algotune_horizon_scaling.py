@@ -219,6 +219,7 @@ def _extract_sky(
             for item in programs.values()
             if 0 < int(item.get("iteration_found", 0)) <= horizon
         ]
+        selected_program = programs.get(str(info["id"]), {})
         valid = sum(int(bool(item.get("metrics", {}).get("correct"))) for item in proposals)
         cutoff = float(info.get("saved_at", checkpoint.stat().st_mtime))
         records.append(
@@ -227,7 +228,11 @@ def _extract_sky(
                 horizon,
                 code,
                 selected_id=str(info["id"]),
-                selected_generation=int(info.get("generation", iteration)),
+                # EvoX can reset lineage generation when it evolves its search
+                # strategy. The monotonic discovery horizon is iteration_found.
+                selected_generation=int(
+                    selected_program.get("iteration_found", iteration)
+                ),
                 dev_score=float(info["metrics"]["raw_speedup"]),
                 tokens=(
                     int(arm_result["tokens"])
