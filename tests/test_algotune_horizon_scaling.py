@@ -1,4 +1,5 @@
 import json
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 from evidence_evolve.benchmarks.algotune_horizon_scaling import (
@@ -7,6 +8,7 @@ from evidence_evolve.benchmarks.algotune_horizon_scaling import (
     PROTOCOL,
     TASKS,
     _headless_usage_lines,
+    _manifest,
 )
 
 
@@ -50,3 +52,10 @@ def test_protocol_is_frozen_before_run_artifacts(tmp_path: Path) -> None:
     assert protocol["authority"] == "FROZEN_BEFORE_FORMAL_SEARCH"
     assert protocol["heldout"]["visibility_during_search"] == "NONE"
     assert not list(tmp_path.rglob("heldout_seeds.json"))
+
+
+def test_scaling_manifest_is_safe_under_parallel_arm_start(tmp_path: Path) -> None:
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        list(pool.map(lambda _index: _manifest(tmp_path, "set_cover"), range(4)))
+    manifest = json.loads((tmp_path / "scaling_manifest.json").read_text())
+    assert manifest["task"] == "set_cover"

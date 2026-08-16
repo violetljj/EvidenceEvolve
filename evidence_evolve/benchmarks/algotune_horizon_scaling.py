@@ -12,7 +12,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from evidence_evolve.artifacts import create_once_json
+from evidence_evolve.artifacts import ReceiptAlreadyExistsError, create_once_json
 from evidence_evolve.benchmarks import algotune_blind as blind
 from evidence_evolve.benchmarks import algotune_heterogeneous as heterogeneous
 from evidence_evolve.hashing import sha256_bytes, sha256_file
@@ -77,20 +77,33 @@ def configure_task(run_dir: Path, task_name: str) -> dict[str, Any] | None:
 
 
 def _manifest(run_dir: Path, task_name: str) -> None:
-    create_once_json(
-        run_dir / "scaling_manifest.json",
-        {
-            "schema_version": "1.0",
-            "created_at": datetime.now(timezone.utc).isoformat(),
-            "protocol_sha256": sha256_file(PROTOCOL),
-            "task": task_name,
-            "arms": list(ARMS),
-            "horizons": list(HORIZONS),
-            "model": blind.MODEL,
-            "reasoning_effort": blind.REASONING_EFFORT,
-            "trajectory_design": "one continuous 50-generation run per task-arm",
-        },
-    )
+    path = run_dir / "scaling_manifest.json"
+    payload = {
+        "schema_version": "1.0",
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "protocol_sha256": sha256_file(PROTOCOL),
+        "task": task_name,
+        "arms": list(ARMS),
+        "horizons": list(HORIZONS),
+        "model": blind.MODEL,
+        "reasoning_effort": blind.REASONING_EFFORT,
+        "trajectory_design": "one continuous 50-generation run per task-arm",
+    }
+    try:
+        create_once_json(path, payload)
+    except ReceiptAlreadyExistsError:
+        existing = json.loads(path.read_text(encoding="utf-8"))
+        for key in (
+            "protocol_sha256",
+            "task",
+            "arms",
+            "horizons",
+            "model",
+            "reasoning_effort",
+            "trajectory_design",
+        ):
+            if existing.get(key) != payload[key]:
+                raise ValueError(f"scaling manifest drift: {key}")
 
 
 def _events_usage(paths: list[Path]) -> int:
