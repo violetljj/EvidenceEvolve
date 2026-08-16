@@ -1,0 +1,1626 @@
+{
+  "manifest": {
+    "version": 1,
+    "title": "Set Cover Search Mechanism Autopsy",
+    "surface": "report",
+    "description": "Development-only diagnosis of compute-to-algorithm-improvement dynamics across four search engines.",
+    "generatedAt": "2026-08-16T00:00:00Z",
+    "sources": [
+      {
+        "id": "dev_autopsy",
+        "label": "Frozen Set Cover development trajectory autopsy",
+        "path": "research/results/algotune_set_cover_mechanism_autopsy_v0/result.json",
+        "query": {
+          "language": "sql",
+          "sql": "SELECT * FROM result_json",
+          "description": "Read the complete frozen development-only autopsy result.",
+          "tables_used": [
+            "result.json"
+          ],
+          "metric_definitions": [
+            "incumbent improvement means a dev-valid candidate strictly exceeded every earlier development speedup",
+            "selected as parent means a candidate ID appears in a later proposal's parent_ids",
+            "retained active means active=1 in the final EvidenceEvolve island_memberships state"
+          ],
+          "filters": [
+            "development-only evidence",
+            "no blind artifacts"
+          ]
+        }
+      }
+    ],
+    "blocks": [
+      {
+        "id": "title",
+        "type": "markdown",
+        "body": "# Set Cover Search Mechanism Autopsy\nM1 development-only diagnosis. The blind campaign remains frozen; this report did not read blind instances, per-case failures, or blind evaluator logs."
+      },
+      {
+        "id": "technical_summary",
+        "type": "markdown",
+        "sourceId": "dev_autopsy",
+        "body": "## Technical summary\n**Primary diagnosis:** EvidenceEvolve failed at the conversion from valid search activity to cumulative incumbent improvement. It generated 50 proposals, produced 45 distinct evaluated code artifacts, and admitted all 36 dev-valid candidates, yet refreshed the incumbent only twice (GEN-7 and GEN-9). After GEN-9, 41 more proposals, 36 evaluations, and 33 valid candidates produced **zero** incumbent improvements. This is not a proposal-volume failure. It is a combined admission/parent-pressure failure plus a narrow local-search collapse.\n\nAda is the positive control: its h50 result sits on a 14-record ancestry with cross-lineage context at nearly every substantive step, and late discoveries are recombined into the final candidate. EvoX exhibits a different mechanism: an explicitly radical iteration-28 mutation switches from MiniCard bound tightening to RC2/MaxSAT and jumps from 2.389\u00d7 to 9.910\u00d7 on development."
+      },
+      {
+        "id": "checkpoint_findings",
+        "type": "markdown",
+        "body": "## Key findings with visual evidence\nThe checkpoint curve separates three useful dynamics: Shinka improves early then flattens; Ada compounds improvements across the horizon; EvoX remains weak until a late basin jump; EvidenceEvolve reaches its final incumbent by GEN-9 and never advances again."
+      },
+      {
+        "id": "checkpoint_curve_block",
+        "type": "chart",
+        "chartId": "checkpoint_curve"
+      },
+      {
+        "id": "ee_funnel_text",
+        "type": "markdown",
+        "sourceId": "dev_autopsy",
+        "body": "## EvidenceEvolve conversion anatomy\nThe counts below are observable stage/cohort counts, not a mathematically nested funnel: `selected as parent` and `final active` are later-state properties. The decisive mismatch is 36 dev-valid candidates \u2192 2 incumbent improvements \u2192 36 admissions. Admission was baseline-relative (`POSITIVE_HEADROOM`), not incumbent-relative, so candidates below GEN-9 still became `ELITE`/`CODE_PARENT`. GEN-13 (1.0116\u00d7) was then referenced as a parent 36 times despite trailing the GEN-9 incumbent (1.0272\u00d7)."
+      },
+      {
+        "id": "ee_funnel_block",
+        "type": "chart",
+        "chartId": "ee_stage_counts"
+      },
+      {
+        "id": "ee_generation_block",
+        "type": "chart",
+        "chartId": "ee_candidate_quality"
+      },
+      {
+        "id": "four_arm_decomposition",
+        "type": "markdown",
+        "body": "## Four-arm checkpoint decomposition\nOnly EvidenceEvolve exposes a native generated\u2192gate\u2192archive ledger. Ada/EvoX checkpoint stores and the Shinka database expose program-retention proxies with different semantics, so their counts are shown as observability measures rather than falsely harmonized admissions."
+      },
+      {
+        "id": "arm_table_block",
+        "type": "table",
+        "tableId": "arm_decomposition"
+      },
+      {
+        "id": "ada_positive_control",
+        "type": "markdown",
+        "sourceId": "dev_autopsy",
+        "body": "## Ada positive control: h12 \u2192 h24 \u2192 h50\nAda accumulates algorithmic structure: reusable exact cardinality, greedy bounds, safe forced/dominated-set reductions, bit encoding/kernelization, and finally cheap certification of very small covers before MiniCard. Its ancestry also demonstrates explicit recombination. The h45 6.884\u00d7 branch is supplied as context to h48; h49 reaches 7.046\u00d7; h49 is then context for h50, which reaches 7.052\u00d7. The final program grows from 51 to 167 lines, indicating cumulative composition rather than repeated one-line controls."
+      },
+      {
+        "id": "ada_lineage_block",
+        "type": "table",
+        "tableId": "ada_lineage"
+      },
+      {
+        "id": "evox_breakthrough",
+        "type": "markdown",
+        "sourceId": "dev_autopsy",
+        "body": "## EvoX h50 breakthrough lineage\nIteration 28 is the causal discontinuity visible in the frozen search record. A `FUNDAMENTALLY DIFFERENT APPROACH` operator acts on a 2.389\u00d7 MiniCard lineage with no context donor and replaces iterative cardinality tightening with unit-cost RC2/MaxSAT, producing 9.910\u00d7. Later work adds deduplication, dominance pruning, and forced-set reduction, yielding 13.436\u00d7 at iteration 40 and 13.482\u00d7 at h50. This supports a protected long-horizon radical-mutation quota.\n\nThe h24 checkpoint was admitted because its iteration-20 candidate passed all 100 fixed development instances (`valid_rate=1.0`) and was the dev incumbent at 2.409\u00d7. The frozen mechanism had no independent generalization gate at checkpoint selection. From development evidence alone, it was not known to be incomplete; therefore the mechanism-level issue is reliance on a single fixed dev validity surface, not a knowingly bypassed correctness failure. No blind cases were inspected to reach this conclusion."
+      },
+      {
+        "id": "evox_lineage_block",
+        "type": "table",
+        "tableId": "evox_lineage"
+      },
+      {
+        "id": "scope_definitions",
+        "type": "markdown",
+        "body": "## Scope, data, and metric definitions\n**Allowed evidence:** frozen trajectories, candidate source/diffs, development evaluator metrics, prompts/responses, parent/context lineage, archive/selection state, gate outcomes, and token/wall metadata under `runs/algotune_horizon_scaling_v0/set_cover`. **Excluded evidence:** every blind instance, per-case blind failure, and blind evaluator log.\n\n`Improved incumbent` is strict improvement over all prior dev-valid candidates. `Admitted` is EvidenceEvolve population admission. `Selected as parent` means later appearance in `parent_ids`. `Retained active` is the final active island membership. Upstream program-store counts are not treated as equivalent to EvidenceEvolve admissions."
+      },
+      {
+        "id": "methodology",
+        "type": "markdown",
+        "body": "## Methodology\nA deterministic parser reconstructs the four checkpoint curves, deduplicates SkyDiscover program records across checkpoints, follows direct parent ancestry, counts context donors, reads Shinka's native SQLite ledger, and joins EvidenceEvolve proposal, implementation, receipt, population, and island tables. Incumbent improvements are recomputed chronologically from frozen development speedups. Candidate source hashes and line counts are retained for lineage auditability."
+      },
+      {
+        "id": "limitations",
+        "type": "markdown",
+        "body": "## Limitations and robustness\nThis is a single-task mechanism autopsy, so engine-level scaling laws remain hypotheses until replicated on other tasks. Wall and token accounting differ by engine and are useful for within-engine marginal return, not exact cross-engine cost equivalence. Ada's checkpoint store prunes or migrates records, while EvoX retains all records and Shinka has its own archive semantics; cross-engine funnel stages are therefore intentionally not inferred. Development speed differences near 1.0272\u00d7 are small, but the central EE conclusion is robust because no post-GEN-9 candidate exceeds the incumbent across 41 further generations."
+      },
+      {
+        "id": "hypotheses",
+        "type": "markdown",
+        "sourceId": "dev_autopsy",
+        "body": "## Mechanism hypotheses\n**H1 \u2014 strongly supported:** admission pressure is misaligned with incumbent improvement. **H2 \u2014 strongly supported:** cumulative innovation collapses into a narrow control lineage (38 of 41 post-GEN-9 proposals are controls, simplifications, or failure-directed variants; GEN-13 is reused 36 times). **H3 \u2014 supported:** Ada scales through ancestry plus cross-lineage composition. **H4 \u2014 strongly supported:** EvoX's late scaling depends on a protected radical-mutation escape path. Each hypothesis has a falsifiable intervention prediction in the source result."
+      },
+      {
+        "id": "next_steps",
+        "type": "markdown",
+        "body": "## Next steps\nDo not modify the frozen campaign or run more Set Cover blind work. First implement offline counterfactual replays of selection only: incumbent-relative parent scoring, persistent-family diversity, and explicit restart/radical quotas using the already generated development ledger. Then define an EvidenceEvolve portfolio controller: Shinka/Ada receive early budget, arms are down-weighted on sustained marginal-return collapse, and EvoX keeps a separately protected long-horizon quota. Any later EE code change should map to one hypothesis and be evaluated on a new development campaign before any fresh confirmation asset is authorized."
+      },
+      {
+        "id": "questions",
+        "type": "markdown",
+        "body": "## Further questions\n1. Does GEN-13 dominance persist under an incumbent-relative counterfactual parent selector? 2. How many persistent algorithm families remain after canonicalizing source changes into mechanism families rather than code hashes? 3. Can Ada's context composition be ablated without changing evaluator semantics? 4. What minimum protected radical quota preserves EvoX's iteration-28-style escapes without overwhelming correctness gates? 5. Do the same early/mid/late/stagnant dynamics replicate on Graph Coloring or another untouched task?"
+      }
+    ],
+    "charts": [
+      {
+        "id": "checkpoint_curve",
+        "title": "Development speedup by search horizon",
+        "subtitle": "EE stops improving after GEN-9; Ada compounds and EvoX jumps late.",
+        "type": "line",
+        "source": {
+          "id": "dev_autopsy",
+          "label": "Frozen Set Cover development trajectory autopsy",
+          "path": "research/results/algotune_set_cover_mechanism_autopsy_v0/result.json",
+          "query": {
+            "language": "sql",
+            "sql": "SELECT arm, horizon, development_raw_speedup, proposal_valid_rate, selected_generation, cumulative_tokens, cumulative_wall_seconds FROM checkpoint_rows ORDER BY horizon, arm",
+            "description": "Read frozen checkpoint metrics for the four development trajectories.",
+            "tables_used": [
+              "result.json"
+            ],
+            "metric_definitions": [
+              "development_raw_speedup is the frozen evaluator's raw speedup at a saved horizon",
+              "cumulative_tokens and cumulative_wall_seconds are engine-accounted search cost through that horizon"
+            ],
+            "filters": [
+              "development-only evidence",
+              "no blind artifacts"
+            ]
+          }
+        },
+        "dataset": "checkpoint_rows",
+        "encodings": {
+          "x": {
+            "field": "horizon",
+            "type": "quantitative",
+            "title": "Horizon"
+          },
+          "y": {
+            "field": "development_raw_speedup",
+            "type": "quantitative",
+            "title": "Development speedup (\u00d7)"
+          },
+          "color": {
+            "field": "arm_label",
+            "type": "nominal",
+            "title": "Search engine"
+          }
+        }
+      },
+      {
+        "id": "ee_stage_counts",
+        "title": "EvidenceEvolve observable stage counts",
+        "subtitle": "36 dev-valid candidates were admitted, but only two ever improved the incumbent.",
+        "type": "bar",
+        "source": {
+          "id": "dev_autopsy",
+          "label": "Frozen Set Cover development trajectory autopsy",
+          "path": "research/results/algotune_set_cover_mechanism_autopsy_v0/result.json",
+          "query": {
+            "language": "sql",
+            "sql": "SELECT stage, count, stage_order FROM arm_observability_evidence_evolve_funnel ORDER BY stage_order",
+            "description": "Read EvidenceEvolve proposal, evaluator, gate, parent, and final-active counts.",
+            "tables_used": [
+              "result.json"
+            ],
+            "metric_definitions": [
+              "Counts are stage/cohort observations and are not all strict subsets"
+            ],
+            "filters": [
+              "development-only evidence",
+              "no blind artifacts"
+            ]
+          }
+        },
+        "dataset": "ee_stages",
+        "encodings": {
+          "x": {
+            "field": "stage",
+            "type": "nominal",
+            "title": "Observed stage"
+          },
+          "y": {
+            "field": "count",
+            "type": "quantitative",
+            "title": "Candidates"
+          }
+        },
+        "options": {
+          "orientation": "vertical"
+        }
+      },
+      {
+        "id": "ee_candidate_quality",
+        "title": "EvidenceEvolve evaluated candidate quality by generation",
+        "subtitle": "Valid proposal activity continues, but no candidate after GEN-9 exceeds 1.0272\u00d7.",
+        "type": "scatter",
+        "source": {
+          "id": "dev_autopsy",
+          "label": "Frozen Set Cover development trajectory autopsy",
+          "path": "research/results/algotune_set_cover_mechanism_autopsy_v0/result.json",
+          "query": {
+            "language": "sql",
+            "sql": "SELECT generation, raw_speedup, valid, improved_incumbent, admitted, selected_as_parent, retained_active, family, mutation_type FROM evidence_evolve_generation_rows WHERE raw_speedup IS NOT NULL ORDER BY generation",
+            "description": "Read evaluated EvidenceEvolve candidates and their downstream search states.",
+            "tables_used": [
+              "result.json"
+            ],
+            "metric_definitions": [
+              "raw_speedup is development-only",
+              "improved_incumbent is a strict chronological record"
+            ],
+            "filters": [
+              "development-only evidence",
+              "no blind artifacts"
+            ]
+          }
+        },
+        "dataset": "ee_generations",
+        "encodings": {
+          "x": {
+            "field": "generation",
+            "type": "quantitative",
+            "title": "Generation"
+          },
+          "y": {
+            "field": "raw_speedup",
+            "type": "quantitative",
+            "title": "Development speedup (\u00d7)"
+          },
+          "color": {
+            "field": "mutation_type",
+            "type": "nominal",
+            "title": "Mutation type"
+          }
+        }
+      }
+    ],
+    "tables": [
+      {
+        "id": "arm_decomposition",
+        "title": "Observable search decomposition by engine",
+        "source": {
+          "id": "dev_autopsy",
+          "label": "Frozen Set Cover development trajectory autopsy",
+          "path": "research/results/algotune_set_cover_mechanism_autopsy_v0/result.json",
+          "query": {
+            "language": "sql",
+            "sql": "SELECT * FROM result_json",
+            "description": "Read the complete frozen development-only autopsy result.",
+            "tables_used": [
+              "result.json"
+            ],
+            "metric_definitions": [
+              "incumbent improvement means a dev-valid candidate strictly exceeded every earlier development speedup",
+              "selected as parent means a candidate ID appears in a later proposal's parent_ids",
+              "retained active means active=1 in the final EvidenceEvolve island_memberships state"
+            ],
+            "filters": [
+              "development-only evidence",
+              "no blind artifacts"
+            ]
+          }
+        },
+        "dataset": "arm_rows",
+        "columns": [
+          {
+            "field": "arm",
+            "label": "Engine",
+            "type": "text"
+          },
+          {
+            "field": "generated_records",
+            "label": "Generated",
+            "type": "number"
+          },
+          {
+            "field": "dev_valid_records",
+            "label": "Dev-valid",
+            "type": "number"
+          },
+          {
+            "field": "unique_sources",
+            "label": "Unique source",
+            "type": "number"
+          },
+          {
+            "field": "record_improvements",
+            "label": "Record improvements",
+            "type": "number"
+          },
+          {
+            "field": "distinct_parents",
+            "label": "Distinct parents",
+            "type": "number"
+          },
+          {
+            "field": "records_with_context",
+            "label": "With context",
+            "type": "number"
+          },
+          {
+            "field": "final_store_records",
+            "label": "Final store",
+            "type": "number"
+          },
+          {
+            "field": "observability_note",
+            "label": "Semantics",
+            "type": "text"
+          }
+        ],
+        "defaultSort": {
+          "field": "record_improvements",
+          "direction": "desc"
+        }
+      },
+      {
+        "id": "ada_lineage",
+        "title": "AdaEvolve h50 direct ancestry",
+        "source": {
+          "id": "dev_autopsy",
+          "label": "Frozen Set Cover development trajectory autopsy",
+          "path": "research/results/algotune_set_cover_mechanism_autopsy_v0/result.json",
+          "query": {
+            "language": "sql",
+            "sql": "SELECT * FROM result_json",
+            "description": "Read the complete frozen development-only autopsy result.",
+            "tables_used": [
+              "result.json"
+            ],
+            "metric_definitions": [
+              "incumbent improvement means a dev-valid candidate strictly exceeded every earlier development speedup",
+              "selected as parent means a candidate ID appears in a later proposal's parent_ids",
+              "retained active means active=1 in the final EvidenceEvolve island_memberships state"
+            ],
+            "filters": [
+              "development-only evidence",
+              "no blind artifacts"
+            ]
+          }
+        },
+        "dataset": "ada_lineage",
+        "columns": [
+          {
+            "field": "iteration",
+            "label": "Iteration",
+            "type": "number"
+          },
+          {
+            "field": "candidate",
+            "label": "Candidate",
+            "type": "text"
+          },
+          {
+            "field": "dev_speedup",
+            "label": "Dev speedup",
+            "type": "number"
+          },
+          {
+            "field": "parent",
+            "label": "Parent",
+            "type": "text"
+          },
+          {
+            "field": "context_count",
+            "label": "Contexts",
+            "type": "number"
+          },
+          {
+            "field": "lines_of_code",
+            "label": "LOC",
+            "type": "number"
+          },
+          {
+            "field": "change",
+            "label": "Recorded change",
+            "type": "text"
+          }
+        ],
+        "defaultSort": {
+          "field": "iteration",
+          "direction": "asc"
+        }
+      },
+      {
+        "id": "evox_lineage",
+        "title": "EvoX h50 direct ancestry",
+        "source": {
+          "id": "dev_autopsy",
+          "label": "Frozen Set Cover development trajectory autopsy",
+          "path": "research/results/algotune_set_cover_mechanism_autopsy_v0/result.json",
+          "query": {
+            "language": "sql",
+            "sql": "SELECT * FROM result_json",
+            "description": "Read the complete frozen development-only autopsy result.",
+            "tables_used": [
+              "result.json"
+            ],
+            "metric_definitions": [
+              "incumbent improvement means a dev-valid candidate strictly exceeded every earlier development speedup",
+              "selected as parent means a candidate ID appears in a later proposal's parent_ids",
+              "retained active means active=1 in the final EvidenceEvolve island_memberships state"
+            ],
+            "filters": [
+              "development-only evidence",
+              "no blind artifacts"
+            ]
+          }
+        },
+        "dataset": "evox_lineage",
+        "columns": [
+          {
+            "field": "iteration",
+            "label": "Iteration",
+            "type": "number"
+          },
+          {
+            "field": "candidate",
+            "label": "Candidate",
+            "type": "text"
+          },
+          {
+            "field": "dev_speedup",
+            "label": "Dev speedup",
+            "type": "number"
+          },
+          {
+            "field": "parent",
+            "label": "Parent",
+            "type": "text"
+          },
+          {
+            "field": "context_count",
+            "label": "Contexts",
+            "type": "number"
+          },
+          {
+            "field": "lines_of_code",
+            "label": "LOC",
+            "type": "number"
+          },
+          {
+            "field": "change",
+            "label": "Recorded change",
+            "type": "text"
+          }
+        ],
+        "defaultSort": {
+          "field": "iteration",
+          "direction": "asc"
+        }
+      }
+    ]
+  },
+  "snapshot": {
+    "version": 1,
+    "status": "ready",
+    "generatedAt": "2026-08-16T00:00:00Z",
+    "datasets": {
+      "checkpoint_rows": [
+        {
+          "arm": "shinka",
+          "candidate_sha256": "89ed91a24b9a56177ee9053ca528648fba29b5359c27c0d0a3f4f5bf4c9aa9ac",
+          "cumulative_tokens": 52686,
+          "cumulative_wall_seconds": 437.45064425468445,
+          "development_raw_speedup": 1.929465,
+          "horizon": 3,
+          "proposal_valid_rate": 1.0,
+          "selected_generation": 2,
+          "selected_id": "b9283054-9e1f-43fd-9369-dd03c806686a",
+          "arm_label": "Shinka",
+          "cumulative_wall_hours": 0.1215
+        },
+        {
+          "arm": "shinka",
+          "candidate_sha256": "ad6cbc83fdbd031bb663f0511a021c5c65d4e2446cd46ae561be1cc21771410d",
+          "cumulative_tokens": 107547,
+          "cumulative_wall_seconds": 730.8166222572327,
+          "development_raw_speedup": 1.940658,
+          "horizon": 6,
+          "proposal_valid_rate": 1.0,
+          "selected_generation": 4,
+          "selected_id": "175d9fed-a229-4494-8405-1745ff559690",
+          "arm_label": "Shinka",
+          "cumulative_wall_hours": 0.203
+        },
+        {
+          "arm": "shinka",
+          "candidate_sha256": "8eadb7300ad833d9ecf0cd66661f5da20cdcb9edc1efcd69898433425acfe854",
+          "cumulative_tokens": 217427,
+          "cumulative_wall_seconds": 1330.0421032905579,
+          "development_raw_speedup": 3.047826,
+          "horizon": 12,
+          "proposal_valid_rate": 1.0,
+          "selected_generation": 12,
+          "selected_id": "4f2b4dad-7774-4273-8185-3f7a554ba0af",
+          "arm_label": "Shinka",
+          "cumulative_wall_hours": 0.3695
+        },
+        {
+          "arm": "shinka",
+          "candidate_sha256": "e643adae1abcb5f092fcab6ff8c031a41429b60cf6a2ab045a8cb2da13ca7e35",
+          "cumulative_tokens": 457048,
+          "cumulative_wall_seconds": 2454.6209602355957,
+          "development_raw_speedup": 3.298803,
+          "horizon": 24,
+          "proposal_valid_rate": 1.0,
+          "selected_generation": 15,
+          "selected_id": "d57d60c3-7f01-46e1-843b-a88dc97553a7",
+          "arm_label": "Shinka",
+          "cumulative_wall_hours": 0.6818
+        },
+        {
+          "arm": "shinka",
+          "candidate_sha256": "8c3febf7aae980a04f9dd3e321d3049143153dcb3e3e850c5c8a5ad8d74c9889",
+          "cumulative_tokens": 1032255,
+          "cumulative_wall_seconds": 6554.939554275945,
+          "development_raw_speedup": 3.492749,
+          "horizon": 50,
+          "proposal_valid_rate": 0.98,
+          "selected_generation": 47,
+          "selected_id": "ae058ca9-c5e4-4a2b-93f3-fd351b7683cc",
+          "arm_label": "Shinka",
+          "cumulative_wall_hours": 1.8208
+        },
+        {
+          "arm": "ada",
+          "candidate_sha256": "e36c3727b6fbf302b8064ad5113561942dd596611a7f7960a478bb1f8a8e9995",
+          "cumulative_tokens": 55438,
+          "cumulative_wall_seconds": 416.98209595680237,
+          "development_raw_speedup": 1.39915,
+          "horizon": 3,
+          "proposal_valid_rate": 1.0,
+          "selected_generation": 1,
+          "selected_id": "ae893d0c-0f94-4a60-a97b-52aa7609ba96",
+          "arm_label": "AdaEvolve",
+          "cumulative_wall_hours": 0.1158
+        },
+        {
+          "arm": "ada",
+          "candidate_sha256": "86b74c4c473b6f12c20b95093c9797759123241ae348ac47aa634c655a65f644",
+          "cumulative_tokens": 141222,
+          "cumulative_wall_seconds": 854.1073181629181,
+          "development_raw_speedup": 2.200923,
+          "horizon": 6,
+          "proposal_valid_rate": 1.0,
+          "selected_generation": 5,
+          "selected_id": "a2b969ff-bffc-42a1-8bea-12f5411761fb",
+          "arm_label": "AdaEvolve",
+          "cumulative_wall_hours": 0.2373
+        },
+        {
+          "arm": "ada",
+          "candidate_sha256": "bda9915f27949e2e7e710cf724c570b61e6c724fd12cbf4fc6065b26cda63f52",
+          "cumulative_tokens": 287838,
+          "cumulative_wall_seconds": 1581.7483627796173,
+          "development_raw_speedup": 2.76852,
+          "horizon": 12,
+          "proposal_valid_rate": 1.0,
+          "selected_generation": 11,
+          "selected_id": "0f6e631c-9c5d-4d09-9369-39d3529d88c6",
+          "arm_label": "AdaEvolve",
+          "cumulative_wall_hours": 0.4394
+        },
+        {
+          "arm": "ada",
+          "candidate_sha256": "cb8eb45d9cb14e75a1078de142543237e0fdca6d9754c3a2eb24b03bba10848e",
+          "cumulative_tokens": 594839,
+          "cumulative_wall_seconds": 2775.6333651542664,
+          "development_raw_speedup": 3.323977,
+          "horizon": 24,
+          "proposal_valid_rate": 1.0,
+          "selected_generation": 24,
+          "selected_id": "817ee1c5-0b5c-4fb2-a932-14435c6b9386",
+          "arm_label": "AdaEvolve",
+          "cumulative_wall_hours": 0.771
+        },
+        {
+          "arm": "ada",
+          "candidate_sha256": "77f089ba8ead2291ca1747bb856f18a86890c8a2e63f083130c155674672a27c",
+          "cumulative_tokens": 1240486,
+          "cumulative_wall_seconds": 6843.314620751888,
+          "development_raw_speedup": 7.051806,
+          "horizon": 50,
+          "proposal_valid_rate": 1.0,
+          "selected_generation": 50,
+          "selected_id": "04ac01c5-8b02-4917-8f89-e619ea6ec7ae",
+          "arm_label": "AdaEvolve",
+          "cumulative_wall_hours": 1.9009
+        },
+        {
+          "arm": "evox",
+          "candidate_sha256": "05d0d75cadd784369dd15b8c6d2937c9b3cac83d7eddd989953c68aeb54f498a",
+          "cumulative_tokens": 125988,
+          "cumulative_wall_seconds": 404.833931684494,
+          "development_raw_speedup": 1.521213,
+          "horizon": 3,
+          "proposal_valid_rate": 0.6666666666666666,
+          "selected_generation": 2,
+          "selected_id": "9ae2b989-8b9d-4fbb-ae4f-853614521338",
+          "arm_label": "EvoX",
+          "cumulative_wall_hours": 0.1125
+        },
+        {
+          "arm": "evox",
+          "candidate_sha256": "05d0d75cadd784369dd15b8c6d2937c9b3cac83d7eddd989953c68aeb54f498a",
+          "cumulative_tokens": 198523,
+          "cumulative_wall_seconds": 708.2716572284698,
+          "development_raw_speedup": 1.521213,
+          "horizon": 6,
+          "proposal_valid_rate": 0.8333333333333334,
+          "selected_generation": 2,
+          "selected_id": "9ae2b989-8b9d-4fbb-ae4f-853614521338",
+          "arm_label": "EvoX",
+          "cumulative_wall_hours": 0.1967
+        },
+        {
+          "arm": "evox",
+          "candidate_sha256": "4a5bcec284c4c98b1fa77637f62e7b98100b90d76bdbea99aab97d731b2ee6ad",
+          "cumulative_tokens": 429918,
+          "cumulative_wall_seconds": 1418.797038078308,
+          "development_raw_speedup": 1.559017,
+          "horizon": 12,
+          "proposal_valid_rate": 0.9166666666666666,
+          "selected_generation": 12,
+          "selected_id": "6afdee5d-e533-42c1-a82c-f033e80b4dde",
+          "arm_label": "EvoX",
+          "cumulative_wall_hours": 0.3941
+        },
+        {
+          "arm": "evox",
+          "candidate_sha256": "64aba27e194fce27e8c9b1e419a61e065de3dba99fde7eff9309ad25fc867c03",
+          "cumulative_tokens": 761252,
+          "cumulative_wall_seconds": 2648.4044721126556,
+          "development_raw_speedup": 2.408518,
+          "horizon": 24,
+          "proposal_valid_rate": 0.9583333333333334,
+          "selected_generation": 20,
+          "selected_id": "931ce5f9-eaa3-47bc-bfe0-e44b81e20dcd",
+          "arm_label": "EvoX",
+          "cumulative_wall_hours": 0.7357
+        },
+        {
+          "arm": "evox",
+          "candidate_sha256": "8a82dec6db9fab31e365ee45ac7e05f1647005ca32fc6e342969a707c3c7f8fd",
+          "cumulative_tokens": 1698566,
+          "cumulative_wall_seconds": 7143.640538625419,
+          "development_raw_speedup": 13.481769,
+          "horizon": 50,
+          "proposal_valid_rate": 0.96,
+          "selected_generation": 50,
+          "selected_id": "48f69e42-71e6-484d-ab84-d44ad1c3f181",
+          "arm_label": "EvoX",
+          "cumulative_wall_hours": 1.9843
+        },
+        {
+          "arm": "evidence_evolve",
+          "candidate_sha256": "020a82914a74756909cd7be8603544754c350894e44a682b31651885c395d853",
+          "cumulative_tokens": 353166,
+          "cumulative_wall_seconds": 493.962082862854,
+          "development_raw_speedup": 0.998815,
+          "horizon": 3,
+          "proposal_valid_rate": 0.0,
+          "selected_generation": 0,
+          "selected_id": "SEED",
+          "arm_label": "EvidenceEvolve",
+          "cumulative_wall_hours": 0.1372
+        },
+        {
+          "arm": "evidence_evolve",
+          "candidate_sha256": "020a82914a74756909cd7be8603544754c350894e44a682b31651885c395d853",
+          "cumulative_tokens": 675538,
+          "cumulative_wall_seconds": 879.8719990253448,
+          "development_raw_speedup": 0.998815,
+          "horizon": 6,
+          "proposal_valid_rate": 0.0,
+          "selected_generation": 0,
+          "selected_id": "SEED",
+          "arm_label": "EvidenceEvolve",
+          "cumulative_wall_hours": 0.2444
+        },
+        {
+          "arm": "evidence_evolve",
+          "candidate_sha256": "e5b94b78bbdc4cb88ab9844fa6075973f8b88e69b434c693d68fb035c0344574",
+          "cumulative_tokens": 1621263,
+          "cumulative_wall_seconds": 1872.8726460933685,
+          "development_raw_speedup": 1.027182,
+          "horizon": 12,
+          "proposal_valid_rate": 0.4166666666666667,
+          "selected_generation": 9,
+          "selected_id": "GEN-009-C01",
+          "arm_label": "EvidenceEvolve",
+          "cumulative_wall_hours": 0.5202
+        },
+        {
+          "arm": "evidence_evolve",
+          "candidate_sha256": "e5b94b78bbdc4cb88ab9844fa6075973f8b88e69b434c693d68fb035c0344574",
+          "cumulative_tokens": 3590428,
+          "cumulative_wall_seconds": 4432.0934047698975,
+          "development_raw_speedup": 1.027182,
+          "horizon": 24,
+          "proposal_valid_rate": 0.7083333333333334,
+          "selected_generation": 9,
+          "selected_id": "GEN-009-C01",
+          "arm_label": "EvidenceEvolve",
+          "cumulative_wall_hours": 1.2311
+        },
+        {
+          "arm": "evidence_evolve",
+          "candidate_sha256": "e5b94b78bbdc4cb88ab9844fa6075973f8b88e69b434c693d68fb035c0344574",
+          "cumulative_tokens": 8259522,
+          "cumulative_wall_seconds": 9822.992880482227,
+          "development_raw_speedup": 1.027182,
+          "horizon": 50,
+          "proposal_valid_rate": 0.72,
+          "selected_generation": 9,
+          "selected_id": "GEN-009-C01",
+          "arm_label": "EvidenceEvolve",
+          "cumulative_wall_hours": 2.7286
+        }
+      ],
+      "ee_stages": [
+        {
+          "stage": "Generated",
+          "count": 50,
+          "stage_order": 1
+        },
+        {
+          "stage": "Implemented",
+          "count": 46,
+          "stage_order": 2
+        },
+        {
+          "stage": "Unique code",
+          "count": 45,
+          "stage_order": 3
+        },
+        {
+          "stage": "Evaluated",
+          "count": 45,
+          "stage_order": 4
+        },
+        {
+          "stage": "Dev-valid",
+          "count": 36,
+          "stage_order": 5
+        },
+        {
+          "stage": "Improved incumbent",
+          "count": 2,
+          "stage_order": 6
+        },
+        {
+          "stage": "Admitted",
+          "count": 36,
+          "stage_order": 7
+        },
+        {
+          "stage": "Ever selected parent",
+          "count": 7,
+          "stage_order": 8
+        },
+        {
+          "stage": "Final active",
+          "count": 8,
+          "stage_order": 9
+        }
+      ],
+      "ee_generations": [
+        {
+          "generation": 1,
+          "raw_speedup": 0.0,
+          "valid": false,
+          "improved_incumbent": false,
+          "admitted": false,
+          "selected_as_parent": false,
+          "retained_active": false,
+          "family": "bounded_residual_component_exactification",
+          "mutation_type": "mechanism_mutation"
+        },
+        {
+          "generation": 2,
+          "raw_speedup": 0.0,
+          "valid": false,
+          "improved_incumbent": false,
+          "admitted": false,
+          "selected_as_parent": false,
+          "retained_active": false,
+          "family": "bidirectional_bitset_incremental_greedy",
+          "mutation_type": "representation_mutation"
+        },
+        {
+          "generation": 3,
+          "raw_speedup": 0.0,
+          "valid": false,
+          "improved_incumbent": false,
+          "admitted": false,
+          "selected_as_parent": false,
+          "retained_active": false,
+          "family": "packed_uncovered_state_constructor",
+          "mutation_type": "representation_mutation"
+        },
+        {
+          "generation": 4,
+          "raw_speedup": 0.0,
+          "valid": false,
+          "improved_incumbent": false,
+          "admitted": false,
+          "selected_as_parent": false,
+          "retained_active": false,
+          "family": "reverse_delete_primal_construction",
+          "mutation_type": "cross_family"
+        },
+        {
+          "generation": 5,
+          "raw_speedup": 0.0,
+          "valid": false,
+          "improved_incumbent": false,
+          "admitted": false,
+          "selected_as_parent": false,
+          "retained_active": false,
+          "family": "coverage-quotient-representation",
+          "mutation_type": "representation_mutation"
+        },
+        {
+          "generation": 6,
+          "raw_speedup": 0.0,
+          "valid": false,
+          "improved_incumbent": false,
+          "admitted": false,
+          "selected_as_parent": false,
+          "retained_active": false,
+          "family": "bounded_best_first_incumbent_search",
+          "mutation_type": "cross_family"
+        },
+        {
+          "generation": 7,
+          "raw_speedup": 1.023736,
+          "valid": true,
+          "improved_incumbent": true,
+          "admitted": true,
+          "selected_as_parent": true,
+          "retained_active": false,
+          "family": "element_side_incidence_signature_quotient",
+          "mutation_type": "representation_mutation"
+        },
+        {
+          "generation": 8,
+          "raw_speedup": 1.009128,
+          "valid": true,
+          "improved_incumbent": false,
+          "admitted": true,
+          "selected_as_parent": true,
+          "retained_active": false,
+          "family": "element_side_incidence_signature_quotient_control",
+          "mutation_type": "control_mutation"
+        },
+        {
+          "generation": 9,
+          "raw_speedup": 1.027182,
+          "valid": true,
+          "improved_incumbent": true,
+          "admitted": true,
+          "selected_as_parent": true,
+          "retained_active": true,
+          "family": "element_side_incidence_signature_quotient_selection_control",
+          "mutation_type": "control_mutation"
+        },
+        {
+          "generation": 10,
+          "raw_speedup": 0.0,
+          "valid": false,
+          "improved_incumbent": false,
+          "admitted": false,
+          "selected_as_parent": false,
+          "retained_active": false,
+          "family": "quotient-routing-removal",
+          "mutation_type": "simplification"
+        },
+        {
+          "generation": 11,
+          "raw_speedup": 1.005395,
+          "valid": true,
+          "improved_incumbent": false,
+          "admitted": true,
+          "selected_as_parent": false,
+          "retained_active": false,
+          "family": "counterexample_bitmask_incidence_signature_quotient",
+          "mutation_type": "failure_directed_mutation"
+        },
+        {
+          "generation": 12,
+          "raw_speedup": 1.027174,
+          "valid": true,
+          "improved_incumbent": false,
+          "admitted": true,
+          "selected_as_parent": false,
+          "retained_active": false,
+          "family": "bitmask_signature_tuple_key_control",
+          "mutation_type": "control_mutation"
+        },
+        {
+          "generation": 13,
+          "raw_speedup": 1.011617,
+          "valid": true,
+          "improved_incumbent": false,
+          "admitted": true,
+          "selected_as_parent": true,
+          "retained_active": true,
+          "family": "tuple_signature_quotient_disabled_control",
+          "mutation_type": "control_mutation"
+        },
+        {
+          "generation": 14,
+          "raw_speedup": 1.011526,
+          "valid": true,
+          "improved_incumbent": false,
+          "admitted": true,
+          "selected_as_parent": false,
+          "retained_active": false,
+          "family": "quotient_disabled_preprocessing_simplification",
+          "mutation_type": "simplification"
+        },
+        {
+          "generation": 15,
+          "raw_speedup": 1.011358,
+          "valid": true,
+          "improved_incumbent": false,
+          "admitted": true,
+          "selected_as_parent": false,
+          "retained_active": false,
+          "family": "lazy_duplicate_signature_quotient",
+          "mutation_type": "failure_directed_mutation"
+        },
+        {
+          "generation": 16,
+          "raw_speedup": 1.011704,
+          "valid": true,
+          "improved_incumbent": false,
+          "admitted": true,
+          "selected_as_parent": false,
+          "retained_active": false,
+          "family": "tuple_signature_preprocessing_control",
+          "mutation_type": "control_mutation"
+        },
+        {
+          "generation": 17,
+          "raw_speedup": 1.01188,
+          "valid": true,
+          "improved_incumbent": false,
+          "admitted": true,
+          "selected_as_parent": false,
+          "retained_active": false,
+          "family": "tuple_signature_map_bookkeeping_control",
+          "mutation_type": "control_mutation"
+        },
+        {
+          "generation": 18,
+          "raw_speedup": 1.011624,
+          "valid": true,
+          "improved_incumbent": false,
+          "admitted": true,
+          "selected_as_parent": false,
+          "retained_active": false,
+          "family": "direct_residual_identity_map_elision",
+          "mutation_type": "simplification"
+        },
+        {
+          "generation": 19,
+          "raw_speedup": 1.01161,
+          "valid": true,
+          "improved_incumbent": false,
+          "admitted": true,
+          "selected_as_parent": false,
+          "retained_active": false,
+          "family": "direct_residual_shared_incidence",
+          "mutation_type": "failure_directed_mutation"
+        },
+        {
+          "generation": 20,
+          "raw_speedup": 1.012084,
+          "valid": true,
+          "improved_incumbent": false,
+          "admitted": true,
+          "selected_as_parent": false,
+          "retained_active": false,
+          "family": "direct_residual_copied_incidence_control",
+          "mutation_type": "control_mutation"
+        },
+        {
+          "generation": 21,
+          "raw_speedup": 1.011215,
+          "valid": true,
+          "improved_incumbent": false,
+          "admitted": true,
+          "selected_as_parent": false,
+          "retained_active": false,
+          "family": "direct_residual_copied_incidence_identity_map_control",
+          "mutation_type": "control_mutation"
+        },
+        {
+          "generation": 22,
+          "raw_speedup": 1.012592,
+          "valid": true,
+          "improved_incumbent": false,
+          "admitted": true,
+          "selected_as_parent": false,
+          "retained_active": false,
+          "family": "direct_residual_container_elision",
+          "mutation_type": "simplification"
+        },
+        {
+          "generation": 23,
+          "raw_speedup": 1.012875,
+          "valid": true,
+          "improved_incumbent": false,
+          "admitted": true,
+          "selected_as_parent": false,
+          "retained_active": false,
+          "family": "direct_residual_inherited_selection_counterexample",
+          "mutation_type": "failure_directed_mutation"
+        },
+        {
+          "generation": 24,
+          "raw_speedup": 1.012303,
+          "valid": true,
+          "improved_incumbent": false,
+          "admitted": true,
+          "selected_as_parent": false,
+          "retained_active": false,
+          "family": "direct_residual_container_materialization_control",
+          "mutation_type": "control_mutation"
+        },
+        {
+          "generation": 25,
+          "raw_speedup": 1.012291,
+          "valid": true,
+          "improved_incumbent": false,
+          "admitted": true,
+          "selected_as_parent": true,
+          "retained_active": true,
+          "family": "direct_residual_incidence_copy_control",
+          "mutation_type": "control_mutation"
+        },
+        {
+          "generation": 26,
+          "raw_speedup": 1.01214,
+          "valid": true,
+          "improved_incumbent": false,
+          "admitted": true,
+          "selected_as_parent": false,
+          "retained_active": false,
+          "family": "direct_residual_shared_incidence_simplification",
+          "mutation_type": "simplification"
+        },
+        {
+          "generation": 27,
+          "raw_speedup": 1.012561,
+          "valid": true,
+          "improved_incumbent": false,
+          "admitted": true,
+          "selected_as_parent": false,
+          "retained_active": false,
+          "family": "immutable_incidence_snapshot_counterexample",
+          "mutation_type": "failure_directed_mutation"
+        },
+        {
+          "generation": 29,
+          "raw_speedup": 1.012419,
+          "valid": true,
+          "improved_incumbent": false,
+          "admitted": true,
+          "selected_as_parent": true,
+          "retained_active": true,
+          "family": "tuple_snapshot_selection_loop_control",
+          "mutation_type": "control_mutation"
+        },
+        {
+          "generation": 30,
+          "raw_speedup": 1.01223,
+          "valid": true,
+          "improved_incumbent": false,
+          "admitted": true,
+          "selected_as_parent": false,
+          "retained_active": false,
+          "family": "shared_incidence_gen009_simplification",
+          "mutation_type": "simplification"
+        },
+        {
+          "generation": 31,
+          "raw_speedup": 1.011972,
+          "valid": true,
+          "improved_incumbent": false,
+          "admitted": true,
+          "selected_as_parent": false,
+          "retained_active": false,
+          "family": "materialized_tuple_snapshot_counterexample",
+          "mutation_type": "failure_directed_mutation"
+        },
+        {
+          "generation": 32,
+          "raw_speedup": 1.012338,
+          "valid": true,
+          "improved_incumbent": false,
+          "admitted": true,
+          "selected_as_parent": false,
+          "retained_active": true,
+          "family": "shared_incidence_selection_loop_control",
+          "mutation_type": "control_mutation"
+        },
+        {
+          "generation": 33,
+          "raw_speedup": 1.012431,
+          "valid": true,
+          "improved_incumbent": false,
+          "admitted": true,
+          "selected_as_parent": false,
+          "retained_active": false,
+          "family": "shared_incidence_container_elision_control",
+          "mutation_type": "control_mutation"
+        },
+        {
+          "generation": 34,
+          "raw_speedup": 1.007693,
+          "valid": true,
+          "improved_incumbent": false,
+          "admitted": true,
+          "selected_as_parent": false,
+          "retained_active": false,
+          "family": "direct_residual_order_simplification",
+          "mutation_type": "simplification"
+        },
+        {
+          "generation": 35,
+          "raw_speedup": 1.012446,
+          "valid": true,
+          "improved_incumbent": false,
+          "admitted": true,
+          "selected_as_parent": false,
+          "retained_active": false,
+          "family": "direct_order_shared_incidence_counterexample",
+          "mutation_type": "failure_directed_mutation"
+        },
+        {
+          "generation": 36,
+          "raw_speedup": 1.012231,
+          "valid": true,
+          "improved_incumbent": false,
+          "admitted": true,
+          "selected_as_parent": true,
+          "retained_active": true,
+          "family": "direct_order_shared_incidence_ordering_control",
+          "mutation_type": "control_mutation"
+        },
+        {
+          "generation": 38,
+          "raw_speedup": 1.012329,
+          "valid": true,
+          "improved_incumbent": false,
+          "admitted": true,
+          "selected_as_parent": false,
+          "retained_active": false,
+          "family": "direct_order_shared_incidence_simplification",
+          "mutation_type": "simplification"
+        },
+        {
+          "generation": 41,
+          "raw_speedup": 0.0,
+          "valid": false,
+          "improved_incumbent": false,
+          "admitted": false,
+          "selected_as_parent": false,
+          "retained_active": false,
+          "family": "packed_dual_incidence_active_mask",
+          "mutation_type": "representation_mutation"
+        },
+        {
+          "generation": 42,
+          "raw_speedup": 0.0,
+          "valid": false,
+          "improved_incumbent": false,
+          "admitted": false,
+          "selected_as_parent": false,
+          "retained_active": false,
+          "family": "componentwise_bounded_residual_exactification",
+          "mutation_type": "cross_family"
+        },
+        {
+          "generation": 43,
+          "raw_speedup": 1.012102,
+          "valid": true,
+          "improved_incumbent": false,
+          "admitted": true,
+          "selected_as_parent": false,
+          "retained_active": false,
+          "family": "packed_residual_bipartite_representation",
+          "mutation_type": "representation_mutation"
+        },
+        {
+          "generation": 44,
+          "raw_speedup": 1.011778,
+          "valid": true,
+          "improved_incumbent": false,
+          "admitted": true,
+          "selected_as_parent": false,
+          "retained_active": false,
+          "family": "packed_residual_bipartite_representation_control",
+          "mutation_type": "control_mutation"
+        },
+        {
+          "generation": 45,
+          "raw_speedup": 1.012676,
+          "valid": true,
+          "improved_incumbent": false,
+          "admitted": true,
+          "selected_as_parent": false,
+          "retained_active": true,
+          "family": "packed_residual_storage_reversal_control",
+          "mutation_type": "control_mutation"
+        },
+        {
+          "generation": 47,
+          "raw_speedup": 1.011433,
+          "valid": true,
+          "improved_incumbent": false,
+          "admitted": true,
+          "selected_as_parent": false,
+          "retained_active": false,
+          "family": "forced_singleton_residual_reduction",
+          "mutation_type": "failure_directed_mutation"
+        },
+        {
+          "generation": 48,
+          "raw_speedup": 1.012369,
+          "valid": true,
+          "improved_incumbent": false,
+          "admitted": true,
+          "selected_as_parent": false,
+          "retained_active": false,
+          "family": "forced_singleton_residual_reduction_control",
+          "mutation_type": "control_mutation"
+        },
+        {
+          "generation": 49,
+          "raw_speedup": 1.011557,
+          "valid": true,
+          "improved_incumbent": false,
+          "admitted": true,
+          "selected_as_parent": false,
+          "retained_active": true,
+          "family": "forced_singleton_residual_reduction_selection_path_control",
+          "mutation_type": "control_mutation"
+        },
+        {
+          "generation": 50,
+          "raw_speedup": 1.012659,
+          "valid": true,
+          "improved_incumbent": false,
+          "admitted": true,
+          "selected_as_parent": false,
+          "retained_active": false,
+          "family": "cnf_clause_materialization_elision",
+          "mutation_type": "simplification"
+        }
+      ],
+      "arm_rows": [
+        {
+          "arm": "Shinka",
+          "generated_records": 50,
+          "dev_valid_records": 49,
+          "unique_sources": 50,
+          "record_improvements": 13,
+          "distinct_parents": 27,
+          "records_with_context": 49,
+          "final_store_records": 8,
+          "observability_note": "program-store proxy; not a cross-engine admission funnel"
+        },
+        {
+          "arm": "AdaEvolve",
+          "generated_records": 45,
+          "dev_valid_records": 44,
+          "unique_sources": 28,
+          "record_improvements": 21,
+          "distinct_parents": 29,
+          "records_with_context": 28,
+          "final_store_records": 17,
+          "observability_note": "program-store proxy; not a cross-engine admission funnel"
+        },
+        {
+          "arm": "EvoX",
+          "generated_records": 50,
+          "dev_valid_records": 48,
+          "unique_sources": 49,
+          "record_improvements": 10,
+          "distinct_parents": 32,
+          "records_with_context": 45,
+          "final_store_records": 51,
+          "observability_note": "program-store proxy; not a cross-engine admission funnel"
+        },
+        {
+          "arm": "EvidenceEvolve",
+          "generated_records": 50,
+          "dev_valid_records": 36,
+          "unique_sources": 45,
+          "record_improvements": 2,
+          "distinct_parents": 7,
+          "records_with_context": 38,
+          "final_store_records": 8,
+          "observability_note": "native proposal/gate/archive ledger"
+        }
+      ],
+      "ada_lineage": [
+        {
+          "iteration": 0,
+          "candidate": "961c73f9",
+          "dev_speedup": 0.99901,
+          "parent": "ROOT",
+          "context_count": 0,
+          "lines_of_code": 51,
+          "change": "seed/migration record"
+        },
+        {
+          "iteration": 1,
+          "candidate": "ae893d0c",
+          "dev_speedup": 1.39915,
+          "parent": "961c73f9",
+          "context_count": 1,
+          "lines_of_code": 37,
+          "change": "Change 1: Near `from pysat.card import CardEnc, EncType...` (2\u21921 lines)\nChange 2: Modified function `solve`: Encode coverage once and binary-search exact cardinality via totalizer assumptions."
+        },
+        {
+          "iteration": 1,
+          "candidate": "a28443d6",
+          "dev_speedup": 1.39915,
+          "parent": "ae893d0c",
+          "context_count": 0,
+          "lines_of_code": 37,
+          "change": "seed/migration record"
+        },
+        {
+          "iteration": 4,
+          "candidate": "09b15903",
+          "dev_speedup": 1.71134,
+          "parent": "a28443d6",
+          "context_count": 2,
+          "lines_of_code": 42,
+          "change": "Change 1: Modified function `solve`: Find a feasible cover, then exactly minimize within its cardinality bound."
+        },
+        {
+          "iteration": 4,
+          "candidate": "cd196d81",
+          "dev_speedup": 1.71134,
+          "parent": "09b15903",
+          "context_count": 0,
+          "lines_of_code": 42,
+          "change": "seed/migration record"
+        },
+        {
+          "iteration": 6,
+          "candidate": "a29564e6",
+          "dev_speedup": 2.199498,
+          "parent": "cd196d81",
+          "context_count": 2,
+          "lines_of_code": 52,
+          "change": "Change 1: Modified function `solve`: Greedily bound the cover size, then SAT binary-search the exact minimum."
+        },
+        {
+          "iteration": 20,
+          "candidate": "553a4e80",
+          "dev_speedup": 3.144827,
+          "parent": "a29564e6",
+          "context_count": 2,
+          "lines_of_code": 97,
+          "change": "Change 1: Modified function `solve`: Reduce duplicate/dominated sets, force unique owners, then minimize with MiniCard."
+        },
+        {
+          "iteration": 21,
+          "candidate": "daf2a3ba",
+          "dev_speedup": 3.272904,
+          "parent": "553a4e80",
+          "context_count": 2,
+          "lines_of_code": 107,
+          "change": "Change 1: '\"\"\"Reduce duplicate/dominated sets, force unique owners, then minimize with MiniCard.\"\"\"' \u2192 '\"\"\"Kernelize sets, then use MiniCard on an exact subsumption-minimized cover encoding.\"\"\"'\nChange 2: Near `literals = list(range(1, count + 1))...` (3\u219213 lines)"
+        },
+        {
+          "iteration": 24,
+          "candidate": "817ee1c5",
+          "dev_speedup": 3.323977,
+          "parent": "daf2a3ba",
+          "context_count": 2,
+          "lines_of_code": 140,
+          "change": "Change 1: Modified function `solve`: Bit-encode, kernelize, bound, then exactly minimize the set cover with MiniCard."
+        },
+        {
+          "iteration": 26,
+          "candidate": "2df84af6",
+          "dev_speedup": 3.324989,
+          "parent": "817ee1c5",
+          "context_count": 2,
+          "lines_of_code": 154,
+          "change": "Change 1: Near `from pysat.card import ITotalizer...` (2\u21921 lines)\nChange 2: '\"\"\"Bit-encode, kernelize, bound, then exactly minimize the set cover with MiniCard.\"\"\"' \u2192 '\"\"\"Kernelize, greedily bound, then exactly minimize with MiniCard.\"\"\"'\nChange 3: Near `picked = shrink(picked)...` (3\u219218 lines)"
+        },
+        {
+          "iteration": 26,
+          "candidate": "655f62f9",
+          "dev_speedup": 3.324989,
+          "parent": "2df84af6",
+          "context_count": 0,
+          "lines_of_code": 154,
+          "change": "seed/migration record"
+        },
+        {
+          "iteration": 30,
+          "candidate": "43e75200",
+          "dev_speedup": 3.325703,
+          "parent": "655f62f9",
+          "context_count": 2,
+          "lines_of_code": 159,
+          "change": "Change 1: Near `if not pending:...` (4\u21928 lines)\nChange 2: Near `if not pending:...` (4\u21928 lines)\nChange 3: Near `# These small bounds can be certified more cheaply...` (5\u21922 lines)"
+        },
+        {
+          "iteration": 48,
+          "candidate": "bbcde9c3",
+          "dev_speedup": 6.884167,
+          "parent": "43e75200",
+          "context_count": 2,
+          "lines_of_code": 166,
+          "change": "Change 1: Modified function `solve`: Kernelize the cover, derive greedy bounds, and exactly minimize with MiniCard."
+        },
+        {
+          "iteration": 50,
+          "candidate": "04ac01c5",
+          "dev_speedup": 7.051806,
+          "parent": "bbcde9c3",
+          "context_count": 2,
+          "lines_of_code": 167,
+          "change": "Change 1: '\"\"\"Kernelize the cover, derive greedy bounds, and exactly minimize with MiniCard.\"\"\"' \u2192 '\"\"\"Kernelize masks, certify small covers, then exactly minimize with MiniCard.\"\"\"'\nChange 2: Near `if upper == 3 and count <= 512:...` (18\u219220 lines)\nChange 3: Near `model = set(sat.get_model())...` (2\u21921 lines)"
+        }
+      ],
+      "evox_lineage": [
+        {
+          "iteration": 0,
+          "candidate": "6376408e",
+          "dev_speedup": 0.998689,
+          "parent": "ROOT",
+          "context_count": 0,
+          "lines_of_code": 51,
+          "change": "seed/migration record"
+        },
+        {
+          "iteration": 5,
+          "candidate": "9042b7f9",
+          "dev_speedup": 1.520206,
+          "parent": "6376408e",
+          "context_count": 2,
+          "lines_of_code": 35,
+          "change": "Change 1: Near `from pysat.card import CardEnc, EncType...` (3\u21921 lines)\nChange 2: Modified function `solve`: Build coverage clauses once and search for the least satisfiable bound."
+        },
+        {
+          "iteration": 13,
+          "candidate": "dd224a30",
+          "dev_speedup": 1.555382,
+          "parent": "9042b7f9",
+          "context_count": 2,
+          "lines_of_code": 29,
+          "change": "Change 1: Modified function `solve`: Reuse one MiniCard solver while monotonically tightening its bound."
+        },
+        {
+          "iteration": 18,
+          "candidate": "cae27cf4",
+          "dev_speedup": 1.962975,
+          "parent": "dd224a30",
+          "context_count": 0,
+          "lines_of_code": 42,
+          "change": "Change 1: Modified function `solve`: Seed exact MiniCard bound tightening with an incremental greedy cover."
+        },
+        {
+          "iteration": 20,
+          "candidate": "931ce5f9",
+          "dev_speedup": 2.408518,
+          "parent": "cae27cf4",
+          "context_count": 2,
+          "lines_of_code": 43,
+          "change": "Change 1: Modified function `solve`: Greedily seed exact bound tightening with warm-started MiniCard.\nChange 2: Near `with SatSolver(name=\"Minicard\", bootstrap_with=lis...` (2\u21923 lines)"
+        },
+        {
+          "iteration": 21,
+          "candidate": "13504b4a",
+          "dev_speedup": 2.387789,
+          "parent": "931ce5f9",
+          "context_count": 2,
+          "lines_of_code": 65,
+          "change": "Change 1: Near `from pysat.solvers import Solver as SatSolver...` (1\u21923 lines)\nChange 2: Modified function `solve`: Propagate mandatory sets, then heap-seed warm MiniCard bound tightening."
+        },
+        {
+          "iteration": 22,
+          "candidate": "6f9c7e6f",
+          "dev_speedup": 2.385939,
+          "parent": "13504b4a",
+          "context_count": 2,
+          "lines_of_code": 54,
+          "change": "Change 1: Near `\"\"\"Propagate mandatory sets, then heap-seed warm M...` (20\u21929 lines)\nChange 2: 'return fixed + best' \u2192 'return best'\nChange 3: 'return fixed' \u2192 'return []'"
+        },
+        {
+          "iteration": 25,
+          "candidate": "503cfae4",
+          "dev_speedup": 2.389042,
+          "parent": "6f9c7e6f",
+          "context_count": 2,
+          "lines_of_code": 45,
+          "change": "Change 1: 'from heapq import heapify, heappop, heappush' \u2192 ''\nChange 2: Modified function `solve`: Build a greedy upper bound with incremental gains, then tighten it exactly."
+        },
+        {
+          "iteration": 28,
+          "candidate": "a7bbd60c",
+          "dev_speedup": 9.90983,
+          "parent": "503cfae4",
+          "context_count": 0,
+          "lines_of_code": 30,
+          "change": "Change 1: Near `from pysat.solvers import Solver as SatSolver...` (1\u21922 lines)\nChange 2: Modified function `solve`: Encode coverage as hard clauses and minimize selected-set literals."
+        },
+        {
+          "iteration": 30,
+          "candidate": "a18cf110",
+          "dev_speedup": 9.820716,
+          "parent": "a7bbd60c",
+          "context_count": 2,
+          "lines_of_code": 64,
+          "change": "Change 1: Modified function `solve`: Force mandatory sets, then optimize each independent residual component exactly."
+        },
+        {
+          "iteration": 31,
+          "candidate": "6a50e223",
+          "dev_speedup": 9.910092,
+          "parent": "a18cf110",
+          "context_count": 2,
+          "lines_of_code": 30,
+          "change": "Change 1: Modified function `solve`: Encode each element as a hard clause and minimize selected sets with unit-cost MaxSAT."
+        },
+        {
+          "iteration": 44,
+          "candidate": "691119dd",
+          "dev_speedup": 13.400473,
+          "parent": "6a50e223",
+          "context_count": 2,
+          "lines_of_code": 64,
+          "change": "Change 1: Modified function `solve`: Remove redundant sets, select mandatory sets, then MaxSAT the residual instance."
+        },
+        {
+          "iteration": 45,
+          "candidate": "56a3d12f",
+          "dev_speedup": 12.879102,
+          "parent": "691119dd",
+          "context_count": 2,
+          "lines_of_code": 87,
+          "change": "Change 1: Modified function `solve`: Deduplicate and dominate-prune sets, force unique coverers, then exactly MaxSAT the residual."
+        },
+        {
+          "iteration": 50,
+          "candidate": "48f69e42",
+          "dev_speedup": 13.481769,
+          "parent": "56a3d12f",
+          "context_count": 2,
+          "lines_of_code": 64,
+          "change": "Change 1: Modified function `solve`: Deduplicate, discard dominated sets, force mandatory sets, then exactly solve residual MaxSAT."
+        }
+      ],
+      "hypotheses": [
+        {
+          "id": "H1",
+          "label": "EE admission pressure is misaligned with incumbent improvement",
+          "status": "strongly_supported",
+          "testable_prediction": "An incumbent-relative admission/parent score would sharply reduce CODE_PARENT promotions after GEN-9."
+        },
+        {
+          "id": "H2",
+          "label": "EE cumulative innovation collapses into a narrow control lineage",
+          "status": "strongly_supported",
+          "testable_prediction": "Mechanism-family quotas or explicit restart branches would increase distinct persistent parent chains and incumbent refreshes."
+        },
+        {
+          "id": "H3",
+          "label": "Ada scales through ancestry plus cross-lineage context composition",
+          "status": "supported",
+          "testable_prediction": "Removing context/recombination should reduce late integration of h45/h49 discoveries into the h50 lineage."
+        },
+        {
+          "id": "H4",
+          "label": "EvoX late scaling depends on a protected radical-mutation escape path",
+          "status": "strongly_supported",
+          "testable_prediction": "Removing the fundamentally-different-approach operator would eliminate or delay the iteration-28 MiniCard-to-RC2 basin jump."
+        }
+      ]
+    }
+  }
+}
