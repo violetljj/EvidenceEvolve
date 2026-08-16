@@ -1,0 +1,153 @@
+{
+  "schema_version": "1.0",
+  "analysis_scope": "SYNTHETIC_MECHANICS_ONLY",
+  "scientific_outcome": "NOT_EVALUABLE_DATA",
+  "audit": {
+    "evaluation_records": 102,
+    "role_counts": {
+      "initial_baseline": 1,
+      "solution_candidate": 100,
+      "final_best_reevaluation": 1
+    },
+    "evaluation_indices_contiguous_0_through_101": true,
+    "solution_iterations_contiguous_1_through_100": true,
+    "valid_records": 102,
+    "invalid_records": 0,
+    "source_hash_mismatches": 0,
+    "candidate_source_snapshots": 102,
+    "checkpoint_directories_1_through_100": 100,
+    "search_strategy_versions": 9,
+    "unique_solution_candidate_hashes": 89,
+    "sol_call_receipts": 127,
+    "sol_call_receipts_passed": 127,
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "high"
+  },
+  "score_distribution": {
+    "minimum": 0.7942858562933071,
+    "median": 0.9274393368167121,
+    "mean": 0.920243690039808,
+    "maximum": 0.9306145913689747,
+    "candidates_strictly_above_development_baseline": 24,
+    "candidates_equal_to_development_baseline": 1
+  },
+  "development_baseline": {
+    "combined_score": 0.9296946953291977,
+    "approach_macro_f1": 0.8939922358658663,
+    "false_clear": 0.05650684931506849,
+    "false_block": 0.08067324434126523,
+    "spearman": 0.9402155216756979,
+    "pairwise_accuracy": 0.8872197855750488,
+    "parent_floor_spearman": 0.9371679826555985,
+    "negative_control_gap": 0.9325565943800684,
+    "complexity_ast_nodes": 80
+  },
+  "development_best": {
+    "iteration": 83,
+    "candidate_sha256": "9440cc4089d7ac6ef2bb1fab4f194d835a1036cac7febda899d69d23be3ca654",
+    "combined_score": 0.9306145913689747,
+    "delta_combined_score_vs_baseline": 0.000919896039777,
+    "approach_macro_f1": 0.8919497603990347,
+    "false_clear": 0.038527397260273974,
+    "false_block": 0.0954730121880441,
+    "spearman": 0.9449068854192894,
+    "pairwise_accuracy": 0.8916666666666667,
+    "parent_floor_spearman": 0.9418281652656404,
+    "negative_control_gap": 0.9358414540474923,
+    "complexity_ast_nodes": 96
+  },
+  "notable_tradeoffs": {
+    "only_candidate_improving_both_error_rates_vs_development_baseline": {
+      "iteration": 78,
+      "combined_score": 0.9172568571022747,
+      "approach_macro_f1": 0.9010932344203059,
+      "false_clear": 0.038527397260273974,
+      "false_block": 0.0673244341265235,
+      "spearman": 0.947741705583909,
+      "pairwise_accuracy": 0.8953581871345029,
+      "complexity_ast_nodes": 190
+    },
+    "highest_macro_f1": {
+      "iteration": 55,
+      "approach_macro_f1": 0.9060909536399193,
+      "false_clear": 0.07705479452054795,
+      "false_block": 0.056006964596633776,
+      "complexity_ast_nodes": 190
+    },
+    "lowest_false_clear": {
+      "iteration": 42,
+      "false_clear": 0.0136986301369863,
+      "false_block": 0.12217063261752757,
+      "combined_score": 0.9138846131574747
+    },
+    "lowest_false_block": {
+      "iteration": 36,
+      "false_clear": 0.6934931506849316,
+      "false_block": 0.027858386535113175,
+      "combined_score": 0.7942858562933071
+    },
+    "lowest_complexity": {
+      "iteration": 33,
+      "complexity_ast_nodes": 67,
+      "combined_score": 0.9296946953291977,
+      "behavior": "development baseline equivalent"
+    }
+  },
+  "synthetic_holdout": {
+    "seed_generated_after_candidate_lock": true,
+    "best_candidate": {
+      "combined_score": 0.9292179938679852,
+      "approach_macro_f1": 0.8876859575052245,
+      "false_clear": 0.037985865724381625,
+      "false_block": 0.09080962800875274,
+      "spearman": 0.9444070475404251,
+      "pairwise_accuracy": 0.8893884015594542,
+      "parent_floor_spearman": 0.9412918071430397,
+      "negative_control_gap": 0.9450726000476499,
+      "complexity_ast_nodes": 96
+    },
+    "posthoc_baseline_reference_not_added_to_formal_ledger": {
+      "combined_score": 0.9282348132548672,
+      "approach_macro_f1": 0.8909168532003074,
+      "false_clear": 0.05830388692579505,
+      "false_block": 0.07822757111597374,
+      "spearman": 0.9400965255575807,
+      "pairwise_accuracy": 0.8849049707602339,
+      "parent_floor_spearman": 0.9362287380539824,
+      "negative_control_gap": 0.9404778417943453,
+      "complexity_ast_nodes": 80
+    },
+    "best_minus_posthoc_baseline": {
+      "combined_score": 0.000983180613118,
+      "approach_macro_f1": -0.003230895695083,
+      "false_clear": -0.020318021201413,
+      "false_block": 0.012582056892779,
+      "spearman": 0.004310521982844,
+      "pairwise_accuracy": 0.00448343079922,
+      "parent_floor_spearman": 0.005063069089057,
+      "negative_control_gap": 0.004594758253305,
+      "complexity_ast_nodes": 16
+    }
+  },
+  "execution": {
+    "wall_seconds": 6230.184417303652,
+    "input_tokens": 2698516,
+    "cached_input_tokens": 2029568,
+    "output_tokens": 286419,
+    "total_tokens_including_cached": 5014503
+  },
+  "anomalies": [
+    {
+      "scope": "auxiliary_search_strategy",
+      "location": "before formal solution iteration 12",
+      "event": "the first evolved database strategy raised KeyError and was rolled back",
+      "formal_budget_effect": "none; zero programs were preserved and solution iteration 12 was subsequently evaluated exactly once"
+    },
+    {
+      "scope": "predecessor_run",
+      "event": "an earlier formal attempt was invalidated because nondeterministic runtime was included in fitness",
+      "repair": "runtime remains diagnostic but is excluded from combined_score; this run used the repaired commit 3bcddca"
+    }
+  ],
+  "interpretation": "The run establishes only that the EvoX adapter, iteration ledger, deterministic synthetic evaluator, candidate locking, and post-lock holdout mechanics function. Without eligible real BlindAssist truth, it cannot establish headroom, safety, deployment value, or product validity."
+}
