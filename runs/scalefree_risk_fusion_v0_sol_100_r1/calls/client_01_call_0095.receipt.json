@@ -1,0 +1,35 @@
+{
+  "backend_result": {
+    "command": [
+      "codex",
+      "exec",
+      "--json",
+      "--ephemeral",
+      "--sandbox",
+      "read-only",
+      "--cd",
+      "/root/autodl-tmp/evox-scalefree-risk-fusion-v0/tasks/scalefree_risk_fusion_v0",
+      "--output-schema",
+      "/root/autodl-tmp/evox-scalefree-risk-fusion-v0/runs/scalefree_risk_fusion_v0_sol_100_r1/calls/client_01_call_0095.schema.json",
+      "--output-last-message",
+      "/root/autodl-tmp/evox-scalefree-risk-fusion-v0/runs/scalefree_risk_fusion_v0_sol_100_r1/calls/client_01_call_0095.json",
+      "--model",
+      "gpt-5.6-sol",
+      "-c",
+      "model_reasoning_effort=\"high\"",
+      "-"
+    ],
+    "event_types": [
+      "thread.started",
+      "turn.started",
+      "item.completed",
+      "turn.completed"
+    ],
+    "returncode": 0,
+    "status": "PASS"
+  },
+  "call_id": "client_01_call_0095",
+  "completed_at": "2026-08-15T23:19:40.261466+00:00",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high"
+}

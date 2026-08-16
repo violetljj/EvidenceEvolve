@@ -1,0 +1,16 @@
+{
+  "archive_sha256_verified": true,
+  "candidate_lock_after_validation": true,
+  "candidate_private_read_denied": true,
+  "compute_risk_only_audit_pass": true,
+  "failed_proposals_preserved_without_replacement": [
+    16
+  ],
+  "formal_loops": 30,
+  "internal_sha256s_verified": true,
+  "parent_disjoint_split": true,
+  "schema_version": "1.0",
+  "sealed_test": null,
+  "status": "PASS",
+  "validation_hidden_during_search": true
+}

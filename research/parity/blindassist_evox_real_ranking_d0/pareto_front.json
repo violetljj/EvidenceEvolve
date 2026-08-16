@@ -1,0 +1,1201 @@
+[
+  {
+    "candidate_sha256": "1560350836f4561b93b1b368a0db621ecba38bd50bb90dc70769fd505aaa660c",
+    "is_baseline": false,
+    "metrics": {
+      "T1": {
+        "by_parent_spearman": {
+          "382112": 0.01267553842877562,
+          "422841": 0.12044654473154855,
+          "434897": 0.04986832567657401,
+          "437528": 0.1294277841724149,
+          "467334": -0.08230364775970929,
+          "469455": 0.13199100255425456,
+          "471032": 0.062335167987893916,
+          "483071": -0.054996623632107576
+        },
+        "by_source_spearman": {
+          "ARKITSCENES": 0.039761275851990026
+        },
+        "closing_sign_accuracy": 0.3695965417867435,
+        "coverage": 0.7603603603603604,
+        "denominator_rows": 3885,
+        "parent_macro_spearman": 0.046180511519955586,
+        "source_macro_spearman": 0.039761275851990026,
+        "truth_rows": 2954,
+        "worst_parent_spearman": -0.08230364775970929
+      },
+      "T2": {
+        "abstain_reasons": {
+          "T2_MARGIN": 827,
+          "T2_UNSUPPORTED": 219
+        },
+        "by_parent_pairwise_accuracy": {
+          "382112": 0.6077844311377245,
+          "422841": 0.5064516129032258,
+          "434897": 0.5361930294906166,
+          "437528": 0.5681233933161953,
+          "467334": 0.5344352617079889,
+          "469455": 0.5141843971631206,
+          "471032": 0.5798816568047337,
+          "483071": 0.4662576687116564,
+          "bonn_person_tracking2": 0.6532258064516129
+        },
+        "by_source_pairwise_accuracy": {
+          "ARKITSCENES": 0.5406998158379374,
+          "BONN": 0.6532258064516129
+        },
+        "coverage": 0.7307593307593307,
+        "denominator_pairs": 3885,
+        "pairwise_accuracy": 0.5456146530468475,
+        "parent_macro_pairwise_accuracy": 0.5518374730763195,
+        "source_macro_pairwise_accuracy": 0.5969628111447751,
+        "valid_pairs": 2839,
+        "worst_parent_pairwise_accuracy": 0.4662576687116564
+      },
+      "T3": {
+        "abstain_reasons": {
+          "T1_T2_CONFLICT": 600,
+          "T1_UNSUPPORTED_OR_MARGIN": 2189,
+          "T2_UNSUPPORTED_OR_MARGIN": 335
+        },
+        "by_parent_pairwise_accuracy": {
+          "382112": 0.7894736842105263,
+          "422841": 0.6333333333333333,
+          "434897": 0.528,
+          "437528": 0.6161616161616161,
+          "467334": 0.6111111111111112,
+          "469455": 0.7758620689655172,
+          "471032": 0.6153846153846154,
+          "483071": 0.5056179775280899
+        },
+        "by_source_pairwise_accuracy": {
+          "ARKITSCENES": 0.6057818659658344
+        },
+        "coverage": 0.19588159588159587,
+        "denominator_pairs": 3885,
+        "pairwise_accuracy": 0.6057818659658344,
+        "parent_macro_pairwise_accuracy": 0.6343680508368512,
+        "source_macro_pairwise_accuracy": 0.6057818659658344,
+        "valid_pairs": 761,
+        "worst_parent_pairwise_accuracy": 0.5056179775280899
+      },
+      "candidate_audit": {
+        "ast_node_count": 111,
+        "compute_risk_block_sha256": "a889dd74b9c71e37c3c0d78a5eacfb3d4e6492a3a6e8daacf0f22414309fcc2a",
+        "sha256": "1560350836f4561b93b1b368a0db621ecba38bd50bb90dc70769fd505aaa660c",
+        "source_bytes": 559
+      },
+      "candidate_coverage": 1.0,
+      "complexity": {
+        "ast_node_count": 111,
+        "penalty": 0.00222,
+        "sha256": "1560350836f4561b93b1b368a0db621ecba38bd50bb90dc70769fd505aaa660c",
+        "source_bytes": 559
+      },
+      "coverage_floor": 0.99,
+      "coverage_floor_pass": true,
+      "fitness": {
+        "approach_component": 0.5230902557599778,
+        "combined_score": 0.5836959576274999,
+        "complexity_penalty": 0.00222,
+        "dominance_component": 0.6343680508368512,
+        "path_component": 0.5518374730763195,
+        "scientific_claim_authority": "NONE_DEVELOPMENT_SEARCH_ONLY"
+      },
+      "schema": "blindassist.evox.real_ranking_d0.evaluation.v1",
+      "split": "VALIDATION",
+      "status": "PASS / READY_FOR_EVOX_REAL_RANKING_D0"
+    }
+  },
+  {
+    "candidate_sha256": "343c34b06675b5d37ad60ddbb914865868151b02c704222500d11f725816de64",
+    "is_baseline": false,
+    "metrics": {
+      "T1": {
+        "by_parent_spearman": {
+          "382112": -0.0008662632468871404,
+          "422841": 0.12186116890077886,
+          "434897": 0.05575700950368234,
+          "437528": 0.15007914274226875,
+          "467334": -0.09631730968849891,
+          "469455": 0.11769433572890313,
+          "471032": 0.05522710263872259,
+          "483071": -0.06672730472450879
+        },
+        "by_source_spearman": {
+          "ARKITSCENES": 0.034129387687497716
+        },
+        "closing_sign_accuracy": 0.385806916426513,
+        "coverage": 0.7603603603603604,
+        "denominator_rows": 3885,
+        "parent_macro_spearman": 0.0420884852318076,
+        "source_macro_spearman": 0.034129387687497716,
+        "truth_rows": 2954,
+        "worst_parent_spearman": -0.09631730968849891
+      },
+      "T2": {
+        "abstain_reasons": {
+          "T2_MARGIN": 827,
+          "T2_UNSUPPORTED": 219
+        },
+        "by_parent_pairwise_accuracy": {
+          "382112": 0.6197604790419161,
+          "422841": 0.5193548387096775,
+          "434897": 0.5549597855227882,
+          "437528": 0.6143958868894601,
+          "467334": 0.5674931129476584,
+          "469455": 0.5283687943262412,
+          "471032": 0.6035502958579881,
+          "483071": 0.4785276073619632,
+          "bonn_person_tracking2": 0.6612903225806451
+        },
+        "by_source_pairwise_accuracy": {
+          "ARKITSCENES": 0.5631675874769797,
+          "BONN": 0.6612903225806451
+        },
+        "coverage": 0.7307593307593307,
+        "denominator_pairs": 3885,
+        "pairwise_accuracy": 0.567453328636844,
+        "parent_macro_pairwise_accuracy": 0.5719667914709264,
+        "source_macro_pairwise_accuracy": 0.6122289550288125,
+        "valid_pairs": 2839,
+        "worst_parent_pairwise_accuracy": 0.4785276073619632
+      },
+      "T3": {
+        "abstain_reasons": {
+          "T1_T2_CONFLICT": 600,
+          "T1_UNSUPPORTED_OR_MARGIN": 2189,
+          "T2_UNSUPPORTED_OR_MARGIN": 335
+        },
+        "by_parent_pairwise_accuracy": {
+          "382112": 0.8421052631578947,
+          "422841": 0.65,
+          "434897": 0.544,
+          "437528": 0.6717171717171717,
+          "467334": 0.6481481481481481,
+          "469455": 0.8275862068965517,
+          "471032": 0.6346153846153846,
+          "483071": 0.5168539325842697
+        },
+        "by_source_pairwise_accuracy": {
+          "ARKITSCENES": 0.6386333771353482
+        },
+        "coverage": 0.19588159588159587,
+        "denominator_pairs": 3885,
+        "pairwise_accuracy": 0.6386333771353482,
+        "parent_macro_pairwise_accuracy": 0.6668782633899275,
+        "source_macro_pairwise_accuracy": 0.6386333771353482,
+        "valid_pairs": 761,
+        "worst_parent_pairwise_accuracy": 0.5168539325842697
+      },
+      "candidate_audit": {
+        "ast_node_count": 88,
+        "compute_risk_block_sha256": "6721c31505172b0c43209ba2b06da13204ed9c37dfab2d08b5cbdfdc8fc184a5",
+        "sha256": "343c34b06675b5d37ad60ddbb914865868151b02c704222500d11f725816de64",
+        "source_bytes": 588
+      },
+      "candidate_coverage": 1.0,
+      "complexity": {
+        "ast_node_count": 88,
+        "penalty": 0.00176,
+        "sha256": "343c34b06675b5d37ad60ddbb914865868151b02c704222500d11f725816de64",
+        "source_bytes": 588
+      },
+      "coverage_floor": 0.99,
+      "coverage_floor_pass": true,
+      "fitness": {
+        "approach_component": 0.5210442426159038,
+        "combined_score": 0.6049318902166713,
+        "complexity_penalty": 0.00176,
+        "dominance_component": 0.6668782633899275,
+        "path_component": 0.5719667914709264,
+        "scientific_claim_authority": "NONE_DEVELOPMENT_SEARCH_ONLY"
+      },
+      "schema": "blindassist.evox.real_ranking_d0.evaluation.v1",
+      "split": "VALIDATION",
+      "status": "PASS / READY_FOR_EVOX_REAL_RANKING_D0"
+    }
+  },
+  {
+    "candidate_sha256": "542beda6778a4cd26656bf7dee9ce8d437f4ef40cac6f9aba5055a698414d4a8",
+    "is_baseline": false,
+    "metrics": {
+      "T1": {
+        "by_parent_spearman": {
+          "382112": -0.0008662632468871404,
+          "422841": 0.12186116890077886,
+          "434897": 0.05133326266356675,
+          "437528": 0.14726505989883193,
+          "467334": -0.10042176100053311,
+          "469455": 0.12093925867820637,
+          "471032": 0.05701828600672061,
+          "483071": -0.06896886634385048
+        },
+        "by_source_spearman": {
+          "ARKITSCENES": 0.03341103752510011
+        },
+        "closing_sign_accuracy": 0.3854466858789625,
+        "coverage": 0.7603603603603604,
+        "denominator_rows": 3885,
+        "parent_macro_spearman": 0.04102001819460422,
+        "source_macro_spearman": 0.03341103752510011,
+        "truth_rows": 2954,
+        "worst_parent_spearman": -0.10042176100053311
+      },
+      "T2": {
+        "abstain_reasons": {
+          "T2_MARGIN": 827,
+          "T2_UNSUPPORTED": 219
+        },
+        "by_parent_pairwise_accuracy": {
+          "382112": 0.6197604790419161,
+          "422841": 0.5193548387096775,
+          "434897": 0.5522788203753352,
+          "437528": 0.6169665809768637,
+          "467334": 0.5674931129476584,
+          "469455": 0.5283687943262412,
+          "471032": 0.6035502958579881,
+          "483071": 0.4785276073619632,
+          "bonn_person_tracking2": 0.6612903225806451
+        },
+        "by_source_pairwise_accuracy": {
+          "ARKITSCENES": 0.5631675874769797,
+          "BONN": 0.6612903225806451
+        },
+        "coverage": 0.7307593307593307,
+        "denominator_pairs": 3885,
+        "pairwise_accuracy": 0.567453328636844,
+        "parent_macro_pairwise_accuracy": 0.571954539130921,
+        "source_macro_pairwise_accuracy": 0.6122289550288125,
+        "valid_pairs": 2839,
+        "worst_parent_pairwise_accuracy": 0.4785276073619632
+      },
+      "T3": {
+        "abstain_reasons": {
+          "T1_T2_CONFLICT": 600,
+          "T1_UNSUPPORTED_OR_MARGIN": 2189,
+          "T2_UNSUPPORTED_OR_MARGIN": 335
+        },
+        "by_parent_pairwise_accuracy": {
+          "382112": 0.8421052631578947,
+          "422841": 0.65,
+          "434897": 0.544,
+          "437528": 0.6767676767676768,
+          "467334": 0.6481481481481481,
+          "469455": 0.8275862068965517,
+          "471032": 0.6346153846153846,
+          "483071": 0.5168539325842697
+        },
+        "by_source_pairwise_accuracy": {
+          "ARKITSCENES": 0.6399474375821288
+        },
+        "coverage": 0.19588159588159587,
+        "denominator_pairs": 3885,
+        "pairwise_accuracy": 0.6399474375821288,
+        "parent_macro_pairwise_accuracy": 0.6675095765212407,
+        "source_macro_pairwise_accuracy": 0.6399474375821288,
+        "valid_pairs": 761,
+        "worst_parent_pairwise_accuracy": 0.5168539325842697
+      },
+      "candidate_audit": {
+        "ast_node_count": 80,
+        "compute_risk_block_sha256": "e11d05f748f0f5a15b4f831cc0dc3cb2801558902b61cfc936dc68e2cf951a27",
+        "sha256": "542beda6778a4cd26656bf7dee9ce8d437f4ef40cac6f9aba5055a698414d4a8",
+        "source_bytes": 567
+      },
+      "candidate_coverage": 1.0,
+      "complexity": {
+        "ast_node_count": 80,
+        "penalty": 0.0016,
+        "sha256": "542beda6778a4cd26656bf7dee9ce8d437f4ef40cac6f9aba5055a698414d4a8",
+        "source_bytes": 567
+      },
+      "coverage_floor": 0.99,
+      "coverage_floor_pass": true,
+      "fitness": {
+        "approach_component": 0.5205100090973022,
+        "combined_score": 0.6052709253176761,
+        "complexity_penalty": 0.0016,
+        "dominance_component": 0.6675095765212407,
+        "path_component": 0.571954539130921,
+        "scientific_claim_authority": "NONE_DEVELOPMENT_SEARCH_ONLY"
+      },
+      "schema": "blindassist.evox.real_ranking_d0.evaluation.v1",
+      "split": "VALIDATION",
+      "status": "PASS / READY_FOR_EVOX_REAL_RANKING_D0"
+    }
+  },
+  {
+    "candidate_sha256": "12c53547e224dd5c61f1f70361401d3bbfb8e7abd4c7e22278b234faf7cecd3b",
+    "is_baseline": false,
+    "metrics": {
+      "T1": {
+        "by_parent_spearman": {
+          "382112": 0.0010562391249689536,
+          "422841": 0.1171231587598127,
+          "434897": 0.06290308639724752,
+          "437528": 0.13743411404381867,
+          "467334": -0.08604376122076611,
+          "469455": 0.11812642230185412,
+          "471032": 0.051355138203574666,
+          "483071": -0.06774366866390398
+        },
+        "by_source_spearman": {
+          "ARKITSCENES": 0.029391959692730212
+        },
+        "closing_sign_accuracy": 0.4027377521613833,
+        "coverage": 0.7603603603603604,
+        "denominator_rows": 3885,
+        "parent_macro_spearman": 0.041776341118325816,
+        "source_macro_spearman": 0.029391959692730212,
+        "truth_rows": 2954,
+        "worst_parent_spearman": -0.08604376122076611
+      },
+      "T2": {
+        "abstain_reasons": {
+          "T2_MARGIN": 827,
+          "T2_UNSUPPORTED": 219
+        },
+        "by_parent_pairwise_accuracy": {
+          "382112": 0.6197604790419161,
+          "422841": 0.5096774193548387,
+          "434897": 0.5388739946380697,
+          "437528": 0.5732647814910026,
+          "467334": 0.5399449035812672,
+          "469455": 0.5283687943262412,
+          "471032": 0.5976331360946746,
+          "483071": 0.46932515337423314,
+          "bonn_person_tracking2": 0.6612903225806451
+        },
+        "by_source_pairwise_accuracy": {
+          "ARKITSCENES": 0.5484346224677716,
+          "BONN": 0.6612903225806451
+        },
+        "coverage": 0.7307593307593307,
+        "denominator_pairs": 3885,
+        "pairwise_accuracy": 0.5533638605142656,
+        "parent_macro_pairwise_accuracy": 0.5597932204980988,
+        "source_macro_pairwise_accuracy": 0.6048624725242084,
+        "valid_pairs": 2839,
+        "worst_parent_pairwise_accuracy": 0.46932515337423314
+      },
+      "T3": {
+        "abstain_reasons": {
+          "T1_T2_CONFLICT": 600,
+          "T1_UNSUPPORTED_OR_MARGIN": 2189,
+          "T2_UNSUPPORTED_OR_MARGIN": 335
+        },
+        "by_parent_pairwise_accuracy": {
+          "382112": 0.8421052631578947,
+          "422841": 0.6333333333333333,
+          "434897": 0.528,
+          "437528": 0.6262626262626263,
+          "467334": 0.6203703703703703,
+          "469455": 0.7931034482758621,
+          "471032": 0.625,
+          "483071": 0.5056179775280899
+        },
+        "by_source_pairwise_accuracy": {
+          "ARKITSCENES": 0.6136662286465178
+        },
+        "coverage": 0.19588159588159587,
+        "denominator_pairs": 3885,
+        "pairwise_accuracy": 0.6136662286465178,
+        "parent_macro_pairwise_accuracy": 0.646724127366022,
+        "source_macro_pairwise_accuracy": 0.6136662286465178,
+        "valid_pairs": 761,
+        "worst_parent_pairwise_accuracy": 0.5056179775280899
+      },
+      "candidate_audit": {
+        "ast_node_count": 82,
+        "compute_risk_block_sha256": "cfc4d71c6691f00ba0fb742dfbd4788423ff47cf05eb2bea15d1836d990f0d01",
+        "sha256": "12c53547e224dd5c61f1f70361401d3bbfb8e7abd4c7e22278b234faf7cecd3b",
+        "source_bytes": 600
+      },
+      "candidate_coverage": 1.0,
+      "complexity": {
+        "ast_node_count": 82,
+        "penalty": 0.0016400000000000002,
+        "sha256": "12c53547e224dd5c61f1f70361401d3bbfb8e7abd4c7e22278b234faf7cecd3b",
+        "source_bytes": 600
+      },
+      "coverage_floor": 0.99,
+      "coverage_floor_pass": true,
+      "fitness": {
+        "approach_component": 0.5208881705591629,
+        "combined_score": 0.5918924114473265,
+        "complexity_penalty": 0.0016400000000000002,
+        "dominance_component": 0.646724127366022,
+        "path_component": 0.5597932204980988,
+        "scientific_claim_authority": "NONE_DEVELOPMENT_SEARCH_ONLY"
+      },
+      "schema": "blindassist.evox.real_ranking_d0.evaluation.v1",
+      "split": "VALIDATION",
+      "status": "PASS / READY_FOR_EVOX_REAL_RANKING_D0"
+    }
+  },
+  {
+    "candidate_sha256": "bf2008a71ea273318f765b09d6532735e0c3785724881a7b0225e032efd67b79",
+    "is_baseline": false,
+    "metrics": {
+      "T1": {
+        "by_parent_spearman": {
+          "382112": -0.0008662632468871404,
+          "422841": 0.12186116890077886,
+          "434897": 0.05133326266356675,
+          "437528": 0.14726505989883193,
+          "467334": -0.10042176100053311,
+          "469455": 0.12093925867820637,
+          "471032": 0.05701828600672061,
+          "483071": -0.06896886634385048
+        },
+        "by_source_spearman": {
+          "ARKITSCENES": 0.03341103752510011
+        },
+        "closing_sign_accuracy": 0.3854466858789625,
+        "coverage": 0.7603603603603604,
+        "denominator_rows": 3885,
+        "parent_macro_spearman": 0.04102001819460422,
+        "source_macro_spearman": 0.03341103752510011,
+        "truth_rows": 2954,
+        "worst_parent_spearman": -0.10042176100053311
+      },
+      "T2": {
+        "abstain_reasons": {
+          "T2_MARGIN": 827,
+          "T2_UNSUPPORTED": 219
+        },
+        "by_parent_pairwise_accuracy": {
+          "382112": 0.6197604790419161,
+          "422841": 0.5193548387096775,
+          "434897": 0.5522788203753352,
+          "437528": 0.6169665809768637,
+          "467334": 0.5674931129476584,
+          "469455": 0.5283687943262412,
+          "471032": 0.6035502958579881,
+          "483071": 0.4785276073619632,
+          "bonn_person_tracking2": 0.6612903225806451
+        },
+        "by_source_pairwise_accuracy": {
+          "ARKITSCENES": 0.5631675874769797,
+          "BONN": 0.6612903225806451
+        },
+        "coverage": 0.7307593307593307,
+        "denominator_pairs": 3885,
+        "pairwise_accuracy": 0.567453328636844,
+        "parent_macro_pairwise_accuracy": 0.571954539130921,
+        "source_macro_pairwise_accuracy": 0.6122289550288125,
+        "valid_pairs": 2839,
+        "worst_parent_pairwise_accuracy": 0.4785276073619632
+      },
+      "T3": {
+        "abstain_reasons": {
+          "T1_T2_CONFLICT": 600,
+          "T1_UNSUPPORTED_OR_MARGIN": 2189,
+          "T2_UNSUPPORTED_OR_MARGIN": 335
+        },
+        "by_parent_pairwise_accuracy": {
+          "382112": 0.8421052631578947,
+          "422841": 0.65,
+          "434897": 0.544,
+          "437528": 0.6767676767676768,
+          "467334": 0.6481481481481481,
+          "469455": 0.8275862068965517,
+          "471032": 0.6346153846153846,
+          "483071": 0.5168539325842697
+        },
+        "by_source_pairwise_accuracy": {
+          "ARKITSCENES": 0.6399474375821288
+        },
+        "coverage": 0.19588159588159587,
+        "denominator_pairs": 3885,
+        "pairwise_accuracy": 0.6399474375821288,
+        "parent_macro_pairwise_accuracy": 0.6675095765212407,
+        "source_macro_pairwise_accuracy": 0.6399474375821288,
+        "valid_pairs": 761,
+        "worst_parent_pairwise_accuracy": 0.5168539325842697
+      },
+      "candidate_audit": {
+        "ast_node_count": 80,
+        "compute_risk_block_sha256": "372dede0ebf6b5810278fc0c6fcbf9c8ea4e612fcd98844bc054eb87db832e8b",
+        "sha256": "bf2008a71ea273318f765b09d6532735e0c3785724881a7b0225e032efd67b79",
+        "source_bytes": 566
+      },
+      "candidate_coverage": 1.0,
+      "complexity": {
+        "ast_node_count": 80,
+        "penalty": 0.0016,
+        "sha256": "bf2008a71ea273318f765b09d6532735e0c3785724881a7b0225e032efd67b79",
+        "source_bytes": 566
+      },
+      "coverage_floor": 0.99,
+      "coverage_floor_pass": true,
+      "fitness": {
+        "approach_component": 0.5205100090973022,
+        "combined_score": 0.6052709253176761,
+        "complexity_penalty": 0.0016,
+        "dominance_component": 0.6675095765212407,
+        "path_component": 0.571954539130921,
+        "scientific_claim_authority": "NONE_DEVELOPMENT_SEARCH_ONLY"
+      },
+      "schema": "blindassist.evox.real_ranking_d0.evaluation.v1",
+      "split": "VALIDATION",
+      "status": "PASS / READY_FOR_EVOX_REAL_RANKING_D0"
+    }
+  },
+  {
+    "candidate_sha256": "4613becd854b0a948ab62d3491723c787347d1f0dae0c30aea4b0b46c49a2769",
+    "is_baseline": false,
+    "metrics": {
+      "T1": {
+        "by_parent_spearman": {
+          "382112": 0.017253225970469008,
+          "422841": 0.1185288877243099,
+          "434897": 0.060235653406537464,
+          "437528": 0.06590887626907618,
+          "467334": 0.009345584882806478,
+          "469455": 0.14388314963447657,
+          "471032": 0.07097626474704671,
+          "483071": 0.005017193871273696
+        },
+        "by_source_spearman": {
+          "ARKITSCENES": 0.06489035761387055
+        },
+        "closing_sign_accuracy": 0.4884726224783862,
+        "coverage": 0.7603603603603604,
+        "denominator_rows": 3885,
+        "parent_macro_spearman": 0.06139360456324951,
+        "source_macro_spearman": 0.06489035761387055,
+        "truth_rows": 2954,
+        "worst_parent_spearman": 0.005017193871273696
+      },
+      "T2": {
+        "abstain_reasons": {
+          "T2_MARGIN": 827,
+          "T2_UNSUPPORTED": 219
+        },
+        "by_parent_pairwise_accuracy": {
+          "382112": 0.6077844311377245,
+          "422841": 0.49032258064516127,
+          "434897": 0.46380697050938335,
+          "437528": 0.4318766066838046,
+          "467334": 0.44352617079889806,
+          "469455": 0.48936170212765956,
+          "471032": 0.5591715976331361,
+          "483071": 0.40797546012269936,
+          "bonn_person_tracking2": 0.6290322580645161
+        },
+        "by_source_pairwise_accuracy": {
+          "ARKITSCENES": 0.4850828729281768,
+          "BONN": 0.6290322580645161
+        },
+        "coverage": 0.7307593307593307,
+        "denominator_pairs": 3885,
+        "pairwise_accuracy": 0.4913702007749208,
+        "parent_macro_pairwise_accuracy": 0.5025397530803315,
+        "source_macro_pairwise_accuracy": 0.5570575654963464,
+        "valid_pairs": 2839,
+        "worst_parent_pairwise_accuracy": 0.40797546012269936
+      },
+      "T3": {
+        "abstain_reasons": {
+          "T1_T2_CONFLICT": 600,
+          "T1_UNSUPPORTED_OR_MARGIN": 2189,
+          "T2_UNSUPPORTED_OR_MARGIN": 335
+        },
+        "by_parent_pairwise_accuracy": {
+          "382112": 0.7894736842105263,
+          "422841": 0.6333333333333333,
+          "434897": 0.456,
+          "437528": 0.51010101010101,
+          "467334": 0.46296296296296297,
+          "469455": 0.7586206896551724,
+          "471032": 0.5865384615384616,
+          "483071": 0.4044943820224719
+        },
+        "by_source_pairwise_accuracy": {
+          "ARKITSCENES": 0.5282522996057819
+        },
+        "coverage": 0.19588159588159587,
+        "denominator_pairs": 3885,
+        "pairwise_accuracy": 0.5282522996057819,
+        "parent_macro_pairwise_accuracy": 0.5751905654779923,
+        "source_macro_pairwise_accuracy": 0.5282522996057819,
+        "valid_pairs": 761,
+        "worst_parent_pairwise_accuracy": 0.4044943820224719
+      },
+      "candidate_audit": {
+        "ast_node_count": 120,
+        "compute_risk_block_sha256": "1164385b6012eddde33a22dd2e85f156cd1511d6cec0617c862744c043ae8beb",
+        "sha256": "4613becd854b0a948ab62d3491723c787347d1f0dae0c30aea4b0b46c49a2769",
+        "source_bytes": 744
+      },
+      "candidate_coverage": 1.0,
+      "complexity": {
+        "ast_node_count": 120,
+        "penalty": 0.0024000000000000002,
+        "sha256": "4613becd854b0a948ab62d3491723c787347d1f0dae0c30aea4b0b46c49a2769",
+        "source_bytes": 744
+      },
+      "coverage_floor": 0.99,
+      "coverage_floor_pass": true,
+      "fitness": {
+        "approach_component": 0.5306968022816247,
+        "combined_score": 0.5435044215794853,
+        "complexity_penalty": 0.0024000000000000002,
+        "dominance_component": 0.5751905654779923,
+        "path_component": 0.5025397530803315,
+        "scientific_claim_authority": "NONE_DEVELOPMENT_SEARCH_ONLY"
+      },
+      "schema": "blindassist.evox.real_ranking_d0.evaluation.v1",
+      "split": "VALIDATION",
+      "status": "PASS / READY_FOR_EVOX_REAL_RANKING_D0"
+    }
+  },
+  {
+    "candidate_sha256": "30d045339a441304c6a5937b22e8424973d876fe74c3d22aa34bff34ad409511",
+    "is_baseline": false,
+    "metrics": {
+      "T1": {
+        "by_parent_spearman": {
+          "382112": 0.010196116945879213,
+          "422841": 0.1109851172463656,
+          "434897": 0.044700890075572465,
+          "437528": 0.062350426865528386,
+          "467334": 0.0028809091751248617,
+          "469455": 0.1545234591505045,
+          "471032": 0.0684655557700505,
+          "483071": 0.003619309478197385
+        },
+        "by_source_spearman": {
+          "ARKITSCENES": 0.0591882432638683
+        },
+        "closing_sign_accuracy": 0.7013688760806917,
+        "coverage": 0.7603603603603604,
+        "denominator_rows": 3885,
+        "parent_macro_spearman": 0.057215223088402864,
+        "source_macro_spearman": 0.0591882432638683,
+        "truth_rows": 2954,
+        "worst_parent_spearman": 0.0028809091751248617
+      },
+      "T2": {
+        "abstain_reasons": {
+          "T2_MARGIN": 827,
+          "T2_UNSUPPORTED": 219
+        },
+        "by_parent_pairwise_accuracy": {
+          "382112": 0.6047904191616766,
+          "422841": 0.4870967741935484,
+          "434897": 0.46380697050938335,
+          "437528": 0.4318766066838046,
+          "467334": 0.4462809917355372,
+          "469455": 0.48936170212765956,
+          "471032": 0.5621301775147929,
+          "483071": 0.4171779141104294,
+          "bonn_person_tracking2": 0.6290322580645161
+        },
+        "by_source_pairwise_accuracy": {
+          "ARKITSCENES": 0.4861878453038674,
+          "BONN": 0.6290322580645161
+        },
+        "coverage": 0.7307593307593307,
+        "denominator_pairs": 3885,
+        "pairwise_accuracy": 0.4924269108841141,
+        "parent_macro_pairwise_accuracy": 0.5035059793445942,
+        "source_macro_pairwise_accuracy": 0.5576100516841918,
+        "valid_pairs": 2839,
+        "worst_parent_pairwise_accuracy": 0.4171779141104294
+      },
+      "T3": {
+        "abstain_reasons": {
+          "T1_T2_CONFLICT": 600,
+          "T1_UNSUPPORTED_OR_MARGIN": 2189,
+          "T2_UNSUPPORTED_OR_MARGIN": 335
+        },
+        "by_parent_pairwise_accuracy": {
+          "382112": 0.7368421052631579,
+          "422841": 0.6333333333333333,
+          "434897": 0.456,
+          "437528": 0.5050505050505051,
+          "467334": 0.46296296296296297,
+          "469455": 0.7586206896551724,
+          "471032": 0.5865384615384616,
+          "483071": 0.42696629213483145
+        },
+        "by_source_pairwise_accuracy": {
+          "ARKITSCENES": 0.5282522996057819
+        },
+        "coverage": 0.19588159588159587,
+        "denominator_pairs": 3885,
+        "pairwise_accuracy": 0.5282522996057819,
+        "parent_macro_pairwise_accuracy": 0.5707892937423031,
+        "source_macro_pairwise_accuracy": 0.5282522996057819,
+        "valid_pairs": 761,
+        "worst_parent_pairwise_accuracy": 0.42696629213483145
+      },
+      "candidate_audit": {
+        "ast_node_count": 132,
+        "compute_risk_block_sha256": "476da6ce5b39007e5970342d2543da4c33bfc619a53f2f9f0973dbd968380b4d",
+        "sha256": "30d045339a441304c6a5937b22e8424973d876fe74c3d22aa34bff34ad409511",
+        "source_bytes": 740
+      },
+      "candidate_coverage": 1.0,
+      "complexity": {
+        "ast_node_count": 132,
+        "penalty": 0.0026400000000000004,
+        "sha256": "30d045339a441304c6a5937b22e8424973d876fe74c3d22aa34bff34ad409511",
+        "source_bytes": 740
+      },
+      "coverage_floor": 0.99,
+      "coverage_floor_pass": true,
+      "fitness": {
+        "approach_component": 0.5286076115442014,
+        "combined_score": 0.5407830445933506,
+        "complexity_penalty": 0.0026400000000000004,
+        "dominance_component": 0.5707892937423031,
+        "path_component": 0.5035059793445942,
+        "scientific_claim_authority": "NONE_DEVELOPMENT_SEARCH_ONLY"
+      },
+      "schema": "blindassist.evox.real_ranking_d0.evaluation.v1",
+      "split": "VALIDATION",
+      "status": "PASS / READY_FOR_EVOX_REAL_RANKING_D0"
+    }
+  },
+  {
+    "candidate_sha256": "3417c248febb4b41b828dd08f15edcd00d5b05ccc9ce29b9c463359346572fdd",
+    "is_baseline": false,
+    "metrics": {
+      "T1": {
+        "by_parent_spearman": {
+          "382112": 0.004129299631686733,
+          "422841": 0.11695107967445609,
+          "434897": 0.05219619931491242,
+          "437528": 0.13423186207521776,
+          "467334": -0.08685987372888211,
+          "469455": 0.12979913622758998,
+          "471032": 0.06231971193562305,
+          "483071": -0.059749213454953314
+        },
+        "by_source_spearman": {
+          "ARKITSCENES": 0.03734692903560123
+        },
+        "closing_sign_accuracy": 0.3753602305475504,
+        "coverage": 0.7603603603603604,
+        "denominator_rows": 3885,
+        "parent_macro_spearman": 0.04412727520945633,
+        "source_macro_spearman": 0.03734692903560123,
+        "truth_rows": 2954,
+        "worst_parent_spearman": -0.08685987372888211
+      },
+      "T2": {
+        "abstain_reasons": {
+          "T2_MARGIN": 827,
+          "T2_UNSUPPORTED": 219
+        },
+        "by_parent_pairwise_accuracy": {
+          "382112": 0.6167664670658682,
+          "422841": 0.5096774193548387,
+          "434897": 0.5415549597855228,
+          "437528": 0.5784061696658098,
+          "467334": 0.5426997245179064,
+          "469455": 0.5212765957446809,
+          "471032": 0.591715976331361,
+          "483071": 0.46932515337423314,
+          "bonn_person_tracking2": 0.6612903225806451
+        },
+        "by_source_pairwise_accuracy": {
+          "ARKITSCENES": 0.5480662983425414,
+          "BONN": 0.6612903225806451
+        },
+        "coverage": 0.7307593307593307,
+        "denominator_pairs": 3885,
+        "pairwise_accuracy": 0.5530116238112012,
+        "parent_macro_pairwise_accuracy": 0.5591903098245408,
+        "source_macro_pairwise_accuracy": 0.6046783104615933,
+        "valid_pairs": 2839,
+        "worst_parent_pairwise_accuracy": 0.46932515337423314
+      },
+      "T3": {
+        "abstain_reasons": {
+          "T1_T2_CONFLICT": 600,
+          "T1_UNSUPPORTED_OR_MARGIN": 2189,
+          "T2_UNSUPPORTED_OR_MARGIN": 335
+        },
+        "by_parent_pairwise_accuracy": {
+          "382112": 0.8421052631578947,
+          "422841": 0.6333333333333333,
+          "434897": 0.528,
+          "437528": 0.6363636363636364,
+          "467334": 0.6111111111111112,
+          "469455": 0.7931034482758621,
+          "471032": 0.625,
+          "483071": 0.5168539325842697
+        },
+        "by_source_pairwise_accuracy": {
+          "ARKITSCENES": 0.6162943495400789
+        },
+        "coverage": 0.19588159588159587,
+        "denominator_pairs": 3885,
+        "pairwise_accuracy": 0.6162943495400789,
+        "parent_macro_pairwise_accuracy": 0.6482338406032634,
+        "source_macro_pairwise_accuracy": 0.6162943495400789,
+        "valid_pairs": 761,
+        "worst_parent_pairwise_accuracy": 0.5168539325842697
+      },
+      "candidate_audit": {
+        "ast_node_count": 80,
+        "compute_risk_block_sha256": "a0ade9243d547df8b2b6bfc3c2ec313bb94440bfc6e9cb3d98e8249a0602d88e",
+        "sha256": "3417c248febb4b41b828dd08f15edcd00d5b05ccc9ce29b9c463359346572fdd",
+        "source_bytes": 558
+      },
+      "candidate_coverage": 1.0,
+      "complexity": {
+        "ast_node_count": 80,
+        "penalty": 0.0016,
+        "sha256": "3417c248febb4b41b828dd08f15edcd00d5b05ccc9ce29b9c463359346572fdd",
+        "source_bytes": 558
+      },
+      "coverage_floor": 0.99,
+      "coverage_floor_pass": true,
+      "fitness": {
+        "approach_component": 0.5220636376047282,
+        "combined_score": 0.5928304071589489,
+        "complexity_penalty": 0.0016,
+        "dominance_component": 0.6482338406032634,
+        "path_component": 0.5591903098245408,
+        "scientific_claim_authority": "NONE_DEVELOPMENT_SEARCH_ONLY"
+      },
+      "schema": "blindassist.evox.real_ranking_d0.evaluation.v1",
+      "split": "VALIDATION",
+      "status": "PASS / READY_FOR_EVOX_REAL_RANKING_D0"
+    }
+  },
+  {
+    "candidate_sha256": "1226551a3f81c2fb2e3aa38bb728e90366c86359d74a9faf4bbde878f04d1b09",
+    "is_baseline": false,
+    "metrics": {
+      "T1": {
+        "by_parent_spearman": {
+          "382112": -0.016283742254033715,
+          "422841": 0.11151755219137757,
+          "434897": 0.053231818793649965,
+          "437528": 0.14054401798845587,
+          "467334": -0.12023414995943103,
+          "469455": 0.09528918816929888,
+          "471032": 0.03199000300543943,
+          "483071": -0.08768755650232228
+        },
+        "by_source_spearman": {
+          "ARKITSCENES": 0.011041062676728159
+        },
+        "closing_sign_accuracy": 0.5439481268011528,
+        "coverage": 0.7603603603603604,
+        "denominator_rows": 3885,
+        "parent_macro_spearman": 0.026045891429054335,
+        "source_macro_spearman": 0.011041062676728159,
+        "truth_rows": 2954,
+        "worst_parent_spearman": -0.12023414995943103
+      },
+      "T2": {
+        "abstain_reasons": {
+          "T2_MARGIN": 827,
+          "T2_UNSUPPORTED": 219
+        },
+        "by_parent_pairwise_accuracy": {
+          "382112": 0.6616766467065869,
+          "422841": 0.5387096774193548,
+          "434897": 0.5924932975871313,
+          "437528": 0.6760925449871465,
+          "467334": 0.628099173553719,
+          "469455": 0.5602836879432624,
+          "471032": 0.6538461538461539,
+          "483071": 0.5245398773006135,
+          "bonn_person_tracking2": 0.6612903225806451
+        },
+        "by_source_pairwise_accuracy": {
+          "ARKITSCENES": 0.6077348066298343,
+          "BONN": 0.6612903225806451
+        },
+        "coverage": 0.7307593307593307,
+        "denominator_pairs": 3885,
+        "pairwise_accuracy": 0.6100739697076435,
+        "parent_macro_pairwise_accuracy": 0.6107812646582904,
+        "source_macro_pairwise_accuracy": 0.6345125646052396,
+        "valid_pairs": 2839,
+        "worst_parent_pairwise_accuracy": 0.5245398773006135
+      },
+      "T3": {
+        "abstain_reasons": {
+          "T1_T2_CONFLICT": 600,
+          "T1_UNSUPPORTED_OR_MARGIN": 2189,
+          "T2_UNSUPPORTED_OR_MARGIN": 335
+        },
+        "by_parent_pairwise_accuracy": {
+          "382112": 0.9473684210526315,
+          "422841": 0.6666666666666666,
+          "434897": 0.584,
+          "437528": 0.7070707070707071,
+          "467334": 0.6851851851851852,
+          "469455": 0.8620689655172413,
+          "471032": 0.7211538461538461,
+          "483071": 0.5730337078651685
+        },
+        "by_source_pairwise_accuracy": {
+          "ARKITSCENES": 0.6846254927726675
+        },
+        "coverage": 0.19588159588159587,
+        "denominator_pairs": 3885,
+        "pairwise_accuracy": 0.6846254927726675,
+        "parent_macro_pairwise_accuracy": 0.7183184374389309,
+        "source_macro_pairwise_accuracy": 0.6846254927726675,
+        "valid_pairs": 761,
+        "worst_parent_pairwise_accuracy": 0.5730337078651685
+      },
+      "candidate_audit": {
+        "ast_node_count": 39,
+        "compute_risk_block_sha256": "b10e4992b47d14ac99d5eb244b121206bb3d086883c6d13774087160911d52f5",
+        "sha256": "1226551a3f81c2fb2e3aa38bb728e90366c86359d74a9faf4bbde878f04d1b09",
+        "source_bytes": 345
+      },
+      "candidate_coverage": 1.0,
+      "complexity": {
+        "ast_node_count": 39,
+        "penalty": 0.0007800000000000001,
+        "sha256": "1226551a3f81c2fb2e3aa38bb728e90366c86359d74a9faf4bbde878f04d1b09",
+        "source_bytes": 345
+      },
+      "coverage_floor": 0.99,
+      "coverage_floor_pass": true,
+      "fitness": {
+        "approach_component": 0.5130229457145272,
+        "combined_score": 0.6393302713126698,
+        "complexity_penalty": 0.0007800000000000001,
+        "dominance_component": 0.7183184374389309,
+        "path_component": 0.6107812646582904,
+        "scientific_claim_authority": "NONE_DEVELOPMENT_SEARCH_ONLY"
+      },
+      "schema": "blindassist.evox.real_ranking_d0.evaluation.v1",
+      "split": "VALIDATION",
+      "status": "PASS / READY_FOR_EVOX_REAL_RANKING_D0"
+    }
+  },
+  {
+    "candidate_sha256": "0eab7868f1cd387fe678a5323f0da37518068c414961465696f2327c0cf9dd17",
+    "is_baseline": false,
+    "metrics": {
+      "T1": {
+        "by_parent_spearman": {
+          "382112": 0.01267553842877562,
+          "422841": 0.12142687406630744,
+          "434897": 0.03464035403093657,
+          "437528": 0.07090205961365798,
+          "467334": -0.03818777675506145,
+          "469455": 0.13975550895148603,
+          "471032": 0.05583563717789531,
+          "483071": -0.02924414717802664
+        },
+        "by_source_spearman": {
+          "ARKITSCENES": 0.04025387695424837
+        },
+        "closing_sign_accuracy": 0.5623198847262247,
+        "coverage": 0.7603603603603604,
+        "denominator_rows": 3885,
+        "parent_macro_spearman": 0.04597550604199636,
+        "source_macro_spearman": 0.04025387695424837,
+        "truth_rows": 2954,
+        "worst_parent_spearman": -0.03818777675506145
+      },
+      "T2": {
+        "abstain_reasons": {
+          "T2_MARGIN": 827,
+          "T2_UNSUPPORTED": 219
+        },
+        "by_parent_pairwise_accuracy": {
+          "382112": 0.6077844311377245,
+          "422841": 0.49032258064516127,
+          "434897": 0.46380697050938335,
+          "437528": 0.4318766066838046,
+          "467334": 0.4462809917355372,
+          "469455": 0.48936170212765956,
+          "471032": 0.5621301775147929,
+          "483071": 0.4171779141104294,
+          "bonn_person_tracking2": 0.6290322580645161
+        },
+        "by_source_pairwise_accuracy": {
+          "ARKITSCENES": 0.4869244935543278,
+          "BONN": 0.6290322580645161
+        },
+        "coverage": 0.7307593307593307,
+        "denominator_pairs": 3885,
+        "pairwise_accuracy": 0.49313138429024306,
+        "parent_macro_pairwise_accuracy": 0.504197070281001,
+        "source_macro_pairwise_accuracy": 0.557978375809422,
+        "valid_pairs": 2839,
+        "worst_parent_pairwise_accuracy": 0.4171779141104294
+      },
+      "T3": {
+        "abstain_reasons": {
+          "T1_T2_CONFLICT": 600,
+          "T1_UNSUPPORTED_OR_MARGIN": 2189,
+          "T2_UNSUPPORTED_OR_MARGIN": 335
+        },
+        "by_parent_pairwise_accuracy": {
+          "382112": 0.7894736842105263,
+          "422841": 0.6333333333333333,
+          "434897": 0.456,
+          "437528": 0.5050505050505051,
+          "467334": 0.46296296296296297,
+          "469455": 0.7586206896551724,
+          "471032": 0.5865384615384616,
+          "483071": 0.42696629213483145
+        },
+        "by_source_pairwise_accuracy": {
+          "ARKITSCENES": 0.5295663600525624
+        },
+        "coverage": 0.19588159588159587,
+        "denominator_pairs": 3885,
+        "pairwise_accuracy": 0.5295663600525624,
+        "parent_macro_pairwise_accuracy": 0.5773682411107242,
+        "source_macro_pairwise_accuracy": 0.5295663600525624,
+        "valid_pairs": 761,
+        "worst_parent_pairwise_accuracy": 0.42696629213483145
+      },
+      "candidate_audit": {
+        "ast_node_count": 88,
+        "compute_risk_block_sha256": "3c33d95f2763fa8bb7e234c636562bf76c80d0bbbc55d0df8272185c00ec30b3",
+        "sha256": "0eab7868f1cd387fe678a5323f0da37518068c414961465696f2327c0cf9dd17",
+        "source_bytes": 615
+      },
+      "candidate_coverage": 1.0,
+      "complexity": {
+        "ast_node_count": 88,
+        "penalty": 0.00176,
+        "sha256": "0eab7868f1cd387fe678a5323f0da37518068c414961465696f2327c0cf9dd17",
+        "source_bytes": 615
+      },
+      "coverage_floor": 0.99,
+      "coverage_floor_pass": true,
+      "fitness": {
+        "approach_component": 0.5229877530209982,
+        "combined_score": 0.5437203263808619,
+        "complexity_penalty": 0.00176,
+        "dominance_component": 0.5773682411107242,
+        "path_component": 0.504197070281001,
+        "scientific_claim_authority": "NONE_DEVELOPMENT_SEARCH_ONLY"
+      },
+      "schema": "blindassist.evox.real_ranking_d0.evaluation.v1",
+      "split": "VALIDATION",
+      "status": "PASS / READY_FOR_EVOX_REAL_RANKING_D0"
+    }
+  },
+  {
+    "candidate_sha256": "6ebf83b8a149d3779d7616b37253847e4cb7660dc1d5965ec83812ddeb59dc50",
+    "is_baseline": false,
+    "metrics": {
+      "T1": {
+        "by_parent_spearman": {
+          "382112": -0.015039534038427475,
+          "422841": 0.11155355719480718,
+          "434897": 0.04754842261370382,
+          "437528": 0.13818138813125308,
+          "467334": -0.12327649064219878,
+          "469455": 0.09839207258291917,
+          "471032": 0.040045245922961936,
+          "483071": -0.08455675189351801
+        },
+        "by_source_spearman": {
+          "ARKITSCENES": 0.012692996739943384
+        },
+        "closing_sign_accuracy": 0.6545389048991355,
+        "coverage": 0.7603603603603604,
+        "denominator_rows": 3885,
+        "parent_macro_spearman": 0.026605988733937616,
+        "source_macro_spearman": 0.012692996739943384,
+        "truth_rows": 2954,
+        "worst_parent_spearman": -0.12327649064219878
+      },
+      "T2": {
+        "abstain_reasons": {
+          "T2_MARGIN": 827,
+          "T2_UNSUPPORTED": 219
+        },
+        "by_parent_pairwise_accuracy": {
+          "382112": 0.6467065868263473,
+          "422841": 0.535483870967742,
+          "434897": 0.5871313672922251,
+          "437528": 0.6478149100257069,
+          "467334": 0.6198347107438017,
+          "469455": 0.5567375886524822,
+          "471032": 0.636094674556213,
+          "483071": 0.5184049079754601,
+          "bonn_person_tracking2": 0.6612903225806451
+        },
+        "by_source_pairwise_accuracy": {
+          "ARKITSCENES": 0.596316758747698,
+          "BONN": 0.6612903225806451
+        },
+        "coverage": 0.7307593307593307,
+        "denominator_pairs": 3885,
+        "pairwise_accuracy": 0.5991546319126453,
+        "parent_macro_pairwise_accuracy": 0.6010554377356248,
+        "source_macro_pairwise_accuracy": 0.6288035406641715,
+        "valid_pairs": 2839,
+        "worst_parent_pairwise_accuracy": 0.5184049079754601
+      },
+      "T3": {
+        "abstain_reasons": {
+          "T1_T2_CONFLICT": 600,
+          "T1_UNSUPPORTED_OR_MARGIN": 2189,
+          "T2_UNSUPPORTED_OR_MARGIN": 335
+        },
+        "by_parent_pairwise_accuracy": {
+          "382112": 0.8421052631578947,
+          "422841": 0.65,
+          "434897": 0.584,
+          "437528": 0.702020202020202,
+          "467334": 0.6944444444444444,
+          "469455": 0.8448275862068966,
+          "471032": 0.6923076923076923,
+          "483071": 0.5730337078651685
+        },
+        "by_source_pairwise_accuracy": {
+          "ARKITSCENES": 0.6754270696452037
+        },
+        "coverage": 0.19588159588159587,
+        "denominator_pairs": 3885,
+        "pairwise_accuracy": 0.6754270696452037,
+        "parent_macro_pairwise_accuracy": 0.6978423620002874,
+        "source_macro_pairwise_accuracy": 0.6754270696452037,
+        "valid_pairs": 761,
+        "worst_parent_pairwise_accuracy": 0.5730337078651685
+      },
+      "candidate_audit": {
+        "ast_node_count": 36,
+        "compute_risk_block_sha256": "5b7bf909a65bc2680e143e83d7ed438742be43108be9eace9ec6728070aebe45",
+        "sha256": "6ebf83b8a149d3779d7616b37253847e4cb7660dc1d5965ec83812ddeb59dc50",
+        "source_bytes": 350
+      },
+      "candidate_coverage": 1.0,
+      "complexity": {
+        "ast_node_count": 36,
+        "penalty": 0.00072,
+        "sha256": "6ebf83b8a149d3779d7616b37253847e4cb7660dc1d5965ec83812ddeb59dc50",
+        "source_bytes": 350
+      },
+      "coverage_floor": 0.99,
+      "coverage_floor_pass": true,
+      "fitness": {
+        "approach_component": 0.5133029943669688,
+        "combined_score": 0.626790789025792,
+        "complexity_penalty": 0.00072,
+        "dominance_component": 0.6978423620002874,
+        "path_component": 0.6010554377356248,
+        "scientific_claim_authority": "NONE_DEVELOPMENT_SEARCH_ONLY"
+      },
+      "schema": "blindassist.evox.real_ranking_d0.evaluation.v1",
+      "split": "VALIDATION",
+      "status": "PASS / READY_FOR_EVOX_REAL_RANKING_D0"
+    }
+  }
+]

@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "role": "posthoc_baseline_reference",
+  "formal_ledger_effect": "not_added",
+  "evaluator": "frozen tasks/scalefree_risk_fusion_v0/locked_eval.py",
+  "seed_source": "holdout_seed.json",
+  "candidate": "tasks/scalefree_risk_fusion_v0/candidate.py",
+  "metrics": {
+    "approach_macro_f1": 0.8909168532003074,
+    "combined_score": 0.9282348132548672,
+    "complexity_ast_nodes": 80,
+    "false_block": 0.07822757111597374,
+    "false_clear": 0.05830388692579505,
+    "negative_control_gap": 0.9404778417943453,
+    "negative_control_spearman": -0.0003813162367646029,
+    "pairwise_accuracy": 0.8849049707602339,
+    "parent_consistency": 0.9954138152820852,
+    "parent_floor_spearman": 0.9362287380539824,
+    "runtime_us_per_region": 1.239049074074074,
+    "spearman": 0.9400965255575807,
+    "synthetic_mechanics_only": true,
+    "valid": true
+  },
+  "scientific_outcome": "NOT_EVALUABLE_DATA"
+}

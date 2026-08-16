@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "classification": "INVALID_MECHANICS_OR_ADAPTER",
+  "candidate_lock_and_final_result_are_ineligible": true,
+  "raw_artifacts_preserved": true,
+  "iterations_requested": 100,
+  "solution_iterations_completed_before_shutdown": 62,
+  "issue": "single-sample runtime jitter was included in combined_score, so identical candidate source could receive different fitness under transient load",
+  "trigger_observation": {
+    "iteration": 62,
+    "candidate_metrics_equal_to_incumbent_except_runtime": true,
+    "observed_runtime_us_per_region": 23.3599,
+    "typical_runtime_us_per_region": 2.1347
+  },
+  "secondary_runner_issue": "graceful shutdown caused SkyDiscover to emit checkpoint_100 and the runner to finalize despite only 62 completed solution iterations",
+  "repair": [
+    "retain runtime_us_per_region as a diagnostic metric but remove it from combined_score",
+    "require exactly baseline + requested iterations + final re-evaluation ledger records before candidate lock"
+  ],
+  "scientific_claim_permitted": false
+}

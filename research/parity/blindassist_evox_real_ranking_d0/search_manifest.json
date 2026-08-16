@@ -1,0 +1,22 @@
+{
+  "archive_sha256": "e46b0c76b3e89707f08681067f49c03aee11fc99886037f28332fea40d5bba1c",
+  "candidate_private_root_access": false,
+  "candidate_process_identity": "nobody",
+  "claim_ceiling": "development search fitness only",
+  "iterations": 30,
+  "model": "gpt-5.6-sol",
+  "mutable_surface": "candidate.py::compute_risk only",
+  "reasoning_effort": "high",
+  "resources": {
+    "cgroup_cpu_max": "1800000 100000",
+    "cpu_affinity_count": 256,
+    "system_memory_bytes": 810851676160
+  },
+  "schema_version": "1.0",
+  "sealed_test": null,
+  "search_feedback": "SEARCH aggregate metrics only",
+  "sky_commit": "8a840394e19ee4bfb3fb0a62762b902561a7efeb",
+  "started_at": "2026-08-16T06:34:56.315711+00:00",
+  "task_commit": "886fd36cd09a0ef0927f8d6bb3925642044d889b",
+  "validation_visibility_during_search": false
+}

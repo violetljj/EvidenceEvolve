@@ -1,0 +1,32 @@
+{
+  "checkpoint_interval": 1,
+  "claim_scope": "SYNTHETIC_MECHANICS_ONLY",
+  "created_at": "2026-08-15T21:39:53.864196+00:00",
+  "development_seed": 2026081601,
+  "explicit_non_claims": [
+    "NO_REAL_BLINDASSIST_HEADROOM_CLAIM",
+    "NO_SAFETY_CLAIM",
+    "NO_DEPLOYMENT_CLAIM"
+  ],
+  "iterations": 100,
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "repo_commit": "3bcddca48f7b50ec3bfaaac5e7a5d1a655941840",
+  "resources": {
+    "cgroup_cpu_max": "1800000 100000",
+    "cpu_affinity_count": 256,
+    "execution_policy": "EvoX solution iterations are inherently sequential; per-candidate vector metrics use the allocated CPU without nested evaluator processes",
+    "system_memory_bytes": 810851676160,
+    "visible_gpus": [
+      "NVIDIA GeForce RTX 4090 D, 24564, 24092, 0"
+    ]
+  },
+  "schema_version": "1.0",
+  "sky_commit": "8a840394e19ee4bfb3fb0a62762b902561a7efeb",
+  "task_files": {
+    "tasks/scalefree_risk_fusion_v0/candidate.py": "4aac5476d5b439645ac1a37b549848d54f1b2388b2d6b9acb88d2034edbce5f6",
+    "tasks/scalefree_risk_fusion_v0/evaluator.py": "223f714ed7c6a2049fcd176bcac4a180edb4081ffd69a7398dacca345b50372b",
+    "tasks/scalefree_risk_fusion_v0/evox.yaml": "1e451cd77b3dfe3bae96e73dca8387125786a5fd4195e32805baa2a50f9eb4fb",
+    "tasks/scalefree_risk_fusion_v0/locked_eval.py": "072fc2524d2d5886849aa9febf01fa26bfc8da7d89ed21ff7e6e418ba17393ba"
+  }
+}

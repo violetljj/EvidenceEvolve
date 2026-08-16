@@ -1,0 +1,59 @@
+{
+  "best_candidate_sha256": "9440cc4089d7ac6ef2bb1fab4f194d835a1036cac7febda899d69d23be3ca654",
+  "development_best": {
+    "best_score_so_far": 0.9306145913689747,
+    "candidate_sha256": "9440cc4089d7ac6ef2bb1fab4f194d835a1036cac7febda899d69d23be3ca654",
+    "combined_score": 0.9306145913689747,
+    "evaluation_index": 83,
+    "evox_iteration": 83,
+    "metrics": {
+      "approach_macro_f1": 0.8919497603990347,
+      "combined_score": 0.9306145913689747,
+      "complexity_ast_nodes": 96,
+      "false_block": 0.0954730121880441,
+      "false_clear": 0.038527397260273974,
+      "negative_control_gap": 0.9358414540474923,
+      "negative_control_spearman": 0.00906543137179701,
+      "pairwise_accuracy": 0.8916666666666667,
+      "parent_consistency": 0.9970067338432409,
+      "parent_floor_spearman": 0.9418281652656404,
+      "runtime_us_per_region": 2.115488773148148,
+      "spearman": 0.9449068854192894,
+      "synthetic_mechanics_only": true,
+      "text_feedback": "score=0.930615 macro_f1=0.8919 spearman=0.9449 false_clear=0.0385 false_block=0.0955 pairwise=0.8917 parent_floor=0.9418 neg_gap=0.9358 complexity=96 runtime_us=2.115",
+      "valid": true
+    },
+    "valid": true
+  },
+  "iterations_requested": 100,
+  "mechanics_status": "PASS",
+  "reason": "synthetic benchmark has no eligible real BlindAssist truth",
+  "schema_version": "1.0",
+  "scientific_outcome": "NOT_EVALUABLE_DATA",
+  "solution_evaluations_observed": 100,
+  "synthetic_holdout": {
+    "approach_macro_f1": 0.8876859575052245,
+    "combined_score": 0.9292179938679852,
+    "complexity_ast_nodes": 96,
+    "false_block": 0.09080962800875274,
+    "false_clear": 0.037985865724381625,
+    "negative_control_gap": 0.9450726000476499,
+    "negative_control_spearman": -0.0006655525072248249,
+    "pairwise_accuracy": 0.8893884015594542,
+    "parent_consistency": 0.9957377559021406,
+    "parent_floor_spearman": 0.9412918071430397,
+    "runtime_us_per_region": 1.5192635416666667,
+    "spearman": 0.9444070475404251,
+    "synthetic_mechanics_only": true,
+    "text_feedback": "score=0.929218 macro_f1=0.8877 spearman=0.9444 false_clear=0.0380 false_block=0.0908 pairwise=0.8894 parent_floor=0.9413 neg_gap=0.9451 complexity=96 runtime_us=1.519",
+    "valid": true
+  },
+  "token_usage": {
+    "cached_input_tokens": 2029568,
+    "input_tokens": 2698516,
+    "output_tokens": 286419,
+    "total_tokens_including_cached": 5014503
+  },
+  "upstream_best_score": 0.9306145913689747,
+  "wall_seconds": 6230.184417303652
+}
