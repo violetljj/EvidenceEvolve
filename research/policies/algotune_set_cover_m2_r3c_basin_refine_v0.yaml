@@ -1,0 +1,68 @@
+schema_version: "1.0"
+policy_id: algotune_set_cover_m2_r3c_basin_refine_v0
+operator_class: BASIN_REFINE_TELEMETRY
+parent_selector: island_stratified
+context_compiler: lineage_plus_failure_signature
+stagnation_response: cross_family_structural_restart
+stagnation_generations: 3
+stagnation_reset: incumbent_refresh
+incumbent_metric: raw_speedup
+incumbent_min_delta: 0.1
+parent_quality_guardrail_fraction: 0.0
+escape_budget_generations: 1
+force_seed_restart_roots: false
+prefer_distinct_root_context: false
+global_incumbent: 56.900566009772035
+conversion_threshold: 47.801
+candidate_slots: 4
+early_stop_non_improving_attempts: 3
+improvement_min_delta: 0.1
+probe_parent_fraction: 0.5
+minimum_activation_rate: 0.8
+maximum_fallback_rate: 0.2
+feedback_brief_max_bytes: 4096
+telemetry_workers: 4
+telemetry_seed_count: 100
+exactness_exhaustive_universe_size: 4
+exactness_exhaustive_max_family_size: 5
+hybrid_permitted: false
+structural_escape_permitted: false
+moonshot_fraction: 0.0
+island_ids: [main]
+island_capacity: 32
+parents_per_island: 4
+migration_interval: 3
+migration_count: 0
+stepping_stone_min_information_gain: 0.5
+max_parallel_proposals: 1
+max_parallel_evaluations: 4
+literature_papers_per_action: 0
+repositories_per_action: 0
+source_files_per_repository: 0
+code_parent_dispositions: [CODE_PARENT, FAILURE_DIRECTED_SEED]
+mutation_operator_mix:
+  mechanism_mutation: 1.0
+breakthrough_mutation_mix:
+  cross_family: 0.5
+  failure_directed_mutation: 0.5
+weights:
+  admit_probability: 1.0
+  expected_improvement: 1.0
+  information_gain: 1.0
+  novelty: 0.0
+  transfer_value: 0.5
+  cost: 0.5
+  redundancy: 0.5
+basins:
+  - basin_id: pivot_branch_and_bound
+    root_candidate_id: R2-WAVE-001-C03
+    family: presolve_kernelized_minimum_incidence_pivot_branch_and_bound_hybrid
+    root_score: 38.70038047726111
+    source_run: runs/algotune_set_cover_m2_r2b_pilot_dev_v1/campaign
+    source_receipt_sha256: bff547933b180a66f09802dd351c6ddbf7e03b5f8d8b19ee919b629f7fbc17f8
+    source_markers: [kernel_search, pivot_sets, inherited_solver]
+    claim_term_groups:
+      - [pivot]
+      - [branch, branching]
+      - [incidence, residual]
+    primary_endpoint: true

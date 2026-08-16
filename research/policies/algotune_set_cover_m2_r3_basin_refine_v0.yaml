@@ -1,0 +1,104 @@
+schema_version: "1.0"
+policy_id: algotune_set_cover_m2_r3_basin_refine_v0
+operator_class: BASIN_REFINE
+parent_selector: island_stratified
+context_compiler: lineage_plus_failure_signature
+stagnation_response: cross_family_structural_restart
+stagnation_generations: 3
+stagnation_reset: incumbent_refresh
+incumbent_metric: raw_speedup
+incumbent_min_delta: 0.1
+parent_quality_guardrail_fraction: 0.0
+escape_budget_generations: 1
+force_seed_restart_roots: false
+prefer_distinct_root_context: false
+global_incumbent: 56.900566009772035
+conversion_threshold: 47.801
+initial_waves: 3
+slots_per_initial_wave: 4
+adaptive_slots: 4
+total_proposal_slots: 16
+max_adaptive_slots_per_basin: 2
+early_stop_non_improving_attempts: 3
+improvement_min_delta: 0.1
+probe_parent_fraction: 0.5
+profile_repeats: 3
+profile_workers_per_candidate: 4
+profile_parallel_candidates: 4
+hybrid_permitted: false
+structural_escape_permitted: false
+moonshot_fraction: 0.0
+island_ids: [main]
+island_capacity: 32
+parents_per_island: 4
+migration_interval: 3
+migration_count: 0
+stepping_stone_min_information_gain: 0.5
+max_parallel_proposals: 4
+max_parallel_evaluations: 4
+literature_papers_per_action: 0
+repositories_per_action: 0
+source_files_per_repository: 0
+code_parent_dispositions: [CODE_PARENT, FAILURE_DIRECTED_SEED]
+mutation_operator_mix:
+  mechanism_mutation: 1.0
+breakthrough_mutation_mix:
+  cross_family: 0.5
+  failure_directed_mutation: 0.5
+weights:
+  admit_probability: 1.0
+  expected_improvement: 1.0
+  information_gain: 1.0
+  novelty: 0.0
+  transfer_value: 0.5
+  cost: 0.5
+  redundancy: 0.5
+basins:
+  - basin_id: pivot_branch_and_bound
+    root_candidate_id: R2-WAVE-001-C03
+    family: presolve_kernelized_minimum_incidence_pivot_branch_and_bound_hybrid
+    root_score: 38.70038047726111
+    source_run: runs/algotune_set_cover_m2_r2b_pilot_dev_v1/campaign
+    source_receipt_sha256: bff547933b180a66f09802dd351c6ddbf7e03b5f8d8b19ee919b629f7fbc17f8
+    source_markers: [kernel_search, pivot_sets]
+    claim_term_groups:
+      - [pivot]
+      - [branch, branching]
+      - [incidence, residual]
+    primary_endpoint: true
+  - basin_id: meet_in_the_middle
+    root_candidate_id: GEN-013-C01
+    family: bounded_meet_in_the_middle_coverage_antichain_hybrid
+    root_score: 56.744295411967215
+    source_run: runs/algotune_set_cover_m2_r1b_dev_v1/controller_only/campaign
+    source_receipt_sha256: 4299fc77e282b40631cf480f351ead97064f9a68389cdc963760e8dbd24829b8
+    source_markers: [build_antichain, left_states, right_states]
+    claim_term_groups:
+      - [meet-in-the-middle, meet in the middle]
+      - [antichain]
+      - [half, partition]
+    primary_endpoint: false
+  - basin_id: component_decomposition
+    root_candidate_id: GEN-008-C01
+    family: incidence_component_decomposed_bounded_search
+    root_score: 52.879991619580466
+    source_run: runs/algotune_set_cover_m2_r1b_dev_v1/controller_only/campaign
+    source_receipt_sha256: 60db3c2cc5ee06cc41914679c77edb346ad421ac1bd8a29186f6389aa45f5644
+    source_markers: [components, component_elements, component_sets]
+    claim_term_groups:
+      - [component]
+      - [decomposition, decomposed, factor]
+      - [incidence]
+    primary_endpoint: false
+  - basin_id: incidence_signature
+    root_candidate_id: GEN-007-C01
+    family: incidence_signature_class_compressed_set_cover
+    root_score: 55.17670967600651
+    source_run: runs/algotune_set_cover_m2_r1b_dev_v1/controller_only/campaign
+    source_receipt_sha256: 040b933ae3d4d58b9273c0ca63dd752bacaf8061b8c61e20153de5ab461f9c7f
+    source_markers: [incidence_signatures, class_index_by_signature]
+    claim_term_groups:
+      - [incidence]
+      - [signature]
+      - [class, quotient]
+    primary_endpoint: false
