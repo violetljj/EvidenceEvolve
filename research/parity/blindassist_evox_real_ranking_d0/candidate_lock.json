@@ -1,0 +1,15 @@
+{
+  "candidate_audit": {
+    "ast_node_count": 39,
+    "compute_risk_block_sha256": "b10e4992b47d14ac99d5eb244b121206bb3d086883c6d13774087160911d52f5",
+    "sha256": "1226551a3f81c2fb2e3aa38bb728e90366c86359d74a9faf4bbde878f04d1b09",
+    "source_bytes": 345
+  },
+  "candidate_path": "best_candidate.py",
+  "candidate_sha256": "1226551a3f81c2fb2e3aa38bb728e90366c86359d74a9faf4bbde878f04d1b09",
+  "formal_solution_loops": 30,
+  "locked_at": "2026-08-16T07:23:52.678327+00:00",
+  "selection_split": "VALIDATION",
+  "successful_candidate_evaluations": 29,
+  "validation_selected_after_all_30_search_loops": true
+}

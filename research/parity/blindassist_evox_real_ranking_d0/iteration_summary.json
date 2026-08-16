@@ -1,0 +1,188 @@
+[
+  {
+    "best_score_so_far": 0.23492486882141958,
+    "candidate_sha256": "9c6c364cdc3bf7a37df3c6d66037d6e86448ac2f887e154f548a5b765232a851",
+    "combined_score": 0.23492486882141958,
+    "evaluation_index": 0
+  },
+  {
+    "best_score_so_far": 0.5940159252175311,
+    "candidate_sha256": "947e3077f74184d00747d72a01cc4d65b79286d62703c511742f00a5bc07600f",
+    "combined_score": 0.5940159252175311,
+    "evaluation_index": 1
+  },
+  {
+    "best_score_so_far": 0.5940159252175311,
+    "candidate_sha256": "1560350836f4561b93b1b368a0db621ecba38bd50bb90dc70769fd505aaa660c",
+    "combined_score": 0.5756171200397292,
+    "evaluation_index": 2
+  },
+  {
+    "best_score_so_far": 0.5940159252175311,
+    "candidate_sha256": "7353ae5c98430f8350a91410ea3275230e22128aacf1fd311fb606205ba3ae6d",
+    "combined_score": 0.5940159252175311,
+    "evaluation_index": 3
+  },
+  {
+    "best_score_so_far": 0.5940159252175311,
+    "candidate_sha256": "7353ae5c98430f8350a91410ea3275230e22128aacf1fd311fb606205ba3ae6d",
+    "combined_score": 0.5940159252175311,
+    "evaluation_index": 4
+  },
+  {
+    "best_score_so_far": 0.5940159252175311,
+    "candidate_sha256": "7353ae5c98430f8350a91410ea3275230e22128aacf1fd311fb606205ba3ae6d",
+    "combined_score": 0.5940159252175311,
+    "evaluation_index": 5
+  },
+  {
+    "best_score_so_far": 0.5949759252175312,
+    "candidate_sha256": "fb793ae7b05ef09878391fce525806def75f41dfbef9915085b5f07d233b3121",
+    "combined_score": 0.5949759252175312,
+    "evaluation_index": 6
+  },
+  {
+    "best_score_so_far": 0.5949759252175312,
+    "candidate_sha256": "343c34b06675b5d37ad60ddbb914865868151b02c704222500d11f725816de64",
+    "combined_score": 0.5947218084691424,
+    "evaluation_index": 7
+  },
+  {
+    "best_score_so_far": 0.5952159252175311,
+    "candidate_sha256": "542beda6778a4cd26656bf7dee9ce8d437f4ef40cac6f9aba5055a698414d4a8",
+    "combined_score": 0.5952159252175311,
+    "evaluation_index": 8
+  },
+  {
+    "best_score_so_far": 0.5952159252175311,
+    "candidate_sha256": "542beda6778a4cd26656bf7dee9ce8d437f4ef40cac6f9aba5055a698414d4a8",
+    "combined_score": 0.5952159252175311,
+    "evaluation_index": 9
+  },
+  {
+    "best_score_so_far": 0.5952159252175311,
+    "candidate_sha256": "542beda6778a4cd26656bf7dee9ce8d437f4ef40cac6f9aba5055a698414d4a8",
+    "combined_score": 0.5952159252175311,
+    "evaluation_index": 10
+  },
+  {
+    "best_score_so_far": 0.5952159252175311,
+    "candidate_sha256": "12c53547e224dd5c61f1f70361401d3bbfb8e7abd4c7e22278b234faf7cecd3b",
+    "combined_score": 0.5879149563659806,
+    "evaluation_index": 11
+  },
+  {
+    "best_score_so_far": 0.5952159252175311,
+    "candidate_sha256": "bf2008a71ea273318f765b09d6532735e0c3785724881a7b0225e032efd67b79",
+    "combined_score": 0.5952159252175311,
+    "evaluation_index": 12
+  },
+  {
+    "best_score_so_far": 0.5952159252175311,
+    "candidate_sha256": "4613becd854b0a948ab62d3491723c787347d1f0dae0c30aea4b0b46c49a2769",
+    "combined_score": 0.5415024367546092,
+    "evaluation_index": 13
+  },
+  {
+    "best_score_so_far": 0.5952159252175311,
+    "candidate_sha256": "30d045339a441304c6a5937b22e8424973d876fe74c3d22aa34bff34ad409511",
+    "combined_score": 0.5419889140765519,
+    "evaluation_index": 14
+  },
+  {
+    "best_score_so_far": 0.5952159252175311,
+    "candidate_sha256": "3417c248febb4b41b828dd08f15edcd00d5b05ccc9ce29b9c463359346572fdd",
+    "combined_score": 0.5833627772163528,
+    "evaluation_index": 15
+  },
+  {
+    "best_score_so_far": 0.6284231913282616,
+    "candidate_sha256": "8e2bbcb65967af6867915bd5c95a8b7b0cbd4f1fcefa82eb5c740d0c1e431484",
+    "combined_score": 0.6284231913282616,
+    "evaluation_index": 16
+  },
+  {
+    "best_score_so_far": 0.6284231913282616,
+    "candidate_sha256": "8e2bbcb65967af6867915bd5c95a8b7b0cbd4f1fcefa82eb5c740d0c1e431484",
+    "combined_score": 0.6284231913282616,
+    "evaluation_index": 17
+  },
+  {
+    "best_score_so_far": 0.6286831913282617,
+    "candidate_sha256": "64445c05959d9444162615c465b27692311dcc88f65fa66249c1ca2b49b298a1",
+    "combined_score": 0.6286831913282617,
+    "evaluation_index": 18
+  },
+  {
+    "best_score_so_far": 0.6286831913282617,
+    "candidate_sha256": "64445c05959d9444162615c465b27692311dcc88f65fa66249c1ca2b49b298a1",
+    "combined_score": 0.6286831913282617,
+    "evaluation_index": 19
+  },
+  {
+    "best_score_so_far": 0.6297327238182214,
+    "candidate_sha256": "1226551a3f81c2fb2e3aa38bb728e90366c86359d74a9faf4bbde878f04d1b09",
+    "combined_score": 0.6297327238182214,
+    "evaluation_index": 20
+  },
+  {
+    "best_score_so_far": 0.6297327238182214,
+    "candidate_sha256": "1226551a3f81c2fb2e3aa38bb728e90366c86359d74a9faf4bbde878f04d1b09",
+    "combined_score": 0.6297327238182214,
+    "evaluation_index": 21
+  },
+  {
+    "best_score_so_far": 0.6297327238182214,
+    "candidate_sha256": "1226551a3f81c2fb2e3aa38bb728e90366c86359d74a9faf4bbde878f04d1b09",
+    "combined_score": 0.6297327238182214,
+    "evaluation_index": 22
+  },
+  {
+    "best_score_so_far": 0.6297327238182214,
+    "candidate_sha256": "c3bb59498ffcf4792a20d10a88fa8a952bb4334085ae10d9d5ac2404ddec5307",
+    "combined_score": 0.6291872702852133,
+    "evaluation_index": 23
+  },
+  {
+    "best_score_so_far": 0.6297327238182214,
+    "candidate_sha256": "1226551a3f81c2fb2e3aa38bb728e90366c86359d74a9faf4bbde878f04d1b09",
+    "combined_score": 0.6297327238182214,
+    "evaluation_index": 24
+  },
+  {
+    "best_score_so_far": 0.6297327238182214,
+    "candidate_sha256": "1226551a3f81c2fb2e3aa38bb728e90366c86359d74a9faf4bbde878f04d1b09",
+    "combined_score": 0.6297327238182214,
+    "evaluation_index": 25
+  },
+  {
+    "best_score_so_far": 0.6297327238182214,
+    "candidate_sha256": "1226551a3f81c2fb2e3aa38bb728e90366c86359d74a9faf4bbde878f04d1b09",
+    "combined_score": 0.6297327238182214,
+    "evaluation_index": 26
+  },
+  {
+    "best_score_so_far": 0.6297327238182214,
+    "candidate_sha256": "0eab7868f1cd387fe678a5323f0da37518068c414961465696f2327c0cf9dd17",
+    "combined_score": 0.5414952870283762,
+    "evaluation_index": 27
+  },
+  {
+    "best_score_so_far": 0.6297327238182214,
+    "candidate_sha256": "6ebf83b8a149d3779d7616b37253847e4cb7660dc1d5965ec83812ddeb59dc50",
+    "combined_score": 0.6197564656064036,
+    "evaluation_index": 28
+  },
+  {
+    "best_score_so_far": 0.6297327238182214,
+    "candidate_sha256": "ef4126b30246d6843ce6499c8b1bff226520e87d8fca33136416f8cc40823019",
+    "combined_score": 0.6297106800214388,
+    "evaluation_index": 29
+  },
+  {
+    "best_score_so_far": 0.6297327238182214,
+    "candidate_sha256": "1226551a3f81c2fb2e3aa38bb728e90366c86359d74a9faf4bbde878f04d1b09",
+    "combined_score": 0.6297327238182214,
+    "evaluation_index": 30
+  }
+]

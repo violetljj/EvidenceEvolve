@@ -1,0 +1,13 @@
+{
+  "authority": "POST_BUDGET_PRE_CANDIDATE_LOCK_MECHANICS_REPAIR",
+  "candidate_lock_existed_before_repair": false,
+  "candidate_sources_changed": false,
+  "checkpoint_last_iteration": 30,
+  "checkpoint_programs_including_baseline": 30,
+  "frozen_evaluator_changed": false,
+  "issue": "over-strict wrapper expected 30 successful proposals although EvoX formal loop 16 produced no program",
+  "missing_solution_iteration": 16,
+  "repair": "accept frozen 30-loop trajectory with 29 evaluated candidates; do not add a replacement sample",
+  "schema_version": "1.0",
+  "search_ledger_records_including_final_reevaluation": 31
+}
