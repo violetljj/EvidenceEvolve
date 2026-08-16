@@ -1,5 +1,12 @@
 # EvidenceEvolve repository instructions
 
+## Maintainer workflow
+
+- This repository has one independent maintainer. For ordinary repository work, use `master` by default rather than creating a feature branch.
+- After completing and proportionately verifying an authorized change, commit it intentionally and push `master` to `origin` unless the user explicitly asks to keep the work local or uncommitted.
+- Use a separate branch only when the user requests one, when an external contribution or review workflow requires it, or when high-risk/destructive work needs isolation. Candidate-specific campaign worktrees remain mandatory and do not change this repository-level default.
+- Never bypass required verification, frozen campaign boundaries, or scientific governance merely to keep `master` moving.
+
 ## Research authority
 
 - GPT/Codex may propose, implement, and explain. Frozen code and deterministic evaluators decide gates.
