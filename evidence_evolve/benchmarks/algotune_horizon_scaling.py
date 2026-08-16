@@ -77,7 +77,6 @@ def configure_task(run_dir: Path, task_name: str) -> dict[str, Any] | None:
 
 
 def _manifest(run_dir: Path, task_name: str) -> None:
-    path = run_dir / "scaling_manifest.json"
     payload = {
         "schema_version": "1.0",
         "created_at": datetime.now(timezone.utc).isoformat(),
@@ -89,21 +88,25 @@ def _manifest(run_dir: Path, task_name: str) -> None:
         "reasoning_effort": blind.REASONING_EFFORT,
         "trajectory_design": "one continuous 50-generation run per task-arm",
     }
-    try:
-        create_once_json(path, payload)
-    except ReceiptAlreadyExistsError:
-        existing = json.loads(path.read_text(encoding="utf-8"))
-        for key in (
-            "protocol_sha256",
-            "task",
-            "arms",
-            "horizons",
-            "model",
-            "reasoning_effort",
-            "trajectory_design",
-        ):
-            if existing.get(key) != payload[key]:
-                raise ValueError(f"scaling manifest drift: {key}")
+    stable_keys = (
+        "protocol_sha256",
+        "task",
+        "arms",
+        "horizons",
+        "model",
+        "reasoning_effort",
+        "trajectory_design",
+    )
+    # SkyDiscover's EvoX adapter still hashes the legacy manifest filename.
+    # Keep both immutable files so the compatibility detail cannot abort an arm.
+    for path in (run_dir / "scaling_manifest.json", run_dir / "manifest.json"):
+        try:
+            create_once_json(path, payload)
+        except ReceiptAlreadyExistsError:
+            existing = json.loads(path.read_text(encoding="utf-8"))
+            for key in stable_keys:
+                if existing.get(key) != payload[key]:
+                    raise ValueError(f"scaling manifest drift in {path.name}: {key}")
 
 
 def _events_usage(paths: list[Path]) -> int:
@@ -391,7 +394,14 @@ def run_arm(run_dir: Path, task_name: str, arm: str) -> dict[str, Any]:
     trajectory_path = arm_dir / "trajectory_result.json"
     if trajectory_path.exists():
         return json.loads(trajectory_path.read_text())
-    started_epoch = time.time()
+    arm_result_path = arm_dir / "arm_result.json"
+    if arm_result_path.exists():
+        cached_result = json.loads(arm_result_path.read_text(encoding="utf-8"))
+        started_epoch = arm_result_path.stat().st_mtime - float(
+            cached_result.get("wall_seconds", 0.0)
+        )
+    else:
+        started_epoch = time.time()
     if arm == "evidence_evolve":
         if task_name == "set_cover":
             arm_result = blind.run_evidence_evolve(run_dir)

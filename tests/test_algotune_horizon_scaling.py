@@ -59,3 +59,6 @@ def test_scaling_manifest_is_safe_under_parallel_arm_start(tmp_path: Path) -> No
         list(pool.map(lambda _index: _manifest(tmp_path, "set_cover"), range(4)))
     manifest = json.loads((tmp_path / "scaling_manifest.json").read_text())
     assert manifest["task"] == "set_cover"
+    legacy = json.loads((tmp_path / "manifest.json").read_text())
+    assert legacy["task"] == manifest["task"]
+    assert legacy["protocol_sha256"] == manifest["protocol_sha256"]
