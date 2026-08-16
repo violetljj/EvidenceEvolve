@@ -1,0 +1,94 @@
+{
+  "arm": "shinka",
+  "checkpoints": [
+    {
+      "candidate_path": "candidates/shinka/h003.py",
+      "candidate_sha256": "89ed91a24b9a56177ee9053ca528648fba29b5359c27c0d0a3f4f5bf4c9aa9ac",
+      "cumulative_tokens": 52686,
+      "cumulative_wall_seconds": 437.45064425468445,
+      "development_raw_speedup": 1.9294650062209469,
+      "horizon": 3,
+      "proposal_valid_rate": 1.0,
+      "selected_generation": 2,
+      "selected_id": "b9283054-9e1f-43fd-9369-dd03c806686a"
+    },
+    {
+      "candidate_path": "candidates/shinka/h006.py",
+      "candidate_sha256": "ad6cbc83fdbd031bb663f0511a021c5c65d4e2446cd46ae561be1cc21771410d",
+      "cumulative_tokens": 107547,
+      "cumulative_wall_seconds": 730.8166222572327,
+      "development_raw_speedup": 1.9406581133213683,
+      "horizon": 6,
+      "proposal_valid_rate": 1.0,
+      "selected_generation": 4,
+      "selected_id": "175d9fed-a229-4494-8405-1745ff559690"
+    },
+    {
+      "candidate_path": "candidates/shinka/h012.py",
+      "candidate_sha256": "8eadb7300ad833d9ecf0cd66661f5da20cdcb9edc1efcd69898433425acfe854",
+      "cumulative_tokens": 217427,
+      "cumulative_wall_seconds": 1330.0421032905579,
+      "development_raw_speedup": 3.047825731605156,
+      "horizon": 12,
+      "proposal_valid_rate": 1.0,
+      "selected_generation": 12,
+      "selected_id": "4f2b4dad-7774-4273-8185-3f7a554ba0af"
+    },
+    {
+      "candidate_path": "candidates/shinka/h024.py",
+      "candidate_sha256": "e643adae1abcb5f092fcab6ff8c031a41429b60cf6a2ab045a8cb2da13ca7e35",
+      "cumulative_tokens": 457048,
+      "cumulative_wall_seconds": 2454.6209602355957,
+      "development_raw_speedup": 3.2988025478498284,
+      "horizon": 24,
+      "proposal_valid_rate": 1.0,
+      "selected_generation": 15,
+      "selected_id": "d57d60c3-7f01-46e1-843b-a88dc97553a7"
+    },
+    {
+      "candidate_path": "candidates/shinka/h050.py",
+      "candidate_sha256": "8c3febf7aae980a04f9dd3e321d3049143153dcb3e3e850c5c8a5ad8d74c9889",
+      "cumulative_tokens": 1032255,
+      "cumulative_wall_seconds": 6554.939554275945,
+      "development_raw_speedup": 3.4927489677865062,
+      "horizon": 50,
+      "proposal_valid_rate": 0.98,
+      "selected_generation": 47,
+      "selected_id": "ae058ca9-c5e4-4a2b-93f3-fd351b7683cc"
+    }
+  ],
+  "continuous_trajectory": true,
+  "final_arm_result": {
+    "arm": "shinka",
+    "candidate_path": "candidates/shinka/h050.py",
+    "candidate_sha256": "8c3febf7aae980a04f9dd3e321d3049143153dcb3e3e850c5c8a5ad8d74c9889",
+    "development": {
+      "controls": {
+        "candidate_valid": true,
+        "development_only": true
+      },
+      "error": "",
+      "mechanics_status": "PASS",
+      "metrics": {
+        "invalid_solution_rate": 0.0,
+        "raw_speedup": 3.4951324961699917
+      }
+    },
+    "metadata": {
+      "claim_scope": "UPSTREAM_SEARCH_WITH_EVIDENCE_EVOLVE_MATERIALIZATION_AND_IMPORT",
+      "engine": "official ShinkaEvolve 0.0.7",
+      "proposal_materializer": "EVIDENCE_EVOLVE_V1",
+      "source_commit": "c4568adde253cacf185be3a8412c3c2142761ebe",
+      "token_accounting": "headless input + cache-read + output tokens"
+    },
+    "model": "gpt-5.6-terra",
+    "proposal_valid_rate": 0.98,
+    "reasoning_effort": "high",
+    "tokens": 1032255,
+    "wall_seconds": 6554.939554275945
+  },
+  "model": "gpt-5.6-terra",
+  "reasoning_effort": "high",
+  "schema_version": "1.0",
+  "task": "set_cover"
+}

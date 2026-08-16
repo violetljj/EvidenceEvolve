@@ -1,0 +1,93 @@
+{
+  "arm": "ada",
+  "checkpoints": [
+    {
+      "candidate_path": "candidates/ada/h003.py",
+      "candidate_sha256": "e36c3727b6fbf302b8064ad5113561942dd596611a7f7960a478bb1f8a8e9995",
+      "cumulative_tokens": 55438,
+      "cumulative_wall_seconds": 416.98209595680237,
+      "development_raw_speedup": 1.3991502267678673,
+      "horizon": 3,
+      "proposal_valid_rate": 1.0,
+      "selected_generation": 1,
+      "selected_id": "ae893d0c-0f94-4a60-a97b-52aa7609ba96"
+    },
+    {
+      "candidate_path": "candidates/ada/h006.py",
+      "candidate_sha256": "86b74c4c473b6f12c20b95093c9797759123241ae348ac47aa634c655a65f644",
+      "cumulative_tokens": 141222,
+      "cumulative_wall_seconds": 854.1073181629181,
+      "development_raw_speedup": 2.200922874267871,
+      "horizon": 6,
+      "proposal_valid_rate": 1.0,
+      "selected_generation": 5,
+      "selected_id": "a2b969ff-bffc-42a1-8bea-12f5411761fb"
+    },
+    {
+      "candidate_path": "candidates/ada/h012.py",
+      "candidate_sha256": "bda9915f27949e2e7e710cf724c570b61e6c724fd12cbf4fc6065b26cda63f52",
+      "cumulative_tokens": 287838,
+      "cumulative_wall_seconds": 1581.7483627796173,
+      "development_raw_speedup": 2.7685195603557324,
+      "horizon": 12,
+      "proposal_valid_rate": 1.0,
+      "selected_generation": 11,
+      "selected_id": "0f6e631c-9c5d-4d09-9369-39d3529d88c6"
+    },
+    {
+      "candidate_path": "candidates/ada/h024.py",
+      "candidate_sha256": "cb8eb45d9cb14e75a1078de142543237e0fdca6d9754c3a2eb24b03bba10848e",
+      "cumulative_tokens": 594839,
+      "cumulative_wall_seconds": 2775.6333651542664,
+      "development_raw_speedup": 3.3239766686234478,
+      "horizon": 24,
+      "proposal_valid_rate": 1.0,
+      "selected_generation": 24,
+      "selected_id": "817ee1c5-0b5c-4fb2-a932-14435c6b9386"
+    },
+    {
+      "candidate_path": "candidates/ada/h050.py",
+      "candidate_sha256": "77f089ba8ead2291ca1747bb856f18a86890c8a2e63f083130c155674672a27c",
+      "cumulative_tokens": 1240486,
+      "cumulative_wall_seconds": 6843.314620751888,
+      "development_raw_speedup": 7.051806115717637,
+      "horizon": 50,
+      "proposal_valid_rate": 1.0,
+      "selected_generation": 50,
+      "selected_id": "04ac01c5-8b02-4917-8f89-e619ea6ec7ae"
+    }
+  ],
+  "continuous_trajectory": true,
+  "final_arm_result": {
+    "arm": "ada",
+    "candidate_path": "candidates/ada/h050.py",
+    "candidate_sha256": "77f089ba8ead2291ca1747bb856f18a86890c8a2e63f083130c155674672a27c",
+    "development": {
+      "controls": {
+        "candidate_valid": true,
+        "development_only": true
+      },
+      "error": "",
+      "mechanics_status": "PASS",
+      "metrics": {
+        "invalid_solution_rate": 0.0,
+        "raw_speedup": 7.118391017085075
+      }
+    },
+    "metadata": {
+      "engine": "SkyDiscover AdaEvolve",
+      "sky_commit": "8a840394e19ee4bfb3fb0a62762b902561a7efeb",
+      "upstream_best_score": 7.051806115717637,
+      "upstream_output": "/root/autodl-tmp/EvidenceEvolve/runs/algotune_horizon_scaling_v0/set_cover/arms/ada/upstream"
+    },
+    "model": "gpt-5.6-terra",
+    "proposal_valid_rate": 1.0,
+    "reasoning_effort": "high",
+    "tokens": 1240486,
+    "wall_seconds": 6843.314620751888
+  },
+  "model": "gpt-5.6-terra",
+  "reasoning_effort": "high",
+  "schema_version": "1.0",
+  "task": "set_cover"
+}

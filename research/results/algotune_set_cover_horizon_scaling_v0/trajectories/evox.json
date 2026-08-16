@@ -1,0 +1,95 @@
+{
+  "arm": "evox",
+  "checkpoints": [
+    {
+      "candidate_path": "candidates/evox/h003.py",
+      "candidate_sha256": "05d0d75cadd784369dd15b8c6d2937c9b3cac83d7eddd989953c68aeb54f498a",
+      "cumulative_tokens": 125988,
+      "cumulative_wall_seconds": 404.833931684494,
+      "development_raw_speedup": 1.5212134737756882,
+      "horizon": 3,
+      "proposal_valid_rate": 0.6666666666666666,
+      "selected_generation": 2,
+      "selected_id": "9ae2b989-8b9d-4fbb-ae4f-853614521338"
+    },
+    {
+      "candidate_path": "candidates/evox/h006.py",
+      "candidate_sha256": "05d0d75cadd784369dd15b8c6d2937c9b3cac83d7eddd989953c68aeb54f498a",
+      "cumulative_tokens": 198523,
+      "cumulative_wall_seconds": 708.2716572284698,
+      "development_raw_speedup": 1.5212134737756882,
+      "horizon": 6,
+      "proposal_valid_rate": 0.8333333333333334,
+      "selected_generation": 2,
+      "selected_id": "9ae2b989-8b9d-4fbb-ae4f-853614521338"
+    },
+    {
+      "candidate_path": "candidates/evox/h012.py",
+      "candidate_sha256": "4a5bcec284c4c98b1fa77637f62e7b98100b90d76bdbea99aab97d731b2ee6ad",
+      "cumulative_tokens": 429918,
+      "cumulative_wall_seconds": 1418.797038078308,
+      "development_raw_speedup": 1.5590172358891596,
+      "horizon": 12,
+      "proposal_valid_rate": 0.9166666666666666,
+      "selected_generation": 12,
+      "selected_id": "6afdee5d-e533-42c1-a82c-f033e80b4dde"
+    },
+    {
+      "candidate_path": "candidates/evox/h024.py",
+      "candidate_sha256": "64aba27e194fce27e8c9b1e419a61e065de3dba99fde7eff9309ad25fc867c03",
+      "cumulative_tokens": 761252,
+      "cumulative_wall_seconds": 2648.4044721126556,
+      "development_raw_speedup": 2.4085179593007084,
+      "horizon": 24,
+      "proposal_valid_rate": 0.9583333333333334,
+      "selected_generation": 20,
+      "selected_id": "931ce5f9-eaa3-47bc-bfe0-e44b81e20dcd"
+    },
+    {
+      "candidate_path": "candidates/evox/h050.py",
+      "candidate_sha256": "8a82dec6db9fab31e365ee45ac7e05f1647005ca32fc6e342969a707c3c7f8fd",
+      "cumulative_tokens": 1698566,
+      "cumulative_wall_seconds": 7143.640538625419,
+      "development_raw_speedup": 13.481768854588,
+      "horizon": 50,
+      "proposal_valid_rate": 0.96,
+      "selected_generation": 50,
+      "selected_id": "48f69e42-71e6-484d-ab84-d44ad1c3f181"
+    }
+  ],
+  "continuous_trajectory": true,
+  "final_arm_result": {
+    "arm": "evox",
+    "candidate_path": "candidates/evox/h050.py",
+    "candidate_sha256": "8a82dec6db9fab31e365ee45ac7e05f1647005ca32fc6e342969a707c3c7f8fd",
+    "development": {
+      "controls": {
+        "candidate_valid": true,
+        "development_only": true
+      },
+      "error": "",
+      "mechanics_status": "PASS",
+      "metrics": {
+        "invalid_solution_rate": 0.0,
+        "raw_speedup": 13.462599489435481
+      }
+    },
+    "metadata": {
+      "engine": "SkyDiscover EvoX",
+      "generation_budget": 50,
+      "sky_commit": "8a840394e19ee4bfb3fb0a62762b902561a7efeb",
+      "token_accounting": "Codex input + output tokens; cached input is included in input",
+      "upstream_best_score": 13.481768854588,
+      "upstream_output": "/root/autodl-tmp/EvidenceEvolve/runs/algotune_horizon_scaling_v0/set_cover/arms/evox/upstream"
+    },
+    "model": "gpt-5.6-terra",
+    "proposal_valid_rate": 0.96,
+    "reasoning_effort": "high",
+    "tokens": 1698566,
+    "wall_seconds": 7143.640538625419
+  },
+  "model": "gpt-5.6-terra",
+  "reasoning_effort": "high",
+  "schema_version": "1.0",
+  "task": "set_cover"
+}

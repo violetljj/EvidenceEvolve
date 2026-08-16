@@ -1,0 +1,442 @@
+{
+  "arms": [
+    "shinka",
+    "ada",
+    "evox",
+    "evidence_evolve"
+  ],
+  "bundle_file_sha256": {
+    "candidates/ada/h003.py": "e36c3727b6fbf302b8064ad5113561942dd596611a7f7960a478bb1f8a8e9995",
+    "candidates/ada/h006.py": "86b74c4c473b6f12c20b95093c9797759123241ae348ac47aa634c655a65f644",
+    "candidates/ada/h012.py": "bda9915f27949e2e7e710cf724c570b61e6c724fd12cbf4fc6065b26cda63f52",
+    "candidates/ada/h024.py": "cb8eb45d9cb14e75a1078de142543237e0fdca6d9754c3a2eb24b03bba10848e",
+    "candidates/ada/h050.py": "77f089ba8ead2291ca1747bb856f18a86890c8a2e63f083130c155674672a27c",
+    "candidates/evidence_evolve/h003.py": "020a82914a74756909cd7be8603544754c350894e44a682b31651885c395d853",
+    "candidates/evidence_evolve/h006.py": "020a82914a74756909cd7be8603544754c350894e44a682b31651885c395d853",
+    "candidates/evidence_evolve/h012.py": "e5b94b78bbdc4cb88ab9844fa6075973f8b88e69b434c693d68fb035c0344574",
+    "candidates/evidence_evolve/h024.py": "e5b94b78bbdc4cb88ab9844fa6075973f8b88e69b434c693d68fb035c0344574",
+    "candidates/evidence_evolve/h050.py": "e5b94b78bbdc4cb88ab9844fa6075973f8b88e69b434c693d68fb035c0344574",
+    "candidates/evox/h003.py": "05d0d75cadd784369dd15b8c6d2937c9b3cac83d7eddd989953c68aeb54f498a",
+    "candidates/evox/h006.py": "05d0d75cadd784369dd15b8c6d2937c9b3cac83d7eddd989953c68aeb54f498a",
+    "candidates/evox/h012.py": "4a5bcec284c4c98b1fa77637f62e7b98100b90d76bdbea99aab97d731b2ee6ad",
+    "candidates/evox/h024.py": "64aba27e194fce27e8c9b1e419a61e065de3dba99fde7eff9309ad25fc867c03",
+    "candidates/evox/h050.py": "8a82dec6db9fab31e365ee45ac7e05f1647005ca32fc6e342969a707c3c7f8fd",
+    "candidates/shinka/h003.py": "89ed91a24b9a56177ee9053ca528648fba29b5359c27c0d0a3f4f5bf4c9aa9ac",
+    "candidates/shinka/h006.py": "ad6cbc83fdbd031bb663f0511a021c5c65d4e2446cd46ae561be1cc21771410d",
+    "candidates/shinka/h012.py": "8eadb7300ad833d9ecf0cd66661f5da20cdcb9edc1efcd69898433425acfe854",
+    "candidates/shinka/h024.py": "e643adae1abcb5f092fcab6ff8c031a41429b60cf6a2ab045a8cb2da13ca7e35",
+    "candidates/shinka/h050.py": "8c3febf7aae980a04f9dd3e321d3049143153dcb3e3e850c5c8a5ad8d74c9889",
+    "curve.csv": "0ab732f94d5d1c645f418ec48758471f516b8b40261d79e3d7c86f64e6c6918f",
+    "trajectories/ada.json": "d604fddd44fa81fa852436b81eebd93a67a79fc7027440bc8b64765c43ee4a6f",
+    "trajectories/evidence_evolve.json": "be08dd34f8c6332a62c1e24f6727e82ff37e181e0067fe34a8f24cf03b975a59",
+    "trajectories/evox.json": "1d89d805b7d2aae0842ec0dfdc2ca8acd941b56ee21458169c6e306fb0de39ff",
+    "trajectories/shinka.json": "1b4057c85beac30578921747c39291a86e360161439cc848165d64671c0932d1"
+  },
+  "campaign": "algotune_set_cover_horizon_scaling_v0",
+  "checkpoint_slot_count": 20,
+  "cross_engine_superiority_claim_permitted": false,
+  "exploratory_development_patterns": {
+    "ada": "SUSTAINED_IMPROVEMENT",
+    "evidence_evolve": "PLATEAU_LOCAL_OPTIMUM",
+    "evox": "LATE_PUNCTUATED_BREAKTHROUGH_SIGNAL",
+    "shinka": "EARLY_MATURE_BY_H24"
+  },
+  "heldout_evaluation_run": false,
+  "heldout_seeds_generated": false,
+  "high_variance_claim_permitted": false,
+  "horizons": [
+    3,
+    6,
+    12,
+    24,
+    50
+  ],
+  "mechanism_claim_permitted": false,
+  "model": "gpt-5.6-terra",
+  "nested_single_trajectory_per_arm": true,
+  "protocol_sha256": "5ceb7252015189270f0cda8691aef0852e1f7dc4292a480a97b77a57cfc44ffe",
+  "reasoning_effort": "high",
+  "schema_version": "1.0",
+  "status": "DEVELOPMENT_ONLY_SEARCH_COMPLETE_HELDOUT_NOT_RUN",
+  "temperature": 0.0,
+  "trajectories": {
+    "ada": {
+      "arm": "ada",
+      "checkpoints": [
+        {
+          "candidate_path": "candidates/ada/h003.py",
+          "candidate_sha256": "e36c3727b6fbf302b8064ad5113561942dd596611a7f7960a478bb1f8a8e9995",
+          "cumulative_tokens": 55438,
+          "cumulative_wall_seconds": 416.98209595680237,
+          "development_raw_speedup": 1.3991502267678673,
+          "horizon": 3,
+          "proposal_valid_rate": 1.0,
+          "selected_generation": 1,
+          "selected_id": "ae893d0c-0f94-4a60-a97b-52aa7609ba96"
+        },
+        {
+          "candidate_path": "candidates/ada/h006.py",
+          "candidate_sha256": "86b74c4c473b6f12c20b95093c9797759123241ae348ac47aa634c655a65f644",
+          "cumulative_tokens": 141222,
+          "cumulative_wall_seconds": 854.1073181629181,
+          "development_raw_speedup": 2.200922874267871,
+          "horizon": 6,
+          "proposal_valid_rate": 1.0,
+          "selected_generation": 5,
+          "selected_id": "a2b969ff-bffc-42a1-8bea-12f5411761fb"
+        },
+        {
+          "candidate_path": "candidates/ada/h012.py",
+          "candidate_sha256": "bda9915f27949e2e7e710cf724c570b61e6c724fd12cbf4fc6065b26cda63f52",
+          "cumulative_tokens": 287838,
+          "cumulative_wall_seconds": 1581.7483627796173,
+          "development_raw_speedup": 2.7685195603557324,
+          "horizon": 12,
+          "proposal_valid_rate": 1.0,
+          "selected_generation": 11,
+          "selected_id": "0f6e631c-9c5d-4d09-9369-39d3529d88c6"
+        },
+        {
+          "candidate_path": "candidates/ada/h024.py",
+          "candidate_sha256": "cb8eb45d9cb14e75a1078de142543237e0fdca6d9754c3a2eb24b03bba10848e",
+          "cumulative_tokens": 594839,
+          "cumulative_wall_seconds": 2775.6333651542664,
+          "development_raw_speedup": 3.3239766686234478,
+          "horizon": 24,
+          "proposal_valid_rate": 1.0,
+          "selected_generation": 24,
+          "selected_id": "817ee1c5-0b5c-4fb2-a932-14435c6b9386"
+        },
+        {
+          "candidate_path": "candidates/ada/h050.py",
+          "candidate_sha256": "77f089ba8ead2291ca1747bb856f18a86890c8a2e63f083130c155674672a27c",
+          "cumulative_tokens": 1240486,
+          "cumulative_wall_seconds": 6843.314620751888,
+          "development_raw_speedup": 7.051806115717637,
+          "horizon": 50,
+          "proposal_valid_rate": 1.0,
+          "selected_generation": 50,
+          "selected_id": "04ac01c5-8b02-4917-8f89-e619ea6ec7ae"
+        }
+      ],
+      "continuous_trajectory": true,
+      "final_arm_result": {
+        "arm": "ada",
+        "candidate_path": "candidates/ada/h050.py",
+        "candidate_sha256": "77f089ba8ead2291ca1747bb856f18a86890c8a2e63f083130c155674672a27c",
+        "development": {
+          "controls": {
+            "candidate_valid": true,
+            "development_only": true
+          },
+          "error": "",
+          "mechanics_status": "PASS",
+          "metrics": {
+            "invalid_solution_rate": 0.0,
+            "raw_speedup": 7.118391017085075
+          }
+        },
+        "metadata": {
+          "engine": "SkyDiscover AdaEvolve",
+          "sky_commit": "8a840394e19ee4bfb3fb0a62762b902561a7efeb",
+          "upstream_best_score": 7.051806115717637,
+          "upstream_output": "/root/autodl-tmp/EvidenceEvolve/runs/algotune_horizon_scaling_v0/set_cover/arms/ada/upstream"
+        },
+        "model": "gpt-5.6-terra",
+        "proposal_valid_rate": 1.0,
+        "reasoning_effort": "high",
+        "tokens": 1240486,
+        "wall_seconds": 6843.314620751888
+      },
+      "model": "gpt-5.6-terra",
+      "reasoning_effort": "high",
+      "schema_version": "1.0",
+      "task": "set_cover"
+    },
+    "evidence_evolve": {
+      "arm": "evidence_evolve",
+      "checkpoints": [
+        {
+          "candidate_path": "candidates/evidence_evolve/h003.py",
+          "candidate_sha256": "020a82914a74756909cd7be8603544754c350894e44a682b31651885c395d853",
+          "cumulative_tokens": 353166,
+          "cumulative_wall_seconds": 493.962082862854,
+          "development_raw_speedup": 0.9988150324616487,
+          "horizon": 3,
+          "proposal_valid_rate": 0.0,
+          "selected_generation": 0,
+          "selected_id": "SEED"
+        },
+        {
+          "candidate_path": "candidates/evidence_evolve/h006.py",
+          "candidate_sha256": "020a82914a74756909cd7be8603544754c350894e44a682b31651885c395d853",
+          "cumulative_tokens": 675538,
+          "cumulative_wall_seconds": 879.8719990253448,
+          "development_raw_speedup": 0.9988150324616487,
+          "horizon": 6,
+          "proposal_valid_rate": 0.0,
+          "selected_generation": 0,
+          "selected_id": "SEED"
+        },
+        {
+          "candidate_path": "candidates/evidence_evolve/h012.py",
+          "candidate_sha256": "e5b94b78bbdc4cb88ab9844fa6075973f8b88e69b434c693d68fb035c0344574",
+          "cumulative_tokens": 1621263,
+          "cumulative_wall_seconds": 1872.8726460933685,
+          "development_raw_speedup": 1.0271824527267341,
+          "horizon": 12,
+          "proposal_valid_rate": 0.4166666666666667,
+          "selected_generation": 9,
+          "selected_id": "GEN-009-C01"
+        },
+        {
+          "candidate_path": "candidates/evidence_evolve/h024.py",
+          "candidate_sha256": "e5b94b78bbdc4cb88ab9844fa6075973f8b88e69b434c693d68fb035c0344574",
+          "cumulative_tokens": 3590428,
+          "cumulative_wall_seconds": 4432.0934047698975,
+          "development_raw_speedup": 1.0271824527267341,
+          "horizon": 24,
+          "proposal_valid_rate": 0.7083333333333334,
+          "selected_generation": 9,
+          "selected_id": "GEN-009-C01"
+        },
+        {
+          "candidate_path": "candidates/evidence_evolve/h050.py",
+          "candidate_sha256": "e5b94b78bbdc4cb88ab9844fa6075973f8b88e69b434c693d68fb035c0344574",
+          "cumulative_tokens": 8259522,
+          "cumulative_wall_seconds": 9822.992880482227,
+          "development_raw_speedup": 1.0271824527267341,
+          "horizon": 50,
+          "proposal_valid_rate": 0.72,
+          "selected_generation": 9,
+          "selected_id": "GEN-009-C01"
+        }
+      ],
+      "continuous_trajectory": true,
+      "final_arm_result": {
+        "arm": "evidence_evolve",
+        "candidate_path": "candidates/evidence_evolve/h050.py",
+        "candidate_sha256": "e5b94b78bbdc4cb88ab9844fa6075973f8b88e69b434c693d68fb035c0344574",
+        "development": {
+          "controls": {
+            "candidate_valid": true,
+            "development_only": true
+          },
+          "error": "",
+          "mechanics_status": "PASS",
+          "metrics": {
+            "invalid_solution_rate": 0.0,
+            "raw_speedup": 1.027413836933973
+          }
+        },
+        "metadata": {
+          "baseline_fallback": false,
+          "engine": "EvidenceEvolve EVIDENCE_NATIVE_EXPERIMENTAL",
+          "execution_commit": "097986d69ac8bf20f56e63331c86ad90199a33ea",
+          "implementer_sandbox_bridge": "proot-nobody",
+          "scientific_memory_enabled": true,
+          "search_mechanics_status": "PASS",
+          "selected_candidate_id": "GEN-009-C01"
+        },
+        "model": "gpt-5.6-terra",
+        "proposal_valid_rate": 0.72,
+        "reasoning_effort": "high",
+        "tokens": 8259522,
+        "wall_seconds": 9822.992880482227
+      },
+      "model": "gpt-5.6-terra",
+      "reasoning_effort": "high",
+      "schema_version": "1.0",
+      "task": "set_cover"
+    },
+    "evox": {
+      "arm": "evox",
+      "checkpoints": [
+        {
+          "candidate_path": "candidates/evox/h003.py",
+          "candidate_sha256": "05d0d75cadd784369dd15b8c6d2937c9b3cac83d7eddd989953c68aeb54f498a",
+          "cumulative_tokens": 125988,
+          "cumulative_wall_seconds": 404.833931684494,
+          "development_raw_speedup": 1.5212134737756882,
+          "horizon": 3,
+          "proposal_valid_rate": 0.6666666666666666,
+          "selected_generation": 2,
+          "selected_id": "9ae2b989-8b9d-4fbb-ae4f-853614521338"
+        },
+        {
+          "candidate_path": "candidates/evox/h006.py",
+          "candidate_sha256": "05d0d75cadd784369dd15b8c6d2937c9b3cac83d7eddd989953c68aeb54f498a",
+          "cumulative_tokens": 198523,
+          "cumulative_wall_seconds": 708.2716572284698,
+          "development_raw_speedup": 1.5212134737756882,
+          "horizon": 6,
+          "proposal_valid_rate": 0.8333333333333334,
+          "selected_generation": 2,
+          "selected_id": "9ae2b989-8b9d-4fbb-ae4f-853614521338"
+        },
+        {
+          "candidate_path": "candidates/evox/h012.py",
+          "candidate_sha256": "4a5bcec284c4c98b1fa77637f62e7b98100b90d76bdbea99aab97d731b2ee6ad",
+          "cumulative_tokens": 429918,
+          "cumulative_wall_seconds": 1418.797038078308,
+          "development_raw_speedup": 1.5590172358891596,
+          "horizon": 12,
+          "proposal_valid_rate": 0.9166666666666666,
+          "selected_generation": 12,
+          "selected_id": "6afdee5d-e533-42c1-a82c-f033e80b4dde"
+        },
+        {
+          "candidate_path": "candidates/evox/h024.py",
+          "candidate_sha256": "64aba27e194fce27e8c9b1e419a61e065de3dba99fde7eff9309ad25fc867c03",
+          "cumulative_tokens": 761252,
+          "cumulative_wall_seconds": 2648.4044721126556,
+          "development_raw_speedup": 2.4085179593007084,
+          "horizon": 24,
+          "proposal_valid_rate": 0.9583333333333334,
+          "selected_generation": 20,
+          "selected_id": "931ce5f9-eaa3-47bc-bfe0-e44b81e20dcd"
+        },
+        {
+          "candidate_path": "candidates/evox/h050.py",
+          "candidate_sha256": "8a82dec6db9fab31e365ee45ac7e05f1647005ca32fc6e342969a707c3c7f8fd",
+          "cumulative_tokens": 1698566,
+          "cumulative_wall_seconds": 7143.640538625419,
+          "development_raw_speedup": 13.481768854588,
+          "horizon": 50,
+          "proposal_valid_rate": 0.96,
+          "selected_generation": 50,
+          "selected_id": "48f69e42-71e6-484d-ab84-d44ad1c3f181"
+        }
+      ],
+      "continuous_trajectory": true,
+      "final_arm_result": {
+        "arm": "evox",
+        "candidate_path": "candidates/evox/h050.py",
+        "candidate_sha256": "8a82dec6db9fab31e365ee45ac7e05f1647005ca32fc6e342969a707c3c7f8fd",
+        "development": {
+          "controls": {
+            "candidate_valid": true,
+            "development_only": true
+          },
+          "error": "",
+          "mechanics_status": "PASS",
+          "metrics": {
+            "invalid_solution_rate": 0.0,
+            "raw_speedup": 13.462599489435481
+          }
+        },
+        "metadata": {
+          "engine": "SkyDiscover EvoX",
+          "generation_budget": 50,
+          "sky_commit": "8a840394e19ee4bfb3fb0a62762b902561a7efeb",
+          "token_accounting": "Codex input + output tokens; cached input is included in input",
+          "upstream_best_score": 13.481768854588,
+          "upstream_output": "/root/autodl-tmp/EvidenceEvolve/runs/algotune_horizon_scaling_v0/set_cover/arms/evox/upstream"
+        },
+        "model": "gpt-5.6-terra",
+        "proposal_valid_rate": 0.96,
+        "reasoning_effort": "high",
+        "tokens": 1698566,
+        "wall_seconds": 7143.640538625419
+      },
+      "model": "gpt-5.6-terra",
+      "reasoning_effort": "high",
+      "schema_version": "1.0",
+      "task": "set_cover"
+    },
+    "shinka": {
+      "arm": "shinka",
+      "checkpoints": [
+        {
+          "candidate_path": "candidates/shinka/h003.py",
+          "candidate_sha256": "89ed91a24b9a56177ee9053ca528648fba29b5359c27c0d0a3f4f5bf4c9aa9ac",
+          "cumulative_tokens": 52686,
+          "cumulative_wall_seconds": 437.45064425468445,
+          "development_raw_speedup": 1.9294650062209469,
+          "horizon": 3,
+          "proposal_valid_rate": 1.0,
+          "selected_generation": 2,
+          "selected_id": "b9283054-9e1f-43fd-9369-dd03c806686a"
+        },
+        {
+          "candidate_path": "candidates/shinka/h006.py",
+          "candidate_sha256": "ad6cbc83fdbd031bb663f0511a021c5c65d4e2446cd46ae561be1cc21771410d",
+          "cumulative_tokens": 107547,
+          "cumulative_wall_seconds": 730.8166222572327,
+          "development_raw_speedup": 1.9406581133213683,
+          "horizon": 6,
+          "proposal_valid_rate": 1.0,
+          "selected_generation": 4,
+          "selected_id": "175d9fed-a229-4494-8405-1745ff559690"
+        },
+        {
+          "candidate_path": "candidates/shinka/h012.py",
+          "candidate_sha256": "8eadb7300ad833d9ecf0cd66661f5da20cdcb9edc1efcd69898433425acfe854",
+          "cumulative_tokens": 217427,
+          "cumulative_wall_seconds": 1330.0421032905579,
+          "development_raw_speedup": 3.047825731605156,
+          "horizon": 12,
+          "proposal_valid_rate": 1.0,
+          "selected_generation": 12,
+          "selected_id": "4f2b4dad-7774-4273-8185-3f7a554ba0af"
+        },
+        {
+          "candidate_path": "candidates/shinka/h024.py",
+          "candidate_sha256": "e643adae1abcb5f092fcab6ff8c031a41429b60cf6a2ab045a8cb2da13ca7e35",
+          "cumulative_tokens": 457048,
+          "cumulative_wall_seconds": 2454.6209602355957,
+          "development_raw_speedup": 3.2988025478498284,
+          "horizon": 24,
+          "proposal_valid_rate": 1.0,
+          "selected_generation": 15,
+          "selected_id": "d57d60c3-7f01-46e1-843b-a88dc97553a7"
+        },
+        {
+          "candidate_path": "candidates/shinka/h050.py",
+          "candidate_sha256": "8c3febf7aae980a04f9dd3e321d3049143153dcb3e3e850c5c8a5ad8d74c9889",
+          "cumulative_tokens": 1032255,
+          "cumulative_wall_seconds": 6554.939554275945,
+          "development_raw_speedup": 3.4927489677865062,
+          "horizon": 50,
+          "proposal_valid_rate": 0.98,
+          "selected_generation": 47,
+          "selected_id": "ae058ca9-c5e4-4a2b-93f3-fd351b7683cc"
+        }
+      ],
+      "continuous_trajectory": true,
+      "final_arm_result": {
+        "arm": "shinka",
+        "candidate_path": "candidates/shinka/h050.py",
+        "candidate_sha256": "8c3febf7aae980a04f9dd3e321d3049143153dcb3e3e850c5c8a5ad8d74c9889",
+        "development": {
+          "controls": {
+            "candidate_valid": true,
+            "development_only": true
+          },
+          "error": "",
+          "mechanics_status": "PASS",
+          "metrics": {
+            "invalid_solution_rate": 0.0,
+            "raw_speedup": 3.4951324961699917
+          }
+        },
+        "metadata": {
+          "claim_scope": "UPSTREAM_SEARCH_WITH_EVIDENCE_EVOLVE_MATERIALIZATION_AND_IMPORT",
+          "engine": "official ShinkaEvolve 0.0.7",
+          "proposal_materializer": "EVIDENCE_EVOLVE_V1",
+          "source_commit": "c4568adde253cacf185be3a8412c3c2142761ebe",
+          "token_accounting": "headless input + cache-read + output tokens"
+        },
+        "model": "gpt-5.6-terra",
+        "proposal_valid_rate": 0.98,
+        "reasoning_effort": "high",
+        "tokens": 1032255,
+        "wall_seconds": 6554.939554275945
+      },
+      "model": "gpt-5.6-terra",
+      "reasoning_effort": "high",
+      "schema_version": "1.0",
+      "task": "set_cover"
+    }
+  }
+}
