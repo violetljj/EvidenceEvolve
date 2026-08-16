@@ -1,0 +1,447 @@
+from __future__ import annotations
+
+
+# EVOLVE-BLOCK-START
+class _ComponentColorer:
+    """Construct and improve a coloring for one connected component."""
+    def __init__(
+        self,
+        vertices: list[int],
+        graph: list[set[int]],
+        seed: int,
+    ) -> None:
+        self.vertices = vertices
+        self.size = len(vertices)
+        self.index = {vertex: index for index, vertex in enumerate(vertices)}
+        self.adjacency = [
+            sum(
+                1 << self.index[other]
+                for other in graph[vertex]
+                if other in self.index
+            )
+            for vertex in vertices
+        ]
+        self.degree = [mask.bit_count() for mask in self.adjacency]
+        self.rank = [self._mixed_rank(vertex, seed) for vertex in vertices]
+    @staticmethod
+    def _mixed_rank(vertex: int, seed: int) -> int:
+        mask = (1 << 64) - 1
+        value = (vertex + 0x9E3779B97F4A7C15 * (seed + 1)) & mask
+        value ^= value >> 30
+        value = (value * 0xBF58476D1CE4E5B9) & mask
+        value ^= value >> 27
+        value = (value * 0x94D049BB133111EB) & mask
+        return value ^ (value >> 31)
+    @staticmethod
+    def _normalize(colors: list[int]) -> list[int]:
+        remap: dict[int, int] = {}
+        result: list[int] = []
+        for color in colors:
+            if color not in remap:
+                remap[color] = len(remap)
+            result.append(remap[color])
+        return result
+    @staticmethod
+    def _color_count(colors: list[int]) -> int:
+        return max(colors, default=-1) + 1
+    def _is_valid(self, colors: list[int]) -> bool:
+        if len(colors) != self.size:
+            return False
+        for vertex, mask in enumerate(self.adjacency):
+            remaining = mask
+            while remaining:
+                bit = remaining & -remaining
+                other = bit.bit_length() - 1
+                if colors[vertex] == colors[other]:
+                    return False
+                remaining ^= bit
+        return True
+    def _greedy(self, order: list[int]) -> list[int]:
+        colors = [-1] * self.size
+        for vertex in order:
+            blocked = 0
+            remaining = self.adjacency[vertex]
+            while remaining:
+                bit = remaining & -remaining
+                other = bit.bit_length() - 1
+                if colors[other] >= 0:
+                    blocked |= 1 << colors[other]
+                remaining ^= bit
+            available = ~blocked
+            colors[vertex] = (available & -available).bit_length() - 1
+        return self._normalize(colors)
+    def _dsatur(self, mode: int) -> list[int]:
+        colors = [-1] * self.size
+        saturation = [0] * self.size
+        uncolored = (1 << self.size) - 1
+        while uncolored:
+            remaining = uncolored
+            selected = -1
+            selected_key: tuple[int, ...] | None = None
+            while remaining:
+                bit = remaining & -remaining
+                vertex = bit.bit_length() - 1
+                residual_degree = (self.adjacency[vertex] & uncolored).bit_count()
+                if mode == 0:
+                    key = (
+                        saturation[vertex].bit_count(),
+                        self.degree[vertex],
+                        residual_degree,
+                        -self.vertices[vertex],
+                    )
+                elif mode == 1:
+                    key = (
+                        saturation[vertex].bit_count(),
+                        residual_degree,
+                        self.degree[vertex],
+                        -self.vertices[vertex],
+                    )
+                else:
+                    key = (
+                        saturation[vertex].bit_count(),
+                        self.degree[vertex],
+                        residual_degree,
+                        -self.rank[vertex],
+                    )
+                if selected_key is None or key > selected_key:
+                    selected = vertex
+                    selected_key = key
+                remaining ^= bit
+            blocked = saturation[selected]
+            available = ~blocked
+            color = (available & -available).bit_length() - 1
+            colors[selected] = color
+            uncolored &= ~(1 << selected)
+            remaining = self.adjacency[selected] & uncolored
+            color_bit = 1 << color
+            while remaining:
+                bit = remaining & -remaining
+                other = bit.bit_length() - 1
+                saturation[other] |= color_bit
+                remaining ^= bit
+        return self._normalize(colors)
+    def _smallest_last_order(self) -> list[int]:
+        alive = (1 << self.size) - 1
+        current_degree = self.degree[:]
+        removed: list[int] = []
+        while alive:
+            remaining = alive
+            selected = -1
+            selected_key: tuple[int, int] | None = None
+            while remaining:
+                bit = remaining & -remaining
+                vertex = bit.bit_length() - 1
+                key = (current_degree[vertex], self.vertices[vertex])
+                if selected_key is None or key < selected_key:
+                    selected = vertex
+                    selected_key = key
+                remaining ^= bit
+            removed.append(selected)
+            alive &= ~(1 << selected)
+            remaining = self.adjacency[selected] & alive
+            while remaining:
+                bit = remaining & -remaining
+                other = bit.bit_length() - 1
+                current_degree[other] -= 1
+                remaining ^= bit
+        removed.reverse()
+        return removed
+    def _recursive_largest_first(self) -> list[int]:
+        colors = [-1] * self.size
+        uncolored = (1 << self.size) - 1
+        color = 0
+        while uncolored:
+            remaining = uncolored
+            first = -1
+            first_key: tuple[int, int, int] | None = None
+            while remaining:
+                bit = remaining & -remaining
+                vertex = bit.bit_length() - 1
+                key = (
+                    (self.adjacency[vertex] & uncolored).bit_count(),
+                    self.degree[vertex],
+                    -self.vertices[vertex],
+                )
+                if first_key is None or key > first_key:
+                    first = vertex
+                    first_key = key
+                remaining ^= bit
+            color_class = 1 << first
+            candidates = uncolored & ~(1 << first) & ~self.adjacency[first]
+            while candidates:
+                excluded = uncolored & ~color_class & ~candidates
+                remaining = candidates
+                selected = -1
+                selected_key: tuple[int, int, int, int] | None = None
+                while remaining:
+                    bit = remaining & -remaining
+                    vertex = bit.bit_length() - 1
+                    key = (
+                        (self.adjacency[vertex] & excluded).bit_count(),
+                        (self.adjacency[vertex] & candidates).bit_count(),
+                        self.degree[vertex],
+                        -self.vertices[vertex],
+                    )
+                    if selected_key is None or key > selected_key:
+                        selected = vertex
+                        selected_key = key
+                    remaining ^= bit
+                color_class |= 1 << selected
+                candidates &= ~(1 << selected)
+                candidates &= ~self.adjacency[selected]
+            remaining = color_class
+            while remaining:
+                bit = remaining & -remaining
+                vertex = bit.bit_length() - 1
+                colors[vertex] = color
+                remaining ^= bit
+            uncolored &= ~color_class
+            color += 1
+        return self._normalize(colors)
+    def _bipartite_coloring(self) -> list[int] | None:
+        sides = [-1] * self.size
+        for start in range(self.size):
+            if sides[start] >= 0:
+                continue
+            sides[start] = 0
+            queue = [start]
+            head = 0
+            while head < len(queue):
+                vertex = queue[head]
+                head += 1
+                remaining = self.adjacency[vertex]
+                while remaining:
+                    bit = remaining & -remaining
+                    other = bit.bit_length() - 1
+                    if sides[other] < 0:
+                        sides[other] = sides[vertex] ^ 1
+                        queue.append(other)
+                    elif sides[other] == sides[vertex]:
+                        return None
+                    remaining ^= bit
+        return self._normalize(sides)
+    def _find_clique(self) -> list[int]:
+        if self.size == 0:
+            return []
+        starts = sorted(
+            range(self.size),
+            key=lambda vertex: (-self.degree[vertex], self.vertices[vertex]),
+        )
+        if self.size > 160:
+            starts = starts[:64]
+        best: list[int] = []
+        for start in starts:
+            clique = [start]
+            candidates = self.adjacency[start]
+            while candidates:
+                remaining = candidates
+                selected = -1
+                selected_key: tuple[int, int, int] | None = None
+                while remaining:
+                    bit = remaining & -remaining
+                    vertex = bit.bit_length() - 1
+                    key = (
+                        (self.adjacency[vertex] & candidates).bit_count(),
+                        self.degree[vertex],
+                        -self.vertices[vertex],
+                    )
+                    if selected_key is None or key > selected_key:
+                        selected = vertex
+                        selected_key = key
+                    remaining ^= bit
+                clique.append(selected)
+                candidates &= self.adjacency[selected]
+            if len(clique) > len(best):
+                best = clique
+        return best
+    def _search_k_coloring(
+        self,
+        color_limit: int,
+        clique: list[int],
+        budget: int,
+    ) -> tuple[list[int] | None, bool]:
+        if len(clique) > color_limit:
+            return None, False
+        colors = [-1] * self.size
+        saturation = [0] * self.size
+        uncolored = (1 << self.size) - 1
+        for color, vertex in enumerate(clique):
+            colors[vertex] = color
+            uncolored &= ~(1 << vertex)
+        for color, vertex in enumerate(clique):
+            remaining = self.adjacency[vertex] & uncolored
+            color_bit = 1 << color
+            while remaining:
+                bit = remaining & -remaining
+                other = bit.bit_length() - 1
+                saturation[other] |= color_bit
+                remaining ^= bit
+        full_mask = (1 << color_limit) - 1
+        remaining_budget = [budget]
+        exhausted = [False]
+        def visit(remaining_vertices: int, used_colors: int) -> bool:
+            if not remaining_vertices:
+                return True
+            if remaining_budget[0] <= 0:
+                exhausted[0] = True
+                return False
+            remaining_budget[0] -= 1
+            scan = remaining_vertices
+            selected = -1
+            selected_key: tuple[int, int, int, int] | None = None
+            while scan:
+                bit = scan & -scan
+                vertex = bit.bit_length() - 1
+                key = (
+                    saturation[vertex].bit_count(),
+                    (self.adjacency[vertex] & remaining_vertices).bit_count(),
+                    self.degree[vertex],
+                    -self.vertices[vertex],
+                )
+                if selected_key is None or key > selected_key:
+                    selected = vertex
+                    selected_key = key
+                scan ^= bit
+            blocked = saturation[selected] & full_mask
+            upper = min(used_colors + 1, color_limit)
+            options: list[tuple[int, bool, int]] = []
+            for color in range(upper):
+                color_bit = 1 << color
+                if blocked & color_bit:
+                    continue
+                impact = 0
+                scan = self.adjacency[selected] & remaining_vertices
+                while scan:
+                    bit = scan & -scan
+                    other = bit.bit_length() - 1
+                    if not saturation[other] & color_bit:
+                        impact += 1
+                    scan ^= bit
+                options.append((impact, color == used_colors, color))
+            options.sort()
+            next_vertices = remaining_vertices & ~(1 << selected)
+            for _, _, color in options:
+                color_bit = 1 << color
+                changed: list[tuple[int, int]] = []
+                feasible = True
+                scan = self.adjacency[selected] & next_vertices
+                while scan:
+                    bit = scan & -scan
+                    other = bit.bit_length() - 1
+                    old_mask = saturation[other]
+                    new_mask = old_mask | color_bit
+                    if new_mask != old_mask:
+                        changed.append((other, old_mask))
+                        saturation[other] = new_mask
+                        if new_mask & full_mask == full_mask:
+                            feasible = False
+                    scan ^= bit
+                colors[selected] = color
+                next_used = max(used_colors, color + 1)
+                if feasible and visit(next_vertices, next_used):
+                    return True
+                colors[selected] = -1
+                for other, old_mask in changed:
+                    saturation[other] = old_mask
+                if exhausted[0]:
+                    return False
+            return False
+        if visit(uncolored, len(clique)):
+            return self._normalize(colors), False
+        return None, exhausted[0]
+    def color(self) -> list[int]:
+        if self.size <= 1:
+            return [0] * self.size
+        bipartite = self._bipartite_coloring()
+        if bipartite is not None:
+            return bipartite
+        degree_order = sorted(
+            range(self.size),
+            key=lambda vertex: (-self.degree[vertex], self.vertices[vertex]),
+        )
+        candidates = [
+            self._greedy(degree_order),
+            self._dsatur(0),
+            self._dsatur(1),
+            self._recursive_largest_first(),
+        ]
+        if self.size <= 700:
+            candidates.append(self._greedy(self._smallest_last_order()))
+        if self.size <= 500:
+            candidates.append(self._dsatur(2))
+        valid_candidates = [
+            candidate for candidate in candidates if self._is_valid(candidate)
+        ]
+        best = min(
+            valid_candidates,
+            key=lambda candidate: (self._color_count(candidate), candidate),
+        )
+        clique = self._find_clique()
+        lower_bound = max(2, len(clique))
+        if self.size <= 220:
+            target = self._color_count(best) - 1
+            while target >= lower_bound:
+                budget = min(180_000, 60_000 + 800 * self.size)
+                improved, exhausted = self._search_k_coloring(
+                    target,
+                    clique,
+                    budget,
+                )
+                if improved is not None:
+                    best = improved
+                    target -= 1
+                else:
+                    break
+        return best
+def solve(
+    node_count: int,
+    edges: tuple[tuple[int, int], ...],
+    seed: int,
+) -> list[int]:
+    """Return a deterministic valid coloring while using as few colors as possible."""
+    graph = [set() for _ in range(node_count)]
+    for left, right in edges:
+        if left != right:
+            graph[left].add(right)
+            graph[right].add(left)
+    components: list[list[int]] = []
+    unseen = set(range(node_count))
+    while unseen:
+        start = min(unseen)
+        unseen.remove(start)
+        component = [start]
+        queue = [start]
+        head = 0
+        while head < len(queue):
+            vertex = queue[head]
+            head += 1
+            for other in sorted(graph[vertex]):
+                if other in unseen:
+                    unseen.remove(other)
+                    component.append(other)
+                    queue.append(other)
+        component.sort()
+        components.append(component)
+    result = [0] * node_count
+    for component in components:
+        local_colors = _ComponentColorer(component, graph, seed).color()
+        for index, vertex in enumerate(component):
+            result[vertex] = local_colors[index]
+    if any(result[left] == result[right] for left, right in edges if left != right):
+        order = sorted(
+            range(node_count),
+            key=lambda vertex: (-len(graph[vertex]), vertex),
+        )
+        result = [-1] * node_count
+        for vertex in order:
+            blocked = {
+                result[other]
+                for other in graph[vertex]
+                if result[other] >= 0
+            }
+            color = 0
+            while color in blocked:
+                color += 1
+            result[vertex] = color
+    return result
+# EVOLVE-BLOCK-END
