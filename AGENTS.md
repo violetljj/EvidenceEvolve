@@ -19,8 +19,9 @@
 
 ## Verification
 
+- Use the repository environment at `/root/autodl-tmp/EvidenceEvolve/.venv`; invoke Python as `.venv/bin/python` and pytest as `.venv/bin/python -m pytest`. Do not probe the system Python first.
 - Use one focused implementation pass and one targeted verification pass.
-- Run `python -m pytest` for governance or gate changes.
+- Run `.venv/bin/python -m pytest` for governance or gate changes.
 - Run the synthetic canary for changes to receipts, replay, budgets, protocol locking, closure enforcement, or outcome semantics.
 - Do not claim Codex, ShinkaEvolve, ONNX/QNN, device, or confirmation integration passed unless the named external dependency and frozen assets actually ran.
 
