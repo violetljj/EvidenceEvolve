@@ -480,9 +480,167 @@ class SetCoverStagedAdapter:
         return f"claimed_family_{safe}"
 
 
+class SetCoverProfiledStagedAdapter(SetCoverStagedAdapter):
+    """R4 funnel that retains external latency tails and diagnostic cost counters."""
+
+    PROFILE_METRICS = (
+        "wall_time_ns",
+        "wall_time_p50_ns",
+        "wall_time_p95_ns",
+        "wall_time_p99_ns",
+        "node_expansions",
+        "bound_time_ns",
+        "cache_time_ns",
+        "reduction_ratio",
+    )
+
+    @classmethod
+    def _profile_metrics(cls, raw: dict[str, Any]) -> dict[str, float]:
+        return {name: float(raw.get(name, 0.0)) for name in cls.PROFILE_METRICS}
+
+    def l0(
+        self,
+        ticket: CandidateTicket,
+        item: MaterializedSetCoverCandidate,
+    ) -> FunnelDecision:
+        raw = self._run(
+            item,
+            seeds=self.policy.mechanics_seeds,
+            repeats=self.policy.mechanics_repeats,
+        )
+        exact = bool(raw.get("correct")) and not bool(raw.get("adapter_exception"))
+        profile_complete = bool(raw.get("telemetry_available"))
+        structural = bool(self.structural_check(ticket, item))
+        passed = exact and profile_complete and structural
+        reason_codes = [
+            "R4_L0_ADMISSION_PASS" if passed else "R4_L0_ADMISSION_BLOCK"
+        ]
+        if not exact:
+            reason_codes.append("SYNTHETIC_MECHANICS_FAIL")
+        if not profile_complete:
+            reason_codes.append("PROFILE_CONTRACT_INCOMPLETE")
+        if not structural:
+            reason_codes.append("CLOSED_BASIN_NOT_EXITED")
+        if failure_reason := self._failure_reason(raw):
+            reason_codes.append(failure_reason)
+        root_key = self.structural_root_key(ticket, item) if structural else None
+        return FunnelDecision(
+            stage=FunnelStage.L0,
+            status=StageStatus.PASS if passed else StageStatus.BLOCK,
+            continue_pipeline=passed,
+            mechanics_status=(MechanicsStatus.PASS if exact else MechanicsStatus.FAIL),
+            data_eligible=False,
+            controls={
+                "candidate_valid": exact,
+                "synthetic_only": True,
+                "profile_contract_complete": profile_complete,
+                "closed_basin_exited": structural,
+            },
+            metrics={
+                "mechanics_valid_rate": float(raw.get("valid_rate", 0.0)),
+                "mechanics_elapsed_seconds": float(raw["elapsed_seconds"]),
+                "evaluator_worker_count": float(raw.get("worker_count", 1)),
+                **self._profile_metrics(raw),
+            },
+            scientific_outcome=(
+                ScientificOutcome.NOT_EVALUABLE_DATA
+                if exact
+                else ScientificOutcome.INVALID_MECHANICS_OR_ADAPTER
+            ),
+            reason_codes=reason_codes,
+            structural_transition_pass=structural,
+            structural_root_key=root_key,
+        )
+
+    def l1(
+        self,
+        ticket: CandidateTicket,
+        item: MaterializedSetCoverCandidate,
+        l0: FunnelDecision,
+    ) -> FunnelDecision:
+        del ticket
+        if not l0.continue_pipeline:
+            raise ValueError("L1 cannot run after an L0 block")
+        raw = self._run(
+            item,
+            seeds=self.policy.probe_seeds,
+            repeats=self.policy.probe_repeats,
+        )
+        valid = bool(raw.get("correct")) and not bool(raw.get("adapter_exception"))
+        speedup = float(raw.get("raw_speedup", 0.0))
+        promoted = valid and speedup >= self.policy.probe_min_speedup
+        reason_codes = [
+            "R4_WALL_CLOCK_PROBE_PROMOTE" if promoted else "R4_WALL_CLOCK_PROBE_BLOCK"
+        ]
+        if failure_reason := self._failure_reason(raw):
+            reason_codes.append(failure_reason)
+        return FunnelDecision(
+            stage=FunnelStage.L1,
+            status=StageStatus.PASS if promoted else StageStatus.BLOCK,
+            continue_pipeline=promoted,
+            mechanics_status=(MechanicsStatus.PASS if valid else MechanicsStatus.FAIL),
+            data_eligible=valid,
+            controls=self._controls(raw),
+            metrics={
+                "raw_speedup": speedup,
+                "invalid_solution_rate": 1.0 - float(raw.get("valid_rate", 0.0)),
+                "probe_instance_count": float(raw.get("instance_count", 0)),
+                "probe_elapsed_seconds": float(raw["elapsed_seconds"]),
+                "evaluator_worker_count": float(raw.get("worker_count", 1)),
+                **self._profile_metrics(raw),
+            },
+            scientific_outcome=self._outcome(raw),
+            reason_codes=reason_codes,
+        )
+
+    def full_evaluation(
+        self,
+        item: MaterializedSetCoverCandidate,
+    ) -> EvaluationRun:
+        raw = self._run(
+            item,
+            seeds=self.policy.full_development_seeds,
+            repeats=self.policy.full_development_repeats,
+        )
+        wrapped = {
+            "mechanics_status": "FAIL" if raw.get("adapter_exception") else "PASS",
+            "metrics": {
+                "invalid_solution_rate": 1.0 - float(raw.get("valid_rate", 0.0)),
+                "raw_speedup": float(raw.get("raw_speedup", 0.0)),
+                **self._profile_metrics(raw),
+            },
+            "controls": self._controls(raw),
+            "error": str(raw.get("failure", "")),
+        }
+        evaluation = build_evaluation(
+            contract_sha256=self.contract.lock.content_sha256,
+            candidate=item.item,
+            changed_files=item.changed_files,
+            raw=wrapped,
+        )
+        return EvaluationRun(
+            evaluation=evaluation,
+            command=[
+                "in-process",
+                "algotune-set-cover-r4-profiled-development-funnel",
+                f"instances={len(self.policy.full_development_seeds)}",
+                f"repeats={self.policy.full_development_repeats}",
+            ],
+            elapsed_seconds=float(raw["elapsed_seconds"]),
+            seed=0,
+            genetic_parent_id=item.genetic_parent_id,
+            genetic_parent_commit=item.genetic_parent_commit,
+            candidate_commit=item.candidate_commit,
+            candidate_ref=item.candidate_ref,
+            patch_sha256=item.patch_sha256,
+            parent_patch_sha256=item.parent_patch_sha256,
+        )
+
+
 __all__ = [
     "MaterializedSetCoverCandidate",
     "SetCoverFunnelPolicy",
     "SetCoverStructuralTransitionAudit",
     "SetCoverStagedAdapter",
+    "SetCoverProfiledStagedAdapter",
 ]

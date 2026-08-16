@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "decision_id": "algotune_set_cover_m2_r3c_closure_v0",
+  "source_run": "runs/algotune_set_cover_m2_r3c_dev_v1/result.json",
+  "source_interpretation_status": "ACTIVE_BASIN_QUALITY_CONVERSION_NOT_SUPPORTED",
+  "budget_interpretation": "PIVOT_BNB_LOCAL_REFINEMENT_NOT_SUPPORTED",
+  "basin_exhaustion_claimed": false,
+  "mechanics_supported": true,
+  "search_value_supported": false,
+  "scientific_outcome_reinterpreted": false,
+  "evidence_scope": "DEVELOPMENT_ONLY",
+  "scientific_authority": "NONE_SCHEDULING_ONLY",
+  "root_speedup": 38.70038047726111,
+  "conversion_threshold": 47.801,
+  "completed_attempts": [
+    {
+      "candidate_id": "R3C-REFINE-01-C01",
+      "l1_raw_speedup": 48.071885678237685,
+      "l2_raw_speedup": 37.683310036113795,
+      "false_clear": true,
+      "incumbent_improved": false
+    },
+    {
+      "candidate_id": "R3C-REFINE-03-C01",
+      "l1_raw_speedup": 49.61013753205632,
+      "l2_raw_speedup": 38.263792785380666,
+      "false_clear": true,
+      "incumbent_improved": false
+    }
+  ],
+  "failed_attempt": {
+    "candidate_id": "R3C-REFINE-02-C01",
+    "terminal_stage": "IMPLEMENT",
+    "replacement_sample_used": false
+  },
+  "next_action": "M2_R4_STRUCTURAL_BASIN_WAVE",
+  "prohibited_next_action": "R3D_PIVOT_BNB_LOCAL_REFINEMENT"
+}
