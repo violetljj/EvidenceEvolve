@@ -1,0 +1,916 @@
+{
+  "arms": {
+    "controller_only": {
+      "basin_jump_rate": 0.0,
+      "basin_jump_rate_lift_vs_frozen": 0.0,
+      "best_observed_dev_speedup": 56.941998965766906,
+      "blind_artifacts_read": false,
+      "blind_evaluator_calls": 0,
+      "breakthrough_generations": 11,
+      "candidate_rows": [
+        {
+          "candidate_id": "GEN-001-C01",
+          "development_valid": false,
+          "family": "lazy_incremental_greedy_set_cover",
+          "forced_seed_root": false,
+          "generation": 1,
+          "genetic_parent_id": "SEED",
+          "mode": "NORMAL",
+          "mutation": "mechanism_mutation",
+          "raw_speedup": 0.0,
+          "root_lineage_id": "GEN-001-C01",
+          "scientific_outcome": "VALID_NEGATIVE"
+        },
+        {
+          "candidate_id": "GEN-002-C01",
+          "development_valid": true,
+          "family": "packed_residual_mask_bounded_search",
+          "forced_seed_root": false,
+          "generation": 2,
+          "genetic_parent_id": "SEED",
+          "mode": "NORMAL",
+          "mutation": "representation_mutation",
+          "raw_speedup": 56.941998965766906,
+          "root_lineage_id": "GEN-002-C01",
+          "scientific_outcome": "POSITIVE_HEADROOM"
+        },
+        {
+          "candidate_id": "GEN-003-C01",
+          "development_valid": true,
+          "family": "packed_residual_mask_bounded_search",
+          "forced_seed_root": false,
+          "generation": 3,
+          "genetic_parent_id": "GEN-002-C01",
+          "mode": "NORMAL",
+          "mutation": "failure_directed_mutation",
+          "raw_speedup": 45.1484004633024,
+          "root_lineage_id": "GEN-002-C01",
+          "scientific_outcome": "POSITIVE_HEADROOM"
+        },
+        {
+          "candidate_id": "GEN-004-C01",
+          "development_valid": true,
+          "family": "packed_residual_mask_bounded_search_transposition_pruning",
+          "forced_seed_root": false,
+          "generation": 4,
+          "genetic_parent_id": "GEN-002-C01",
+          "mode": "NORMAL",
+          "mutation": "mechanism_mutation",
+          "raw_speedup": 56.51005713015355,
+          "root_lineage_id": "GEN-002-C01",
+          "scientific_outcome": "POSITIVE_HEADROOM"
+        },
+        {
+          "candidate_id": "GEN-005-C01",
+          "development_valid": true,
+          "family": "dual_incidence_pivoted_bounded_search",
+          "forced_seed_root": false,
+          "generation": 5,
+          "genetic_parent_id": "GEN-002-C01",
+          "mode": "NORMAL",
+          "mutation": "representation_mutation",
+          "raw_speedup": 21.191924863922715,
+          "root_lineage_id": "GEN-002-C01",
+          "scientific_outcome": "POSITIVE_HEADROOM"
+        },
+        {
+          "candidate_id": "GEN-006-C01",
+          "development_valid": true,
+          "family": "presolve_kernelized_set_cover_bounded_search",
+          "forced_seed_root": false,
+          "generation": 6,
+          "genetic_parent_id": "GEN-002-C01",
+          "mode": "BREAKTHROUGH",
+          "mutation": "cross_family",
+          "raw_speedup": 37.16493730615735,
+          "root_lineage_id": "GEN-002-C01",
+          "scientific_outcome": "POSITIVE_HEADROOM"
+        },
+        {
+          "candidate_id": "GEN-007-C01",
+          "development_valid": true,
+          "family": "incidence_signature_class_compressed_set_cover",
+          "forced_seed_root": false,
+          "generation": 7,
+          "genetic_parent_id": "GEN-002-C01",
+          "mode": "BREAKTHROUGH",
+          "mutation": "representation_mutation",
+          "raw_speedup": 55.17670967600651,
+          "root_lineage_id": "GEN-002-C01",
+          "scientific_outcome": "POSITIVE_HEADROOM"
+        },
+        {
+          "candidate_id": "GEN-008-C01",
+          "development_valid": true,
+          "family": "incidence_component_decomposed_bounded_search",
+          "forced_seed_root": false,
+          "generation": 8,
+          "genetic_parent_id": "GEN-002-C01",
+          "mode": "BREAKTHROUGH",
+          "mutation": "cross_family",
+          "raw_speedup": 52.879991619580466,
+          "root_lineage_id": "GEN-002-C01",
+          "scientific_outcome": "POSITIVE_HEADROOM"
+        },
+        {
+          "candidate_id": "GEN-009-C01",
+          "development_valid": false,
+          "family": "block_cut_separator_factorized_set_cover",
+          "forced_seed_root": false,
+          "generation": 9,
+          "genetic_parent_id": "GEN-002-C01",
+          "mode": "BREAKTHROUGH",
+          "mutation": "representation_mutation",
+          "raw_speedup": 0.0,
+          "root_lineage_id": "GEN-002-C01",
+          "scientific_outcome": "VALID_NEGATIVE"
+        },
+        {
+          "candidate_id": "GEN-010-C01",
+          "development_valid": true,
+          "family": "bounded_pivot_branching_hybrid_exact_search",
+          "forced_seed_root": false,
+          "generation": 10,
+          "genetic_parent_id": "GEN-002-C01",
+          "mode": "BREAKTHROUGH",
+          "mutation": "cross_family",
+          "raw_speedup": 35.7982906537556,
+          "root_lineage_id": "GEN-002-C01",
+          "scientific_outcome": "POSITIVE_HEADROOM"
+        },
+        {
+          "candidate_id": "GEN-011-C01",
+          "development_valid": false,
+          "family": "canonical_coverage_decision_diagram_hybrid",
+          "forced_seed_root": false,
+          "generation": 11,
+          "genetic_parent_id": "GEN-002-C01",
+          "mode": "BREAKTHROUGH",
+          "mutation": "representation_mutation",
+          "raw_speedup": 0.0,
+          "root_lineage_id": "GEN-002-C01",
+          "scientific_outcome": "VALID_NEGATIVE"
+        },
+        {
+          "candidate_id": "GEN-012-C01",
+          "development_valid": true,
+          "family": "cardinality_constrained_monotone_cnf_hybrid",
+          "forced_seed_root": false,
+          "generation": 12,
+          "genetic_parent_id": "GEN-002-C01",
+          "mode": "BREAKTHROUGH",
+          "mutation": "cross_family",
+          "raw_speedup": 4.094984636966792,
+          "root_lineage_id": "GEN-002-C01",
+          "scientific_outcome": "POSITIVE_HEADROOM"
+        },
+        {
+          "candidate_id": "GEN-013-C01",
+          "development_valid": true,
+          "family": "bounded_meet_in_the_middle_coverage_antichain_hybrid",
+          "forced_seed_root": false,
+          "generation": 13,
+          "genetic_parent_id": "GEN-002-C01",
+          "mode": "BREAKTHROUGH",
+          "mutation": "representation_mutation",
+          "raw_speedup": 56.744295411967215,
+          "root_lineage_id": "GEN-002-C01",
+          "scientific_outcome": "POSITIVE_HEADROOM"
+        },
+        {
+          "candidate_id": "GEN-014-C01",
+          "development_valid": false,
+          "family": "deterministic_primal_dual_set_cover_constructor_hybrid",
+          "forced_seed_root": false,
+          "generation": 14,
+          "genetic_parent_id": "GEN-013-C01",
+          "mode": "BREAKTHROUGH",
+          "mutation": "cross_family",
+          "raw_speedup": 0.0,
+          "root_lineage_id": "GEN-002-C01",
+          "scientific_outcome": "VALID_NEGATIVE"
+        },
+        {
+          "candidate_id": "GEN-015-C01",
+          "development_valid": true,
+          "family": "signature_quotiented_bounded_meet_in_middle_coverage_antichain_hybrid",
+          "forced_seed_root": false,
+          "generation": 15,
+          "genetic_parent_id": "GEN-013-C01",
+          "mode": "BREAKTHROUGH",
+          "mutation": "representation_mutation",
+          "raw_speedup": 54.07395940579717,
+          "root_lineage_id": "GEN-002-C01",
+          "scientific_outcome": "POSITIVE_HEADROOM"
+        },
+        {
+          "candidate_id": "GEN-016-C01",
+          "development_valid": true,
+          "family": "asymmetric_residual_antichain_hybrid",
+          "forced_seed_root": false,
+          "generation": 16,
+          "genetic_parent_id": "GEN-013-C01",
+          "mode": "BREAKTHROUGH",
+          "mutation": "cross_family",
+          "raw_speedup": 56.76465945465996,
+          "root_lineage_id": "GEN-002-C01",
+          "scientific_outcome": "POSITIVE_HEADROOM"
+        }
+      ],
+      "dev_valid_new_root_lineages": 0,
+      "development_valid_candidates": 12,
+      "escape_trigger_generations": [
+        6,
+        10,
+        14
+      ],
+      "generation_rows": [
+        {
+          "escape_budget_remaining_before": 0,
+          "escape_triggered": false,
+          "generation": 1,
+          "incumbent_value_before": 0.9989186013946495,
+          "mode": "NORMAL",
+          "mutation": "mechanism_mutation",
+          "parent_pool": [
+            "SEED"
+          ],
+          "stagnant_generations_before": 0
+        },
+        {
+          "escape_budget_remaining_before": 0,
+          "escape_triggered": false,
+          "generation": 2,
+          "incumbent_value_before": 0.9989186013946495,
+          "mode": "NORMAL",
+          "mutation": "representation_mutation",
+          "parent_pool": [
+            "SEED"
+          ],
+          "stagnant_generations_before": 1
+        },
+        {
+          "escape_budget_remaining_before": 0,
+          "escape_triggered": false,
+          "generation": 3,
+          "incumbent_value_before": 56.941998965766906,
+          "mode": "NORMAL",
+          "mutation": "failure_directed_mutation",
+          "parent_pool": [
+            "GEN-002-C01"
+          ],
+          "stagnant_generations_before": 0
+        },
+        {
+          "escape_budget_remaining_before": 0,
+          "escape_triggered": false,
+          "generation": 4,
+          "incumbent_value_before": 56.941998965766906,
+          "mode": "NORMAL",
+          "mutation": "mechanism_mutation",
+          "parent_pool": [
+            "GEN-002-C01"
+          ],
+          "stagnant_generations_before": 1
+        },
+        {
+          "escape_budget_remaining_before": 0,
+          "escape_triggered": false,
+          "generation": 5,
+          "incumbent_value_before": 56.941998965766906,
+          "mode": "NORMAL",
+          "mutation": "representation_mutation",
+          "parent_pool": [
+            "GEN-002-C01"
+          ],
+          "stagnant_generations_before": 2
+        },
+        {
+          "escape_budget_remaining_before": 4,
+          "escape_triggered": true,
+          "generation": 6,
+          "incumbent_value_before": 56.941998965766906,
+          "mode": "BREAKTHROUGH",
+          "mutation": "cross_family",
+          "parent_pool": [
+            "GEN-002-C01"
+          ],
+          "stagnant_generations_before": 3
+        },
+        {
+          "escape_budget_remaining_before": 3,
+          "escape_triggered": false,
+          "generation": 7,
+          "incumbent_value_before": 56.941998965766906,
+          "mode": "BREAKTHROUGH",
+          "mutation": "representation_mutation",
+          "parent_pool": [
+            "GEN-002-C01"
+          ],
+          "stagnant_generations_before": 4
+        },
+        {
+          "escape_budget_remaining_before": 2,
+          "escape_triggered": false,
+          "generation": 8,
+          "incumbent_value_before": 56.941998965766906,
+          "mode": "BREAKTHROUGH",
+          "mutation": "cross_family",
+          "parent_pool": [
+            "GEN-002-C01"
+          ],
+          "stagnant_generations_before": 5
+        },
+        {
+          "escape_budget_remaining_before": 1,
+          "escape_triggered": false,
+          "generation": 9,
+          "incumbent_value_before": 56.941998965766906,
+          "mode": "BREAKTHROUGH",
+          "mutation": "representation_mutation",
+          "parent_pool": [
+            "GEN-002-C01"
+          ],
+          "stagnant_generations_before": 6
+        },
+        {
+          "escape_budget_remaining_before": 4,
+          "escape_triggered": true,
+          "generation": 10,
+          "incumbent_value_before": 56.941998965766906,
+          "mode": "BREAKTHROUGH",
+          "mutation": "cross_family",
+          "parent_pool": [
+            "GEN-002-C01"
+          ],
+          "stagnant_generations_before": 7
+        },
+        {
+          "escape_budget_remaining_before": 3,
+          "escape_triggered": false,
+          "generation": 11,
+          "incumbent_value_before": 56.941998965766906,
+          "mode": "BREAKTHROUGH",
+          "mutation": "representation_mutation",
+          "parent_pool": [
+            "GEN-002-C01"
+          ],
+          "stagnant_generations_before": 8
+        },
+        {
+          "escape_budget_remaining_before": 2,
+          "escape_triggered": false,
+          "generation": 12,
+          "incumbent_value_before": 56.941998965766906,
+          "mode": "BREAKTHROUGH",
+          "mutation": "cross_family",
+          "parent_pool": [
+            "GEN-002-C01"
+          ],
+          "stagnant_generations_before": 9
+        },
+        {
+          "escape_budget_remaining_before": 1,
+          "escape_triggered": false,
+          "generation": 13,
+          "incumbent_value_before": 56.941998965766906,
+          "mode": "BREAKTHROUGH",
+          "mutation": "representation_mutation",
+          "parent_pool": [
+            "GEN-002-C01"
+          ],
+          "stagnant_generations_before": 10
+        },
+        {
+          "escape_budget_remaining_before": 4,
+          "escape_triggered": true,
+          "generation": 14,
+          "incumbent_value_before": 56.941998965766906,
+          "mode": "BREAKTHROUGH",
+          "mutation": "cross_family",
+          "parent_pool": [
+            "GEN-002-C01",
+            "GEN-013-C01"
+          ],
+          "stagnant_generations_before": 11
+        },
+        {
+          "escape_budget_remaining_before": 3,
+          "escape_triggered": false,
+          "generation": 15,
+          "incumbent_value_before": 56.941998965766906,
+          "mode": "BREAKTHROUGH",
+          "mutation": "representation_mutation",
+          "parent_pool": [
+            "GEN-002-C01",
+            "GEN-013-C01"
+          ],
+          "stagnant_generations_before": 12
+        },
+        {
+          "escape_budget_remaining_before": 2,
+          "escape_triggered": false,
+          "generation": 16,
+          "incumbent_value_before": 56.941998965766906,
+          "mode": "BREAKTHROUGH",
+          "mutation": "cross_family",
+          "parent_pool": [
+            "GEN-002-C01",
+            "GEN-013-C01"
+          ],
+          "stagnant_generations_before": 13
+        }
+      ],
+      "improved_vs_frozen_h50_dev": true,
+      "improvement_per_100k_tokens": 2.3908308998661307,
+      "max_parent_exposure_share": 0.7368421052631579,
+      "new_structural_root_lineages": 0,
+      "parent_guardrail_violations": [],
+      "policy_id": "algotune_set_cover_m2_r1_controller_only_v0",
+      "protected_escape_or_timing_violations": [],
+      "run_tree_sha256": "86a4d77da79b1ffa613da915e54a81e0f4e5f5cb46575ef5aa14524e57180a58",
+      "selected_dev_speedup": 56.900566009772035,
+      "timely_escape": true,
+      "tokens": 2338719,
+      "unique_observed_families": 15,
+      "wall_seconds": 3268.4002556577325
+    },
+    "radical_roots": {
+      "basin_jump_rate": 0.0,
+      "basin_jump_rate_lift_vs_frozen": 0.0,
+      "best_observed_dev_speedup": 1.423402752526087,
+      "blind_artifacts_read": false,
+      "blind_evaluator_calls": 0,
+      "breakthrough_generations": 8,
+      "candidate_rows": [
+        {
+          "candidate_id": "GEN-001-C01",
+          "development_valid": true,
+          "family": "incremental_sparse_lazy_greedy",
+          "forced_seed_root": false,
+          "generation": 1,
+          "genetic_parent_id": "SEED",
+          "mode": "NORMAL",
+          "mutation": "mechanism_mutation",
+          "raw_speedup": 1.4201408073819703,
+          "root_lineage_id": "GEN-001-C01",
+          "scientific_outcome": "POSITIVE_HEADROOM"
+        },
+        {
+          "candidate_id": "GEN-002-C01",
+          "development_valid": true,
+          "family": "packed_bitset_lazy_greedy",
+          "forced_seed_root": false,
+          "generation": 2,
+          "genetic_parent_id": "GEN-001-C01",
+          "mode": "NORMAL",
+          "mutation": "representation_mutation",
+          "raw_speedup": 1.4224731407599425,
+          "root_lineage_id": "GEN-001-C01",
+          "scientific_outcome": "POSITIVE_HEADROOM"
+        },
+        {
+          "candidate_id": "GEN-003-C01",
+          "development_valid": true,
+          "family": "forced_unique_coverage_presolve_packed_greedy",
+          "forced_seed_root": false,
+          "generation": 3,
+          "genetic_parent_id": "GEN-002-C01",
+          "mode": "NORMAL",
+          "mutation": "failure_directed_mutation",
+          "raw_speedup": 1.422538841934809,
+          "root_lineage_id": "GEN-001-C01",
+          "scientific_outcome": "POSITIVE_HEADROOM"
+        },
+        {
+          "candidate_id": "GEN-004-C01",
+          "development_valid": true,
+          "family": "incidence_component_decomposed_forced_packed_greedy",
+          "forced_seed_root": false,
+          "generation": 4,
+          "genetic_parent_id": "GEN-003-C01",
+          "mode": "NORMAL",
+          "mutation": "mechanism_mutation",
+          "raw_speedup": 1.419347612005588,
+          "root_lineage_id": "GEN-001-C01",
+          "scientific_outcome": "POSITIVE_HEADROOM"
+        },
+        {
+          "candidate_id": "GEN-005-C01",
+          "development_valid": true,
+          "family": "duplicate_mask_quotient_packed_greedy",
+          "forced_seed_root": false,
+          "generation": 5,
+          "genetic_parent_id": "GEN-003-C01",
+          "mode": "NORMAL",
+          "mutation": "representation_mutation",
+          "raw_speedup": 1.423402752526087,
+          "root_lineage_id": "GEN-001-C01",
+          "scientific_outcome": "POSITIVE_HEADROOM"
+        },
+        {
+          "candidate_id": "GEN-006-C01",
+          "development_valid": true,
+          "family": "index-safe_strict_mask_dominance_pruning",
+          "forced_seed_root": false,
+          "generation": 6,
+          "genetic_parent_id": "GEN-005-C01",
+          "mode": "NORMAL",
+          "mutation": "failure_directed_mutation",
+          "raw_speedup": 1.407322666454814,
+          "root_lineage_id": "GEN-001-C01",
+          "scientific_outcome": "POSITIVE_HEADROOM"
+        },
+        {
+          "candidate_id": "GEN-007-C01",
+          "development_valid": true,
+          "family": "element_support_dominance_elimination",
+          "forced_seed_root": false,
+          "generation": 7,
+          "genetic_parent_id": "GEN-005-C01",
+          "mode": "NORMAL",
+          "mutation": "mechanism_mutation",
+          "raw_speedup": 1.4094676079340802,
+          "root_lineage_id": "GEN-001-C01",
+          "scientific_outcome": "POSITIVE_HEADROOM"
+        },
+        {
+          "candidate_id": "GEN-008-C01",
+          "development_valid": true,
+          "family": "persistent_radix_dag_coverage_mask_representation",
+          "forced_seed_root": false,
+          "generation": 8,
+          "genetic_parent_id": "GEN-005-C01",
+          "mode": "NORMAL",
+          "mutation": "representation_mutation",
+          "raw_speedup": 1.4170704765804942,
+          "root_lineage_id": "GEN-001-C01",
+          "scientific_outcome": "POSITIVE_HEADROOM"
+        },
+        {
+          "candidate_id": "GEN-009-C01",
+          "development_valid": false,
+          "family": "seed-root component-decomposed bounded-exact hybrid set-cover solver",
+          "forced_seed_root": true,
+          "generation": 9,
+          "genetic_parent_id": "SEED",
+          "mode": "BREAKTHROUGH",
+          "mutation": "restart",
+          "raw_speedup": 0.0,
+          "root_lineage_id": "GEN-009-C01",
+          "scientific_outcome": "VALID_NEGATIVE"
+        },
+        {
+          "candidate_id": "GEN-010-C01",
+          "development_valid": true,
+          "family": "canonical_residual_component_type_folding",
+          "forced_seed_root": false,
+          "generation": 10,
+          "genetic_parent_id": "GEN-005-C01",
+          "mode": "BREAKTHROUGH",
+          "mutation": "representation_mutation",
+          "raw_speedup": 1.3905939431566217,
+          "root_lineage_id": "GEN-001-C01",
+          "scientific_outcome": "POSITIVE_HEADROOM"
+        },
+        {
+          "candidate_id": "GEN-011-C01",
+          "development_valid": false,
+          "family": "bounded_exact_residual_kernel_hybrid",
+          "forced_seed_root": false,
+          "generation": 11,
+          "genetic_parent_id": "GEN-005-C01",
+          "mode": "BREAKTHROUGH",
+          "mutation": "cross_family",
+          "raw_speedup": 0.0,
+          "root_lineage_id": "GEN-001-C01",
+          "scientific_outcome": "VALID_NEGATIVE"
+        },
+        {
+          "candidate_id": "GEN-012-C01",
+          "development_valid": false,
+          "family": "sparse_primal_dual_residual_set_cover",
+          "forced_seed_root": true,
+          "generation": 12,
+          "genetic_parent_id": "SEED",
+          "mode": "BREAKTHROUGH",
+          "mutation": "restart",
+          "raw_speedup": 0.0,
+          "root_lineage_id": "GEN-012-C01",
+          "scientific_outcome": "VALID_NEGATIVE"
+        },
+        {
+          "candidate_id": "GEN-013-C01",
+          "development_valid": false,
+          "family": "bounded_constraint_first_exact_greedy_hybrid",
+          "forced_seed_root": true,
+          "generation": 13,
+          "genetic_parent_id": "SEED",
+          "mode": "BREAKTHROUGH",
+          "mutation": "restart",
+          "raw_speedup": 0.0,
+          "root_lineage_id": "GEN-013-C01",
+          "scientific_outcome": "VALID_NEGATIVE"
+        },
+        {
+          "candidate_id": "GEN-014-C01",
+          "development_valid": true,
+          "family": "weighted_element_support_signature_quotient",
+          "forced_seed_root": false,
+          "generation": 14,
+          "genetic_parent_id": "GEN-005-C01",
+          "mode": "BREAKTHROUGH",
+          "mutation": "representation_mutation",
+          "raw_speedup": 1.4116761670124667,
+          "root_lineage_id": "GEN-001-C01",
+          "scientific_outcome": "POSITIVE_HEADROOM"
+        },
+        {
+          "candidate_id": "GEN-015-C01",
+          "development_valid": true,
+          "family": "bounded_exact_antichain_residual_component_hybrid",
+          "forced_seed_root": false,
+          "generation": 15,
+          "genetic_parent_id": "GEN-005-C01",
+          "mode": "BREAKTHROUGH",
+          "mutation": "cross_family",
+          "raw_speedup": 1.4153527927222769,
+          "root_lineage_id": "GEN-001-C01",
+          "scientific_outcome": "POSITIVE_HEADROOM"
+        },
+        {
+          "candidate_id": "GEN-016-C01",
+          "development_valid": false,
+          "family": "bounded_dual_ascent_local_enumeration_hybrid",
+          "forced_seed_root": true,
+          "generation": 16,
+          "genetic_parent_id": "SEED",
+          "mode": "BREAKTHROUGH",
+          "mutation": "restart",
+          "raw_speedup": 0.0,
+          "root_lineage_id": "GEN-016-C01",
+          "scientific_outcome": "VALID_NEGATIVE"
+        }
+      ],
+      "dev_valid_new_root_lineages": 0,
+      "development_valid_candidates": 11,
+      "escape_trigger_generations": [
+        9,
+        13
+      ],
+      "generation_rows": [
+        {
+          "escape_budget_remaining_before": 0,
+          "escape_triggered": false,
+          "generation": 1,
+          "incumbent_value_before": 0.9984638736228738,
+          "mode": "NORMAL",
+          "mutation": "mechanism_mutation",
+          "parent_pool": [
+            "SEED"
+          ],
+          "stagnant_generations_before": 0
+        },
+        {
+          "escape_budget_remaining_before": 0,
+          "escape_triggered": false,
+          "generation": 2,
+          "incumbent_value_before": 1.4201408073819703,
+          "mode": "NORMAL",
+          "mutation": "representation_mutation",
+          "parent_pool": [
+            "GEN-001-C01"
+          ],
+          "stagnant_generations_before": 0
+        },
+        {
+          "escape_budget_remaining_before": 0,
+          "escape_triggered": false,
+          "generation": 3,
+          "incumbent_value_before": 1.4224731407599425,
+          "mode": "NORMAL",
+          "mutation": "failure_directed_mutation",
+          "parent_pool": [
+            "GEN-002-C01",
+            "GEN-001-C01"
+          ],
+          "stagnant_generations_before": 0
+        },
+        {
+          "escape_budget_remaining_before": 0,
+          "escape_triggered": false,
+          "generation": 4,
+          "incumbent_value_before": 1.422538841934809,
+          "mode": "NORMAL",
+          "mutation": "mechanism_mutation",
+          "parent_pool": [
+            "GEN-003-C01",
+            "GEN-002-C01"
+          ],
+          "stagnant_generations_before": 0
+        },
+        {
+          "escape_budget_remaining_before": 0,
+          "escape_triggered": false,
+          "generation": 5,
+          "incumbent_value_before": 1.422538841934809,
+          "mode": "NORMAL",
+          "mutation": "representation_mutation",
+          "parent_pool": [
+            "GEN-003-C01",
+            "GEN-002-C01"
+          ],
+          "stagnant_generations_before": 1
+        },
+        {
+          "escape_budget_remaining_before": 0,
+          "escape_triggered": false,
+          "generation": 6,
+          "incumbent_value_before": 1.423402752526087,
+          "mode": "NORMAL",
+          "mutation": "failure_directed_mutation",
+          "parent_pool": [
+            "GEN-005-C01",
+            "GEN-003-C01"
+          ],
+          "stagnant_generations_before": 0
+        },
+        {
+          "escape_budget_remaining_before": 0,
+          "escape_triggered": false,
+          "generation": 7,
+          "incumbent_value_before": 1.423402752526087,
+          "mode": "NORMAL",
+          "mutation": "mechanism_mutation",
+          "parent_pool": [
+            "GEN-005-C01",
+            "GEN-003-C01"
+          ],
+          "stagnant_generations_before": 1
+        },
+        {
+          "escape_budget_remaining_before": 0,
+          "escape_triggered": false,
+          "generation": 8,
+          "incumbent_value_before": 1.423402752526087,
+          "mode": "NORMAL",
+          "mutation": "representation_mutation",
+          "parent_pool": [
+            "GEN-005-C01",
+            "GEN-003-C01"
+          ],
+          "stagnant_generations_before": 2
+        },
+        {
+          "escape_budget_remaining_before": 4,
+          "escape_triggered": true,
+          "generation": 9,
+          "incumbent_value_before": 1.423402752526087,
+          "mode": "BREAKTHROUGH",
+          "mutation": "restart",
+          "parent_pool": [
+            "SEED"
+          ],
+          "stagnant_generations_before": 3
+        },
+        {
+          "escape_budget_remaining_before": 3,
+          "escape_triggered": false,
+          "generation": 10,
+          "incumbent_value_before": 1.423402752526087,
+          "mode": "BREAKTHROUGH",
+          "mutation": "representation_mutation",
+          "parent_pool": [
+            "GEN-005-C01",
+            "GEN-003-C01"
+          ],
+          "stagnant_generations_before": 4
+        },
+        {
+          "escape_budget_remaining_before": 2,
+          "escape_triggered": false,
+          "generation": 11,
+          "incumbent_value_before": 1.423402752526087,
+          "mode": "BREAKTHROUGH",
+          "mutation": "cross_family",
+          "parent_pool": [
+            "GEN-005-C01",
+            "GEN-003-C01"
+          ],
+          "stagnant_generations_before": 5
+        },
+        {
+          "escape_budget_remaining_before": 1,
+          "escape_triggered": false,
+          "generation": 12,
+          "incumbent_value_before": 1.423402752526087,
+          "mode": "BREAKTHROUGH",
+          "mutation": "restart",
+          "parent_pool": [
+            "SEED"
+          ],
+          "stagnant_generations_before": 6
+        },
+        {
+          "escape_budget_remaining_before": 4,
+          "escape_triggered": true,
+          "generation": 13,
+          "incumbent_value_before": 1.423402752526087,
+          "mode": "BREAKTHROUGH",
+          "mutation": "restart",
+          "parent_pool": [
+            "SEED"
+          ],
+          "stagnant_generations_before": 7
+        },
+        {
+          "escape_budget_remaining_before": 3,
+          "escape_triggered": false,
+          "generation": 14,
+          "incumbent_value_before": 1.423402752526087,
+          "mode": "BREAKTHROUGH",
+          "mutation": "representation_mutation",
+          "parent_pool": [
+            "GEN-005-C01",
+            "GEN-003-C01"
+          ],
+          "stagnant_generations_before": 8
+        },
+        {
+          "escape_budget_remaining_before": 2,
+          "escape_triggered": false,
+          "generation": 15,
+          "incumbent_value_before": 1.423402752526087,
+          "mode": "BREAKTHROUGH",
+          "mutation": "cross_family",
+          "parent_pool": [
+            "GEN-005-C01",
+            "GEN-003-C01"
+          ],
+          "stagnant_generations_before": 9
+        },
+        {
+          "escape_budget_remaining_before": 1,
+          "escape_triggered": false,
+          "generation": 16,
+          "incumbent_value_before": 1.423402752526087,
+          "mode": "BREAKTHROUGH",
+          "mutation": "restart",
+          "parent_pool": [
+            "SEED"
+          ],
+          "stagnant_generations_before": 10
+        }
+      ],
+      "improved_vs_frozen_h50_dev": true,
+      "improvement_per_100k_tokens": 0.016169511617592804,
+      "max_parent_exposure_share": 0.34615384615384615,
+      "new_structural_root_lineages": 4,
+      "parent_guardrail_violations": [],
+      "policy_id": "algotune_set_cover_m2_r1_radical_roots_v0",
+      "protected_escape_or_timing_violations": [],
+      "run_tree_sha256": "b047db5ff2e99ded3a0cb61a77b42375ef6e1dc77b29b78311b40c4d44fa9521",
+      "selected_dev_speedup": 1.4235915341017877,
+      "timely_escape": true,
+      "tokens": 2450416,
+      "unique_observed_families": 16,
+      "wall_seconds": 3532.67793594487
+    }
+  },
+  "blind_artifacts_read": false,
+  "blind_evaluator_calls": 0,
+  "confirmation_runs": 0,
+  "criteria": {
+    "basin_jump_rate_lift_min_0_25": false,
+    "basin_jump_rate_min_0_25": false,
+    "dev_valid_new_root_lineages_min_1": false,
+    "final_incumbent_improved": true,
+    "new_structural_root_lineages_min_2": true,
+    "parent_guardrail_preserved": true,
+    "timely_escape": true
+  },
+  "full_pass": false,
+  "historical_reference": {
+    "frozen_basin_jump_rate": 0.0,
+    "frozen_h50_best_candidate": "GEN-009-C01",
+    "frozen_h50_best_dev_speedup": 1.0271824527267341,
+    "frozen_unique_root_lineages": 1
+  },
+  "interpretation": "The strict incumbent clock worked, but the radical operator did not meet the preregistered new-root validity threshold.",
+  "limitations": [
+    "No Set Cover blind instance, blind evaluator, or confirmation asset was read.",
+    "A forced SEED Git root is a scheduling/mechanics lineage definition, not proof of semantic novelty.",
+    "Development speedup is vulnerable to development overfitting and is not a held-out claim.",
+    "The two prospective arms are single trajectories, so stochastic uncertainty is not estimated."
+  ],
+  "mechanism_outcome": "CONTROLLER_REPAIRED_OPERATOR_INSUFFICIENT",
+  "primary_arm": "radical_roots",
+  "r1a": {
+    "escape_timing_gain_generations": 28,
+    "first_post_gen9_escape": 13,
+    "result_sha256": "aa057de7293d8c5c10e79be3f69e021eeb0c3325e49d648d3c6194fd4d1ef2a6"
+  },
+  "schema_version": "1.0",
+  "scope": "PROSPECTIVE_SET_COVER_DEVELOPMENT_ONLY_MECHANISM_TEST",
+  "study_id": "algotune_set_cover_m2_r1b_escape_v0"
+}

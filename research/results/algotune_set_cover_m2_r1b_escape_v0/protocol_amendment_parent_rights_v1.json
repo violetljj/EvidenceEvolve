@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "amendment_id": "algotune_set_cover_m2_r1b_parent_rights_v1",
+  "authority": "MECHANICS_REPAIR_AFTER_INVALID_CANARY_BEFORE_FORMAL_V1",
+  "trigger": "invalid_canary_v0.json",
+  "change": "Parent-quality guardrail eligibility is computed over every admitted archive member with an evaluated valid development objective, not only members still active under island capacity.",
+  "unchanged": [
+    "two prospective arms",
+    "16 generations per arm",
+    "one proposal and one evaluation per generation",
+    "model and reasoning effort",
+    "development evaluator, data, repeats, controls, and validity gates",
+    "stagnation N=3 and strict incumbent-refresh clock",
+    "four-generation protected escape budget",
+    "mutation mixes and forced-SEED restart allocation",
+    "success thresholds and mechanism outcome labels",
+    "zero blind and confirmation access"
+  ],
+  "new_invariant": "An active-population eviction cannot remove parent rights from the current incumbent or another archive member inside the 0.5% parent-quality guardrail.",
+  "blind_artifacts_read": false,
+  "blind_evaluator_calls": 0
+}

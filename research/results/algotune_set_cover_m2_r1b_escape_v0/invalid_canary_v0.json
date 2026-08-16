@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0",
+  "canary_id": "algotune_set_cover_m2_r1b_dev_v0",
+  "status": "INVALID_MECHANICS_OR_ADAPTER",
+  "authority": "CANARY_DIAGNOSTIC_ONLY",
+  "stopped_before_fixed_budget_completion": true,
+  "stop_reason": "At controller_only GEN-012, the 51.51833904410427x development incumbent GEN-007-C01 had been evicted from the bounded active population. The M2 parent planner incorrectly treated active population membership as parent-rights authority and fell back to SEED, violating the preregistered incumbent-quality guardrail.",
+  "repair": "Source eligible parents from all admitted archive members while retaining active population only as a separate admission/capacity state.",
+  "first_guardrail_breach": {
+    "arm": "controller_only",
+    "generation": 12,
+    "incumbent_candidate": "GEN-007-C01",
+    "incumbent_dev_speedup": 51.51833904410427,
+    "incorrect_parent_pool": ["SEED"]
+  },
+  "partial_runs": {
+    "controller_only": {
+      "planned_generations": 12,
+      "evaluated_generations": 11,
+      "tree_sha256": "8e79eb580c3ad6f1abfd4b3432f4cc3b3e29a9c921c4c9b33aef61033586d524"
+    },
+    "radical_roots": {
+      "planned_generations": 13,
+      "evaluated_generations": 12,
+      "tree_sha256": "681882ae6d5bd822b80618e5f99d83aa46ff5fc52eeb23684052b49095c0e14b"
+    }
+  },
+  "blind_artifacts_read": false,
+  "blind_evaluator_calls": 0,
+  "confirmation_runs": 0,
+  "claim_boundary": "No partial score or mechanism rate from this interrupted canary is an M2-R1B result."
+}

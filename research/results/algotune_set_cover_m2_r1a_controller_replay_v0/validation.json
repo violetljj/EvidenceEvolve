@@ -1,0 +1,18 @@
+{
+  "caveat": "R1A identifies controller state transitions only; operator efficacy and candidate quality require the preregistered prospective R1B experiment.",
+  "checks": {
+    "escape_budget_has_no_normal_operator": true,
+    "fifty_generation_rows": true,
+    "post_gen9_escape_is_gen13": true,
+    "prospective_claims_remain_unidentified": true,
+    "r1a_pass": true,
+    "recorded_post_gen9_escape_is_gen41": true,
+    "timing_gain_is_28_generations": true,
+    "zero_calls_and_no_blind": true
+  },
+  "failures": [],
+  "result_sha256": "aa057de7293d8c5c10e79be3f69e021eeb0c3325e49d648d3c6194fd4d1ef2a6",
+  "schema_version": "1.0",
+  "status": "READY_TO_SHARE_WITH_CAVEATS",
+  "study_id": "algotune_set_cover_m2_r1a_controller_replay_v0"
+}

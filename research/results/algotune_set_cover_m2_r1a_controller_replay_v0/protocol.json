@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.0",
+  "study_id": "algotune_set_cover_m2_r1a_controller_replay_v0",
+  "scope": "offline development-only controller-state replay",
+  "source_result": "research/results/algotune_set_cover_m2_r0_parent_replay_v0/result.json",
+  "prohibited_sources": [
+    "runs/algotune_set_cover_horizon_blind_v0",
+    "blind instances",
+    "blind evaluator logs",
+    "blind per-case failures"
+  ],
+  "new_candidates": 0,
+  "model_calls": 0,
+  "evaluator_calls": 0,
+  "controller": {
+    "stagnation_reset": "strict_incumbent_refresh",
+    "stagnation_generations": 3,
+    "escape_budget_generations": 4,
+    "escape_reentry": "immediate_if_still_stagnant",
+    "normal_operator_classes": [
+      "mechanism_mutation",
+      "control_mutation",
+      "simplification",
+      "failure_directed_mutation"
+    ],
+    "escape_operator_classes": [
+      "representation_mutation",
+      "cross_family",
+      "restart"
+    ]
+  },
+  "r1a_pass_criteria": {
+    "first_escape_after_gen9_incumbent_refresh": 13,
+    "normal_operator_inside_active_escape_budget": 0,
+    "clock_reset_without_strict_incumbent_refresh": 0,
+    "blind_artifacts_read": false
+  },
+  "r1b_design": {
+    "horizon": 16,
+    "historical_reference": "frozen EvidenceEvolve h50 development campaign",
+    "prospective_arms": [
+      {
+        "id": "controller_only",
+        "description": "0.5% parent guardrail, incumbent-refresh clock, four-generation escape budget, representation/cross-family operators, no SEED restart roots"
+      },
+      {
+        "id": "radical_roots",
+        "description": "same controller plus 50% forced SEED restarts and cross-root context"
+      }
+    ],
+    "common_constraints": [
+      "development-only Set Cover evaluator",
+      "no blind instance or blind evaluator access",
+      "same model and reasoning effort",
+      "same 16-generation proposal/evaluation budget",
+      "one serial proposal per generation per arm"
+    ],
+    "mechanism_success_criteria": {
+      "timely_escape": true,
+      "new_structural_root_lineages_min": 2,
+      "dev_valid_new_root_lineages_min": 1,
+      "material_basin_jump_rate_min": 0.25,
+      "material_basin_jump_rate_lift_vs_frozen_min": 0.25,
+      "final_incumbent_improvement_is_required_for_full_pass": true
+    },
+    "basin_jump_rate_definition": "dev-valid candidates whose genetic parent is SEED divided by forced SEED restart proposals",
+    "mechanism_outcomes": [
+      "M2_R1_PASS",
+      "CONTROLLER_REPAIRED_OPERATOR_INSUFFICIENT",
+      "CONTROLLER_NOT_REPAIRED",
+      "NOT_EVALUABLE_DATA",
+      "INVALID_MECHANICS_OR_ADAPTER"
+    ]
+  },
+  "causal_boundary": "R1A verifies only controller state transitions over frozen development observations. R1B is required to measure new-root production and candidate quality. Structural root lineage is a Git ancestry branch created by a forced SEED restart; it is not a scientific claim of algorithmic novelty."
+}

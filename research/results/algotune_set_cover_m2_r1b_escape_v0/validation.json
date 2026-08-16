@@ -1,0 +1,107 @@
+{
+  "checks": [
+    {
+      "detail": "PROSPECTIVE_SET_COVER_DEVELOPMENT_ONLY_MECHANISM_TEST",
+      "name": "top_level_development_only",
+      "passed": true
+    },
+    {
+      "detail": 16,
+      "name": "controller_only_fixed_horizon",
+      "passed": true
+    },
+    {
+      "detail": [],
+      "name": "controller_only_strict_clock",
+      "passed": true
+    },
+    {
+      "detail": [],
+      "name": "controller_only_archive_parent_guardrail",
+      "passed": true
+    },
+    {
+      "detail": "DEVELOPMENT_ONLY",
+      "name": "controller_only_controller_scope",
+      "passed": true
+    },
+    {
+      "detail": {
+        "receipts": 16,
+        "source_sets": [
+          [
+            "algotune-set-cover-dev-b-v0"
+          ]
+        ]
+      },
+      "name": "controller_only_only_development_receipts",
+      "passed": true
+    },
+    {
+      "detail": {
+        "forced": 0,
+        "valid": 0
+      },
+      "name": "controller_only_root_counts_recomputed",
+      "passed": true
+    },
+    {
+      "detail": "61b7e612ddbb5b3b7956c67a1681e48263c54e8bcb6e5afa449f15e968d442e9",
+      "name": "controller_only_selected_candidate_hash",
+      "passed": true
+    },
+    {
+      "detail": 16,
+      "name": "radical_roots_fixed_horizon",
+      "passed": true
+    },
+    {
+      "detail": [],
+      "name": "radical_roots_strict_clock",
+      "passed": true
+    },
+    {
+      "detail": [],
+      "name": "radical_roots_archive_parent_guardrail",
+      "passed": true
+    },
+    {
+      "detail": "DEVELOPMENT_ONLY",
+      "name": "radical_roots_controller_scope",
+      "passed": true
+    },
+    {
+      "detail": {
+        "receipts": 16,
+        "source_sets": [
+          [
+            "algotune-set-cover-dev-b-v0"
+          ]
+        ]
+      },
+      "name": "radical_roots_only_development_receipts",
+      "passed": true
+    },
+    {
+      "detail": {
+        "forced": 4,
+        "valid": 0
+      },
+      "name": "radical_roots_root_counts_recomputed",
+      "passed": true
+    },
+    {
+      "detail": "5c12d9c27982c55fb6c0287f9437102d58bc884e9655cc0f0fe2c008ab09168e",
+      "name": "radical_roots_selected_candidate_hash",
+      "passed": true
+    },
+    {
+      "detail": "CONTROLLER_REPAIRED_OPERATOR_INSUFFICIENT",
+      "name": "mechanism_outcome_recomputed",
+      "passed": true
+    }
+  ],
+  "passed": true,
+  "result_sha256": "8d33e0a8f7f8f4b0ab47908debb7ab952477651fa44491731eda3a3345988644",
+  "schema_version": "1.0"
+}

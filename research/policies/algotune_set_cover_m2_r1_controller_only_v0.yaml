@@ -1,0 +1,41 @@
+schema_version: "1.0"
+policy_id: algotune_set_cover_m2_r1_controller_only_v0
+parent_selector: island_stratified
+context_compiler: lineage_plus_failure_signature
+stagnation_response: cross_family_structural_restart
+stagnation_generations: 3
+stagnation_reset: incumbent_refresh
+incumbent_metric: raw_speedup
+incumbent_min_delta: 0.0
+parent_quality_guardrail_fraction: 0.005
+escape_budget_generations: 4
+force_seed_restart_roots: false
+prefer_distinct_root_context: true
+moonshot_fraction: 0.0
+island_ids: [main]
+island_capacity: 8
+parents_per_island: 2
+migration_interval: 2
+migration_count: 0
+stepping_stone_min_information_gain: 0.5
+max_parallel_proposals: 1
+max_parallel_evaluations: 1
+literature_papers_per_action: 0
+repositories_per_action: 0
+source_files_per_repository: 0
+code_parent_dispositions: [CODE_PARENT, FAILURE_DIRECTED_SEED]
+mutation_operator_mix:
+  mechanism_mutation: 0.34
+  representation_mutation: 0.33
+  failure_directed_mutation: 0.33
+breakthrough_mutation_mix:
+  representation_mutation: 0.5
+  cross_family: 0.5
+weights:
+  admit_probability: 1.0
+  expected_improvement: 1.0
+  information_gain: 1.0
+  novelty: 0.5
+  transfer_value: 0.25
+  cost: 0.5
+  redundancy: 0.5
