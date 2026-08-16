@@ -1,0 +1,22 @@
+{
+  "checks": {
+    "best_candidate_gen9": true,
+    "development_only_flags": true,
+    "escape_is_required_at_gen13": true,
+    "fifty_frozen_traces": true,
+    "frozen_pool_has_one_root_lineage": true,
+    "guardrail_removes_gen13_pressure": true,
+    "observed_concentration_formula": true,
+    "observed_parent_exposure_exact": true,
+    "recorded_breakthrough_is_delayed": true,
+    "sensitivity_preserves_gen13_nonselection": true,
+    "static_replay_keeps_best_frozen_candidate": true,
+    "thirty_six_valid_candidates": true
+  },
+  "failures": [],
+  "result_sha256": "b911d14dc041f70b296cd4995066f7d348102134d27d7163a29cccbf29c58a86",
+  "review_caveat": "The replay identifies parent-pressure changes only over the frozen development candidate pool; it does not identify counterfactual generated candidates or final development/held-out quality.",
+  "schema_version": "1.0",
+  "status": "READY_TO_SHARE_WITH_CAVEATS",
+  "study_id": "algotune_set_cover_m2_r0_parent_replay_v0"
+}

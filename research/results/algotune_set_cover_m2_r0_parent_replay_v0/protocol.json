@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0",
+  "study_id": "algotune_set_cover_m2_r0_parent_replay_v0",
+  "scope": "offline development-only parent-policy replay",
+  "source_campaign": "runs/algotune_horizon_scaling_v0/set_cover/arms/evidence_evolve/campaign",
+  "prohibited_sources": [
+    "runs/algotune_set_cover_horizon_blind_v0",
+    "blind instances",
+    "blind per-case failures",
+    "blind evaluator logs"
+  ],
+  "new_candidates": 0,
+  "model_calls": 0,
+  "evaluator_calls": 0,
+  "candidate_population": "all development-valid candidates admitted before each replayed generation",
+  "parent_slots": 2,
+  "policies": [
+    {
+      "id": "observed",
+      "description": "Use the frozen policy_effect_trace parent pools exactly as recorded."
+    },
+    {
+      "id": "incumbent_guardrail",
+      "description": "Prefer candidates within 0.5% of the contemporaneous development incumbent, ordered by development quality, novelty, information gain, and candidate id; retain valid candidates in the archive even when they are not preferred parents.",
+      "near_incumbent_ratio": 0.995
+    },
+    {
+      "id": "guardrail_stagnation_escape",
+      "description": "Use the incumbent guardrail for the quality slot. After three consecutive generations without an incumbent refresh, require the second slot to come from a different root lineage; emit ESCAPE_REQUIRED when the frozen candidate pool contains no such lineage.",
+      "near_incumbent_ratio": 0.995,
+      "stagnation_generations": 3
+    }
+  ],
+  "sensitivity": {
+    "near_incumbent_ratios": [1.0, 0.995, 0.99, 0.98],
+    "stagnation_generations": [2, 3, 5]
+  },
+  "metrics": [
+    "GEN-13 parent-slot exposure",
+    "sub-guardrail parent-slot share",
+    "mean parent quality relative to contemporaneous incumbent",
+    "maximum parent share",
+    "parent HHI and effective parent count",
+    "distinct selected root lineages",
+    "escape-required slots and first trigger generation",
+    "best candidate reachable in the frozen pool"
+  ],
+  "causal_boundary": "Replay identifies counterfactual pressure over the frozen candidate pool. It does not identify candidates that would have been generated under a changed parent policy and therefore cannot estimate counterfactual final search quality."
+}

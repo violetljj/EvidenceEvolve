@@ -1,0 +1,442 @@
+{
+  "manifest": {
+    "version": 1,
+    "title": "M2-R0 Set Cover Parent-Policy Replay",
+    "surface": "report",
+    "description": "Zero-token development-only counterfactual replay of EvidenceEvolve parent selection and stagnation escape.",
+    "generatedAt": "2026-08-16T00:00:00Z",
+    "sources": [
+      {
+        "id": "m2_r0_replay",
+        "label": "Frozen Set Cover development-only parent-policy replay",
+        "path": "research/results/algotune_set_cover_m2_r0_parent_replay_v0/result.json",
+        "query": {
+          "language": "sql",
+          "sql": "SELECT * FROM result_json",
+          "description": "Read the complete deterministic M2-R0 replay result.",
+          "tables_used": [
+            "result.json"
+          ],
+          "metric_definitions": [
+            "parent exposure counts candidate appearances in the recorded or replayed two-slot parent pool",
+            "quality ratio is candidate development speedup divided by the contemporaneous development incumbent",
+            "root lineage follows the first genetic parent to its first valid ancestor"
+          ],
+          "filters": [
+            "frozen Set Cover development campaign only",
+            "no blind artifacts",
+            "no new candidates or evaluator/model calls"
+          ]
+        }
+      }
+    ],
+    "blocks": [
+      {
+        "id": "title",
+        "type": "markdown",
+        "body": "# M2-R0 Set Cover Parent-Policy Replay\nDeterministic, development-only replay. No new candidate, model call, evaluator call, or blind artifact was used."
+      },
+      {
+        "id": "technical_summary",
+        "type": "markdown",
+        "sourceId": "m2_r0_replay",
+        "body": "## Technical summary\n**Result: parent-pressure failure confirmed; selection-only repair is necessary but insufficient.** The observed frozen pools used GEN-13 in 37 of 85 candidate parent slots even though it trailed the GEN-9 incumbent. A 0.5% incumbent guardrail reduces GEN-13 exposure to zero and eliminates all below-guardrail parent slots, raising mean selected-parent quality from 0.9881 to 0.9999 of the contemporaneous incumbent. But all 36 dev-valid candidates share one root lineage, so static selection cannot supply the missing basin jump. The correct R1 design therefore needs both a parent-quality repair and an explicit escape source."
+      },
+      {
+        "id": "key_findings",
+        "type": "markdown",
+        "body": "## Key findings with visual evidence\nThe replay separates two claims. The pressure claim is directly identified over the frozen candidate pool: GEN-13 need not occupy any parent slot under the preregistered guardrails. The downstream quality claim is not identified: changing parents would have changed future proposals, and those counterfactual candidates do not exist in this ledger."
+      },
+      {
+        "id": "gen13_chart_block",
+        "type": "chart",
+        "chartId": "gen13_exposure"
+      },
+      {
+        "id": "policy_table_block",
+        "type": "table",
+        "tableId": "policy_summary"
+      },
+      {
+        "id": "stagnation",
+        "type": "markdown",
+        "body": "## Stagnation detector diagnosis\nGEN-9 is the last incumbent refresh. An incumbent-refresh counter with N=3 requires escape at GEN-13. The frozen controller does not enter its next recorded `BREAKTHROUGH` mode until GEN-41 (then GEN-42 and GEN-43), because its state is not equivalent to a strict incumbent-refresh clock. At GEN-13 the frozen pool contains no different root lineage, so the replay emits `ESCAPE_REQUIRED` rather than pretending that another same-lineage candidate is a basin jump."
+      },
+      {
+        "id": "stagnation_chart_block",
+        "type": "chart",
+        "chartId": "stagnation_response"
+      },
+      {
+        "id": "scope",
+        "type": "markdown",
+        "body": "## Scope, data, and definitions\nThe input is the frozen 50-generation Set Cover development campaign: recorded parent pools, the M1 generation ledger, population novelty/information-gain fields, and first-parent ancestry. `Observed` reproduces the stored policy-effect traces. `Incumbent guardrail` restricts preferred parents to candidates within 0.5% of the contemporaneous incumbent and ranks by dev quality, novelty, information gain, then ID. `Guardrail + escape` reserves a second slot for a different root lineage after three strict non-improving generations; when none exists it records `ESCAPE_REQUIRED`."
+      },
+      {
+        "id": "methodology",
+        "type": "markdown",
+        "body": "## Methodology\nA deterministic script reconstructs the parent-eligible state before each generation, recomputes the incumbent chronologically, and replays three preregistered policies without modifying the archive. Metrics are parent-slot exposure, quality relative to the contemporaneous incumbent, concentration (maximum share and HHI), effective parent count, root-lineage count, and escape timing. An independent validator re-reads all 50 policy traces and the M1 ledger, recomputes observed exposure and concentration, and checks the causal-boundary flags."
+      },
+      {
+        "id": "robustness",
+        "type": "markdown",
+        "body": "## Limitations and robustness\nThe GEN-13 non-selection result holds across preregistered near-incumbent ratios from 1.00 to 0.98; at 0.98 GEN-13 becomes eligible for 37 generations but is still never selected among the top two. Guardrails alone reduce low-quality pressure but increase concentration, so they do not solve diversity. Root lineage is a structural first-parent definition, not a semantic algorithm-family classifier. Most importantly, this replay cannot estimate which candidates a repaired controller would generate or whether final development or held-out quality would improve. Validation status: `READY_TO_SHARE_WITH_CAVEATS`."
+      },
+      {
+        "id": "sensitivity_table_block",
+        "type": "table",
+        "tableId": "ratio_sensitivity"
+      },
+      {
+        "id": "next_steps",
+        "type": "markdown",
+        "body": "## Recommended M2-R1 decision\nProceed with a small fixed-budget development experiment, not blind evaluation: (1) frozen baseline EE, (2) parent-pressure repair, (3) repair plus incumbent-based stagnation/diversity escape, and (4) repair plus an explicit radical or cross-lineage source. Keep validity/admission, parent eligibility, and preferred-parent ranking as separate states. Predeclare pass criteria requiring both final quality and search-dynamics improvement: incumbent refreshes, productive lineages, recovery after stagnation, parent concentration, novelty, and improvement per token/wall time. Do not treat a higher final dev score alone as M2 PASS."
+      },
+      {
+        "id": "questions",
+        "type": "markdown",
+        "body": "## Further questions\n1. Does a semantic mechanism-family classifier reveal more than one family inside the single structural root lineage? 2. What minimum escape quota yields new productive roots without overwhelming exploitation? 3. Does the guardrail need a concentration cap or exposure decay to prevent GEN-9 from becoming the next dominant parent? 4. Can cross-lineage context be introduced without turning development validation into a second fitness surface?"
+      }
+    ],
+    "charts": [
+      {
+        "id": "gen13_exposure",
+        "title": "GEN-13 parent-slot exposure by replay policy",
+        "subtitle": "Both preregistered repairs remove GEN-13 from preferred parent slots in the frozen pool.",
+        "type": "bar",
+        "source": {
+          "id": "m2_r0_replay",
+          "label": "Frozen Set Cover development-only parent-policy replay",
+          "path": "research/results/algotune_set_cover_m2_r0_parent_replay_v0/result.json",
+          "query": {
+            "language": "sql",
+            "sql": "SELECT policy, gen13_parent_slots FROM gen13_exposure ORDER BY gen13_parent_slots DESC",
+            "description": "Compare GEN-13 parent-slot exposure across observed and replayed policies.",
+            "tables_used": [
+              "result.json"
+            ],
+            "metric_definitions": [
+              "GEN-13 exposure is the number of candidate parent slots occupied by GEN-013-C01"
+            ],
+            "filters": [
+              "frozen Set Cover development campaign only",
+              "no blind artifacts",
+              "no new candidates or evaluator/model calls"
+            ]
+          }
+        },
+        "dataset": "gen13_exposure",
+        "encodings": {
+          "x": {
+            "field": "policy",
+            "type": "nominal",
+            "title": "Policy"
+          },
+          "y": {
+            "field": "gen13_parent_slots",
+            "type": "quantitative",
+            "title": "Parent slots"
+          }
+        },
+        "options": {
+          "orientation": "vertical"
+        }
+      },
+      {
+        "id": "stagnation_response",
+        "title": "First post-GEN-9 stagnation response generation",
+        "subtitle": "An incumbent-refresh clock would demand escape 28 generations earlier than the recorded controller response.",
+        "type": "bar",
+        "source": {
+          "id": "m2_r0_replay",
+          "label": "Frozen Set Cover development-only parent-policy replay",
+          "path": "research/results/algotune_set_cover_m2_r0_parent_replay_v0/result.json",
+          "query": {
+            "language": "sql",
+            "sql": "SELECT detector, first_response_generation FROM stagnation_response ORDER BY first_response_generation DESC",
+            "description": "Compare the recorded breakthrough timing with a strict three-generation incumbent-refresh detector.",
+            "tables_used": [
+              "result.json"
+            ],
+            "metric_definitions": [
+              "response generation is the first generation after GEN-9 at which the detector requires or records escape"
+            ],
+            "filters": [
+              "frozen Set Cover development campaign only",
+              "no blind artifacts",
+              "no new candidates or evaluator/model calls"
+            ]
+          }
+        },
+        "dataset": "stagnation_response",
+        "encodings": {
+          "x": {
+            "field": "detector",
+            "type": "nominal",
+            "title": "Detector"
+          },
+          "y": {
+            "field": "first_response_generation",
+            "type": "quantitative",
+            "title": "Generation"
+          }
+        },
+        "options": {
+          "orientation": "vertical"
+        }
+      }
+    ],
+    "tables": [
+      {
+        "id": "policy_summary",
+        "title": "Parent-policy replay summary",
+        "source": {
+          "id": "m2_r0_replay",
+          "label": "Frozen Set Cover development-only parent-policy replay",
+          "path": "research/results/algotune_set_cover_m2_r0_parent_replay_v0/result.json",
+          "query": {
+            "language": "sql",
+            "sql": "SELECT * FROM result_json",
+            "description": "Read the complete deterministic M2-R0 replay result.",
+            "tables_used": [
+              "result.json"
+            ],
+            "metric_definitions": [
+              "parent exposure counts candidate appearances in the recorded or replayed two-slot parent pool",
+              "quality ratio is candidate development speedup divided by the contemporaneous development incumbent",
+              "root lineage follows the first genetic parent to its first valid ancestor"
+            ],
+            "filters": [
+              "frozen Set Cover development campaign only",
+              "no blind artifacts",
+              "no new candidates or evaluator/model calls"
+            ]
+          }
+        },
+        "dataset": "policy_summary",
+        "columns": [
+          {
+            "field": "policy",
+            "label": "Policy",
+            "type": "text"
+          },
+          {
+            "field": "parent_slots",
+            "label": "Candidate slots",
+            "type": "number"
+          },
+          {
+            "field": "gen13_slots",
+            "label": "GEN-13 slots",
+            "type": "number"
+          },
+          {
+            "field": "sub_guardrail_share",
+            "label": "Below guardrail",
+            "type": "percent"
+          },
+          {
+            "field": "mean_quality_ratio",
+            "label": "Mean quality/incumbent",
+            "type": "number"
+          },
+          {
+            "field": "max_parent_share",
+            "label": "Max parent share",
+            "type": "percent"
+          },
+          {
+            "field": "effective_parents",
+            "label": "Effective parents",
+            "type": "number"
+          },
+          {
+            "field": "root_lineages",
+            "label": "Root lineages",
+            "type": "number"
+          },
+          {
+            "field": "escape_required_slots",
+            "label": "Escape required",
+            "type": "number"
+          }
+        ],
+        "defaultSort": {
+          "field": "gen13_slots",
+          "direction": "desc"
+        }
+      },
+      {
+        "id": "ratio_sensitivity",
+        "title": "Near-incumbent guardrail sensitivity",
+        "source": {
+          "id": "m2_r0_replay",
+          "label": "Frozen Set Cover development-only parent-policy replay",
+          "path": "research/results/algotune_set_cover_m2_r0_parent_replay_v0/result.json",
+          "query": {
+            "language": "sql",
+            "sql": "SELECT * FROM result_json",
+            "description": "Read the complete deterministic M2-R0 replay result.",
+            "tables_used": [
+              "result.json"
+            ],
+            "metric_definitions": [
+              "parent exposure counts candidate appearances in the recorded or replayed two-slot parent pool",
+              "quality ratio is candidate development speedup divided by the contemporaneous development incumbent",
+              "root lineage follows the first genetic parent to its first valid ancestor"
+            ],
+            "filters": [
+              "frozen Set Cover development campaign only",
+              "no blind artifacts",
+              "no new candidates or evaluator/model calls"
+            ]
+          }
+        },
+        "dataset": "ratio_sensitivity",
+        "columns": [
+          {
+            "field": "near_incumbent_ratio",
+            "label": "Guardrail ratio",
+            "type": "percent"
+          },
+          {
+            "field": "gen13_eligible_generations",
+            "label": "GEN-13 eligible generations",
+            "type": "number"
+          },
+          {
+            "field": "gen13_selected_slots",
+            "label": "GEN-13 selected slots",
+            "type": "number"
+          },
+          {
+            "field": "distinct_parents",
+            "label": "Distinct parents",
+            "type": "number"
+          },
+          {
+            "field": "mean_quality_ratio",
+            "label": "Mean quality/incumbent",
+            "type": "number"
+          },
+          {
+            "field": "max_parent_share",
+            "label": "Max parent share",
+            "type": "percent"
+          }
+        ],
+        "defaultSort": {
+          "field": "near_incumbent_ratio",
+          "direction": "desc"
+        }
+      }
+    ]
+  },
+  "snapshot": {
+    "version": 1,
+    "status": "ready",
+    "generatedAt": "2026-08-16T00:00:00Z",
+    "datasets": {
+      "policy_summary": [
+        {
+          "policy": "Observed frozen policy",
+          "parent_slots": 85,
+          "gen13_slots": 37,
+          "sub_guardrail_share": 0.788235,
+          "mean_quality_ratio": 0.988145,
+          "max_parent_share": 0.435294,
+          "effective_parents": 3.773,
+          "root_lineages": 1,
+          "escape_required_slots": 0
+        },
+        {
+          "policy": "Incumbent guardrail",
+          "parent_slots": 84,
+          "gen13_slots": 0,
+          "sub_guardrail_share": 0.0,
+          "mean_quality_ratio": 0.999877,
+          "max_parent_share": 0.488095,
+          "effective_parents": 2.24,
+          "root_lineages": 1,
+          "escape_required_slots": 0
+        },
+        {
+          "policy": "Guardrail + escape",
+          "parent_slots": 46,
+          "gen13_slots": 0,
+          "sub_guardrail_share": 0.0,
+          "mean_quality_ratio": 0.999781,
+          "max_parent_share": 0.891304,
+          "effective_parents": 1.24,
+          "root_lineages": 1,
+          "escape_required_slots": 38
+        }
+      ],
+      "gen13_exposure": [
+        {
+          "policy": "Observed frozen policy",
+          "gen13_parent_slots": 37
+        },
+        {
+          "policy": "Incumbent guardrail",
+          "gen13_parent_slots": 0
+        },
+        {
+          "policy": "Guardrail + escape",
+          "gen13_parent_slots": 0
+        }
+      ],
+      "stagnation_response": [
+        {
+          "detector": "Recorded controller",
+          "first_response_generation": 41
+        },
+        {
+          "detector": "Incumbent-refresh N=3",
+          "first_response_generation": 13
+        }
+      ],
+      "ratio_sensitivity": [
+        {
+          "near_incumbent_ratio": 1.0,
+          "gen13_eligible_generations": 0,
+          "gen13_selected_slots": 0,
+          "distinct_parents": 2,
+          "mean_quality_ratio": 1.0,
+          "max_parent_share": 0.953488
+        },
+        {
+          "near_incumbent_ratio": 0.995,
+          "gen13_eligible_generations": 0,
+          "gen13_selected_slots": 0,
+          "distinct_parents": 3,
+          "mean_quality_ratio": 0.999877,
+          "max_parent_share": 0.488095
+        },
+        {
+          "near_incumbent_ratio": 0.99,
+          "gen13_eligible_generations": 0,
+          "gen13_selected_slots": 0,
+          "distinct_parents": 3,
+          "mean_quality_ratio": 0.999877,
+          "max_parent_share": 0.488095
+        },
+        {
+          "near_incumbent_ratio": 0.98,
+          "gen13_eligible_generations": 37,
+          "gen13_selected_slots": 0,
+          "distinct_parents": 4,
+          "mean_quality_ratio": 0.99971,
+          "max_parent_share": 0.482353
+        }
+      ],
+      "validation": [
+        {
+          "status": "READY_TO_SHARE_WITH_CAVEATS",
+          "failed_checks": 0,
+          "result_sha256": "b911d14dc041f70b296cd4995066f7d348102134d27d7163a29cccbf29c58a86"
+        }
+      ]
+    }
+  }
+}

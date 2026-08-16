@@ -1,0 +1,3022 @@
+{
+  "blind_artifacts_read": false,
+  "candidate_population": {
+    "best_frozen_candidate": "GEN-009-C01",
+    "best_frozen_raw_speedup": 1.0271824527267341,
+    "development_valid_candidates": 36,
+    "root_lineage_ids": [
+      "GEN-007-C01"
+    ],
+    "unique_root_lineages": 1
+  },
+  "evaluator_calls": 0,
+  "generation_state": [
+    {
+      "escape_pool": [
+        "SEED"
+      ],
+      "generation": 1,
+      "guardrail_pool": [
+        "SEED"
+      ],
+      "incumbent": 0.9987262059725405,
+      "observed_pool": [
+        "SEED"
+      ],
+      "stagnation_before_generation": 0
+    },
+    {
+      "escape_pool": [
+        "SEED"
+      ],
+      "generation": 2,
+      "guardrail_pool": [
+        "SEED"
+      ],
+      "incumbent": 0.9987262059725405,
+      "observed_pool": [
+        "SEED"
+      ],
+      "stagnation_before_generation": 1
+    },
+    {
+      "escape_pool": [
+        "SEED"
+      ],
+      "generation": 3,
+      "guardrail_pool": [
+        "SEED"
+      ],
+      "incumbent": 0.9987262059725405,
+      "observed_pool": [
+        "SEED"
+      ],
+      "stagnation_before_generation": 2
+    },
+    {
+      "escape_pool": [
+        "SEED"
+      ],
+      "generation": 4,
+      "guardrail_pool": [
+        "SEED"
+      ],
+      "incumbent": 0.9987262059725405,
+      "observed_pool": [
+        "SEED"
+      ],
+      "stagnation_before_generation": 3
+    },
+    {
+      "escape_pool": [
+        "SEED"
+      ],
+      "generation": 5,
+      "guardrail_pool": [
+        "SEED"
+      ],
+      "incumbent": 0.9987262059725405,
+      "observed_pool": [
+        "SEED"
+      ],
+      "stagnation_before_generation": 4
+    },
+    {
+      "escape_pool": [
+        "SEED"
+      ],
+      "generation": 6,
+      "guardrail_pool": [
+        "SEED"
+      ],
+      "incumbent": 0.9987262059725405,
+      "observed_pool": [
+        "SEED"
+      ],
+      "stagnation_before_generation": 5
+    },
+    {
+      "escape_pool": [
+        "SEED"
+      ],
+      "generation": 7,
+      "guardrail_pool": [
+        "SEED"
+      ],
+      "incumbent": 0.9987262059725405,
+      "observed_pool": [
+        "SEED"
+      ],
+      "stagnation_before_generation": 6
+    },
+    {
+      "escape_pool": [
+        "GEN-007-C01"
+      ],
+      "generation": 8,
+      "guardrail_pool": [
+        "GEN-007-C01"
+      ],
+      "incumbent": 1.0237363920490448,
+      "observed_pool": [
+        "GEN-007-C01"
+      ],
+      "stagnation_before_generation": 0
+    },
+    {
+      "escape_pool": [
+        "GEN-007-C01"
+      ],
+      "generation": 9,
+      "guardrail_pool": [
+        "GEN-007-C01"
+      ],
+      "incumbent": 1.0237363920490448,
+      "observed_pool": [
+        "GEN-008-C01",
+        "GEN-007-C01"
+      ],
+      "stagnation_before_generation": 1
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "GEN-007-C01"
+      ],
+      "generation": 10,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-007-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-009-C01",
+        "GEN-008-C01"
+      ],
+      "stagnation_before_generation": 0
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "GEN-007-C01"
+      ],
+      "generation": 11,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-007-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-009-C01",
+        "GEN-008-C01"
+      ],
+      "stagnation_before_generation": 1
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "GEN-007-C01"
+      ],
+      "generation": 12,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-007-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-009-C01",
+        "GEN-008-C01"
+      ],
+      "stagnation_before_generation": 2
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 13,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-009-C01",
+        "GEN-008-C01"
+      ],
+      "stagnation_before_generation": 3
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 14,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-013-C01",
+        "GEN-009-C01"
+      ],
+      "stagnation_before_generation": 4
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 15,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-013-C01",
+        "GEN-009-C01"
+      ],
+      "stagnation_before_generation": 5
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 16,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-013-C01",
+        "GEN-009-C01"
+      ],
+      "stagnation_before_generation": 6
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 17,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-013-C01",
+        "GEN-009-C01"
+      ],
+      "stagnation_before_generation": 7
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 18,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-013-C01",
+        "GEN-009-C01"
+      ],
+      "stagnation_before_generation": 8
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 19,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-013-C01",
+        "GEN-009-C01"
+      ],
+      "stagnation_before_generation": 9
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 20,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-013-C01",
+        "GEN-009-C01"
+      ],
+      "stagnation_before_generation": 10
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 21,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-013-C01",
+        "GEN-009-C01"
+      ],
+      "stagnation_before_generation": 11
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 22,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-013-C01",
+        "GEN-009-C01"
+      ],
+      "stagnation_before_generation": 12
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 23,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-013-C01",
+        "GEN-009-C01"
+      ],
+      "stagnation_before_generation": 13
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 24,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-013-C01",
+        "GEN-009-C01"
+      ],
+      "stagnation_before_generation": 14
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 25,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-013-C01",
+        "GEN-009-C01"
+      ],
+      "stagnation_before_generation": 15
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 26,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-013-C01",
+        "GEN-025-C01"
+      ],
+      "stagnation_before_generation": 16
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 27,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-013-C01",
+        "GEN-025-C01"
+      ],
+      "stagnation_before_generation": 17
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 28,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-013-C01",
+        "GEN-025-C01"
+      ],
+      "stagnation_before_generation": 18
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 29,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-013-C01",
+        "GEN-025-C01"
+      ],
+      "stagnation_before_generation": 19
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 30,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-013-C01",
+        "GEN-029-C01"
+      ],
+      "stagnation_before_generation": 20
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 31,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-013-C01",
+        "GEN-029-C01"
+      ],
+      "stagnation_before_generation": 21
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 32,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-013-C01",
+        "GEN-029-C01"
+      ],
+      "stagnation_before_generation": 22
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 33,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-013-C01",
+        "GEN-029-C01"
+      ],
+      "stagnation_before_generation": 23
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 34,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-013-C01",
+        "GEN-029-C01"
+      ],
+      "stagnation_before_generation": 24
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 35,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-013-C01",
+        "GEN-029-C01"
+      ],
+      "stagnation_before_generation": 25
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 36,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-013-C01",
+        "GEN-029-C01"
+      ],
+      "stagnation_before_generation": 26
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 37,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-036-C01",
+        "GEN-013-C01"
+      ],
+      "stagnation_before_generation": 27
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 38,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-036-C01",
+        "GEN-013-C01"
+      ],
+      "stagnation_before_generation": 28
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 39,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-036-C01",
+        "GEN-013-C01"
+      ],
+      "stagnation_before_generation": 29
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 40,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-036-C01",
+        "GEN-013-C01"
+      ],
+      "stagnation_before_generation": 30
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 41,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-036-C01",
+        "GEN-013-C01"
+      ],
+      "stagnation_before_generation": 31
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 42,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-036-C01",
+        "GEN-013-C01"
+      ],
+      "stagnation_before_generation": 32
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 43,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-036-C01",
+        "GEN-013-C01"
+      ],
+      "stagnation_before_generation": 33
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 44,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-036-C01",
+        "GEN-013-C01"
+      ],
+      "stagnation_before_generation": 34
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 45,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-036-C01",
+        "GEN-013-C01"
+      ],
+      "stagnation_before_generation": 35
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 46,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-036-C01",
+        "GEN-013-C01"
+      ],
+      "stagnation_before_generation": 36
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 47,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-036-C01",
+        "GEN-013-C01"
+      ],
+      "stagnation_before_generation": 37
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 48,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-036-C01",
+        "GEN-013-C01"
+      ],
+      "stagnation_before_generation": 38
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 49,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-036-C01",
+        "GEN-013-C01"
+      ],
+      "stagnation_before_generation": 39
+    },
+    {
+      "escape_pool": [
+        "GEN-009-C01",
+        "ESCAPE_REQUIRED"
+      ],
+      "generation": 50,
+      "guardrail_pool": [
+        "GEN-009-C01",
+        "GEN-012-C01"
+      ],
+      "incumbent": 1.0271824527267341,
+      "observed_pool": [
+        "GEN-036-C01",
+        "GEN-013-C01"
+      ],
+      "stagnation_before_generation": 40
+    }
+  ],
+  "identified_findings": [
+    "A 0.5% incumbent guardrail can be evaluated exactly over the frozen candidate pool.",
+    "The frozen development-valid pool contains only one root lineage, so no parent-only replay can create cross-basin diversity.",
+    "All replay policies have the same best frozen candidate because no new candidate is generated."
+  ],
+  "model_calls": 0,
+  "near_incumbent_sensitivity": [
+    {
+      "distinct_parents": 2,
+      "gen13_eligible_generations": 0,
+      "gen13_exposure": 0,
+      "max_parent_share": 0.9534883720930233,
+      "mean_parent_quality_ratio": 1.0,
+      "near_incumbent_ratio": 1.0
+    },
+    {
+      "distinct_parents": 3,
+      "gen13_eligible_generations": 0,
+      "gen13_exposure": 0,
+      "max_parent_share": 0.4880952380952381,
+      "mean_parent_quality_ratio": 0.9998765918403788,
+      "near_incumbent_ratio": 0.995
+    },
+    {
+      "distinct_parents": 3,
+      "gen13_eligible_generations": 0,
+      "gen13_exposure": 0,
+      "max_parent_share": 0.4880952380952381,
+      "mean_parent_quality_ratio": 0.9998765918403788,
+      "near_incumbent_ratio": 0.99
+    },
+    {
+      "distinct_parents": 4,
+      "gen13_eligible_generations": 37,
+      "gen13_exposure": 0,
+      "max_parent_share": 0.4823529411764706,
+      "mean_parent_quality_ratio": 0.9997101694176206,
+      "near_incumbent_ratio": 0.98
+    }
+  ],
+  "new_candidates": 0,
+  "non_identified_claims": [
+    "Counterfactual candidates that would have been generated from different parents.",
+    "Counterfactual final development or held-out quality under a changed parent policy.",
+    "The causal effect of a radical operator, which requires a new fixed-budget development experiment."
+  ],
+  "policy_summaries": [
+    {
+      "candidate_parent_slots": 85,
+      "distinct_parents": 7,
+      "distinct_root_lineages": 1,
+      "effective_parent_count": 3.772845953002611,
+      "escape_required_slots": 0,
+      "first_escape_generation": null,
+      "gen13_exposure": 37,
+      "gen9_exposure": 16,
+      "max_parent_share": 0.43529411764705883,
+      "mean_parent_quality_ratio": 0.9881453926197368,
+      "parent_exposure": {
+        "GEN-007-C01": 2,
+        "GEN-008-C01": 5,
+        "GEN-009-C01": 16,
+        "GEN-013-C01": 37,
+        "GEN-025-C01": 4,
+        "GEN-029-C01": 7,
+        "GEN-036-C01": 14
+      },
+      "parent_hhi": 0.26505190311418686,
+      "policy_id": "observed",
+      "slot_rows": [
+        {
+          "generation": 8,
+          "incumbent": 1.0237363920490448,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0237363920490448,
+          "slot": "GEN-007-C01"
+        },
+        {
+          "generation": 9,
+          "incumbent": 1.0237363920490448,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9857306859059358,
+          "raw_speedup": 1.009128375921373,
+          "slot": "GEN-008-C01"
+        },
+        {
+          "generation": 9,
+          "incumbent": 1.0237363920490448,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0237363920490448,
+          "slot": "GEN-007-C01"
+        },
+        {
+          "generation": 10,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 10,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9824236903994658,
+          "raw_speedup": 1.009128375921373,
+          "slot": "GEN-008-C01"
+        },
+        {
+          "generation": 11,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 11,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9824236903994658,
+          "raw_speedup": 1.009128375921373,
+          "slot": "GEN-008-C01"
+        },
+        {
+          "generation": 12,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 12,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9824236903994658,
+          "raw_speedup": 1.009128375921373,
+          "slot": "GEN-008-C01"
+        },
+        {
+          "generation": 13,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 13,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9824236903994658,
+          "raw_speedup": 1.009128375921373,
+          "slot": "GEN-008-C01"
+        },
+        {
+          "generation": 14,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 14,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 15,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 15,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 16,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 16,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 17,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 17,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 18,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 18,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 19,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 19,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 20,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 20,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 21,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 21,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 22,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 22,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 23,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 23,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 24,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 24,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 25,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 25,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 26,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 26,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9855026434684778,
+          "raw_speedup": 1.0122910224866313,
+          "slot": "GEN-025-C01"
+        },
+        {
+          "generation": 27,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 27,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9855026434684778,
+          "raw_speedup": 1.0122910224866313,
+          "slot": "GEN-025-C01"
+        },
+        {
+          "generation": 28,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 28,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9855026434684778,
+          "raw_speedup": 1.0122910224866313,
+          "slot": "GEN-025-C01"
+        },
+        {
+          "generation": 29,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 29,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9855026434684778,
+          "raw_speedup": 1.0122910224866313,
+          "slot": "GEN-025-C01"
+        },
+        {
+          "generation": 30,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 30,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9856272532487772,
+          "raw_speedup": 1.012419019466393,
+          "slot": "GEN-029-C01"
+        },
+        {
+          "generation": 31,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 31,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9856272532487772,
+          "raw_speedup": 1.012419019466393,
+          "slot": "GEN-029-C01"
+        },
+        {
+          "generation": 32,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 32,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9856272532487772,
+          "raw_speedup": 1.012419019466393,
+          "slot": "GEN-029-C01"
+        },
+        {
+          "generation": 33,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 33,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9856272532487772,
+          "raw_speedup": 1.012419019466393,
+          "slot": "GEN-029-C01"
+        },
+        {
+          "generation": 34,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 34,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9856272532487772,
+          "raw_speedup": 1.012419019466393,
+          "slot": "GEN-029-C01"
+        },
+        {
+          "generation": 35,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 35,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9856272532487772,
+          "raw_speedup": 1.012419019466393,
+          "slot": "GEN-029-C01"
+        },
+        {
+          "generation": 36,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 36,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9856272532487772,
+          "raw_speedup": 1.012419019466393,
+          "slot": "GEN-029-C01"
+        },
+        {
+          "generation": 37,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9854441075543835,
+          "raw_speedup": 1.0122308954228192,
+          "slot": "GEN-036-C01"
+        },
+        {
+          "generation": 37,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 38,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9854441075543835,
+          "raw_speedup": 1.0122308954228192,
+          "slot": "GEN-036-C01"
+        },
+        {
+          "generation": 38,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 39,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9854441075543835,
+          "raw_speedup": 1.0122308954228192,
+          "slot": "GEN-036-C01"
+        },
+        {
+          "generation": 39,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 40,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9854441075543835,
+          "raw_speedup": 1.0122308954228192,
+          "slot": "GEN-036-C01"
+        },
+        {
+          "generation": 40,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 41,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9854441075543835,
+          "raw_speedup": 1.0122308954228192,
+          "slot": "GEN-036-C01"
+        },
+        {
+          "generation": 41,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 42,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9854441075543835,
+          "raw_speedup": 1.0122308954228192,
+          "slot": "GEN-036-C01"
+        },
+        {
+          "generation": 42,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 43,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9854441075543835,
+          "raw_speedup": 1.0122308954228192,
+          "slot": "GEN-036-C01"
+        },
+        {
+          "generation": 43,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 44,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9854441075543835,
+          "raw_speedup": 1.0122308954228192,
+          "slot": "GEN-036-C01"
+        },
+        {
+          "generation": 44,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 45,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9854441075543835,
+          "raw_speedup": 1.0122308954228192,
+          "slot": "GEN-036-C01"
+        },
+        {
+          "generation": 45,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 46,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9854441075543835,
+          "raw_speedup": 1.0122308954228192,
+          "slot": "GEN-036-C01"
+        },
+        {
+          "generation": 46,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 47,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9854441075543835,
+          "raw_speedup": 1.0122308954228192,
+          "slot": "GEN-036-C01"
+        },
+        {
+          "generation": 47,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 48,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9854441075543835,
+          "raw_speedup": 1.0122308954228192,
+          "slot": "GEN-036-C01"
+        },
+        {
+          "generation": 48,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 49,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9854441075543835,
+          "raw_speedup": 1.0122308954228192,
+          "slot": "GEN-036-C01"
+        },
+        {
+          "generation": 49,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        },
+        {
+          "generation": 50,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9854441075543835,
+          "raw_speedup": 1.0122308954228192,
+          "slot": "GEN-036-C01"
+        },
+        {
+          "generation": 50,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9848463262918137,
+          "raw_speedup": 1.0116168649993387,
+          "slot": "GEN-013-C01"
+        }
+      ],
+      "sub_guardrail_share": 0.788235294117647,
+      "sub_guardrail_slots": 67
+    },
+    {
+      "candidate_parent_slots": 84,
+      "distinct_parents": 3,
+      "distinct_root_lineages": 1,
+      "effective_parent_count": 2.2399999999999998,
+      "escape_required_slots": 0,
+      "first_escape_generation": null,
+      "gen13_exposure": 0,
+      "gen9_exposure": 41,
+      "max_parent_share": 0.4880952380952381,
+      "mean_parent_quality_ratio": 0.9998765918403788,
+      "parent_exposure": {
+        "GEN-007-C01": 5,
+        "GEN-009-C01": 41,
+        "GEN-012-C01": 38
+      },
+      "parent_hhi": 0.44642857142857145,
+      "policy_id": "incumbent_guardrail",
+      "slot_rows": [
+        {
+          "generation": 8,
+          "incumbent": 1.0237363920490448,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0237363920490448,
+          "slot": "GEN-007-C01"
+        },
+        {
+          "generation": 9,
+          "incumbent": 1.0237363920490448,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0237363920490448,
+          "slot": "GEN-007-C01"
+        },
+        {
+          "generation": 10,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 10,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9966451328402841,
+          "raw_speedup": 1.0237363920490448,
+          "slot": "GEN-007-C01"
+        },
+        {
+          "generation": 11,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 11,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9966451328402841,
+          "raw_speedup": 1.0237363920490448,
+          "slot": "GEN-007-C01"
+        },
+        {
+          "generation": 12,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 12,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9966451328402841,
+          "raw_speedup": 1.0237363920490448,
+          "slot": "GEN-007-C01"
+        },
+        {
+          "generation": 13,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 13,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 14,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 14,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 15,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 15,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 16,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 16,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 17,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 17,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 18,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 18,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 19,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 19,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 20,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 20,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 21,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 21,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 22,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 22,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 23,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 23,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 24,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 24,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 25,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 25,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 26,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 26,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 27,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 27,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 28,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 28,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 29,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 29,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 30,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 30,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 31,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 31,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 32,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 32,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 33,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 33,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 34,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 34,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 35,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 35,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 36,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 36,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 37,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 37,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 38,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 38,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 39,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 39,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 40,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 40,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 41,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 41,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 42,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 42,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 43,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 43,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 44,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 44,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 45,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 45,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 46,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 46,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 47,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 47,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 48,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 48,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 49,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 49,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        },
+        {
+          "generation": 50,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 50,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9999920609492358,
+          "raw_speedup": 1.0271742978730978,
+          "slot": "GEN-012-C01"
+        }
+      ],
+      "sub_guardrail_share": 0.0,
+      "sub_guardrail_slots": 0
+    },
+    {
+      "candidate_parent_slots": 46,
+      "distinct_parents": 2,
+      "distinct_root_lineages": 1,
+      "effective_parent_count": 1.2403282532239157,
+      "escape_required_slots": 38,
+      "first_escape_generation": 13,
+      "gen13_exposure": 0,
+      "gen9_exposure": 41,
+      "max_parent_share": 0.8913043478260869,
+      "mean_parent_quality_ratio": 0.9997812043156706,
+      "parent_exposure": {
+        "GEN-007-C01": 5,
+        "GEN-009-C01": 41
+      },
+      "parent_hhi": 0.8062381852551984,
+      "policy_id": "guardrail_stagnation_escape",
+      "slot_rows": [
+        {
+          "generation": 8,
+          "incumbent": 1.0237363920490448,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0237363920490448,
+          "slot": "GEN-007-C01"
+        },
+        {
+          "generation": 9,
+          "incumbent": 1.0237363920490448,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0237363920490448,
+          "slot": "GEN-007-C01"
+        },
+        {
+          "generation": 10,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 10,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9966451328402841,
+          "raw_speedup": 1.0237363920490448,
+          "slot": "GEN-007-C01"
+        },
+        {
+          "generation": 11,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 11,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9966451328402841,
+          "raw_speedup": 1.0237363920490448,
+          "slot": "GEN-007-C01"
+        },
+        {
+          "generation": 12,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 12,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 0.9966451328402841,
+          "raw_speedup": 1.0237363920490448,
+          "slot": "GEN-007-C01"
+        },
+        {
+          "generation": 13,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 13,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 14,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 14,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 15,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 15,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 16,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 16,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 17,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 17,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 18,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 18,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 19,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 19,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 20,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 20,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 21,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 21,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 22,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 22,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 23,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 23,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 24,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 24,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 25,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 25,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 26,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 26,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 27,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 27,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 28,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 28,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 29,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 29,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 30,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 30,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 31,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 31,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 32,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 32,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 33,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 33,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 34,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 34,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 35,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 35,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 36,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 36,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 37,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 37,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 38,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 38,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 39,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 39,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 40,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 40,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 41,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 41,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 42,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 42,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 43,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 43,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 44,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 44,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 45,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 45,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 46,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 46,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 47,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 47,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 48,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 48,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 49,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 49,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        },
+        {
+          "generation": 50,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": "GEN-007-C01",
+          "quality_ratio": 1.0,
+          "raw_speedup": 1.0271824527267341,
+          "slot": "GEN-009-C01"
+        },
+        {
+          "generation": 50,
+          "incumbent": 1.0271824527267341,
+          "lineage_root": null,
+          "quality_ratio": null,
+          "raw_speedup": null,
+          "slot": "ESCAPE_REQUIRED"
+        }
+      ],
+      "sub_guardrail_share": 0.0,
+      "sub_guardrail_slots": 0
+    }
+  ],
+  "schema_version": "1.0",
+  "scope": "offline development-only parent-policy replay",
+  "stagnation_observation": {
+    "counterfactual_first_escape_generation_n3": 13,
+    "definition_note": "Counterfactual stagnation resets only on strict incumbent refresh; recorded campaign mode follows the frozen controller state.",
+    "incumbent_last_refresh_generation": 9,
+    "recorded_breakthrough_generations": [
+      3,
+      4,
+      5,
+      6,
+      7,
+      41,
+      42,
+      43
+    ],
+    "recorded_first_breakthrough_after_gen9": 41
+  },
+  "stagnation_sensitivity": [
+    {
+      "escape_required_slots": 39,
+      "first_escape_generation": 12,
+      "gen13_exposure": 0,
+      "stagnation_generations": 2
+    },
+    {
+      "escape_required_slots": 38,
+      "first_escape_generation": 13,
+      "gen13_exposure": 0,
+      "stagnation_generations": 3
+    },
+    {
+      "escape_required_slots": 36,
+      "first_escape_generation": 15,
+      "gen13_exposure": 0,
+      "stagnation_generations": 5
+    }
+  ],
+  "study_id": "algotune_set_cover_m2_r0_parent_replay_v0"
+}
