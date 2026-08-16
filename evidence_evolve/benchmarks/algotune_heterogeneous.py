@@ -259,28 +259,37 @@ def _run_evidence(run_dir: Path, task: dict[str, Any], spec: OfficialTaskSpec) -
     ))
     policy.policy_id = f"algotune_{task['task']}_heterogeneous_v0"
     campaign_dir = arm_dir / "campaign"
+    baseline = execution_repo / candidate_rel
+    baseline_metrics = _development(baseline, local_spec)["metrics"]
     runner = AutonomousCampaignRunner(
         contract=locked, closure_registry=ClosureRegistry.load(execution_repo / locked.closure_registry),
         policy=policy, repo_root=execution_repo, run_dir=campaign_dir, evaluate=evaluate,
         backend=blind._PinnedProotCodexBackend(),
         worktree_root=Path(tempfile.gettempdir()) / f"ee-{task['task']}-worktrees",
-        reference_metrics=_development(execution_repo / candidate_rel, local_spec)["metrics"],
+        reference_metrics=baseline_metrics,
         memory_enabled=True, timeout_seconds=1200,
     )
     result = runner.run(
         generations=generations, proposals_per_generation=1, max_evaluations_per_generation=1
     )
     run_hash = hashlib.sha256(str(campaign_dir.resolve()).encode()).hexdigest()[:8]
-    candidates: list[tuple[float, Path, str]] = [(1.0, execution_repo / candidate_rel, "SEED")]
+    candidates: list[tuple[float, Path, str]] = [
+        (float(baseline_metrics["raw_speedup"]), baseline, "SEED")
+    ]
     successful = 0
     for generation in result.generations:
         for evaluation in generation.evaluations:
             key = f"{locked.campaign.id}-{run_hash}-{evaluation.candidate_id}"
             source = runner.worktrees.candidate_path(key) / candidate_rel
             if source.exists():
-                raw = _development(source, local_spec)
-                if raw["controls"]["candidate_valid"]:
-                    successful += 1; candidates.append((raw["metrics"]["raw_speedup"], source, evaluation.candidate_id))
+                receipt = json.loads(
+                    (campaign_dir / evaluation.receipt_path).read_text(encoding="utf-8")
+                )["receipt"]["evaluation_input"]
+                if receipt["controls"]["candidate_valid"]:
+                    successful += 1
+                    candidates.append(
+                        (float(receipt["metrics"]["raw_speedup"]), source, evaluation.candidate_id)
+                    )
     _score, selected, selected_id = max(candidates, key=lambda item: item[0])
     return blind._candidate_result(
         arm="evidence_evolve", arm_dir=arm_dir, source=selected, started=started,

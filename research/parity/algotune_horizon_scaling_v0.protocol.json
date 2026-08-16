@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.0",
+  "campaign": "algotune_horizon_scaling_v0",
+  "authority": "FROZEN_BEFORE_FORMAL_SEARCH",
+  "objective": "Measure within-trajectory best-candidate quality, token use, and wall time as the search horizon grows.",
+  "tasks": [
+    {
+      "task": "set_cover",
+      "category": "combinatorial_optimization",
+      "development_seeds": {"first": 0, "last": 99, "count": 100},
+      "initial_sha256": "020a82914a74756909cd7be8603544754c350894e44a682b31651885c395d853"
+    },
+    {"task": "articulation_points", "category": "graph"},
+    {"task": "job_shop_scheduling", "category": "scheduling"},
+    {"task": "stable_matching", "category": "combinatorial_matching"},
+    {"task": "cumulative_simpson_1d", "category": "numerical"}
+  ],
+  "heterogeneous_task_protocol_sha256": "2f30995371b04e152e8ee2abe1598453f1aeaaa6597c8d1dccb250c3efaf90be",
+  "arms": ["shinka", "ada", "evox", "evidence_evolve"],
+  "horizons": [3, 6, 12, 24, 50],
+  "trajectory_design": {
+    "runs_per_task_arm": 1,
+    "continuous_generations": 50,
+    "checkpoint_semantics": "best development-valid candidate discovered at or before the named horizon",
+    "nested_checkpoints": true,
+    "independent_restart_per_horizon": false,
+    "reason": "A single nested trajectory avoids repeating generations 1..h five times and directly measures improvement timing.",
+    "variance_claim_permitted": false,
+    "punctuated_improvement_description_permitted": true
+  },
+  "common_conditions": {
+    "model": "gpt-5.6-terra",
+    "reasoning_effort": "high",
+    "temperature": 0.0,
+    "development_repeats": 3,
+    "single_proposal_slot_per_generation": true,
+    "candidate_retries_or_replacement_samples": false,
+    "token_budget_policy": "report cumulative observed tokens; generation horizon is the controlled budget",
+    "per_model_call_timeout_seconds": 1200
+  },
+  "heldout": {
+    "seed_count": 100,
+    "repeats": 10,
+    "seed_generation": "OS_CSPRNG_IN_TASK_VALID_DOMAIN_AFTER_ALL_CHECKPOINT_CANDIDATE_HASHES_LOCKED",
+    "candidate_evaluation": "fresh process per timed candidate call",
+    "deduplicate_identical_candidate_hashes_within_each_task": true,
+    "visibility_during_search": "NONE"
+  },
+  "resources": {
+    "cgroup_cpu_quota_cores": 18,
+    "development_workers_per_arm": 3,
+    "concurrent_arms_per_task": 4,
+    "concurrent_tasks": 1,
+    "blas_threads_per_worker": 1,
+    "scheduling": "run four arms concurrently within one task, then advance to the next task"
+  },
+  "claim_scope": "SINGLE_TRAJECTORY_HORIZON_SCALING_ON_FIVE_EXISTING_ALGOTUNE_TASKS",
+  "cross_engine_superiority_claim_permitted": false,
+  "between_run_variance_claim_permitted": false,
+  "mechanism_claim_permitted": false
+}

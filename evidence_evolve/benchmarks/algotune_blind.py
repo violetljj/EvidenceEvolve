@@ -723,6 +723,8 @@ def run_evidence_evolve(run_dir: Path) -> dict[str, Any]:
     policy = ResearchPolicyGenome.model_validate(policy_payload)
     campaign_dir = arm_dir / "campaign"
     worktree_root = Path(tempfile.gettempdir()) / "ee-algotune-blind-worktrees"
+    baseline = execution_repo / CANDIDATE_RELATIVE
+    baseline_metrics = evaluate_development(baseline)["metrics"]
     runner = AutonomousCampaignRunner(
         contract=contract,
         closure_registry=ClosureRegistry.load(
@@ -734,9 +736,7 @@ def run_evidence_evolve(run_dir: Path) -> dict[str, Any]:
         evaluate=evaluate_ee,
         backend=_PinnedProotCodexBackend(),
         worktree_root=worktree_root,
-        reference_metrics=evaluate_development(
-            execution_repo / CANDIDATE_RELATIVE
-        )["metrics"],
+        reference_metrics=baseline_metrics,
         memory_enabled=True,
         timeout_seconds=1_200,
     )
@@ -746,10 +746,9 @@ def run_evidence_evolve(run_dir: Path) -> dict[str, Any]:
         max_evaluations_per_generation=1,
     )
     run_hash = hashlib.sha256(str(campaign_dir.resolve()).encode("utf-8")).hexdigest()[:8]
-    baseline = execution_repo / CANDIDATE_RELATIVE
     candidates: list[tuple[float, Path, str]] = [
         (
-            float(evaluate_development(baseline)["metrics"]["raw_speedup"]),
+            float(baseline_metrics["raw_speedup"]),
             baseline,
             "SEED",
         )
@@ -762,10 +761,14 @@ def run_evidence_evolve(run_dir: Path) -> dict[str, Any]:
             source = runner.worktrees.candidate_path(key) / CANDIDATE_RELATIVE
             if not source.is_file():
                 continue
-            raw = evaluate_development(source)
-            if bool(raw["controls"].get("candidate_valid")):
+            receipt = json.loads(
+                (campaign_dir / evaluation.receipt_path).read_text(encoding="utf-8")
+            )["receipt"]["evaluation_input"]
+            if bool(receipt["controls"].get("candidate_valid")):
                 successful += 1
-                candidates.append((float(raw["metrics"]["raw_speedup"]), source, candidate_id))
+                candidates.append(
+                    (float(receipt["metrics"]["raw_speedup"]), source, candidate_id)
+                )
     _score, selected, selected_id = max(candidates, key=lambda item: item[0])
     return _candidate_result(
         arm=arm,
