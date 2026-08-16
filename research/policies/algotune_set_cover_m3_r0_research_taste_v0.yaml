@@ -1,0 +1,78 @@
+schema_version: "1.0"
+study_id: algotune_set_cover_m3_r0_research_taste_v0
+evidence_scope: DEVELOPMENT_ONLY
+blind_artifacts_permitted: false
+confirmation_permitted: false
+source_result: research/results/algotune_set_cover_m2_r4_structural_basin_wave_v0/result.json
+paired_basin_ids:
+  - primal_dual_guided
+  - lagrangian_exact_repair
+  - reduction_primal_dual_exact
+  - meet_in_middle_decomposition
+  - lower_bound_redesign
+  - heuristic_then_exact
+  - online_branch_value
+  - state_equivalence_redesign
+arms:
+  - arm: R4_BASELINE
+    proposal_budget: 8
+    mechanism_contract: false
+    lineage_hard_block: true
+    negative_taste_memory: false
+    contrarian_slots: []
+    research_taste_scoring: false
+  - arm: MECHANISM_CONTRACT
+    proposal_budget: 8
+    mechanism_contract: true
+    lineage_hard_block: true
+    negative_taste_memory: false
+    contrarian_slots: []
+    research_taste_scoring: false
+  - arm: RESEARCH_TASTE
+    proposal_budget: 8
+    mechanism_contract: true
+    lineage_hard_block: true
+    negative_taste_memory: true
+    contrarian_slots: [2, 4, 6, 8]
+    research_taste_scoring: true
+closed_lineage_id: pivot_branch_and_bound
+closed_source_markers:
+  - inherited_solver
+  - kernel_search
+  - pivot_sets
+  - choose_pivot
+  - propagate_forced_pivots
+closed_core_symbols:
+  - inherited_solver
+closed_lineage_phrases:
+  - pivot branch-and-bound
+  - pivot branch and bound
+  - branch-and-bound
+  - branch and bound
+  - inherited solver
+  - inherited_solver
+  - pivot branching
+  - inherited meet-in-the-middle
+state_representation_markers:
+  - uncovered_mask
+  - selected_sets
+  - pivot_sets
+pipeline_markers:
+  - kernel_search
+  - choose_pivot
+  - branch
+  - bound
+state_pipeline_min_state_markers: 1
+state_pipeline_min_pipeline_markers: 2
+negative_taste_rules:
+  - rule_id: PIVOT_BNB_DERIVATIVES_EXHAUSTED
+    statement: Pivot branch-and-bound derivatives are closed for M3 budget allocation.
+  - rule_id: RETENTION_IS_NOT_ESCAPE
+    statement: Retaining the inherited solver never counts as a structural escape.
+  - rule_id: COUNTER_REDUCTION_IS_NOT_LATENCY
+    statement: Reduced call counts without end-to-end latency evidence are not a valid optimization thesis.
+primary_endpoint: genuine_structural_roots_per_8_proposals
+admission_target: 5
+evaluator_timeout_seconds: 60
+l0_violation_reason: STRUCTURAL_ESCAPE_VIOLATION
+l0_violation_outcome: INVALID_MECHANICS_OR_ADAPTER

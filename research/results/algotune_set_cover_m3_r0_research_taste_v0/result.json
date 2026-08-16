@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.0",
+  "study_id": "algotune_set_cover_m3_r0_research_taste_v0",
+  "formal_run": "runs/algotune_set_cover_m3_r0_dev_v6",
+  "formal_result_sha256": "04d31f737448a50fbf533be15ec474201c9b3613292b7e168aaa8d471dca6cb8",
+  "formal_manifest_sha256": "937ec66ec4be01428c1963fe6e9dcd7710d74617bfd77d5b68b2c7b1c53ecc5c",
+  "executed_policy_sha256": "465890d410325b84cac774f86b02b2e96692c3f6d776ecb20c22864eb4750504",
+  "executed_m3_code_sha256": "1322d14a97009522ef892f121a9e4ca44492f736456796bedc8033d9c5b6e72e",
+  "executed_runner_sha256": "82cfe58893b340ea5b0d17ee697d14cd22a91fe4c4e94bee45ec96058eeb8b83",
+  "primary_endpoint": "genuine_structural_roots_per_8_proposals",
+  "admission_target": 5,
+  "arm_summaries": [
+    {
+      "arm": "R4_BASELINE",
+      "proposals": 8,
+      "proposal_contract_passes": null,
+      "implementations": 8,
+      "genuine_structural_roots": 8,
+      "inherited_solver_retentions": 0,
+      "exact_valid_roots": 3,
+      "distinct_basin_signatures": 8,
+      "tokens": 1526082,
+      "genuine_roots_per_million_tokens": 5.242182268056369,
+      "best_exact_valid_speedup": 3.1084384534468175,
+      "wall_seconds": 280.8765694126487,
+      "admission_target_met": true
+    },
+    {
+      "arm": "MECHANISM_CONTRACT",
+      "proposals": 8,
+      "proposal_contract_passes": 6,
+      "implementations": 6,
+      "genuine_structural_roots": 6,
+      "inherited_solver_retentions": 0,
+      "exact_valid_roots": 3,
+      "distinct_basin_signatures": 6,
+      "tokens": 1213727,
+      "genuine_roots_per_million_tokens": 4.9434510396489495,
+      "best_exact_valid_speedup": 0.9859553284438061,
+      "wall_seconds": 265.7022114545107,
+      "admission_target_met": true
+    },
+    {
+      "arm": "RESEARCH_TASTE",
+      "proposals": 8,
+      "proposal_contract_passes": 8,
+      "implementations": 8,
+      "genuine_structural_roots": 8,
+      "inherited_solver_retentions": 0,
+      "exact_valid_roots": 2,
+      "distinct_basin_signatures": 8,
+      "tokens": 1528611,
+      "genuine_roots_per_million_tokens": 5.233509375504952,
+      "best_exact_valid_speedup": 0.05428516565155378,
+      "wall_seconds": 317.4367523882538,
+      "research_taste_score_min": 0.8,
+      "research_taste_score_mean": 0.9,
+      "research_taste_score_max": 1.0,
+      "admission_target_met": true
+    }
+  ],
+  "paired_primary_differences": {
+    "research_taste_minus_r4_baseline_genuine_roots": 0,
+    "research_taste_minus_mechanism_contract_genuine_roots": 2,
+    "research_taste_minus_r4_baseline_exact_valid_roots": -1,
+    "research_taste_minus_mechanism_contract_exact_valid_roots": -1
+  },
+  "formal_reason_counts": {
+    "R4_BASELINE": {
+      "evaluator_timeouts": 4,
+      "invalid_solutions": 1
+    },
+    "MECHANISM_CONTRACT": {
+      "proposal_contract_blocks": 2,
+      "evaluator_timeouts": 3
+    },
+    "RESEARCH_TASTE": {
+      "proposal_contract_blocks": 0,
+      "evaluator_timeouts": 7
+    }
+  },
+  "posthoc_extended_ancestry_audit": {
+    "candidate_implementations_audited": 22,
+    "state_plus_pipeline_lineage_matches": 0,
+    "retained_closed_lineages": 0,
+    "changes_primary_counts": false,
+    "scientific_authority": "NONE_SCHEDULING_ONLY"
+  },
+  "interpretation_status": "RESEARCH_TASTE_ADVANTAGE_NOT_DEMONSTRATED",
+  "interpretation_is_not_scientific_outcome": true,
+  "interpretation": "The research-taste arm met structural admission and improved contract completion relative to the contract-only arm, but it did not improve the live paired primary endpoint over the R4 baseline. It also produced fewer exact-valid roots and much lower best valid development speedup than the baseline. One eight-slot wave is insufficient to estimate a stable planner-policy effect.",
+  "historical_r4_reproducibility_note": "The live R4 control produced 8/8 ancestry-clear implementations, unlike the historical R4 posthoc result of 1/8. Historical and live generations therefore cannot be treated as exchangeable evidence; replicated paired waves are required before claiming a research-taste improvement.",
+  "performance_is_secondary": true,
+  "conversion_threshold": 47.801,
+  "conversion_claim_authorized": false,
+  "blind_artifacts_read": false,
+  "blind_evaluator_calls": 0,
+  "confirmation_runs": 0,
+  "scientific_authority": "NONE_SCHEDULING_ONLY"
+}
