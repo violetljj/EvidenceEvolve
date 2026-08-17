@@ -13,7 +13,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from evidence_evolve.artifacts import create_once_json
+from evidence_evolve.artifacts import ReceiptAlreadyExistsError, create_once_json
 from evidence_evolve.benchmarks import algotune_blind as blind
 from evidence_evolve.benchmarks import algotune_heterogeneous as heterogeneous
 from evidence_evolve.benchmarks import engine_selection_r1_runner as shared
@@ -196,13 +196,19 @@ def _manifest(run_dir: Path, task_name: str, repeat: int, stage: str) -> None:
         "token_stop_enabled": False,
     }
     path = run_dir / "engine_selection_manifest.json"
-    if path.exists():
+    def validate_existing() -> None:
         existing = json.loads(path.read_text())
         for key in ("protocol_sha256", "task", "repeat", "stage", "conditions", "token_stop_enabled"):
             if existing.get(key) != payload[key]:
                 raise ValueError(f"Engine Selection R2 manifest drift: {key}")
+
+    if path.exists():
+        validate_existing()
         return
-    create_once_json(path, payload)
+    try:
+        create_once_json(path, payload)
+    except ReceiptAlreadyExistsError:
+        validate_existing()
 
 
 def run_arm(run_root: Path, task_name: str, repeat: int, arm: str) -> dict[str, Any]:

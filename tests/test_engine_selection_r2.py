@@ -75,3 +75,11 @@ def test_invalid_heldout_cannot_win_on_reported_speedup() -> None:
             block["heldout"]["correct"] = False  # type: ignore[index]
     result = selection.score_round_1(blocks)
     assert result["ranking"][0] == "ada"
+
+
+def test_concurrent_identical_manifest_is_accepted(tmp_path, monkeypatch) -> None:
+    run_dir = tmp_path / "task"
+    run_dir.mkdir()
+    monkeypatch.setattr(runner, "_conditions", lambda _task: {"token_policy": "account"})
+    runner._manifest(run_dir, "pde_heat1d", 1, "ROUND_1")
+    runner._manifest(run_dir, "pde_heat1d", 1, "ROUND_1")

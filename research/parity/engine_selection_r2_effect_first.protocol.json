@@ -18,12 +18,12 @@
     "shinka_commit": "c4568adde253cacf185be3a8412c3c2142761ebe"
   },
   "mechanics_smoke": {
-    "attempt": "mechanics_smoke_v3",
+    "attempt": "mechanics_smoke_v4",
     "replacement_for": {
-      "attempt": "mechanics_smoke_v2",
-      "evidence_root": "runs/engine_selection_r2_effect_first/mechanics_smoke_v2",
-      "model_calls_started": 0,
-      "blocker": "WindowsApps codex was not executable in child processes and identical initial candidates raced on one remote development job key because arm was absent from the context"
+      "attempt": "mechanics_smoke_v3",
+      "receipt_sha256": "0af39f4e5b3edec068ecd4a632d606ee9129b930bf90d743648af73320d4c2ec",
+      "scientific_authority": false,
+      "blocker": "concurrent create-once of the shared manifest rejected one arm even though the winning manifest had identical frozen content"
     },
     "task": "min_weight_assignment",
     "consumed_task_only": true,
@@ -31,7 +31,7 @@
     "repeat": 1,
     "max_search_iterations": 1,
     "wall_seconds": 1200,
-    "receipt": "mechanics_smoke_v3_receipt.json",
+    "receipt": "mechanics_smoke_v4_receipt.json",
     "scientific_authority": false,
     "required_before_round_1": true
   },
