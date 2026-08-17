@@ -5,3 +5,4 @@ tasks/algotune_m4_upstream/AlgoTuneTasks/fft_convolution/*.py text eol=lf
 tasks/algotune_m4_upstream/AlgoTuneTasks/sha256_hashing/*.py text eol=lf
 tasks/algotune_m4_upstream/AlgoTuneTasks/shortest_path_dijkstra/*.py text eol=lf
 tasks/algotune_engine_selection_upstream/AlgoTuneTasks/*/*.py text eol=lf
+tasks/algotune_set_cover/evaluator.py text eol=lf

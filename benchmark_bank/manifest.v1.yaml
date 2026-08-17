@@ -77,7 +77,7 @@ families:
         state: MATERIALIZED_LOCAL
         authority: EvidenceEvolve frozen local evaluator
         local_path: tasks/algotune_set_cover/evaluator.py
-        sha256: 4b9952172eed97ab3d81249723b1d9dce54b01ad4f77a42cdc1da6a05e511914
+        sha256: b8f8a7aeb87c68b9a77f44e9aa302f35cee3958f5eb9abbbfae6e1d8fdde3cce
         license_status: REPOSITORY_APACHE_2_0
         public_visibility: true
         notes: Existing consumed development evaluator; formal historical run namespaces remain closed.
@@ -386,4 +386,4 @@ fresh_gate:
 locked_registry: []
 lock:
   algorithm: sha256
-  content_sha256: 95bc1f050c7dacbc0395cd440bd87c6ffb7644ad67d1df1def6427acfbd2ec51
+  content_sha256: 41928dbface74b9ab53953f0dc02a985d3c1a889779420e0182097aeba932cef

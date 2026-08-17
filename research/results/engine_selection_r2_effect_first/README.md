@@ -16,3 +16,10 @@ a winner result.
 Before a successor run, the execution layer must prove bounded SSH/SCP transport,
 owned process-tree termination, append-only per-evaluation observations, and
 paired-block fail-fast under a sustained transport admission.
+
+That repair gate subsequently passed at commit `721972b`: transport admission
+`transport_fix_02` completed 20 of 20 real AutoDL evaluations successfully with
+two concurrent dispatch slots and 12 evaluator workers per active run. One
+intermittent SSH/SCP connection timeout was recovered by the bounded idempotent
+transport retry. The admission has execution-mechanics authority only and does
+not reopen or score R2; its frozen summary is in `transport_admission.json`.

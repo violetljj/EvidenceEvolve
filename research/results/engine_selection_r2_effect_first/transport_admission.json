@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "campaign": "engine_selection_r2_effect_first",
+  "admission_id": "transport_fix_02",
+  "execution_commit": "721972bd91919333774f271ae2fd60ff52706ac6",
+  "status": "PASS",
+  "scientific_authority": false,
+  "purpose": "SUCCESSOR_EXECUTION_MECHANICS_ADMISSION_ONLY",
+  "attempts_required": 20,
+  "attempts_succeeded": 20,
+  "remote_slots": 2,
+  "workers_per_evaluation": 12,
+  "elapsed_seconds": {
+    "minimum": 16.141,
+    "median": 23.3905,
+    "mean": 25.09535,
+    "maximum": 65.515
+  },
+  "recovered_transport_anomalies": [
+    "ONE_INTERMITTENT_SSH_SCP_CONNECTION_TIMEOUT_RECOVERED_BY_BOUNDED_IDEMPOTENT_RETRY"
+  ],
+  "source_receipt": "runs/engine_selection_r2_effect_first/transport_admission_transport_fix_02/receipt.json",
+  "source_receipt_sha256": "df5107f0a26c1cdd43432bcbca5a62bb5146ae2d9b0be841f1d9fd9b44cd044d",
+  "decision": "BOUNDED_TRANSPORT_REPAIR_ADMITTED_FOR_A_SUCCESSOR_PROTOCOL",
+  "r2_reopened": false,
+  "engine_ranking_permitted": false
+}
