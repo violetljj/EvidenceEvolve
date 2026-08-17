@@ -95,6 +95,38 @@ def test_m4_v2_uses_fresh_sources_and_admitted_budget_schedule() -> None:
         assert type(loaded).__name__ == task["class"]
 
 
+def test_m4_v3_replacement_uses_fresh_exact_upstream_sources() -> None:
+    protocols = [
+        json.loads(
+            (
+                m4.REPO_ROOT
+                / f"research/parity/m4_search_value_tournament_v{version}.protocol.json"
+            ).read_text(encoding="utf-8")
+        )
+        for version in range(4)
+    ]
+    consumed = {
+        item["task"] for protocol in protocols[:3] for item in protocol["tasks"]
+    }
+    replacement = protocols[3]
+    fresh = {item["task"] for item in replacement["tasks"]}
+
+    assert consumed.isdisjoint(fresh)
+    assert replacement["replacement_for"][-1]["campaign"] == (
+        "m4_search_value_tournament_v2"
+    )
+    assert replacement["replacement_for"][-1]["outcome"] == (
+        "INVALID_MECHANICS_OR_ADAPTER"
+    )
+    assert replacement["common_conditions"]["observed_token_ceiling"] == 600_000
+    assert replacement["common_conditions"]["evidence_evolve_cycles"] == 1
+    for task in replacement["tasks"]:
+        source = m4._source_path(task["task"])
+        assert m4.sha256_file(source) == task["source_sha256"]
+        loaded = load_task(source, task["class"])
+        assert type(loaded).__name__ == task["class"]
+
+
 def test_m4_continue_gate_requires_two_task_wins_and_external_nonloss(
     tmp_path: Path,
 ) -> None:
