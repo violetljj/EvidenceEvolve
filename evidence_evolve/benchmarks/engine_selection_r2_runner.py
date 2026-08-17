@@ -84,6 +84,20 @@ def _conditions(task_name: str) -> dict[str, Any]:
     return common
 
 
+def _validate_provider() -> Path:
+    conditions = load_protocol()["common_conditions"]
+    executable = Path(str(conditions["provider_executable"]))
+    if not executable.is_file():
+        raise ValueError(f"pinned Codex executable missing: {executable}")
+    completed = subprocess.run(
+        [str(executable), "--version"], check=False, capture_output=True, text=True
+    )
+    observed = completed.stdout.strip()
+    if completed.returncode != 0 or observed != conditions["provider_version"]:
+        raise ValueError(f"pinned Codex version drift: {observed!r}")
+    return executable
+
+
 def run_remote_evaluator(
     *, task_name: str, candidate: Path, seeds_path: Path, repeats: int,
     workers: int, cold: bool, output: Path,
@@ -135,6 +149,7 @@ def _configure(run_dir: Path, task_name: str, repeat: int) -> OfficialTaskSpec:
     protocol = load_protocol()
     task = _task_payload(task_name)
     conditions = _conditions(task_name)
+    provider = _validate_provider()
     seed_count = int(conditions["development_seeds_per_repeat"])
     os.environ.update({
         "OMP_NUM_THREADS": "1",
@@ -150,6 +165,7 @@ def _configure(run_dir: Path, task_name: str, repeat: int) -> OfficialTaskSpec:
         "EE_SEARCH_TOKEN_LAUNCH_CEILING": str(NO_TOKEN_STOP),
         "EE_EVOX_PROTOCOL_NATIVE": "1",
         "EE_ENGINE_EVAL_CONTEXT": f"{task_name}-r{repeat}",
+        "EVIDENCE_EVOLVE_CODEX_EXECUTABLE": str(provider),
     })
     heterogeneous.PROTOCOL = PROTOCOL
     heterogeneous.UPSTREAM_ROOT = (
@@ -196,6 +212,7 @@ def run_arm(run_root: Path, task_name: str, repeat: int, arm: str) -> dict[str, 
     run_dir = run_root / task_name / f"repeat_{repeat:02d}"
     run_dir.mkdir(parents=True, exist_ok=True)
     _configure(run_dir, task_name, repeat)
+    os.environ["EE_ENGINE_EVAL_CONTEXT"] = f"{task_name}-r{repeat}-{arm}"
     _manifest(run_dir, task_name, repeat, stage)
     arm_dir = run_dir / "arms" / arm
     trajectory_path = arm_dir / "trajectory_result.json"

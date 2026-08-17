@@ -18,12 +18,12 @@
     "shinka_commit": "c4568adde253cacf185be3a8412c3c2142761ebe"
   },
   "mechanics_smoke": {
-    "attempt": "mechanics_smoke_v2",
+    "attempt": "mechanics_smoke_v3",
     "replacement_for": {
-      "attempt": "mechanics_smoke_v1",
-      "receipt_sha256": "f37f424384dc85ffb2591f92f663445c0f076297328f7da202f103c6d05e0940",
+      "attempt": "mechanics_smoke_v2",
+      "evidence_root": "runs/engine_selection_r2_effect_first/mechanics_smoke_v2",
       "model_calls_started": 0,
-      "blocker": "subprocess command used __main__ instead of the importable runner module"
+      "blocker": "WindowsApps codex was not executable in child processes and identical initial candidates raced on one remote development job key because arm was absent from the context"
     },
     "task": "min_weight_assignment",
     "consumed_task_only": true,
@@ -31,7 +31,7 @@
     "repeat": 1,
     "max_search_iterations": 1,
     "wall_seconds": 1200,
-    "receipt": "mechanics_smoke_v2_receipt.json",
+    "receipt": "mechanics_smoke_v3_receipt.json",
     "scientific_authority": false,
     "required_before_round_1": true
   },
@@ -73,6 +73,8 @@
   "common_conditions": {
     "model": "gpt-5.6-terra",
     "reasoning_effort": "high",
+    "provider_executable": "E:/codex-tools/tools/node-global/node_modules/@openai/codex/node_modules/@openai/codex-win32-x64/vendor/x86_64-pc-windows-msvc/bin/codex.exe",
+    "provider_version": "codex-cli 0.147.0",
     "tools_permission": "read_only_candidate_generation",
     "max_native_search_iterations": 30,
     "wall_seconds_per_run": 2700,

@@ -33,6 +33,8 @@ def validate_protocol(protocol: dict[str, Any]) -> None:
         raise ValueError("Engine Selection R2 token policy drift")
     if conditions["token_call_launch_ceiling"] is not None or conditions["token_hard_ceiling"] is not None:
         raise ValueError("Engine Selection R2 cannot contain a token stop")
+    if not conditions.get("provider_executable") or not conditions.get("provider_version"):
+        raise ValueError("Engine Selection R2 provider pin missing")
     tasks = protocol.get("tasks", [])
     if len(tasks) != 3 or len({item["category"] for item in tasks}) != 3:
         raise ValueError("Engine Selection R2 requires three heterogeneous tasks")
