@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0",
+  "campaign": "engine_selection_r3_continuation_30",
+  "authority": "FROZEN_BEFORE_ANY_CONTINUATION_MODEL_CALL",
+  "purpose": "Continue every completed R3 arm on every task for 30 additional native iterations while preserving native search state.",
+  "parent": {
+    "campaign": "engine_selection_r3_development_screen",
+    "run_root": "runs/engine_selection_r3_development_screen/attempt_05",
+    "execution_commit": "a0a9908e1b32625183b181ed82a1e7b02a50f7b2",
+    "protocol_sha256": "3b0e3338c189441f288f9b27517c46ceef980c2c6b31636f4629d467106afc76",
+    "completed_runs": 12
+  },
+  "tasks": [
+    {"task": "pde_heat1d", "class": "PDEHeatEquation1D", "category": "numerical_continuous", "problem_size": 10, "source_sha256": "0be2185cd8b9cf2f69ceceb05ab2e34001a04ab5fca8baae46b9ea3f4f79db2f"},
+    {"task": "convex_hull", "class": "ConvexHullTask", "category": "computational_geometry", "problem_size": 5000, "source_sha256": "3d35210bb394099e84740f7d8db80ea680ec5eb5c0d2e2729d5af478e90a8a30"},
+    {"task": "communicability", "class": "Communicability", "category": "graph_matrix_algorithms", "problem_size": 100, "source_sha256": "9eaebde50200ea7de4a332ad92feab591f9db4e9925ab0c06c8a66a15836bf4f"}
+  ],
+  "arms": ["vanilla", "ada", "shinka", "evox"],
+  "continuation": {
+    "additional_native_iterations": 30,
+    "run_count": 12,
+    "scheduling_unit": "ONE_TASK_ALL_FOUR_ARMS",
+    "parent_namespace_read_only": true,
+    "resume_modes": {
+      "vanilla": "INCUMBENT_AND_HISTORY_STATE",
+      "ada": "SKYDISCOVER_CHECKPOINT_12",
+      "shinka": "PROGRAMS_SQLITE_GENERATION_12",
+      "evox": "SKYDISCOVER_CHECKPOINT_12"
+    }
+  },
+  "common_conditions": {
+    "model": "gpt-5.6-terra",
+    "reasoning_effort": "high",
+    "provider_executable": "E:/codex-tools/tools/node-global/node_modules/@openai/codex/node_modules/@openai/codex-win32-x64/vendor/x86_64-pc-windows-msvc/bin/codex.exe",
+    "provider_version": "codex-cli 0.147.0",
+    "max_native_search_iterations": 30,
+    "wall_seconds_per_run": 5400,
+    "wall_grace_seconds": 300,
+    "token_policy": "ACCOUNT_ONLY_NEVER_STOP_ITERATIONS_NEVER_INVALIDATE_RUN",
+    "token_call_launch_ceiling": null,
+    "token_hard_ceiling": null,
+    "development_seeds_per_repeat": 20,
+    "development_repeats": 2,
+    "remote_evaluation_slots": 2,
+    "evaluator_workers_per_active_run": 12,
+    "candidate_retries_or_replacement_samples": false
+  },
+  "parent_bindings": {
+    "pde_heat1d": {
+      "vanilla": {"selected_candidate_sha256": "7817b8603927f786cd11a1f1332381d1ccd185f8d7fc5142098ce0bc2e379e6c", "trajectory_sha256": "d9cb4ce3c2d7f906eca401bcaf62b4760dc8a9e829d96fe974a6b79cff791ace", "state_sha256": "d4ffa7e5fd95bdc828f3bce537e5c059a36285a4283b031cb13fe3b49decca1d"},
+      "ada": {"selected_candidate_sha256": "876a384953e77f61a29572a322ad080b9c9d7350537582613c30baaf495213cb", "trajectory_sha256": "92b7de4b6f0bc436dc1d9a66b90fabd9575941c5050f2e367d62fb4f95d29ec5", "state_sha256": "507396281e7093c476f1e9c6a2b398e343cdd9e2ecf7f870856dc73b04ffc404"},
+      "shinka": {"selected_candidate_sha256": "7817b8603927f786cd11a1f1332381d1ccd185f8d7fc5142098ce0bc2e379e6c", "trajectory_sha256": "0dada689c09a7e93bd53d472e7fbf6e2aac8877434a030afcf447c1d02b39837", "state_sha256": "bd5bf1c4e44537a3a08c4694023aa6853e2d5344865b0f7eca0893ba12e93aca"},
+      "evox": {"selected_candidate_sha256": "b001a8f871e91ae35de5e9f569a33f49ab19b754842583a52722f906d791d511", "trajectory_sha256": "d6819981fe641117b9698e17c4c651290fab1adf148d8eb841728fb6c4ffb97d", "state_sha256": "610603f702218a075e392b6082eb3268741f905f7da46a6d658005fc6e34aca4"}
+    },
+    "convex_hull": {
+      "vanilla": {"selected_candidate_sha256": "cd131ab63dcf279a1de79c8894919e4e4fdbd753fac26af6bef4b55a537d11d0", "trajectory_sha256": "366fb36cbaad85ce18264d4c62ad6b014f633ce16f1d61fb84e40c0fd751b975", "state_sha256": "fed6b38df7bff1db2bb009aa6b5696d0553d7602996e6415e193190f5ed71046"},
+      "ada": {"selected_candidate_sha256": "d2c2fd1f1c92549e1cd266b31217c206b1a6bc77ded0bb97d0d0bb03c75880ef", "trajectory_sha256": "661b87d991d5616e516950c44c7620866ca796d34314b5888c25e0c7a6972772", "state_sha256": "608154a05c0addea4ee85bfe05da3504a61a6915f9d371a5cbace793a4d9b4d7"},
+      "shinka": {"selected_candidate_sha256": "5369d9a03de9782a92733a6c333533f8a77274f1f31e9e08e21b29242ec408a3", "trajectory_sha256": "c2e61744b7d87f7d28cdac73c72dc1a20bd062c6cd13a9bc1493510d24a7a4ec", "state_sha256": "7dcd1f8ea2b5fb99995b9d1a814f27a5ff6fc208363b6c6371e551ad88d598e6"},
+      "evox": {"selected_candidate_sha256": "3230b6a7bf807edf9713b6a0363d1d2fe14befeb63fbd3f4014e66d70bbcc87b", "trajectory_sha256": "fb47bd23829f31807f9131e6bcdebe9b703ec596535bf451df99c06a7ca87712", "state_sha256": "f59a424a4332d3939f042724fd29ed52e3ed3675958cf724c24655c55255b0b9"}
+    },
+    "communicability": {
+      "vanilla": {"selected_candidate_sha256": "4a434606a886f2a87b0aaa2aa726ee9338e423898ddb4aca52ecc092c0480986", "trajectory_sha256": "455bd0a3ea9e8e4d6ad4c22388ea880ae2044dd12303fe918687061360458893", "state_sha256": "e2a750f8ebfe3da485f4e7f1188d35615538fdba9dab31c73b81998956dd7505"},
+      "ada": {"selected_candidate_sha256": "90a678eb873681ef3fde944ead09391cf3e53168355ff9d57583ed24ad9900de", "trajectory_sha256": "d59dfbc48b5d2ebe2934590a2be00e805b0dd928ee6ec467e42162f10be8b35f", "state_sha256": "0751984ff844f3ad0d4971fea8a44ac87bde8f8ffcf8f2b7cba043115a05acee"},
+      "shinka": {"selected_candidate_sha256": "e4907bad7bd547e15c0ccfdd26b8b2cef83ecc1593459468fc516cf6912b8b76", "trajectory_sha256": "cee325c05b955fe0481b3dd12c748406e9a4bfcebb51c80f5078b9d1a39623f4", "state_sha256": "6b3010438c608d0c093f57fb3e4e900a2e2f877f106c65e906b3c6dc5bd227fb"},
+      "evox": {"selected_candidate_sha256": "ade5ea96d48d9488bb7bc65ce24c045197b3fe95458589789e9d0bf1bfa20244", "trajectory_sha256": "62e1b990e225f9454e5255d556083a4960cf36d010120da2ef41b51636b1809f", "state_sha256": "c8ecfb6e70e8564c78e9654a893bfbc4cd458e9dcd54764dce38b3e0fd814a3e"}
+    }
+  },
+  "heldout": {"enabled": false},
+  "claim_scope": "VISIBLE_DEVELOPMENT_CONTINUATION_ONLY",
+  "winner_claim_permitted": false
+}
