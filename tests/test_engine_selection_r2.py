@@ -30,6 +30,7 @@ def test_protocol_makes_tokens_account_only() -> None:
     assert conditions["token_hard_ceiling"] is None
     assert protocol["ranking"]["lexicographic_order"][-1] == "lower_total_tokens"
     assert runner.NO_TOKEN_STOP > 10**18
+    assert runner.RUNNER_MODULE != "__main__"
 
 
 def test_round_one_advances_higher_quality_despite_far_more_tokens() -> None:

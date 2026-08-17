@@ -18,13 +18,20 @@
     "shinka_commit": "c4568adde253cacf185be3a8412c3c2142761ebe"
   },
   "mechanics_smoke": {
+    "attempt": "mechanics_smoke_v2",
+    "replacement_for": {
+      "attempt": "mechanics_smoke_v1",
+      "receipt_sha256": "f37f424384dc85ffb2591f92f663445c0f076297328f7da202f103c6d05e0940",
+      "model_calls_started": 0,
+      "blocker": "subprocess command used __main__ instead of the importable runner module"
+    },
     "task": "min_weight_assignment",
     "consumed_task_only": true,
     "arms": ["vanilla", "ada", "shinka", "evox"],
     "repeat": 1,
     "max_search_iterations": 1,
     "wall_seconds": 1200,
-    "receipt": "mechanics_smoke_receipt.json",
+    "receipt": "mechanics_smoke_v2_receipt.json",
     "scientific_authority": false,
     "required_before_round_1": true
   },

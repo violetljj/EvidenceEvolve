@@ -30,6 +30,7 @@ from evidence_evolve.hashing import sha256_file
 
 
 CAMPAIGN = "engine_selection_r2_effect_first"
+RUNNER_MODULE = "evidence_evolve.benchmarks.engine_selection_r2_runner"
 DEFAULT_RUN_ROOT = REPO_ROOT / "runs" / CAMPAIGN
 ARMS = ("vanilla", "ada", "shinka", "evox")
 SMOKE_TASK = "min_weight_assignment"
@@ -43,7 +44,7 @@ def _install_shared_context() -> None:
     shared.UPSTREAM_ROOT = UPSTREAM_ROOT
     shared.CAMPAIGN = CAMPAIGN
     shared.load_protocol = load_protocol
-    os.environ["EE_ENGINE_SELECTION_RUNNER_MODULE"] = __name__
+    os.environ["EE_ENGINE_SELECTION_RUNNER_MODULE"] = RUNNER_MODULE
     os.environ["EE_ENGINE_SELECTION_CAMPAIGN_SLUG"] = "engine-r2"
 
 
@@ -241,7 +242,7 @@ def _command(run_root: Path, task: str, repeat: int, arm: str) -> list[str]:
     return [
         sys.executable,
         "-m",
-        __name__,
+        RUNNER_MODULE,
         "arm",
         "--run-root",
         str(run_root),
@@ -308,7 +309,7 @@ def _run_parallel(run_root: Path, items: list[tuple[str, int, str]], max_paralle
 
 
 def run_mechanics_smoke(run_root: Path, max_parallel: int) -> dict[str, Any]:
-    smoke_root = run_root / "mechanics_smoke"
+    smoke_root = run_root / str(load_protocol()["mechanics_smoke"]["attempt"])
     items = [(SMOKE_TASK, 1, arm) for arm in ARMS]
     statuses = _run_parallel(smoke_root, items, max_parallel, "process_summary.json")
     trajectories = []
