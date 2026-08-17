@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "revision_id": "SHINKA_POSTFIX_CONFIRMATION_EXECUTION_REVISION_1",
+  "authority": "EXECUTABILITY_REPAIR_AFTER_FAILED_ADMISSION_BEFORE_ANY_VALID_CONFIRMATION_RUN",
+  "issue": "Implementation SHA-256 bindings were computed from Windows CRLF worktree bytes and rejected the equivalent LF Git checkout on the Linux execution worker.",
+  "repair": "Compute implementation bindings after normalizing CRLF to LF on both controller and worker.",
+  "scientific_design_changed": false,
+  "tasks_changed": false,
+  "seeds_changed": false,
+  "iterations_changed": false,
+  "model_changed": false,
+  "evaluator_changed": false,
+  "mechanics_gates_changed": false,
+  "failed_namespaces": [
+    {
+      "path": "runs/engine_selection_shinka_postfix_confirmation/attempt_01",
+      "reason": "REMOTE_CONTROL_COMMIT_STALE_PERSISTENT_RPC_CLOSED_AT_GENERATION_0",
+      "admitted": false
+    },
+    {
+      "path": "runs/engine_selection_shinka_postfix_confirmation/attempt_02",
+      "reason": "CROSS_PLATFORM_IMPLEMENTATION_HASH_REJECTED_FINAL_REEVALUATION",
+      "admitted": false
+    }
+  ],
+  "replacement_namespace": "runs/engine_selection_shinka_postfix_confirmation/attempt_03"
+}

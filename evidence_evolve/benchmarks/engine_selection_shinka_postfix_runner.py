@@ -11,7 +11,7 @@ from evidence_evolve.artifacts import create_once_json
 from evidence_evolve.benchmarks import algotune_blind as blind
 from evidence_evolve.benchmarks import engine_selection_r2_runner as base
 from evidence_evolve.benchmarks.shinka_selection_audit import audit_shinka_selection
-from evidence_evolve.hashing import sha256_file
+from evidence_evolve.hashing import sha256_bytes, sha256_file
 from evidence_evolve.search.shinka_native import import_shinka_run
 
 
@@ -23,6 +23,10 @@ RUNNER_MODULE = "evidence_evolve.benchmarks.engine_selection_shinka_postfix_runn
 DEFAULT_RUN_ROOT = REPO_ROOT / "runs" / CAMPAIGN
 TASKS = ("pde_heat1d", "convex_hull", "communicability")
 REPEATS = (1, 2)
+
+
+def _portable_source_sha256(path: Path) -> str:
+    return sha256_bytes(path.read_bytes().replace(b"\r\n", b"\n"))
 
 
 def load_protocol() -> dict[str, Any]:
@@ -47,7 +51,7 @@ def load_protocol() -> dict[str, Any]:
         if sha256_file(source) != task["source_sha256"]:
             raise ValueError(f"Shinka post-fix source drift: {task['task']}")
     for relative, expected in protocol["implementation_bindings"].items():
-        if sha256_file(REPO_ROOT / relative) != expected:
+        if _portable_source_sha256(REPO_ROOT / relative) != expected:
             raise ValueError(f"Shinka post-fix implementation drift: {relative}")
     return protocol
 
