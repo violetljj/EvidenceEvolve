@@ -46,6 +46,25 @@ def test_selection_audit_passes_mapped_valid_best(tmp_path: Path) -> None:
     assert all(audit["gates"].values())
 
 
+def test_selection_audit_treats_newline_encoding_as_same_candidate(tmp_path: Path) -> None:
+    database = tmp_path / "programs.sqlite"
+    selected = tmp_path / "selected.py"
+    _database(database)
+    connection = sqlite3.connect(database)
+    try:
+        connection.execute("UPDATE programs SET code = ? WHERE id = 'fast'", ("fast\n",))
+        connection.commit()
+    finally:
+        connection.close()
+    selected.write_bytes(b"fast\r\n")
+
+    audit = audit_shinka_selection(
+        database, imported_best_program_id="fast", selected_candidate=selected
+    )
+
+    assert audit["gates"]["selected_candidate_matches_imported_best"] is True
+
+
 def test_selection_audit_fails_zeroed_valid_speedup(tmp_path: Path) -> None:
     database = tmp_path / "programs.sqlite"
     selected = tmp_path / "selected.py"

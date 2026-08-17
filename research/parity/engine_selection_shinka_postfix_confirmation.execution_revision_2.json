@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0",
+  "revision_id": "SHINKA_POSTFIX_CONFIRMATION_EXECUTION_REVISION_2",
+  "authority": "AUDIT_VALIDITY_REPAIR_AFTER_FALSE_BLOCK_BEFORE_CONFIRMATION_COHORT",
+  "issue": "The selected-candidate identity audit compared LF database code against the CRLF Windows materialization byte-for-byte and falsely rejected semantically identical code.",
+  "repair": "Normalize CRLF to LF only for selected-candidate identity hashing.",
+  "selection_rule_changed": false,
+  "fitness_mapping_changed": false,
+  "evaluator_changed": false,
+  "tasks_changed": false,
+  "seeds_changed": false,
+  "iterations_changed": false,
+  "failed_namespace": {
+    "path": "runs/engine_selection_shinka_postfix_confirmation/attempt_03",
+    "reason": "CROSS_PLATFORM_SELECTED_CANDIDATE_IDENTITY_FALSE_BLOCK",
+    "admitted_to_confirmation_cohort": false,
+    "diagnostic_only": true
+  },
+  "replacement_namespace": "runs/engine_selection_shinka_postfix_confirmation/attempt_04"
+}

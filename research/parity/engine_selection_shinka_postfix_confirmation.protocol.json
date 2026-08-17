@@ -61,11 +61,14 @@
   "implementation_bindings": {
     "evidence_evolve/benchmarks/algotune_heterogeneous.py": "d95f3fc8178e82ef5985787464797575bdbaf4743d04aa82bd0c7102c6c00f5d",
     "evidence_evolve/benchmarks/shinka_fitness.py": "90429db3e6cd991829a1aa29003484e5739bfce8c7349b23f81b86b9b12be34c",
-    "evidence_evolve/benchmarks/shinka_selection_audit.py": "b7e0d692ff155a4e86e963aaa52c5d6008116bcee93b167f70b8a70d194eb64a",
+    "evidence_evolve/benchmarks/shinka_selection_audit.py": "278f457653b0aca8118d0de35683d8fd8548e705844faf5f0c5a1f712eec331c",
     "evidence_evolve/benchmarks/engine_selection_shinka_postfix_runner.py": "065557b26a14923a9dff46f2c7f809048cb5d8a04a24993e3293161a2d884c63",
     "scripts/project.ps1": "4400dcb2b63133deb95816462fc92c5424982ce78fe6770c49f45d9cc6f58038"
   },
-  "execution_revision": "research/parity/engine_selection_shinka_postfix_confirmation.execution_revision.json",
+  "execution_revisions": [
+    "research/parity/engine_selection_shinka_postfix_confirmation.execution_revision.json",
+    "research/parity/engine_selection_shinka_postfix_confirmation.execution_revision_2.json"
+  ],
   "heldout": {"enabled": false},
   "claim_scope": "DEVELOPMENT_MECHANICS_CONFIRMATION_ONLY",
   "superiority_claim_permitted": false,

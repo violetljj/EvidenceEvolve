@@ -5,7 +5,7 @@ import sqlite3
 from pathlib import Path
 from typing import Any
 
-from evidence_evolve.hashing import sha256_bytes, sha256_file
+from evidence_evolve.hashing import sha256_bytes
 
 
 def _json_object(value: str | None) -> dict[str, Any]:
@@ -133,12 +133,18 @@ def audit_shinka_selection(
 
     formal_best_id = str(metadata.get("best_program_id") or "")
     simulated_best_id = str(history_best["id"]) if history_best else ""
-    selected_sha256 = sha256_file(selected_candidate)
+    selected_sha256 = sha256_bytes(
+        selected_candidate.read_bytes().replace(b"\r\n", b"\n")
+    )
     imported_row = next(
         (row for row in rows if str(row["id"]) == imported_best_program_id), None
     )
     imported_code_sha256 = (
-        sha256_bytes(str(imported_row["code"]).encode("utf-8")) if imported_row else None
+        sha256_bytes(
+            str(imported_row["code"]).encode("utf-8").replace(b"\r\n", b"\n")
+        )
+        if imported_row
+        else None
     )
     valid_scores = [float(row["combined_score"] or 0.0) for row in valid_rows]
     final_score_is_valid_maximum = bool(
