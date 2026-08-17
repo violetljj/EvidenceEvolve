@@ -26,6 +26,9 @@
 
 ## Verification
 
+- On Windows, the repository-owned environment entry point is `pwsh -NoProfile -File scripts/project.ps1 <doctor|bootstrap|test|run|rebuild>`. Run `doctor` first and select the required `-Profile` (`dev`, `shinka`, `onnx`, or `algotune`). Do not use a global Python or ad hoc `pip install`; `.python-version`, `pyproject.toml`, and `uv.lock` are the local authority.
+- The `rebuild` command may delete only a non-reparse-point `.venv` that resolves exactly inside this repository. It never cleans campaign worktrees, `runs/`, contracts, receipts, confirmation assets, or evidence.
+
 - Use the repository environment at `/root/autodl-tmp/EvidenceEvolve/.venv`; invoke Python as `.venv/bin/python` and pytest as `.venv/bin/python -m pytest`. Do not probe the system Python first.
 - Use one focused implementation pass and one targeted verification pass.
 - Run `.venv/bin/python -m pytest` for governance or gate changes.
