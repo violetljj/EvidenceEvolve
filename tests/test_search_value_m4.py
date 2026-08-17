@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
 from evidence_evolve.benchmarks import search_value_m4 as m4
@@ -70,3 +71,43 @@ def test_m4_external_dominance_stops_search_core(tmp_path: Path) -> None:
 
     assert result["decision"] == "STOP_EE_SEARCH_CORE"
     assert result["stop_gate_met"] is True
+
+
+def test_remote_evaluate_cli_does_not_require_run_root(
+    monkeypatch, tmp_path: Path
+) -> None:
+    seeds = tmp_path / "seeds.json"
+    seeds.write_text('{"seeds":[1]}', encoding="utf-8")
+    output = tmp_path / "output.json"
+    candidate = tmp_path / "candidate.py"
+    candidate.write_text("pass\n", encoding="utf-8")
+    observed: dict[str, object] = {}
+
+    def fake_remote_evaluator(**kwargs):
+        observed.update(kwargs)
+        return {"correct": True}
+
+    monkeypatch.setattr(m4, "run_remote_evaluator", fake_remote_evaluator)
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "search-value-m4",
+            "remote-evaluate",
+            "--task",
+            "graph_coloring_assign",
+            "--candidate",
+            str(candidate),
+            "--seeds",
+            str(seeds),
+            "--repeats",
+            "1",
+            "--workers",
+            "2",
+            "--output",
+            str(output),
+        ],
+    )
+
+    assert m4.main() == 0
+    assert observed["task_name"] == "graph_coloring_assign"

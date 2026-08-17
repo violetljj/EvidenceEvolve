@@ -833,8 +833,6 @@ def main() -> int:
     remote.add_argument("--cold", action="store_true")
     remote.add_argument("--output", required=True)
     args = parser.parse_args()
-    run_root = args.run_root.resolve()
-    run_root.mkdir(parents=True, exist_ok=True)
     if args.command == "remote-evaluate":
         result = run_remote_evaluator(
             task_name=args.task,
@@ -846,17 +844,20 @@ def main() -> int:
             output=Path(args.output),
         )
         print(json.dumps(result, ensure_ascii=False, sort_keys=True))
-    elif args.command == "arm":
-        run_arm(run_root, args.task, args.repeat, args.arm)
-    elif args.command == "search":
-        run_search(run_root, args.max_parallel)
-    elif args.command == "finalize":
-        finalize(run_root, args.max_parallel)
     else:
-        statuses = run_search(run_root, args.max_parallel)
-        if any(item["state"] != "SUCCEEDED" for item in statuses):
-            return 2
-        finalize(run_root, args.max_parallel)
+        run_root = args.run_root.resolve()
+        run_root.mkdir(parents=True, exist_ok=True)
+        if args.command == "arm":
+            run_arm(run_root, args.task, args.repeat, args.arm)
+        elif args.command == "search":
+            run_search(run_root, args.max_parallel)
+        elif args.command == "finalize":
+            finalize(run_root, args.max_parallel)
+        else:
+            statuses = run_search(run_root, args.max_parallel)
+            if any(item["state"] != "SUCCEEDED" for item in statuses):
+                return 2
+            finalize(run_root, args.max_parallel)
     return 0
 
 
