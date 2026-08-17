@@ -9,6 +9,7 @@ import pytest
 
 upstream_cli = pytest.importorskip("shinka.cli.run")
 
+from evidence_evolve.benchmarks.shinka_fitness import shinka_metrics
 from evidence_evolve.search.models import SearchRunRequest
 from evidence_evolve.search.shinka_native import ShinkaNativeEngine
 from evidence_evolve.proposals.models import ProposalMaterializerMode
@@ -16,6 +17,20 @@ from evidence_evolve.proposals.shinka_adapter import (
     apply_evidence_diff_patch,
     run_official_shinka_with_materializer,
 )
+
+
+def test_shinka_fitness_maps_only_valid_development_speedup() -> None:
+    valid = shinka_metrics(
+        {"correct": True, "valid_rate": 1.0, "raw_speedup": 22.5, "failure": ""}
+    )
+    invalid = shinka_metrics(
+        {"correct": False, "valid_rate": 0.0, "raw_speedup": 99.0, "failure": "bad"}
+    )
+
+    assert valid["combined_score"] == 22.5
+    assert valid["public"] == {"raw_speedup": 22.5, "valid_rate": 1.0}
+    assert valid["raw_speedup"] == 22.5
+    assert invalid["combined_score"] == 0.0
 
 
 def _make_task(tmp_path: Path) -> Path:

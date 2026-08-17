@@ -119,6 +119,7 @@ def _write_task_workspace(run_dir: Path, task: dict[str, Any]) -> Path:
 import argparse, json, os
 from pathlib import Path
 from evidence_evolve.benchmarks.algotune_official import OfficialTaskSpec, evaluate_official_candidate
+from evidence_evolve.benchmarks.shinka_fitness import shinka_metrics
 SPEC = OfficialTaskSpec(name={task['task']!r}, class_name={task['class']!r}, problem_size={int(task['problem_size'])!r}, source_path={str(source)!r})
 def evaluate(program_path: str):
     start=int(os.environ.get("EE_ALGOTUNE_DEV_START","0")); count=int(os.environ.get("EE_ALGOTUNE_DEV_COUNT","20")); repeats=int(os.environ.get("EE_ALGOTUNE_DEV_REPEATS","3")); workers=int(os.environ.get("EE_ALGOTUNE_WORKERS","4"))
@@ -137,7 +138,7 @@ def evaluate(program_path: str):
     result["text_feedback"]=f"correct={{result['correct']}} valid_rate={{result['valid_rate']:.3f}} raw_speedup={{result['raw_speedup']:.4f}} failure={{result['failure']}}"
     return result
 def main():
-    p=argparse.ArgumentParser(); p.add_argument("--program_path",required=True); p.add_argument("--results_dir",required=True); a=p.parse_args(); r=evaluate(a.program_path); d=Path(a.results_dir); d.mkdir(parents=True,exist_ok=True); (d/"metrics.json").write_text(json.dumps(r,sort_keys=True)); (d/"correct.json").write_text(json.dumps({{"correct":bool(r["correct"]),"error":r["failure"]}},sort_keys=True))
+    p=argparse.ArgumentParser(); p.add_argument("--program_path",required=True); p.add_argument("--results_dir",required=True); a=p.parse_args(); r=evaluate(a.program_path); d=Path(a.results_dir); d.mkdir(parents=True,exist_ok=True); (d/"metrics.json").write_text(json.dumps(shinka_metrics(r),sort_keys=True)); (d/"correct.json").write_text(json.dumps({{"correct":bool(r["correct"]),"error":r["failure"]}},sort_keys=True))
 if __name__ == "__main__": main()
 '''
     (root / "evaluator.py").write_text(evaluator, encoding="utf-8")
