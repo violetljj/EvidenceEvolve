@@ -33,9 +33,18 @@ from evidence_evolve.remote_cpu import (
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-PROTOCOL = REPO_ROOT / "research/parity/m4_search_value_tournament_v0.protocol.json"
+CAMPAIGN = os.environ.get("EE_M4_CAMPAIGN", "m4_search_value_tournament_v0")
+_PROTOCOL_RELATIVE = Path(
+    os.environ.get(
+        "EE_M4_PROTOCOL",
+        "research/parity/m4_search_value_tournament_v0.protocol.json",
+    )
+)
+if _PROTOCOL_RELATIVE.is_absolute() or ".." in _PROTOCOL_RELATIVE.parts:
+    raise ValueError("EE_M4_PROTOCOL must be a repository-relative path")
+PROTOCOL = (REPO_ROOT / _PROTOCOL_RELATIVE).resolve()
 UPSTREAM_ROOT = REPO_ROOT / "tasks/algotune_m4_upstream"
-DEFAULT_RUN_ROOT = REPO_ROOT / "runs/m4_search_value_tournament_v0"
+DEFAULT_RUN_ROOT = REPO_ROOT / "runs" / CAMPAIGN
 ARMS = ("vanilla", "shinka", "ada", "evidence_evolve")
 HORIZONS = (1, 2, 3)
 REMOTE_HOST = "root@connect.westb.seetacloud.com"
@@ -45,6 +54,8 @@ REMOTE_ROOT = "/root/autodl-tmp/evidence-evolve-worker"
 
 def _load_protocol() -> dict[str, Any]:
     payload = json.loads(PROTOCOL.read_text(encoding="utf-8"))
+    if payload.get("campaign") != CAMPAIGN:
+        raise ValueError("M4 campaign and protocol disagree")
     if tuple(payload["arms"]) != ARMS:
         raise ValueError("M4 arm set drift")
     if tuple(payload["repeats"]) != (1, 2, 3):
@@ -170,7 +181,7 @@ def _remote_evaluate(
             sort_keys=True,
         ).encode("utf-8")
     ).hexdigest()[:32]
-    job_dir = REPO_ROOT / "runs/m4_search_value_tournament_v0/remote_jobs" / key
+    job_dir = DEFAULT_RUN_ROOT / "remote_jobs" / key
     job_dir.mkdir(parents=True, exist_ok=True)
     staged_candidate = job_dir / "candidate.py"
     staged_seeds = job_dir / "seeds.json"
@@ -765,7 +776,7 @@ def _aggregate(run_root: Path, blocks: list[dict[str, Any]]) -> dict[str, Any]:
     )
     return {
         "schema_version": "1.0",
-        "campaign": "m4_search_value_tournament_v0",
+        "campaign": CAMPAIGN,
         "protocol_sha256": sha256_file(PROTOCOL),
         "portfolio_candidate_lock_sha256": sha256_file(
             run_root / "portfolio_candidate_lock.json"

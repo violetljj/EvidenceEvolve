@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0",
+  "campaign": "m4_search_value_tournament_v0",
+  "scientific_outcome": "INVALID_MECHANICS_OR_ADAPTER",
+  "protocol_sha256": "98e211930e28182c556f0e2c62595f9c01d7addfd13b706fe484ae8dab303352",
+  "formal_execution_commit": "3ef12a4b9d5813b06c5c7b1df7d97cdefdb71917",
+  "completed_process_statuses_before_abort": {
+    "vanilla_succeeded": 2,
+    "shinka_failed": 3,
+    "ada_failed": 3
+  },
+  "blocking_evidence": [
+    {
+      "arm": "shinka",
+      "classification": "SHARED_ADAPTER_PATH_FAILURE",
+      "stderr_sha256": "d4ff0e19b8eb84443b66f88a8d205ad06814bb585f5212eba4e3812297842932",
+      "detail": "The configured headless shim was resolved beneath each generated task directory and did not exist."
+    },
+    {
+      "arm": "ada",
+      "classification": "SHARED_SOURCE_DECODING_FAILURE",
+      "stderr_sha256": "cc70719a53c6b4fddbc0f522c10221e66c76e06131896b3551cc7278f4c005cf",
+      "detail": "SkyDiscover opened the UTF-8 task source with the Windows GBK default and failed before proposal generation."
+    }
+  ],
+  "termination": "Remaining queued work was stopped after both failures were shown to be deterministic shared blockers across repeats.",
+  "retry_or_replacement_within_campaign": false,
+  "task_reuse_permitted": false,
+  "decision_gate_evaluable": false,
+  "superiority_claim_permitted": false
+}

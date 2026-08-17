@@ -34,6 +34,24 @@ def test_m4_protocol_binds_three_fresh_heterogeneous_sources() -> None:
     assert protocol["superiority_claim_permitted"] is False
 
 
+def test_m4_v1_replacement_uses_disjoint_sources() -> None:
+    replacement = json.loads(
+        (
+            m4.REPO_ROOT
+            / "research/parity/m4_search_value_tournament_v1.protocol.json"
+        ).read_text(encoding="utf-8")
+    )
+    original_tasks = {item["task"] for item in m4._load_protocol()["tasks"]}
+    replacement_tasks = {item["task"] for item in replacement["tasks"]}
+
+    assert replacement["replacement_for"]["outcome"] == (
+        "INVALID_MECHANICS_OR_ADAPTER"
+    )
+    assert original_tasks.isdisjoint(replacement_tasks)
+    for task in replacement["tasks"]:
+        assert m4.sha256_file(m4._source_path(task["task"])) == task["source_sha256"]
+
+
 def test_m4_continue_gate_requires_two_task_wins_and_external_nonloss(
     tmp_path: Path,
 ) -> None:
