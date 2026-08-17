@@ -783,7 +783,7 @@ def dispatch_job(
             f"--job-root {shlex.quote(jobs)} "
             f"--source-bundle {shlex.quote(remote_bundle)}"
         )
-        subprocess.run(
+        _run_transport_command(
             [
                 "ssh",
                 "-p",
