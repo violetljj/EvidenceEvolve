@@ -637,6 +637,27 @@ def _validate_remote(host: str, remote_root: str, port: int) -> None:
         raise ValueError("port must be between 1 and 65535")
 
 
+def _run_transport_command(
+    command: list[str], *, timeout: float | None = None, attempts: int = 3
+) -> subprocess.CompletedProcess[bytes]:
+    """Retry only SSH/SCP transport establishment failures.
+
+    Exit 255 is emitted by SSH/SCP before a usable transport completes.  This
+    helper is deliberately not used for the remote scientific command, so it
+    cannot repeat candidate execution or evaluator work.
+    """
+    if attempts < 1:
+        raise ValueError("transport attempts must be positive")
+    for attempt in range(1, attempts + 1):
+        try:
+            return subprocess.run(command, check=True, timeout=timeout)
+        except subprocess.CalledProcessError as exc:
+            if exc.returncode != 255 or attempt == attempts:
+                raise
+            time.sleep(float(attempt))
+    raise AssertionError("unreachable transport retry state")
+
+
 def bootstrap_remote(
     *,
     repo: Path,
@@ -715,7 +736,7 @@ def dispatch_job(
         raise FileExistsError(f"local result directory already exists: {local_result_dir}")
     inbox = f"{remote_root}/inbox"
     remote_request = f"{inbox}/{envelope.request.job_id}.json"
-    subprocess.run(
+    _run_transport_command(
         [
             "ssh",
             "-p",
@@ -725,19 +746,16 @@ def dispatch_job(
             host,
             f"mkdir -p {shlex.quote(inbox)}",
         ],
-        check=True,
     )
     remote_bundle = f"{inbox}/{envelope.request.job_id}.bundle"
     with tempfile.TemporaryDirectory(prefix="ee-remote-dispatch-") as temporary:
         bundle = Path(temporary) / "source.bundle"
         _create_head_bundle(repo.resolve(), bundle, envelope.request.repository_commit)
-        subprocess.run(
+        _run_transport_command(
             ["scp", "-P", str(port), str(request_path), f"{host}:{remote_request}"],
-            check=True,
         )
-        subprocess.run(
+        _run_transport_command(
             ["scp", "-P", str(port), str(bundle), f"{host}:{remote_bundle}"],
-            check=True,
         )
         control = f"{remote_root}/control"
         python = f"{remote_root}/venv/bin/python"
@@ -755,9 +773,8 @@ def dispatch_job(
         )
     local_result_dir.parent.mkdir(parents=True, exist_ok=True)
     remote_result = f"{jobs}/{envelope.request.job_id}/result"
-    subprocess.run(
+    _run_transport_command(
         ["scp", "-P", str(port), "-r", f"{host}:{remote_result}", str(local_result_dir)],
-        check=True,
     )
     return verify_result(request_path, local_result_dir)
 

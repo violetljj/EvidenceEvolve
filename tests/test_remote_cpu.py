@@ -5,6 +5,8 @@ from pathlib import Path
 
 import pytest
 
+import evidence_evolve.remote_cpu as remote_cpu
+
 from evidence_evolve.remote_cpu import (
     RemoteEntrypoint,
     create_job_request,
@@ -90,3 +92,41 @@ def test_worker_result_is_commit_bound_and_tamper_evident(tmp_path: Path) -> Non
         stream.write(b"tampered\n")
     with pytest.raises(ValueError, match="stdout.log"):
         verify_result(request_path, result_dir)
+
+
+def test_transport_setup_retries_only_ssh_exit_255(monkeypatch) -> None:
+    calls = 0
+    sleeps: list[float] = []
+
+    def flaky_run(command, **kwargs):
+        nonlocal calls
+        calls += 1
+        if calls < 3:
+            raise subprocess.CalledProcessError(255, command)
+        return subprocess.CompletedProcess(command, 0)
+
+    monkeypatch.setattr(remote_cpu.subprocess, "run", flaky_run)
+    monkeypatch.setattr(remote_cpu.time, "sleep", sleeps.append)
+
+    completed = remote_cpu._run_transport_command(["ssh", "example"], attempts=3)
+
+    assert completed.returncode == 0
+    assert calls == 3
+    assert sleeps == [1.0, 2.0]
+
+
+def test_transport_setup_does_not_retry_remote_non_transport_failure(
+    monkeypatch,
+) -> None:
+    calls = 0
+
+    def failed_run(command, **kwargs):
+        nonlocal calls
+        calls += 1
+        raise subprocess.CalledProcessError(1, command)
+
+    monkeypatch.setattr(remote_cpu.subprocess, "run", failed_run)
+
+    with pytest.raises(subprocess.CalledProcessError):
+        remote_cpu._run_transport_command(["scp", "example"], attempts=3)
+    assert calls == 1
