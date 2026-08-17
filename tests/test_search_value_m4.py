@@ -127,6 +127,31 @@ def test_m4_v3_replacement_uses_fresh_exact_upstream_sources() -> None:
         assert type(loaded).__name__ == task["class"]
 
 
+def test_m4_v4_replacement_is_disjoint_and_keeps_common_budget() -> None:
+    protocols = [
+        json.loads(
+            (
+                m4.REPO_ROOT
+                / f"research/parity/m4_search_value_tournament_v{version}.protocol.json"
+            ).read_text(encoding="utf-8")
+        )
+        for version in range(5)
+    ]
+    consumed = {
+        item["task"] for protocol in protocols[:4] for item in protocol["tasks"]
+    }
+    replacement = protocols[4]
+    fresh = {item["task"] for item in replacement["tasks"]}
+
+    assert consumed.isdisjoint(fresh)
+    assert replacement["common_conditions"]["observed_token_ceiling"] == 600_000
+    assert replacement["budget_interpretation"]["same_ceiling_for_every_arm"] is True
+    for task in replacement["tasks"]:
+        source = m4._source_path(task["task"])
+        assert m4.sha256_file(source) == task["source_sha256"]
+        assert type(load_task(source, task["class"])).__name__ == task["class"]
+
+
 def test_m4_continue_gate_requires_two_task_wins_and_external_nonloss(
     tmp_path: Path,
 ) -> None:
