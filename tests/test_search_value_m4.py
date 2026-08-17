@@ -5,6 +5,7 @@ import sys
 from pathlib import Path
 
 from evidence_evolve.benchmarks import search_value_m4 as m4
+from evidence_evolve.benchmarks.algotune_official import load_task
 
 
 def _block(task: str, repeat: int, arm: str, score: float) -> dict[str, object]:
@@ -88,7 +89,10 @@ def test_m4_v2_uses_fresh_sources_and_admitted_budget_schedule() -> None:
     assert v2["common_conditions"]["evidence_evolve_cycles"] == 1
     assert v2["budget_interpretation"]["same_ceiling_for_every_arm"] is True
     for task in v2["tasks"]:
-        assert m4.sha256_file(m4._source_path(task["task"])) == task["source_sha256"]
+        source = m4._source_path(task["task"])
+        assert m4.sha256_file(source) == task["source_sha256"]
+        loaded = load_task(source, task["class"])
+        assert type(loaded).__name__ == task["class"]
 
 
 def test_m4_continue_gate_requires_two_task_wins_and_external_nonloss(
