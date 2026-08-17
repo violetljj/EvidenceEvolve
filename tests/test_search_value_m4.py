@@ -152,6 +152,29 @@ def test_m4_v4_replacement_is_disjoint_and_keeps_common_budget() -> None:
         assert type(load_task(source, task["class"])).__name__ == task["class"]
 
 
+def test_m4_v5_replacement_is_fresh_and_transport_hardened() -> None:
+    protocols = [
+        json.loads(
+            (
+                m4.REPO_ROOT
+                / f"research/parity/m4_search_value_tournament_v{version}.protocol.json"
+            ).read_text(encoding="utf-8")
+        )
+        for version in range(6)
+    ]
+    consumed = {
+        item["task"] for protocol in protocols[:5] for item in protocol["tasks"]
+    }
+    replacement = protocols[5]
+    assert consumed.isdisjoint({item["task"] for item in replacement["tasks"]})
+    assert replacement["execution_layer_minimum_commit"].startswith("4681a65")
+    assert replacement["common_conditions"]["observed_token_ceiling"] == 600_000
+    for task in replacement["tasks"]:
+        source = m4._source_path(task["task"])
+        assert m4.sha256_file(source) == task["source_sha256"]
+        assert type(load_task(source, task["class"])).__name__ == task["class"]
+
+
 def test_m4_continue_gate_requires_two_task_wins_and_external_nonloss(
     tmp_path: Path,
 ) -> None:
