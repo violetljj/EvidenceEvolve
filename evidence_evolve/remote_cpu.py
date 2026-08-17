@@ -35,7 +35,12 @@ _SSH_CONNECTION_OPTIONS = (
     "ConnectionAttempts=3",
     "-o",
     "ConnectTimeout=15",
+    "-o",
+    "ServerAliveInterval=15",
+    "-o",
+    "ServerAliveCountMax=3",
 )
+_TRANSPORT_TIMEOUT_SECONDS = 60.0
 
 
 class _StrictModel(BaseModel):
@@ -646,19 +651,25 @@ def _validate_remote(host: str, remote_root: str, port: int) -> None:
 
 
 def _run_transport_command(
-    command: list[str], *, timeout: float | None = None, attempts: int = 3
+    command: list[str], *, timeout: float | None = _TRANSPORT_TIMEOUT_SECONDS,
+    attempts: int = 3,
 ) -> subprocess.CompletedProcess[bytes]:
-    """Retry only SSH/SCP transport establishment failures.
+    """Retry only bounded SSH/SCP transport establishment failures.
 
-    Exit 255 is emitted by SSH/SCP before a usable transport completes.  This
-    helper is deliberately not used for the remote scientific command, so it
-    cannot repeat candidate execution or evaluator work.
+    Exit 255 or a local transport timeout occurs before a usable setup transport
+    completes. This helper retries only idempotent setup and artifact-transfer
+    commands. The remote scientific command sets ``attempts=1``, so candidate
+    execution or evaluator work is never repeated.
     """
     if attempts < 1:
         raise ValueError("transport attempts must be positive")
     for attempt in range(1, attempts + 1):
         try:
             return subprocess.run(command, check=True, timeout=timeout)
+        except subprocess.TimeoutExpired:
+            if attempt == attempts:
+                raise
+            time.sleep(float(attempt))
         except subprocess.CalledProcessError as exc:
             if exc.returncode != 255 or attempt == attempts:
                 raise
@@ -685,7 +696,7 @@ def bootstrap_remote(
         bundle = Path(temporary) / "control.bundle"
         _create_head_bundle(repo.resolve(), bundle, repository_commit)
         remote_bundle = f"{remote_root}/control.bundle"
-        subprocess.run(
+        _run_transport_command(
             [
                 "ssh",
                 "-p",
@@ -781,8 +792,8 @@ def dispatch_job(
                 host,
                 remote_command,
             ],
-            check=True,
             timeout=envelope.request.timeout_seconds + 300,
+            attempts=1,
         )
     local_result_dir.parent.mkdir(parents=True, exist_ok=True)
     remote_result = f"{jobs}/{envelope.request.job_id}/result"

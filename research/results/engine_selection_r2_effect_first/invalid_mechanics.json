@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0",
+  "campaign": "engine_selection_r2_effect_first",
+  "scientific_outcome": "INVALID_MECHANICS_OR_ADAPTER",
+  "decision": "ROUND_1_NOT_EVALUABLE",
+  "closed_at_utc": "2026-08-17T13:22:17.0249486Z",
+  "formal_execution_commit": "cc8748c9708833b433d646d1354245837f8453da",
+  "protocol_sha256": "a1cfde1660e8736d1d221c9f50f1bf2f564677d825e8b2608616eb4df3842b7d",
+  "mechanics_admission": {
+    "status": "PASS",
+    "receipt_sha256": "9556c9a8a6477a5ffdfa7c7975d8b98b89dc62c5c549a9d5152307ced724ebf9"
+  },
+  "shared_failure": {
+    "class": "REMOTE_TRANSPORT_STALL_AND_STAGE_FAIL_FAST_MISSING",
+    "task": "pde_heat1d",
+    "repeat": 1,
+    "arm_process_states": {
+      "vanilla": "TIMED_OUT",
+      "ada": "TIMED_OUT",
+      "shinka": "TIMED_OUT",
+      "evox": "TIMED_OUT"
+    },
+    "elapsed_seconds_per_arm": 2880.03,
+    "remote_observation": "The first ten PDE remote evaluations succeeded in 2.66 to 4.21 seconds. Four later requests had no local verified receipt and occupied the two dispatch slots until the arm timeouts.",
+    "scheduler_defect": "The stage scheduled convex_hull after the entire PDE paired block timed out instead of failing fast. The controller stopped the stage and terminated all task-owned local and remote processes."
+  },
+  "partial_development_only": {
+    "authority": "DIAGNOSTIC_ONLY_NOT_HELDOUT_NOT_RANKING",
+    "observed_tokens": {
+      "vanilla": 79993,
+      "ada": 172486,
+      "shinka": 150672,
+      "evox": 253226
+    },
+    "ada_best_observed_raw_speedup": 2.07,
+    "note": "Ada's partial development signal is promising but cannot be used as an R2 winner result because no trajectory lock or heldout evaluation exists."
+  },
+  "execution_at_stop": {
+    "heldout_seed_receipts": 0,
+    "heldout_evaluations": 0,
+    "round_1_candidate_lock_written": false,
+    "round_1_result_written": false,
+    "local_task_processes_remaining": 0,
+    "remote_engine_r2_workers_remaining": 0
+  },
+  "claim_scope": "FORMAL_EXECUTION_MECHANICS_FAILURE_ONLY",
+  "engine_ranking_permitted": false,
+  "superiority_claim_permitted": false,
+  "prescribed_action": "Do not resume or score R2. Repair bounded transport, process-tree termination, append-only per-evaluation observations, and paired-block fail-fast. Require sustained transport admission before a successor run."
+}

@@ -40,6 +40,18 @@
 - The scheduler should draw from the benchmark bank before requesting a new task. Open a fresh/blind cohort only when a predeclared development gate establishes that the expected information value justifies consuming it.
 - `benchmark_bank/manifest.v1.yaml` is the canonical Core-12 registry. Validate its content lock and local asset hashes before selection; `CATALOG_ONLY` entries are planning references, not executable cases, and any task outside the bank requires an explicit manifest amendment or a predeclared fresh-gate exception.
 
+## Long-run observability and supervision
+
+- Do not fire-and-forget a long search, tournament, campaign, remote evaluation wave, or benchmark stage. A long run must have an active supervisor or an automatic watchdog that records progress, detects stalls, and stops unsafe continuation.
+- Record every development candidate evaluation as it happens in an append-only observation ledger. Each record must bind at least the task, repeat/seed, arm, evaluation index, candidate hash, validity, development effect, incumbent-refresh decision, elapsed wall time, cumulative token accounting, and remote receipt hash when remote execution is used.
+- Development results are intentionally visible. Inspect them during execution and use them for debugging, parent selection, controller tuning, early stopping, and mechanism development when the task role is `DEV`. Seeing a development result is not leakage; presenting an inspected or repeatedly tuned result as blind/fresh evidence is leakage.
+- Keep final heldout evidence separate: lock candidate hashes before generating or revealing final heldout seeds or results. Only this final layer needs blind isolation.
+- Treat a paired task/repeat block as the minimum scheduling unit. After the block finishes, inspect all arm states and recorded observations before launching the next block. Do not enqueue an entire multi-block stage in a way that can silently continue after a shared failure.
+- If any arm reports a transport stall, missing receipt, process timeout, invalid shared workspace, or another common infrastructure failure, complete or stop the current paired block as safely as possible and fail-fast the remaining stage. Do not continue to later tasks and do not interpret the failure as an engine-quality result.
+- Every local subprocess, SSH/SCP transport, and remote worker call must have an explicit timeout appropriate to its layer. Timeout handling must terminate the owned process tree, preserve partial logs and receipts, and verify that no task-owned local or remote worker remains.
+- Long-run status must be reconstructable without reading unstructured stdout: retain per-arm latest observation, append-only iteration history, paired-block process summaries, and a stage-level terminal status. Report real progress from these artifacts rather than inferring progress from process existence alone.
+- Supervision should be quiet during healthy progress. Record and inspect every iteration automatically, but do not interrupt the user with routine unchanged polls or per-iteration chatter. Notify the user at meaningful stage milestones, when a decision is required, or immediately when an anomaly, stall, invalid shared condition, or fail-fast event occurs.
+
 ## Verification
 
 - On Windows, the repository-owned environment entry point is `pwsh -NoProfile -File scripts/project.ps1 <doctor|bootstrap|test|run|rebuild>`. Run `doctor` first and select the required `-Profile` (`dev`, `shinka`, `onnx`, or `algotune`). Do not use a global Python or ad hoc `pip install`; `.python-version`, `pyproject.toml`, and `uv.lock` are the local authority.

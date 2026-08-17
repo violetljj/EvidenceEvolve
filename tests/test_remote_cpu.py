@@ -115,6 +115,27 @@ def test_transport_setup_retries_only_ssh_exit_255(monkeypatch) -> None:
     assert sleeps == [1.0, 2.0]
 
 
+def test_transport_setup_retries_bounded_timeout(monkeypatch) -> None:
+    calls = 0
+    observed_timeouts: list[float | None] = []
+
+    def flaky_run(command, **kwargs):
+        nonlocal calls
+        calls += 1
+        observed_timeouts.append(kwargs.get("timeout"))
+        if calls < 3:
+            raise subprocess.TimeoutExpired(command, kwargs.get("timeout"))
+        return subprocess.CompletedProcess(command, 0)
+
+    monkeypatch.setattr(remote_cpu.subprocess, "run", flaky_run)
+    monkeypatch.setattr(remote_cpu.time, "sleep", lambda _seconds: None)
+
+    completed = remote_cpu._run_transport_command(["ssh", "example"], attempts=3)
+
+    assert completed.returncode == 0
+    assert observed_timeouts == [60.0, 60.0, 60.0]
+
+
 def test_transport_setup_does_not_retry_remote_non_transport_failure(
     monkeypatch,
 ) -> None:
@@ -140,4 +161,8 @@ def test_ssh_connection_options_retry_only_session_establishment() -> None:
         "ConnectionAttempts=3",
         "-o",
         "ConnectTimeout=15",
+        "-o",
+        "ServerAliveInterval=15",
+        "-o",
+        "ServerAliveCountMax=3",
     )

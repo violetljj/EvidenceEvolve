@@ -9,6 +9,7 @@ import shutil
 import subprocess
 import sys
 import time
+import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
@@ -28,6 +29,7 @@ from evidence_evolve.benchmarks.engine_selection_r2 import (
 )
 from evidence_evolve.benchmarks.algotune_official import OfficialTaskSpec
 from evidence_evolve.hashing import sha256_file
+from evidence_evolve.remote_cpu import _terminate_process_tree
 
 
 CAMPAIGN = "engine_selection_r2_effect_first"
@@ -183,7 +185,7 @@ def remote_development_evaluate(
             cold=False,
             context=os.environ.get("EE_ENGINE_EVAL_CONTEXT", "unscoped-development"),
         )
-    return {
+    result = {
         "mechanics_status": "PASS",
         "metrics": {
             "invalid_solution_rate": 1.0 - float(raw["valid_rate"]),
@@ -193,6 +195,56 @@ def remote_development_evaluate(
         "error": str(raw.get("failure", "")),
         "remote_receipt_sha256": raw["remote_receipt_sha256"],
     }
+    _record_development_observation(Path(candidate), spec.name, result)
+    return result
+
+
+def _record_development_observation(
+    candidate: Path, task_name: str, result: dict[str, Any]
+) -> None:
+    run_root_value = os.environ.get("EE_ENGINE_RUN_ROOT")
+    arm = os.environ.get("EE_ENGINE_ARM")
+    repeat_value = os.environ.get("EE_ENGINE_REPEAT")
+    if not run_root_value or not arm or not repeat_value:
+        raise ValueError("R2 development observation context is incomplete")
+    repeat = int(repeat_value)
+    arm_dir = Path(run_root_value) / task_name / f"repeat_{repeat:02d}" / "arms" / arm
+    ledger = arm_dir / "development_observations.jsonl"
+    prior: list[dict[str, Any]] = []
+    if ledger.exists():
+        prior = [json.loads(line) for line in ledger.read_text().splitlines() if line.strip()]
+    score = float(result["metrics"]["raw_speedup"])
+    valid = bool(result["controls"]["candidate_valid"])
+    prior_best = max(
+        (float(item["development_raw_speedup"]) for item in prior if item["candidate_valid"]),
+        default=float("-inf"),
+    )
+    tokens = (
+        blind._headless_token_usage(arm_dir / "headless_usage.jsonl")
+        if arm == "shinka"
+        else blind._token_usage(arm_dir)
+    )
+    started = float(os.environ.get("EE_ENGINE_ARM_STARTED_MONOTONIC", time.monotonic()))
+    payload = {
+        "schema_version": "1.0",
+        "observed_at_utc": datetime.now(timezone.utc).isoformat(),
+        "task": task_name,
+        "repeat": repeat,
+        "arm": arm,
+        "evaluation_index": len(prior) + 1,
+        "candidate_path": str(candidate.resolve()),
+        "candidate_sha256": sha256_file(candidate),
+        "candidate_valid": valid,
+        "development_raw_speedup": score,
+        "incumbent_refreshed": valid and score > prior_best,
+        "observed_tokens": int(tokens),
+        "elapsed_seconds": max(0.0, time.monotonic() - started),
+        "remote_receipt_sha256": result["remote_receipt_sha256"],
+    }
+    ledger.parent.mkdir(parents=True, exist_ok=True)
+    with ledger.open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps(payload, ensure_ascii=False, sort_keys=True) + "\n")
+    blind._write_json(arm_dir / "latest_development_observation.json", payload)
 
 
 def _configure(run_dir: Path, task_name: str, repeat: int) -> OfficialTaskSpec:
@@ -270,6 +322,10 @@ def run_arm(run_root: Path, task_name: str, repeat: int, arm: str) -> dict[str, 
     run_dir.mkdir(parents=True, exist_ok=True)
     _configure(run_dir, task_name, repeat)
     os.environ["EE_ENGINE_EVAL_CONTEXT"] = f"{task_name}-r{repeat}-{arm}"
+    os.environ["EE_ENGINE_RUN_ROOT"] = str(run_root)
+    os.environ["EE_ENGINE_ARM"] = arm
+    os.environ["EE_ENGINE_REPEAT"] = str(repeat)
+    os.environ["EE_ENGINE_ARM_STARTED_MONOTONIC"] = str(time.monotonic())
     _manifest(run_dir, task_name, repeat, stage)
     arm_dir = run_dir / "arms" / arm
     trajectory_path = arm_dir / "trajectory_result.json"
@@ -342,20 +398,27 @@ def _run_item(run_root: Path, task: str, repeat: int, arm: str) -> dict[str, Any
     started = time.monotonic()
     state = "FAILED"
     returncode: int | None = None
-    try:
-        with stdout.open("w", encoding="utf-8") as out, stderr.open("w", encoding="utf-8") as err:
-            completed = subprocess.run(
-                _command(run_root, task, repeat, arm),
-                cwd=REPO_ROOT,
-                stdout=out,
-                stderr=err,
-                timeout=float(conditions["wall_seconds_per_run"]) + float(conditions["wall_grace_seconds"]),
-                env={**os.environ, "PYTHONUTF8": "1"},
+    process: subprocess.Popen[Any] | None = None
+    with stdout.open("w", encoding="utf-8") as out, stderr.open("w", encoding="utf-8") as err:
+        process = subprocess.Popen(
+            _command(run_root, task, repeat, arm),
+            cwd=REPO_ROOT,
+            stdout=out,
+            stderr=err,
+            env={**os.environ, "PYTHONUTF8": "1"},
+        )
+        try:
+            returncode = process.wait(
+                timeout=float(conditions["wall_seconds_per_run"])
+                + float(conditions["wall_grace_seconds"])
             )
-        returncode = completed.returncode
+        except subprocess.TimeoutExpired:
+            _terminate_process_tree(process)
+            state = "TIMED_OUT"
+    if state == "TIMED_OUT":
+        returncode = process.returncode
+    else:
         state = "SUCCEEDED" if returncode == 0 else "FAILED"
-    except subprocess.TimeoutExpired:
-        state = "TIMED_OUT"
     payload = {
         "task": task,
         "repeat": repeat,
@@ -374,11 +437,20 @@ def _run_parallel(run_root: Path, items: list[tuple[str, int, str]], max_paralle
     if max_parallel < 1:
         raise ValueError("max_parallel must be positive")
     results: list[dict[str, Any]] = []
-    with ThreadPoolExecutor(max_workers=max_parallel) as pool:
-        futures = [pool.submit(_run_item, run_root, *item) for item in items]
-        for future in as_completed(futures):
-            results.append(future.result())
-    blind._write_json(run_root / output, results)
+    block_order: list[tuple[str, int]] = []
+    for task, repeat, _arm in items:
+        key = (task, repeat)
+        if key not in block_order:
+            block_order.append(key)
+    for task, repeat in block_order:
+        block_items = [item for item in items if item[:2] == (task, repeat)]
+        with ThreadPoolExecutor(max_workers=min(max_parallel, len(block_items))) as pool:
+            futures = [pool.submit(_run_item, run_root, *item) for item in block_items]
+            block_results = [future.result() for future in as_completed(futures)]
+        results.extend(block_results)
+        blind._write_json(run_root / output, results)
+        if any(item["state"] != "SUCCEEDED" for item in block_results):
+            break
     return results
 
 
@@ -405,6 +477,82 @@ def run_mechanics_smoke(run_root: Path, max_parallel: int) -> dict[str, Any]:
         "arms": sorted(trajectories, key=lambda item: item["arm"]),
     }
     blind._write_json(run_root / load_protocol()["mechanics_smoke"]["receipt"], payload)
+    return payload
+
+
+def run_transport_admission(
+    run_root: Path, admission_id: str, attempts: int, max_parallel: int
+) -> dict[str, Any]:
+    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]{0,39}", admission_id):
+        raise ValueError("transport admission id must be portable")
+    if attempts < 1 or max_parallel < 1:
+        raise ValueError("transport admission attempts and parallelism must be positive")
+    if max_parallel > int(load_protocol()["common_conditions"]["remote_evaluation_slots"]):
+        raise ValueError("transport admission exceeds frozen remote slots")
+    _install_shared_context()
+    shared._task_payload = _task_payload
+    shared._source_path = _source_path
+    admission_root = run_root / f"transport_admission_{admission_id}"
+    admission_root.mkdir(parents=True, exist_ok=True)
+    candidate = _source_path(SMOKE_TASK)
+    spec = _task_spec(_task_payload(SMOKE_TASK))
+
+    def probe(index: int) -> dict[str, Any]:
+        started = time.monotonic()
+        try:
+            with _remote_dispatch_slot():
+                result = shared._remote_evaluate(
+                    candidate,
+                    spec,
+                    list(range(index * 20, index * 20 + 20)),
+                    repeats=2,
+                    workers=int(load_protocol()["common_conditions"]["evaluator_workers_per_active_run"]),
+                    cold=False,
+                    context=f"transport-admission-{admission_id}-{index:03d}",
+                )
+            return {
+                "attempt": index,
+                "state": "SUCCEEDED",
+                "elapsed_seconds": time.monotonic() - started,
+                "remote_receipt_sha256": result["remote_receipt_sha256"],
+                "correct": bool(result["correct"]),
+            }
+        except Exception as exc:
+            return {
+                "attempt": index,
+                "state": "FAILED",
+                "elapsed_seconds": time.monotonic() - started,
+                "error_class": type(exc).__name__,
+                "error": str(exc),
+            }
+
+    records: list[dict[str, Any]] = []
+    next_attempt = 1
+    while next_attempt <= attempts:
+        wave = list(range(next_attempt, min(attempts + 1, next_attempt + max_parallel)))
+        with ThreadPoolExecutor(max_workers=len(wave)) as pool:
+            futures = [pool.submit(probe, index) for index in wave]
+            records.extend(future.result() for future in as_completed(futures))
+        records.sort(key=lambda item: int(item["attempt"]))
+        blind._write_json(admission_root / "progress.json", records)
+        if any(item["state"] != "SUCCEEDED" for item in records[-len(wave):]):
+            break
+        next_attempt += len(wave)
+    passed = len(records) == attempts and all(item["state"] == "SUCCEEDED" for item in records)
+    payload = {
+        "schema_version": "1.0",
+        "campaign": CAMPAIGN,
+        "stage": "TRANSPORT_STRESS_ADMISSION",
+        "scientific_authority": False,
+        "admission_id": admission_id,
+        "protocol_sha256": sha256_file(PROTOCOL),
+        "attempts_required": attempts,
+        "remote_slots": max_parallel,
+        "workers_per_evaluation": int(load_protocol()["common_conditions"]["evaluator_workers_per_active_run"]),
+        "status": "PASS" if passed else "FAIL",
+        "records": records,
+    }
+    blind._write_json(admission_root / "receipt.json", payload)
     return payload
 
 
@@ -574,6 +722,11 @@ def main() -> int:
         command = subparsers.add_parser(name)
         command.add_argument("--run-root", type=Path, default=DEFAULT_RUN_ROOT)
         command.add_argument("--max-parallel", type=int, default=4)
+    transport = subparsers.add_parser("transport-admission")
+    transport.add_argument("--run-root", type=Path, default=DEFAULT_RUN_ROOT)
+    transport.add_argument("--admission-id", required=True)
+    transport.add_argument("--attempts", type=int, default=20)
+    transport.add_argument("--max-parallel", type=int, default=2)
     remote = subparsers.add_parser("remote-evaluate")
     remote.add_argument("--task", required=True)
     remote.add_argument("--candidate", required=True)
@@ -598,6 +751,10 @@ def main() -> int:
         result = run_arm(root, args.task, args.repeat, args.arm)
     elif args.command == "smoke":
         result = run_mechanics_smoke(root, args.max_parallel)
+    elif args.command == "transport-admission":
+        result = run_transport_admission(
+            root, args.admission_id, args.attempts, args.max_parallel
+        )
     elif args.command == "search-round-1":
         result = search_round_1(root, args.max_parallel)
     elif args.command == "finalize-round-1":

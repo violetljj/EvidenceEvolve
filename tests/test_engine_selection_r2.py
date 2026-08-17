@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import json
+
 from evidence_evolve.benchmarks import engine_selection_r2 as selection
 from evidence_evolve.benchmarks import engine_selection_r2_runner as runner
 
@@ -85,3 +87,53 @@ def test_concurrent_identical_manifest_is_accepted(tmp_path, monkeypatch) -> Non
     monkeypatch.setattr(runner, "_conditions", lambda _task: {"token_policy": "account"})
     runner._manifest(run_dir, "pde_heat1d", 1, "ROUND_1")
     runner._manifest(run_dir, "pde_heat1d", 1, "ROUND_1")
+
+
+def test_stage_stops_after_first_failed_paired_block(tmp_path, monkeypatch) -> None:
+    calls: list[tuple[str, int, str]] = []
+
+    def fake_item(_root, task, repeat, arm):
+        calls.append((task, repeat, arm))
+        return {
+            "task": task,
+            "repeat": repeat,
+            "arm": arm,
+            "state": "FAILED" if task == "first" and arm == "ada" else "SUCCEEDED",
+        }
+
+    monkeypatch.setattr(runner, "_run_item", fake_item)
+    items = [
+        (task, 1, arm)
+        for task in ("first", "second")
+        for arm in ("vanilla", "ada", "shinka", "evox")
+    ]
+    result = runner._run_parallel(tmp_path, items, 4, "summary.json")
+
+    assert len(result) == 4
+    assert {item[0] for item in calls} == {"first"}
+
+
+def test_every_development_evaluation_is_append_logged(tmp_path, monkeypatch) -> None:
+    candidate = tmp_path / "candidate.py"
+    candidate.write_text("class Solver: pass\n")
+    monkeypatch.setenv("EE_ENGINE_RUN_ROOT", str(tmp_path / "runs"))
+    monkeypatch.setenv("EE_ENGINE_ARM", "ada")
+    monkeypatch.setenv("EE_ENGINE_REPEAT", "1")
+    monkeypatch.setenv("EE_ENGINE_ARM_STARTED_MONOTONIC", "0")
+    result = {
+        "metrics": {"raw_speedup": 1.25},
+        "controls": {"candidate_valid": True},
+        "remote_receipt_sha256": "a" * 64,
+    }
+
+    runner._record_development_observation(candidate, "pde_heat1d", result)
+    result["metrics"]["raw_speedup"] = 1.20
+    runner._record_development_observation(candidate, "pde_heat1d", result)
+
+    ledger = (
+        tmp_path
+        / "runs/pde_heat1d/repeat_01/arms/ada/development_observations.jsonl"
+    )
+    rows = [json.loads(line) for line in ledger.read_text().splitlines()]
+    assert [item["evaluation_index"] for item in rows] == [1, 2]
+    assert [item["incumbent_refreshed"] for item in rows] == [True, False]
