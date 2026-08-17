@@ -1,0 +1,91 @@
+{
+  "schema_version": "1.0",
+  "campaign": "engine_selection_r1",
+  "scientific_outcome": "INVALID_MECHANICS_OR_ADAPTER",
+  "decision": "CORE_TOURNAMENT_NOT_EVALUABLE",
+  "closed_at_utc": "2026-08-17T11:39:25.0523829Z",
+  "formal_execution_commit": "bb921eb7c3cb16557197e5b611057ab4c692f693",
+  "protocol_sha256": "7fada0baaf69b7422c605378a079c9b9a8236c45638455521cb9a4f716ab393a",
+  "mechanics_admission": {
+    "v1_status": "FAIL",
+    "v1_receipt_sha256": "9d3aeb305fc8e5a451fbf9a2fa0f48b83412e02629acaf8ac1deb1570feb05f0",
+    "v2_status": "PASS",
+    "v2_receipt_sha256": "70f50539229ad3ba69a749bca3b1bf3361021b373be3d949af9aac5f31a54349",
+    "v2_limit": "proved adapter execution with a 30000-token call-launch gate and 100000-token atomic-call hard ceiling",
+    "missing_admission": "did not prove that a 200000-token call-launch gate could also be a 200000-token hard ceiling"
+  },
+  "shared_failure": {
+    "class": "ATOMIC_MODEL_CALL_OVERSHOT_FORMAL_HARD_CEILING",
+    "formal_token_call_launch_ceiling": 200000,
+    "formal_observed_token_hard_ceiling": 200000,
+    "detail": "Every arm in the first fresh paired block launched a final atomic call while observed usage was below 200000 and finished above 200000. The frozen protocol therefore marked every completed trajectory budget-invalid.",
+    "first_block": {
+      "task": "job_shop_scheduling",
+      "repeat": 1,
+      "arms": {
+        "vanilla": {
+          "observed_complete_usage": 216985,
+          "trajectory_written": false,
+          "termination": "parent orchestration interrupted after the completed eighth usage event established overshoot"
+        },
+        "ada": {
+          "observed_tokens": 223811,
+          "run_valid": false,
+          "trajectory_sha256": "84d4478152f0e0786967960c031c3d879104d001b7429f9923da14858b7b32cb"
+        },
+        "shinka": {
+          "observed_tokens": 202756,
+          "run_valid": false,
+          "trajectory_sha256": "01131e2b537d8b88cfe6c0f6033b52323d4a8e2b8d43f88f5325189dc1d77632"
+        },
+        "evox": {
+          "observed_tokens": 218903,
+          "run_valid": false,
+          "trajectory_sha256": "55957d6c9ee92dde5d230e8b41c44d2b2ebd5f7650adbb5b6e48c15ff26a0561"
+        }
+      }
+    }
+  },
+  "execution_at_stop": {
+    "complete_invalid_trajectories": 3,
+    "first_block_arms_with_complete_usage_above_ceiling": 4,
+    "partially_started_second_block_arms": ["vanilla", "ada", "shinka"],
+    "observed_tokens_in_complete_usage_records_at_stop": 1102935,
+    "heldout_seed_receipts": 0,
+    "heldout_evaluations": 0,
+    "core_candidate_lock_written": false,
+    "core_result_written": false,
+    "pairwise_matrix_permitted": false
+  },
+  "artifact_manifest": {
+    "root": "runs/engine_selection_r1",
+    "entries": [
+      {"path": "job_shop_scheduling/repeat_01/arms/ada/arm_result.json", "sha256": "31cb535c9cfc0118baacc381c3e586b99f119bebbb6d885cef408b89c907a7f0", "size_bytes": 1067},
+      {"path": "job_shop_scheduling/repeat_01/arms/ada/trajectory_result.json", "sha256": "84d4478152f0e0786967960c031c3d879104d001b7429f9923da14858b7b32cb", "size_bytes": 2958},
+      {"path": "job_shop_scheduling/repeat_01/arms/evox/arm_result.json", "sha256": "8c015d9db97907abde863eda27c2588307c99fdd4bb5f44fc877e913e2a800f8", "size_bytes": 1185},
+      {"path": "job_shop_scheduling/repeat_01/arms/evox/trajectory_result.json", "sha256": "55957d6c9ee92dde5d230e8b41c44d2b2ebd5f7650adbb5b6e48c15ff26a0561", "size_bytes": 3049},
+      {"path": "job_shop_scheduling/repeat_01/arms/shinka/arm_result.json", "sha256": "7ebb8e63924c3bcb737da42287c647ec3416dca1f4c08dda1ea504aa1a2d9d3c", "size_bytes": 1119},
+      {"path": "job_shop_scheduling/repeat_01/arms/shinka/trajectory_result.json", "sha256": "01131e2b537d8b88cfe6c0f6033b52323d4a8e2b8d43f88f5325189dc1d77632", "size_bytes": 2979},
+      {"path": "job_shop_scheduling/repeat_01/arms/vanilla/calls/iteration_001.events.jsonl", "sha256": "41db0b872f75d6c29fecb384169bf8a09229ced97801afb3b0be5114a3764f60", "size_bytes": 6377},
+      {"path": "job_shop_scheduling/repeat_01/arms/vanilla/calls/iteration_002.events.jsonl", "sha256": "291840f718c6acc1f398f232c881e96d695258a95da43d3dfa32d39888ef7d7e", "size_bytes": 7304},
+      {"path": "job_shop_scheduling/repeat_01/arms/vanilla/calls/iteration_003.events.jsonl", "sha256": "1a7988c695978b397763c41ba9ebc23670e0ddb15a7376115e513c0e09a602e2", "size_bytes": 7992},
+      {"path": "job_shop_scheduling/repeat_01/arms/vanilla/calls/iteration_004.events.jsonl", "sha256": "764fca007071b6ddc931df366b13629947ecc7aa596a7126ba7da75767a53742", "size_bytes": 9008},
+      {"path": "job_shop_scheduling/repeat_01/arms/vanilla/calls/iteration_005.events.jsonl", "sha256": "0f6abc2f7de8f32031fb90c16536dea721d3b59a23d3a19976cf5631cfa5b546", "size_bytes": 10249},
+      {"path": "job_shop_scheduling/repeat_01/arms/vanilla/calls/iteration_006.events.jsonl", "sha256": "ddd155f8d59666e5e86433ad4da3ef692c73f9b325071f267532a4f7c231336f", "size_bytes": 10340},
+      {"path": "job_shop_scheduling/repeat_01/arms/vanilla/calls/iteration_007.events.jsonl", "sha256": "a5d4ad20dfff6070b6f899d7a60f2c7f43cbcb3bc26e1354081a21b88b0e8647", "size_bytes": 9078},
+      {"path": "job_shop_scheduling/repeat_01/arms/vanilla/calls/iteration_008.events.jsonl", "sha256": "3f7179bd5e8a368839f053fe6bc2dbc3d57bf26f4f238913699bc2ec5bfff031", "size_bytes": 8785},
+      {"path": "mechanics_smoke_receipt.json", "sha256": "9d3aeb305fc8e5a451fbf9a2fa0f48b83412e02629acaf8ac1deb1570feb05f0", "size_bytes": 2466},
+      {"path": "mechanics_smoke_v2_receipt.json", "sha256": "70f50539229ad3ba69a749bca3b1bf3361021b373be3d949af9aac5f31a54349", "size_bytes": 2497}
+    ]
+  },
+  "consumed_task_boundary": {
+    "policy": "execution_based",
+    "tasks": ["job_shop_scheduling"],
+    "reason": "job_shop_scheduling received model-driven search. The other three pre-frozen task families received no search trajectory, heldout seed, or evaluation and remain eligible under a separately frozen successor protocol."
+  },
+  "claim_scope": "FORMAL_BUDGET_MECHANICS_FAILURE_ONLY",
+  "engine_ranking_permitted": false,
+  "superiority_claim_permitted": false,
+  "mechanism_claim_permitted": false,
+  "prescribed_action": "Do not finalize, score, resume, or replace samples in ENGINE_SELECTION_R1. Any successor requires a new effect-first protocol. Tokens may be recorded but must not stop iterations or invalidate a run."
+}

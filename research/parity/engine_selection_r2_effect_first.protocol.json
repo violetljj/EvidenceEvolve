@@ -1,0 +1,110 @@
+{
+  "schema_version": "1.0",
+  "campaign": "engine_selection_r2_effect_first",
+  "authority": "FROZEN_BEFORE_ANY_R2_MODEL_CALL",
+  "purpose": "Select the system that discovers the strongest final heldout algorithm when each native search mechanism receives the same wall-time envelope.",
+  "predecessor": {
+    "campaign": "engine_selection_r1",
+    "outcome": "INVALID_MECHANICS_OR_ADAPTER",
+    "non_continuation": true,
+    "consumed_task": "job_shop_scheduling"
+  },
+  "upstream": {
+    "algotune_repository": "https://github.com/oripress/AlgoTune.git",
+    "algotune_commit": "dff9914c10800c7a031c9e8c3d4d1c8cd1b38906",
+    "skydiscover_repository": "https://github.com/skydiscover-ai/skydiscover.git",
+    "skydiscover_commit": "8a840394e19ee4bfb3fb0a62762b902561a7efeb",
+    "shinka_repository": "https://github.com/SakanaAI/ShinkaEvolve.git",
+    "shinka_commit": "c4568adde253cacf185be3a8412c3c2142761ebe"
+  },
+  "mechanics_smoke": {
+    "task": "min_weight_assignment",
+    "consumed_task_only": true,
+    "arms": ["vanilla", "ada", "shinka", "evox"],
+    "repeat": 1,
+    "max_search_iterations": 1,
+    "wall_seconds": 1200,
+    "receipt": "mechanics_smoke_receipt.json",
+    "scientific_authority": false,
+    "required_before_round_1": true
+  },
+  "tasks": [
+    {
+      "task": "pde_heat1d",
+      "class": "PDEHeatEquation1D",
+      "category": "numerical_continuous",
+      "problem_size": 10,
+      "source_sha256": "0be2185cd8b9cf2f69ceceb05ab2e34001a04ab5fca8baae46b9ea3f4f79db2f"
+    },
+    {
+      "task": "convex_hull",
+      "class": "ConvexHullTask",
+      "category": "computational_geometry",
+      "problem_size": 5000,
+      "source_sha256": "3d35210bb394099e84740f7d8db80ea680ec5eb5c0d2e2729d5af478e90a8a30"
+    },
+    {
+      "task": "communicability",
+      "class": "Communicability",
+      "category": "graph_matrix_algorithms",
+      "problem_size": 100,
+      "source_sha256": "9eaebde50200ea7de4a332ad92feab591f9db4e9925ab0c06c8a66a15836bf4f"
+    }
+  ],
+  "arms": ["vanilla", "ada", "shinka", "evox"],
+  "round_1": {
+    "repeats": [1],
+    "run_count": 12,
+    "advance": "deterministic top two after all 12 final candidates receive heldout evaluation"
+  },
+  "final": {
+    "repeats": [2, 3],
+    "participants": 2,
+    "run_count": 12,
+    "same_tasks_as_round_1": true
+  },
+  "common_conditions": {
+    "model": "gpt-5.6-terra",
+    "reasoning_effort": "high",
+    "tools_permission": "read_only_candidate_generation",
+    "max_native_search_iterations": 30,
+    "wall_seconds_per_run": 2700,
+    "wall_grace_seconds": 180,
+    "token_policy": "ACCOUNT_ONLY_NEVER_STOP_ITERATIONS_NEVER_INVALIDATE_RUN",
+    "token_call_launch_ceiling": null,
+    "token_hard_ceiling": null,
+    "equal_model_call_count_required": false,
+    "native_search_mechanism_preserved": true,
+    "development_seeds_per_repeat": 20,
+    "development_repeats": 2,
+    "heldout_seeds_per_repeat": 30,
+    "heldout_repeats": 3,
+    "evaluator_workers_per_active_run": 4,
+    "all_final_candidate_hashes_locked_before_any_stage_heldout_seed": true,
+    "candidate_retries_or_replacement_samples": false
+  },
+  "ranking": {
+    "heldout_improvement": "max(0, heldout_raw_speedup - 1) when heldout correct; otherwise 0",
+    "task_score": "median across the stage repeats",
+    "quality_score": "arithmetic mean of the three task scores",
+    "stability_order": ["median_task_score", "minimum_task_score", "positive_task_count", "lower_cross_repeat_mad"],
+    "search_speed_proxy": "quality_score divided by mean wall seconds; auxiliary only",
+    "quality_equivalence_band": 0.01,
+    "lexicographic_order": [
+      "quality_score outside equivalence band",
+      "median_task_score outside equivalence band",
+      "minimum_task_score outside equivalence band",
+      "positive_task_count",
+      "lower_cross_repeat_mad",
+      "higher_search_speed_proxy",
+      "lower_mean_wall_seconds",
+      "lower_total_tokens"
+    ],
+    "token_role": "last tie-break only after final effect, stability, reproducibility, search speed, and wall time"
+  },
+  "outputs": ["BEST_QUALITY_ENGINE", "MOST_ROBUST_ENGINE", "FASTEST_ENGINE"],
+  "formal_run_count": 24,
+  "claim_scope": "FOUR_SYSTEM_EFFECT_FIRST_SELECTION_ON_THREE_PRE_FROZEN_BUT_NEVER_EXECUTED_TASKS",
+  "superiority_claim_permitted": false,
+  "mechanism_claim_permitted": false
+}

@@ -115,6 +115,11 @@ def _remote_evaluate(
     candidate: Path, spec: OfficialTaskSpec, seeds: list[int], *, repeats: int,
     workers: int, cold: bool, context: str,
 ) -> dict[str, Any]:
+    runner_module = os.environ.get(
+        "EE_ENGINE_SELECTION_RUNNER_MODULE",
+        "evidence_evolve.benchmarks.engine_selection_r1_runner",
+    )
+    campaign_slug = os.environ.get("EE_ENGINE_SELECTION_CAMPAIGN_SLUG", "engine-r1")
     repository_commit = subprocess.run(
         ["git", "rev-parse", "HEAD"], cwd=REPO_ROOT, check=True,
         capture_output=True, text=True,
@@ -151,10 +156,10 @@ def _remote_evaluate(
         create_job_request(
             repo=REPO_ROOT,
             output=request_path,
-            job_id=f"engine-r1-{key}",
+            job_id=f"{campaign_slug}-{key}",
             entrypoint=RemoteEntrypoint.PYTHON_MODULE,
             argv=(
-                "evidence_evolve.benchmarks.engine_selection_r1_runner",
+                runner_module,
                 "remote-evaluate", "--task", spec.name,
                 "--candidate", staged_candidate.relative_to(REPO_ROOT).as_posix(),
                 "--seeds", staged_seeds.relative_to(REPO_ROOT).as_posix(),
