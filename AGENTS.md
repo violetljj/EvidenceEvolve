@@ -35,6 +35,9 @@
 ## Resource-aware execution
 
 - Treat effective, reproducible experimental results per wall-clock hour and per rental cost as execution-layer objectives. Rented compute should not remain idle without a protocol reason.
+- For suitable EvidenceEvolve CPU-heavy work, prefer the configured AutoDL execution-only worker at `root@connect.westb.seetacloud.com:16288` over leaving independent work on the local machine. Use the repository's `evolve-remote` request/dispatch/verify workflow; never place credentials or scientific authority on the worker.
+- Treat the current AutoDL allocation as at most 32 process-visible vCPUs and 60 GiB memory, but probe affinity and cgroup limits at dispatch time because the live allocation may change. Dynamically fill useful capacity for independent tests, benchmarks, compilation, simulation, and candidate evaluation without exceeding the job's declared worker ceiling.
+- Pull back and verify receipts, logs, and declared artifacts after remote execution. When no further queued work justifies rental time, explicitly remind the user to stop the instance in the AutoDL console; do not assume SSH process exit stops billing.
 - Discover the resources actually available to the process before scheduling work. Respect CPU affinity and cgroup quota, visible GPUs, GPU memory, system memory, and scheduler limits; do not infer usable capacity from host specifications alone.
 - Dynamically size worker counts, concurrent runs, and batches. Do not default to one CPU core or one serial run when independent seeds, blocks, configurations, proposal replays, compilation jobs, or evaluator calls can run concurrently.
 - Pipeline independent I/O, preprocessing, compilation, CPU evaluation, and GPU work when doing so reduces idle time without changing frozen experimental semantics.
