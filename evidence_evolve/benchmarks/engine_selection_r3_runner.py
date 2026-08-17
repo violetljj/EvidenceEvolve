@@ -71,9 +71,11 @@ def _install_context() -> None:
     base.load_protocol = load_protocol
 
 
-def run_arm(run_root: Path, task: str, arm: str) -> dict[str, Any]:
+def run_arm(run_root: Path, task: str, repeat: int, arm: str) -> dict[str, Any]:
+    if repeat != 1:
+        raise ValueError("Engine Selection R3 development screen only permits repeat 1")
     _install_context()
-    return base.run_arm(run_root, task, 1, arm)
+    return base.run_arm(run_root, task, repeat, arm)
 
 
 def search(run_root: Path, max_parallel: int) -> list[dict[str, Any]]:
@@ -149,6 +151,7 @@ def main() -> int:
     arm = commands.add_parser("arm")
     arm.add_argument("--run-root", type=Path, default=DEFAULT_RUN_ROOT)
     arm.add_argument("--task", required=True)
+    arm.add_argument("--repeat", type=int, choices=(1,), default=1)
     arm.add_argument("--arm", choices=ARMS, required=True)
     search_command = commands.add_parser("search")
     search_command.add_argument("--run-root", type=Path, default=DEFAULT_RUN_ROOT)
@@ -158,7 +161,7 @@ def main() -> int:
     args = parser.parse_args()
     run_root = args.run_root.resolve()
     if args.command == "arm":
-        result = run_arm(run_root, args.task, args.arm)
+        result = run_arm(run_root, args.task, args.repeat, args.arm)
     elif args.command == "search":
         result = search(run_root, args.max_parallel)
     else:

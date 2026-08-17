@@ -1,14 +1,17 @@
 from __future__ import annotations
 
 import copy
+from pathlib import Path
 
 import pytest
 
 from evidence_evolve.benchmarks.engine_selection_r3_runner import (
     ARMS,
+    _install_context,
     load_protocol,
     validate_protocol,
 )
+from evidence_evolve.benchmarks import engine_selection_r2_runner as base
 
 
 def test_r3_protocol_is_visible_dev_only_and_token_never_stops() -> None:
@@ -34,3 +37,12 @@ def test_r3_rejects_token_stop_or_premature_winner() -> None:
     winner["ranking"]["formal_winner_permitted"] = True
     with pytest.raises(ValueError, match="cannot claim a winner"):
         validate_protocol(winner)
+
+
+def test_r3_subprocess_command_round_trips_repeat_one() -> None:
+    _install_context()
+
+    command = base._command(Path("runs/r3"), "pde_heat1d", 1, "vanilla")
+
+    assert command[2] == "evidence_evolve.benchmarks.engine_selection_r3_runner"
+    assert command[-4:] == ["--repeat", "1", "--arm", "vanilla"]
