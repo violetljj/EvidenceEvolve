@@ -1,0 +1,139 @@
+{
+  "$defs": {
+    "BoundInput": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "title": "BoundInput",
+      "type": "object"
+    },
+    "RemoteCpuJobRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "argv": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Argv",
+          "type": "array"
+        },
+        "authority": {
+          "const": "EXECUTION_ONLY",
+          "default": "EXECUTION_ONLY",
+          "title": "Authority",
+          "type": "string"
+        },
+        "bound_inputs": {
+          "items": {
+            "$ref": "#/$defs/BoundInput"
+          },
+          "minItems": 1,
+          "title": "Bound Inputs",
+          "type": "array"
+        },
+        "cpu_workers": {
+          "default": 8,
+          "maximum": 32,
+          "minimum": 1,
+          "title": "Cpu Workers",
+          "type": "integer"
+        },
+        "created_at_utc": {
+          "title": "Created At Utc",
+          "type": "string"
+        },
+        "entrypoint": {
+          "$ref": "#/$defs/RemoteEntrypoint"
+        },
+        "job_id": {
+          "title": "Job Id",
+          "type": "string"
+        },
+        "numeric_threads_per_worker": {
+          "const": 1,
+          "default": 1,
+          "title": "Numeric Threads Per Worker",
+          "type": "integer"
+        },
+        "output_paths": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Output Paths",
+          "type": "array"
+        },
+        "repository_commit": {
+          "title": "Repository Commit",
+          "type": "string"
+        },
+        "repository_url": {
+          "title": "Repository Url",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "timeout_seconds": {
+          "default": 1800,
+          "maximum": 86400,
+          "minimum": 1,
+          "title": "Timeout Seconds",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "job_id",
+        "created_at_utc",
+        "repository_url",
+        "repository_commit",
+        "entrypoint",
+        "argv",
+        "bound_inputs"
+      ],
+      "title": "RemoteCpuJobRequest",
+      "type": "object"
+    },
+    "RemoteEntrypoint": {
+      "enum": [
+        "evolve",
+        "pytest"
+      ],
+      "title": "RemoteEntrypoint",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "request": {
+      "$ref": "#/$defs/RemoteCpuJobRequest"
+    },
+    "request_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Request Sha256",
+      "type": "string"
+    }
+  },
+  "required": [
+    "request",
+    "request_sha256"
+  ],
+  "title": "RemoteCpuJobEnvelope",
+  "type": "object"
+}

@@ -1,0 +1,209 @@
+{
+  "$defs": {
+    "RemoteArtifact": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "size_bytes": {
+          "minimum": 0,
+          "title": "Size Bytes",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "size_bytes"
+      ],
+      "title": "RemoteArtifact",
+      "type": "object"
+    },
+    "RemoteCpuJobReceipt": {
+      "additionalProperties": false,
+      "properties": {
+        "artifacts": {
+          "items": {
+            "$ref": "#/$defs/RemoteArtifact"
+          },
+          "title": "Artifacts",
+          "type": "array"
+        },
+        "authority": {
+          "const": "EXECUTION_ONLY",
+          "default": "EXECUTION_ONLY",
+          "title": "Authority",
+          "type": "string"
+        },
+        "command": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Command",
+          "type": "array"
+        },
+        "completed_at_utc": {
+          "title": "Completed At Utc",
+          "type": "string"
+        },
+        "elapsed_seconds": {
+          "minimum": 0,
+          "title": "Elapsed Seconds",
+          "type": "number"
+        },
+        "environment": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Environment",
+          "type": "object"
+        },
+        "environment_unchanged": {
+          "title": "Environment Unchanged",
+          "type": "boolean"
+        },
+        "exit_code": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Exit Code"
+        },
+        "job_id": {
+          "title": "Job Id",
+          "type": "string"
+        },
+        "observation": {
+          "const": "Remote execution receipt only; local verification and the frozen evaluator/gate retain authority.",
+          "default": "Remote execution receipt only; local verification and the frozen evaluator/gate retain authority.",
+          "title": "Observation",
+          "type": "string"
+        },
+        "pip_freeze_after_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Pip Freeze After Sha256",
+          "type": "string"
+        },
+        "pip_freeze_before_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Pip Freeze Before Sha256",
+          "type": "string"
+        },
+        "repository_commit": {
+          "title": "Repository Commit",
+          "type": "string"
+        },
+        "request_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Request Sha256",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "source_transport": {
+          "enum": [
+            "GIT_URL",
+            "GIT_BUNDLE"
+          ],
+          "title": "Source Transport",
+          "type": "string"
+        },
+        "source_transport_sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Transport Sha256"
+        },
+        "started_at_utc": {
+          "title": "Started At Utc",
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "SUCCEEDED",
+            "FAILED",
+            "TIMED_OUT"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "stderr_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Stderr Sha256",
+          "type": "string"
+        },
+        "stdout_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Stdout Sha256",
+          "type": "string"
+        },
+        "worker_code_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Worker Code Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "job_id",
+        "request_sha256",
+        "repository_commit",
+        "state",
+        "exit_code",
+        "started_at_utc",
+        "completed_at_utc",
+        "elapsed_seconds",
+        "command",
+        "environment",
+        "stdout_sha256",
+        "stderr_sha256",
+        "pip_freeze_before_sha256",
+        "pip_freeze_after_sha256",
+        "environment_unchanged",
+        "artifacts",
+        "worker_code_sha256",
+        "source_transport"
+      ],
+      "title": "RemoteCpuJobReceipt",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "receipt": {
+      "$ref": "#/$defs/RemoteCpuJobReceipt"
+    },
+    "receipt_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Receipt Sha256",
+      "type": "string"
+    }
+  },
+  "required": [
+    "receipt",
+    "receipt_sha256"
+  ],
+  "title": "RemoteCpuReceiptEnvelope",
+  "type": "object"
+}

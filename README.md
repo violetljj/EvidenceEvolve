@@ -106,6 +106,12 @@ the gate.
 The design boundary, implemented R1.1/R1.2 semantics, and ordered next slices are in
 [`docs/DISCOVERY_ARCHITECTURE.md`](docs/DISCOVERY_ARCHITECTURE.md).
 
+An execution-only SSH CPU worker can run commit- and input-bound tests or evaluators
+without moving the controller, archive, or GateEngine off the local machine. The
+worker returns a tamper-evident operational receipt with no scientific authority;
+setup and usage are documented in
+[`docs/REMOTE_CPU_WORKER.md`](docs/REMOTE_CPU_WORKER.md).
+
 Run the five-island, five-generation ONNX mechanics campaign with a Codex CLI login
 (ChatGPT-managed login is supported; an API key is not required):
 

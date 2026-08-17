@@ -33,11 +33,13 @@ algotune-portfolio = [
   "networkx>=3.4,<4",
   "numpy>=2.0,<3",
   "ortools>=9.11,<9.12",
+  "python-sat==1.9.dev15",
   "scipy>=1.14,<2",
 ]
 
 [project.scripts]
 evolve = "evidence_evolve.cli:main"
+evolve-remote = "evidence_evolve.remote_cpu:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["evidence_evolve"]
