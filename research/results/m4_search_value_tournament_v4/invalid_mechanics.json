@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "campaign": "m4_search_value_tournament_v4",
+  "scientific_outcome": "INVALID_MECHANICS_OR_ADAPTER",
+  "protocol_sha256": "3d338b78a89b3e0fcaa6401323f0ed4a4679a8c8b2cd8a363b72893fa22b2043",
+  "formal_execution_commit": "71753acf479c3ed3fa1844a4f907714c95ff7f43",
+  "search_process_summary_sha256": "3b33048ce4020167991f3c565b7ec116c06cadb3e7e2931ceb4aafa0da806187",
+  "completed_process_statuses_before_abort": {
+    "search_total": 36,
+    "search_succeeded": 35,
+    "search_failed": 1,
+    "trajectory_results_written": 35
+  },
+  "blocking_evidence": [
+    {
+      "task": "correlate_1d",
+      "repeat": 2,
+      "arm": "vanilla",
+      "classification": "REMOTE_WORKER_SSH_CONNECTION_TIMEOUT",
+      "stderr_sha256": "50b869a5722ef511fdf2d214508415f7d39b895af0f3ba80689aa0eec8197543",
+      "detail": "OpenSSH timed out while establishing the session that would invoke execute-worker; no remote evaluator result was produced for the candidate."
+    }
+  ],
+  "termination": "Portfolio locking and heldout evaluation did not start because one of 36 required trajectories was absent.",
+  "retry_or_replacement_within_campaign": false,
+  "task_reuse_permitted": false,
+  "decision_gate_evaluable": false,
+  "superiority_claim_permitted": false
+}

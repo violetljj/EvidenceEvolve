@@ -28,6 +28,14 @@ _JOB_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$")
 _COMMIT = re.compile(r"^[0-9a-f]{40,64}$")
 _REMOTE_ROOT = re.compile(r"^/[A-Za-z0-9._/-]+$")
 _HOST = re.compile(r"^[A-Za-z0-9._@-]+$")
+_SSH_CONNECTION_OPTIONS = (
+    "-o",
+    "BatchMode=yes",
+    "-o",
+    "ConnectionAttempts=3",
+    "-o",
+    "ConnectTimeout=15",
+)
 
 
 class _StrictModel(BaseModel):
@@ -682,8 +690,7 @@ def bootstrap_remote(
                 "ssh",
                 "-p",
                 str(port),
-                "-o",
-                "BatchMode=yes",
+                *_SSH_CONNECTION_OPTIONS,
                 host,
                 f"mkdir -p {shlex.quote(remote_root)}",
             ],
@@ -712,7 +719,7 @@ def bootstrap_remote(
             f"cd {control}; {venv}/bin/python -m evidence_evolve.cli backend-status"
         )
         return subprocess.run(
-            ["ssh", "-p", str(port), "-o", "BatchMode=yes", host, script],
+            ["ssh", "-p", str(port), *_SSH_CONNECTION_OPTIONS, host, script],
             check=True,
             capture_output=True,
             text=True,
@@ -741,8 +748,7 @@ def dispatch_job(
             "ssh",
             "-p",
             str(port),
-            "-o",
-            "BatchMode=yes",
+            *_SSH_CONNECTION_OPTIONS,
             host,
             f"mkdir -p {shlex.quote(inbox)}",
         ],
@@ -767,7 +773,14 @@ def dispatch_job(
             f"--source-bundle {shlex.quote(remote_bundle)}"
         )
         subprocess.run(
-            ["ssh", "-p", str(port), "-o", "BatchMode=yes", host, remote_command],
+            [
+                "ssh",
+                "-p",
+                str(port),
+                *_SSH_CONNECTION_OPTIONS,
+                host,
+                remote_command,
+            ],
             check=True,
             timeout=envelope.request.timeout_seconds + 300,
         )

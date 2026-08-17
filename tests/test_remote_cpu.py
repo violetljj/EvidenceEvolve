@@ -130,3 +130,14 @@ def test_transport_setup_does_not_retry_remote_non_transport_failure(
     with pytest.raises(subprocess.CalledProcessError):
         remote_cpu._run_transport_command(["scp", "example"], attempts=3)
     assert calls == 1
+
+
+def test_ssh_connection_options_retry_only_session_establishment() -> None:
+    assert remote_cpu._SSH_CONNECTION_OPTIONS == (
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectionAttempts=3",
+        "-o",
+        "ConnectTimeout=15",
+    )
