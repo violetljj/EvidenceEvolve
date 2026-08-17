@@ -704,8 +704,9 @@ def dispatch_job(
         python = f"{remote_root}/venv/bin/python"
         jobs = f"{remote_root}/jobs"
         remote_command = (
-            f"cd {shlex.quote(control)}; {shlex.quote(python)} -m evidence_evolve.cli "
-            f"remote execute-worker {shlex.quote(remote_request)} --job-root {shlex.quote(jobs)} "
+            f"cd {shlex.quote(control)}; {shlex.quote(python)} "
+            f"-m evidence_evolve.remote_cpu execute-worker {shlex.quote(remote_request)} "
+            f"--job-root {shlex.quote(jobs)} "
             f"--source-bundle {shlex.quote(remote_bundle)}"
         )
         subprocess.run(
