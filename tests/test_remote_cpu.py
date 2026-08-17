@@ -17,7 +17,9 @@ def _git(repo: Path, *args: str) -> None:
     subprocess.run(["git", "-C", str(repo), *args], check=True, capture_output=True)
 
 
-def test_create_job_refuses_dirty_bound_input(tmp_path: Path) -> None:
+def test_create_job_embeds_dirty_bound_input_as_hash_bound_runtime_content(
+    tmp_path: Path,
+) -> None:
     repo = tmp_path / "repo"
     repo.mkdir()
     _git(repo, "init")
@@ -29,19 +31,20 @@ def test_create_job_refuses_dirty_bound_input(tmp_path: Path) -> None:
     _git(repo, "commit", "-m", "fixture")
     source.write_text("dirty\n", encoding="utf-8")
 
-    with pytest.raises(ValueError, match="differs from repository_commit"):
-        create_job_request(
-            repo=repo,
-            output=tmp_path / "job.json",
-            job_id="DIRTY-INPUT",
-            entrypoint=RemoteEntrypoint.PYTEST,
-            argv=("-q",),
-            input_paths=("input.txt",),
-            output_paths=(),
-            cpu_workers=1,
-            timeout_seconds=30,
-            repository_url=str(repo),
-        )
+    request = create_job_request(
+        repo=repo,
+        output=tmp_path / "job.json",
+        job_id="DIRTY-INPUT",
+        entrypoint=RemoteEntrypoint.PYTEST,
+        argv=("-q",),
+        input_paths=("input.txt",),
+        output_paths=(),
+        cpu_workers=1,
+        timeout_seconds=30,
+        repository_url=str(repo),
+    )
+
+    assert request.request.bound_inputs[0].content_base64 is not None
 
 
 def test_worker_result_is_commit_bound_and_tamper_evident(tmp_path: Path) -> None:

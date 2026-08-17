@@ -36,6 +36,14 @@ algotune-portfolio = [
   "python-sat==1.9.dev15",
   "scipy>=1.14,<2",
 ]
+search-value-m4 = [
+  "networkx>=3.4,<4",
+  "numpy>=2.0,<3",
+  "ortools>=9.11,<9.12",
+  "scipy>=1.14,<2",
+  "shinka-evolve @ git+https://github.com/SakanaAI/ShinkaEvolve.git@c4568adde253cacf185be3a8412c3c2142761ebe",
+  "skydiscover @ git+https://github.com/skydiscover-ai/skydiscover.git@8a840394e19ee4bfb3fb0a62762b902561a7efeb",
+]
 
 [project.scripts]
 evolve = "evidence_evolve.cli:main"

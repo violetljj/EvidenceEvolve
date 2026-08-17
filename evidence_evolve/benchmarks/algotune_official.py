@@ -14,7 +14,7 @@ from pathlib import Path
 from queue import Empty
 from typing import Any, Callable, Iterable
 
-from multiprocessing import get_context
+from multiprocessing import get_all_start_methods, get_context
 
 
 @dataclass(frozen=True)
@@ -227,7 +227,8 @@ def evaluate_official_candidate_cold(
 ) -> dict[str, Any]:
     """Evaluate every timed candidate call in a new killable process."""
     trials = [int(seed) for seed in seeds for _ in range(repeats)]
-    context = get_context("fork")
+    start_method = "fork" if "fork" in get_all_start_methods() else "spawn"
+    context = get_context(start_method)
     queue = context.Queue()
     pending = deque(enumerate(trials))
     active: dict[int, tuple[Any, float, int, str]] = {}
@@ -242,13 +243,13 @@ def evaluate_official_candidate_cold(
                 args=(index, str(Path(candidate_path).resolve()), task_spec, seed, queue),
             )
             process.start()
-            active[index] = (process, time.monotonic(), seed, "SETUP")
+            active[index] = (process, time.monotonic(), seed, "STARTUP")
         try:
             index, event, row, detail = queue.get(timeout=0.02)
             if event == "PROGRESS":
                 entry = active.get(index)
                 if entry is not None:
-                    active[index] = (entry[0], entry[1], entry[2], detail)
+                    active[index] = (entry[0], time.monotonic(), entry[2], detail)
                 continue
             entry = active.pop(index, None)
             if entry is None:
@@ -267,7 +268,8 @@ def evaluate_official_candidate_cold(
             pass
         now = time.monotonic()
         for index, (process, process_started, seed, stage) in list(active.items()):
-            if now - process_started <= timeout_seconds:
+            stage_timeout = max(timeout_seconds, 10.0) if stage == "STARTUP" else timeout_seconds
+            if now - process_started <= stage_timeout:
                 continue
             process.terminate()
             process.join(0.5)

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import base64
 import json
 import os
 import platform
@@ -17,7 +18,7 @@ from enum import Enum
 from pathlib import Path, PurePosixPath
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from evidence_evolve.artifacts import create_once_json
 from evidence_evolve.hashing import sha256_bytes, sha256_file, sha256_object
@@ -36,16 +37,32 @@ class _StrictModel(BaseModel):
 class RemoteEntrypoint(str, Enum):
     EVOLVE = "evolve"
     PYTEST = "pytest"
+    PYTHON_MODULE = "python-module"
 
 
 class BoundInput(_StrictModel):
     path: str
     sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    content_base64: str | None = None
 
     @field_validator("path")
     @classmethod
     def validate_path(cls, value: str) -> str:
         return _relative_path(value)
+
+    @model_validator(mode="after")
+    def validate_runtime_content(self) -> "BoundInput":
+        if self.content_base64 is None:
+            return self
+        try:
+            content = base64.b64decode(self.content_base64, validate=True)
+        except ValueError as exc:
+            raise ValueError("runtime input content is not valid base64") from exc
+        if len(content) > 2 * 1024 * 1024:
+            raise ValueError("runtime input exceeds the 2 MiB request limit")
+        if sha256_bytes(content) != self.sha256:
+            raise ValueError("runtime input content does not match its sha256")
+        return self
 
 
 class RemoteCpuJobRequest(_StrictModel):
@@ -209,21 +226,34 @@ def create_job_request(
     for raw_path in sorted(set(input_paths)):
         relative = _relative_path(raw_path)
         path = repo / Path(relative)
-        tracked = _run_git(
-            repo, "ls-files", "--stage", "--error-unmatch", "--", relative
-        ).stdout
-        if tracked.split(maxsplit=1)[0] == "120000":
-            raise ValueError(f"bound input must not be a symlink: {relative}")
-        committed = _run_git(repo, "show", f"{commit}:{relative}", text=False).stdout
         if not path.is_file():
             raise ValueError(f"bound input is not a file: {relative}")
+        if path.is_symlink():
+            raise ValueError(f"bound input must not be a symlink: {relative}")
+        tracked = subprocess.run(
+            ["git", "-C", str(repo), "ls-files", "--stage", "--error-unmatch", "--", relative],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
         diff = subprocess.run(
             ["git", "-C", str(repo), "diff", "--quiet", commit, "--", relative],
             check=False,
         )
-        if diff.returncode != 0:
-            raise ValueError(f"bound input differs from repository_commit: {relative}")
-        bound.append(BoundInput(path=relative, sha256=sha256_bytes(committed)))
+        if tracked.returncode == 0 and diff.returncode == 0:
+            if tracked.stdout.split(maxsplit=1)[0] == "120000":
+                raise ValueError(f"bound input must not be a symlink: {relative}")
+            committed = _run_git(repo, "show", f"{commit}:{relative}", text=False).stdout
+            bound.append(BoundInput(path=relative, sha256=sha256_bytes(committed)))
+        else:
+            content = path.read_bytes()
+            bound.append(
+                BoundInput(
+                    path=relative,
+                    sha256=sha256_bytes(content),
+                    content_base64=base64.b64encode(content).decode("ascii"),
+                )
+            )
     request = RemoteCpuJobRequest(
         job_id=job_id,
         created_at_utc=_utc_now(),
@@ -311,7 +341,13 @@ def _terminate_process_tree(process: subprocess.Popen[bytes]) -> None:
 
 
 def _command(request: RemoteCpuJobRequest) -> list[str]:
-    module = "evidence_evolve.cli" if request.entrypoint is RemoteEntrypoint.EVOLVE else "pytest"
+    if request.entrypoint is RemoteEntrypoint.PYTHON_MODULE:
+        return [sys.executable, "-m", *request.argv]
+    module = (
+        "evidence_evolve.cli"
+        if request.entrypoint is RemoteEntrypoint.EVOLVE
+        else "pytest"
+    )
     return [sys.executable, "-m", module, *request.argv]
 
 
@@ -445,6 +481,9 @@ def execute_job(
             )
         for bound in request.bound_inputs:
             bound_path = checkout / Path(bound.path)
+            if bound.content_base64 is not None:
+                bound_path.parent.mkdir(parents=True, exist_ok=True)
+                bound_path.write_bytes(base64.b64decode(bound.content_base64, validate=True))
             if bound_path.is_symlink():
                 raise ValueError(f"bound input must not be a symlink: {bound.path}")
             actual = sha256_file(bound_path)

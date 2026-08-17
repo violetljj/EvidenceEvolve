@@ -77,8 +77,15 @@ def _development(
     candidate: Path, spec: OfficialTaskSpec, *, workers: int | None = None
 ) -> dict[str, Any]:
     worker_count = workers or int(os.environ.get("EE_ALGOTUNE_WORKERS", "4"))
+    seed_start = int(os.environ.get("EE_ALGOTUNE_DEV_START", "0"))
+    seed_count = int(os.environ.get("EE_ALGOTUNE_DEV_COUNT", "20"))
+    repeats = int(os.environ.get("EE_ALGOTUNE_DEV_REPEATS", "3"))
     raw = evaluate_official_candidate(
-        candidate, spec, range(20), repeats=3, workers=worker_count
+        candidate,
+        spec,
+        range(seed_start, seed_start + seed_count),
+        repeats=repeats,
+        workers=worker_count,
     )
     return {
         "mechanics_status": "PASS",
@@ -114,8 +121,13 @@ from pathlib import Path
 from evidence_evolve.benchmarks.algotune_official import OfficialTaskSpec, evaluate_official_candidate
 SPEC = OfficialTaskSpec(name={task['task']!r}, class_name={task['class']!r}, problem_size={int(task['problem_size'])!r}, source_path={str(source)!r})
 def evaluate(program_path: str):
-    count=int(os.environ.get("EE_ALGOTUNE_DEV_COUNT","20")); repeats=int(os.environ.get("EE_ALGOTUNE_DEV_REPEATS","3")); workers=int(os.environ.get("EE_ALGOTUNE_WORKERS","4"))
-    result=evaluate_official_candidate(program_path,SPEC,range(count),repeats=repeats,workers=workers)
+    start=int(os.environ.get("EE_ALGOTUNE_DEV_START","0")); count=int(os.environ.get("EE_ALGOTUNE_DEV_COUNT","20")); repeats=int(os.environ.get("EE_ALGOTUNE_DEV_REPEATS","3")); workers=int(os.environ.get("EE_ALGOTUNE_WORKERS","4"))
+    if os.environ.get("EE_M4_REMOTE_EVALUATOR") == "1":
+        from evidence_evolve.benchmarks.search_value_m4 import remote_development_evaluate
+        wrapped=remote_development_evaluate(program_path,SPEC,workers=workers)
+        result={{"correct":wrapped["controls"]["candidate_valid"],"valid_rate":1.0-wrapped["metrics"]["invalid_solution_rate"],"raw_speedup":wrapped["metrics"]["raw_speedup"],"failure":wrapped["error"]}}
+    else:
+        result=evaluate_official_candidate(program_path,SPEC,range(start,start+count),repeats=repeats,workers=workers)
     result["text_feedback"]=f"correct={{result['correct']}} valid_rate={{result['valid_rate']:.3f}} raw_speedup={{result['raw_speedup']:.4f}} failure={{result['failure']}}"
     return result
 def main():

@@ -21,7 +21,10 @@ import yaml
 
 from evidence_evolve.artifacts import create_once_json
 from evidence_evolve.backends.codex_cli import CodexCliBackend, CodexRole
-from evidence_evolve.backends.proot_codex import ProotCodexCliBackend
+if os.name == "nt":
+    ProotCodexCliBackend = CodexCliBackend
+else:
+    from evidence_evolve.backends.proot_codex import ProotCodexCliBackend
 from evidence_evolve.discovery.autonomous import AutonomousCampaignRunner
 from evidence_evolve.governance.closure_registry import ClosureRegistry
 from evidence_evolve.governance.protocol_lock import ProtocolLock, dump_contract, load_contract
@@ -65,6 +68,9 @@ _SKY_CLIENT_IDS = itertools.count(1)
 class _PinnedCodexBackend(CodexCliBackend):
     """Pilot-local model pin without changing the frozen shared backend."""
 
+    def __init__(self) -> None:
+        super().__init__(os.environ.get("EVIDENCE_EVOLVE_CODEX_EXECUTABLE", "codex"))
+
     def build_command(self, **kwargs: Any) -> list[str]:
         command = super().build_command(**kwargs)
         command[-1:-1] = ["--model", MODEL]
@@ -73,6 +79,9 @@ class _PinnedCodexBackend(CodexCliBackend):
 
 class _PinnedProotCodexBackend(ProotCodexCliBackend):
     """Pilot-local model pin plus isolated writable implementer bridge."""
+
+    def __init__(self) -> None:
+        super().__init__(os.environ.get("EVIDENCE_EVOLVE_CODEX_EXECUTABLE", "codex"))
 
     def build_command(self, **kwargs: Any) -> list[str]:
         command = super().build_command(**kwargs)
@@ -556,7 +565,7 @@ def run_shinka(run_dir: Path) -> dict[str, Any]:
     prior_usage_log = os.environ.get("EE_HEADLESS_USAGE_LOG")
     usage_log = arm_dir / "headless_usage.jsonl"
     os.environ["SHINKA_HEADLESS_COMMAND"] = (
-        f"{sys.executable} {TASK_ROOT / 'headless_logged.py'}"
+        f'"{sys.executable}" "{TASK_ROOT / "codex_headless.py"}"'
     )
     os.environ["EE_HEADLESS_USAGE_LOG"] = str(usage_log)
     try:
