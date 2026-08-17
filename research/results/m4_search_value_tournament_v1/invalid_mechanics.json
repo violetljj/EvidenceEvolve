@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0",
+  "campaign": "m4_search_value_tournament_v1",
+  "scientific_outcome": "INVALID_MECHANICS_OR_ADAPTER",
+  "protocol_sha256": "b8f049ce15ea51d62f2059de69511851b77a390c113924a81bcc741c1b5c6ea7",
+  "formal_execution_commit": "bf80ba3ff2900f29ee26246aa80f84d133485565",
+  "completed_process_statuses_before_abort": {
+    "failed_total": 14,
+    "vanilla_failed": 5,
+    "shinka_failed": 3,
+    "ada_failed": 2,
+    "evidence_evolve_failed": 4
+  },
+  "blocking_evidence": [
+    {
+      "classification": "REMOTE_CAMPAIGN_CONTEXT_NOT_PROPAGATED",
+      "remote_receipt_file_sha256": "f4cd6b2d53ef309bf47bf97e1b37d386dcb748da5e36c219d2ecbcb6b1d7bad1",
+      "detail": "Remote evaluator processes loaded the default v0 protocol and rejected every v1 task as unknown."
+    },
+    {
+      "classification": "SHARED_MANIFEST_CREATE_ONCE_RACE",
+      "stderr_sha256": "508c389870b2ae6dd0d1d86cbd285ed217dc18c6314a40f6e7196921c0cb82db",
+      "detail": "Concurrent arms for one repeat raced while creating the same immutable manifest."
+    }
+  ],
+  "termination": "Remaining queued work was stopped after the failures were shown to be deterministic shared harness blockers.",
+  "retry_or_replacement_within_campaign": false,
+  "task_reuse_permitted": false,
+  "decision_gate_evaluable": false,
+  "superiority_claim_permitted": false
+}

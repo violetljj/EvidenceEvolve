@@ -112,6 +112,10 @@ def test_remote_evaluate_cli_does_not_require_run_root(
         [
             "search-value-m4",
             "remote-evaluate",
+            "--campaign",
+            "m4_search_value_tournament_v0",
+            "--protocol",
+            "research/parity/m4_search_value_tournament_v0.protocol.json",
             "--task",
             "graph_coloring_assign",
             "--candidate",
@@ -129,3 +133,13 @@ def test_remote_evaluate_cli_does_not_require_run_root(
 
     assert m4.main() == 0
     assert observed["task_name"] == "graph_coloring_assign"
+
+
+def test_run_search_precreates_shared_manifests_before_parallel_arms(
+    monkeypatch, tmp_path: Path
+) -> None:
+    monkeypatch.setattr(m4, "_trial_commands", lambda _run_root: [])
+
+    assert m4.run_search(tmp_path, 4) == []
+    manifests = sorted(tmp_path.rglob("m4_manifest.json"))
+    assert len(manifests) == 9

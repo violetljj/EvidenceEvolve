@@ -52,6 +52,22 @@ REMOTE_PORT = 16288
 REMOTE_ROOT = "/root/autodl-tmp/evidence-evolve-worker"
 
 
+def _select_campaign(campaign: str, protocol_relative: str | Path) -> None:
+    global CAMPAIGN, PROTOCOL, DEFAULT_RUN_ROOT, _PROTOCOL_RELATIVE
+    relative = Path(protocol_relative)
+    if (
+        not campaign
+        or any(character not in "abcdefghijklmnopqrstuvwxyz0123456789_" for character in campaign)
+        or relative.is_absolute()
+        or ".." in relative.parts
+    ):
+        raise ValueError("invalid M4 campaign selection")
+    CAMPAIGN = campaign
+    _PROTOCOL_RELATIVE = relative
+    PROTOCOL = (REPO_ROOT / relative).resolve()
+    DEFAULT_RUN_ROOT = REPO_ROOT / "runs" / campaign
+
+
 def _load_protocol() -> dict[str, Any]:
     payload = json.loads(PROTOCOL.read_text(encoding="utf-8"))
     if payload.get("campaign") != CAMPAIGN:
@@ -207,6 +223,10 @@ def _remote_evaluate(
             argv=(
                 "evidence_evolve.benchmarks.search_value_m4",
                 "remote-evaluate",
+                "--campaign",
+                CAMPAIGN,
+                "--protocol",
+                _PROTOCOL_RELATIVE.as_posix(),
                 "--task",
                 spec.name,
                 "--candidate",
@@ -538,6 +558,11 @@ def _run_subprocess_trial(
 def run_search(run_root: Path, max_parallel: int) -> list[dict[str, Any]]:
     if max_parallel < 1:
         raise ValueError("max_parallel must be positive")
+    for task in _load_protocol()["tasks"]:
+        for repeat in (1, 2, 3):
+            run_dir = run_root / str(task["task"]) / f"repeat_{repeat:02d}"
+            run_dir.mkdir(parents=True, exist_ok=True)
+            _create_manifest(run_dir, str(task["task"]), repeat)
     results: list[dict[str, Any]] = []
     with ThreadPoolExecutor(max_workers=max_parallel) as pool:
         futures = {
@@ -838,6 +863,8 @@ def main() -> int:
     all_steps.add_argument("--run-root", type=Path, default=DEFAULT_RUN_ROOT)
     all_steps.add_argument("--max-parallel", type=int, default=4)
     remote = subparsers.add_parser("remote-evaluate")
+    remote.add_argument("--campaign", required=True)
+    remote.add_argument("--protocol", required=True)
     remote.add_argument("--task", required=True)
     remote.add_argument("--candidate", required=True)
     remote.add_argument("--seeds", required=True)
@@ -847,6 +874,7 @@ def main() -> int:
     remote.add_argument("--output", required=True)
     args = parser.parse_args()
     if args.command == "remote-evaluate":
+        _select_campaign(args.campaign, args.protocol)
         result = run_remote_evaluator(
             task_name=args.task,
             candidate=Path(args.candidate),
