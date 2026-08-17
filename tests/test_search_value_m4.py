@@ -294,3 +294,58 @@ def test_finalize_precreates_shared_heldout_seeds_before_parallel_arms(
     assert len(observed) == 36
     assert len(list(tmp_path.rglob("heldout_seeds.json"))) == 9
     assert len(result["blocks"]) == 36
+
+
+def test_heldout_context_is_explicit_and_unique_per_checkpoint(
+    monkeypatch, tmp_path: Path
+) -> None:
+    task = "example_task"
+    arm = "evidence_evolve"
+    run_dir = tmp_path / task / "repeat_01"
+    candidate = tmp_path / "candidate.py"
+    candidate.write_text("pass\n", encoding="utf-8")
+    candidate_sha = m4.sha256_file(candidate)
+    trajectory_path = run_dir / "arms" / arm / "trajectory_result.json"
+    trajectory_path.parent.mkdir(parents=True)
+    trajectory_path.write_text(
+        json.dumps(
+            {
+                "budget_violation": False,
+                "checkpoints": [
+                    {
+                        "horizon": horizon,
+                        "candidate_path": str(candidate),
+                        "candidate_sha256": candidate_sha,
+                    }
+                    for horizon in (1, 2, 3)
+                ],
+                "final_arm_result": {"wall_seconds": 1.0, "tokens": 10},
+            }
+        ),
+        encoding="utf-8",
+    )
+    contexts: list[str] = []
+
+    monkeypatch.setattr(m4, "_heldout_seeds", lambda *_args: [101])
+    monkeypatch.setattr(m4, "_task_payload", lambda _task: {"task": task})
+    monkeypatch.setattr(m4, "_task_spec", lambda _task: object())
+    monkeypatch.setattr(
+        m4,
+        "_conditions",
+        lambda: {"heldout_repeats": 1, "evaluator_workers_per_active_run": 1},
+    )
+
+    def fake_remote(*_args, context: str | None = None, **_kwargs):
+        assert context is not None
+        contexts.append(context)
+        return {"correct": True, "raw_speedup": 1.0}
+
+    monkeypatch.setattr(m4, "_remote_evaluate", fake_remote)
+
+    m4._evaluate_block(tmp_path, task, 1, arm)
+
+    assert contexts == [
+        f"{task}-r1-{arm}-heldout-h1",
+        f"{task}-r1-{arm}-heldout-h2",
+        f"{task}-r1-{arm}-heldout-h3",
+    ]

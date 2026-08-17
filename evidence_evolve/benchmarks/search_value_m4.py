@@ -173,8 +173,9 @@ def _remote_evaluate(
     repeats: int,
     workers: int,
     cold: bool,
+    context: str | None = None,
 ) -> dict[str, Any]:
-    context = os.environ.get("EE_M4_EVAL_CONTEXT", "unscoped")
+    evaluation_context = context or os.environ.get("EE_M4_EVAL_CONTEXT", "unscoped")
     repository_commit = subprocess.run(
         ("git", "rev-parse", "HEAD"),
         cwd=REPO_ROOT,
@@ -192,7 +193,7 @@ def _remote_evaluate(
                 "repeats": repeats,
                 "workers": workers,
                 "cold": cold,
-                "context": context,
+                "context": evaluation_context,
             },
             sort_keys=True,
         ).encode("utf-8")
@@ -685,7 +686,7 @@ def _evaluate_block(
         candidate = Path(checkpoint["candidate_path"])
         if sha256_file(candidate) != checkpoint["candidate_sha256"]:
             raise ValueError(f"candidate drift before heldout: {task_name}:{repeat}:{arm}")
-        os.environ["EE_M4_EVAL_CONTEXT"] = (
+        evaluation_context = (
             f"{task_name}-r{repeat}-{arm}-heldout-h{checkpoint['horizon']}"
         )
         heldout = _remote_evaluate(
@@ -695,6 +696,7 @@ def _evaluate_block(
             repeats=int(_conditions()["heldout_repeats"]),
             workers=int(_conditions()["evaluator_workers_per_active_run"]),
             cold=True,
+            context=evaluation_context,
         )
         evaluations.append(
             {

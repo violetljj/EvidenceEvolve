@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "campaign": "m4_search_value_tournament_v5",
+  "scientific_outcome": "INVALID_MECHANICS_OR_ADAPTER",
+  "protocol_sha256": "9565e3ec0ec4b1a7b6b89f74aeea15503378fbb66fcbeaea4ed68d21671816a0",
+  "formal_execution_commit": "0712f108302178e1facde2c11171212f2a5fcf54",
+  "portfolio_candidate_lock_sha256": "d9496cc19d61f76dfe036e3bd7ec1cc0e61b051b83e2dbea431cbdc5b82090ce",
+  "completed_process_statuses_before_abort": {
+    "search_total": 36,
+    "search_succeeded": 36,
+    "trajectory_results_written": 36,
+    "heldout_arm_results_written": 34,
+    "heldout_seed_receipts_written": 9
+  },
+  "blocking_evidence": [
+    {
+      "classification": "THREAD_GLOBAL_EVALUATION_CONTEXT_COLLISION",
+      "detail": "Parallel heldout threads mutated one process-global EE_M4_EVAL_CONTEXT value. Two checkpoint evaluations consequently derived the same remote job key and raced on the immutable request receipt."
+    }
+  ],
+  "termination": "Aggregation stopped on ReceiptAlreadyExistsError; no decision result was written.",
+  "retry_or_replacement_within_campaign": false,
+  "task_reuse_permitted": false,
+  "decision_gate_evaluable": false,
+  "superiority_claim_permitted": false
+}
