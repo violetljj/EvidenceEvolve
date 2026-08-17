@@ -419,7 +419,7 @@ def execute_job(
             if not source_bundle.is_file():
                 raise FileNotFoundError(f"source bundle does not exist: {source_bundle}")
             subprocess.run(
-                ["git", "bundle", "verify", str(source_bundle)],
+                ["git", "bundle", "list-heads", str(source_bundle)],
                 check=True,
                 capture_output=True,
             )
@@ -642,7 +642,7 @@ def bootstrap_remote(
         script = (
             "set -eu; "
             f"mkdir -p {root}; "
-            f"git bundle verify {bundle_arg} >/dev/null; "
+            f"git bundle list-heads {bundle_arg} >/dev/null; "
             f"if [ ! -d {control}/.git ]; then git clone {bundle_arg} {control}; fi; "
             f"test -z \"$(git -C {control} status --porcelain)\"; "
             f"git -C {control} fetch {bundle_arg} {commit}; "
@@ -859,7 +859,11 @@ def main(argv: list[str] | None = None) -> int:
         _print({"result_dir": str(result)})
         return 0
     except (FileNotFoundError, RuntimeError, ValueError, subprocess.SubprocessError) as exc:
-        _print({"error": type(exc).__name__, "message": str(exc)})
+        payload = {"error": type(exc).__name__, "message": str(exc)}
+        if isinstance(exc, subprocess.CalledProcessError):
+            payload["stdout"] = exc.stdout
+            payload["stderr"] = exc.stderr
+        _print(payload)
         return 2
 
 
