@@ -687,7 +687,7 @@ def bootstrap_remote(
             f"git -C {control} fetch {bundle_arg} {commit}; "
             f"git -C {control} checkout --detach {commit}; "
             f"if [ ! -x {venv}/bin/python ]; then {python} -m venv {venv}; fi; "
-            f"{venv}/bin/python -m pip install -e {control}'[dev,algotune-portfolio,onnx-canary]'; "
+            f"{venv}/bin/python -m pip install -e {control}'[dev,shinka,algotune-portfolio,onnx-canary]'; "
             f"cd {control}; {venv}/bin/python -m evidence_evolve.cli backend-status"
         )
         return subprocess.run(
