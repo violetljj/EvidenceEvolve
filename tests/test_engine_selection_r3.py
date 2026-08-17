@@ -46,3 +46,4 @@ def test_r3_subprocess_command_round_trips_repeat_one() -> None:
 
     assert command[2] == "evidence_evolve.benchmarks.engine_selection_r3_runner"
     assert command[-4:] == ["--repeat", "1", "--arm", "vanilla"]
+    assert base.CAMPAIGN_SLUG == "engine-r3"

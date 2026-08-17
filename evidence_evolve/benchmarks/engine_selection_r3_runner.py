@@ -66,6 +66,7 @@ def _install_context() -> None:
     base.PROTOCOL = PROTOCOL
     base.UPSTREAM_ROOT = UPSTREAM_ROOT
     base.CAMPAIGN = CAMPAIGN
+    base.CAMPAIGN_SLUG = "engine-r3"
     base.RUNNER_MODULE = RUNNER_MODULE
     base.DEFAULT_RUN_ROOT = DEFAULT_RUN_ROOT
     base.load_protocol = load_protocol
@@ -158,9 +159,28 @@ def main() -> int:
     search_command.add_argument("--max-parallel", type=int, default=4)
     summary = commands.add_parser("summarize")
     summary.add_argument("--run-root", type=Path, default=DEFAULT_RUN_ROOT)
+    remote = commands.add_parser("remote-evaluate")
+    remote.add_argument("--task", required=True)
+    remote.add_argument("--candidate", required=True)
+    remote.add_argument("--seeds", required=True)
+    remote.add_argument("--repeats", type=int, required=True)
+    remote.add_argument("--workers", type=int, required=True)
+    remote.add_argument("--cold", action="store_true")
+    remote.add_argument("--output", required=True)
     args = parser.parse_args()
-    run_root = args.run_root.resolve()
-    if args.command == "arm":
+    run_root = getattr(args, "run_root", DEFAULT_RUN_ROOT).resolve()
+    if args.command == "remote-evaluate":
+        _install_context()
+        result = base.run_remote_evaluator(
+            task_name=args.task,
+            candidate=Path(args.candidate),
+            seeds_path=Path(args.seeds),
+            repeats=args.repeats,
+            workers=args.workers,
+            cold=args.cold,
+            output=Path(args.output),
+        )
+    elif args.command == "arm":
         result = run_arm(run_root, args.task, args.repeat, args.arm)
     elif args.command == "search":
         result = search(run_root, args.max_parallel)

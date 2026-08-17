@@ -33,6 +33,7 @@ from evidence_evolve.remote_cpu import _terminate_process_tree
 
 
 CAMPAIGN = "engine_selection_r2_effect_first"
+CAMPAIGN_SLUG = "engine-r2"
 RUNNER_MODULE = "evidence_evolve.benchmarks.engine_selection_r2_runner"
 DEFAULT_RUN_ROOT = REPO_ROOT / "runs" / CAMPAIGN
 ARMS = ("vanilla", "ada", "shinka", "evox")
@@ -48,7 +49,7 @@ def _install_shared_context() -> None:
     shared.CAMPAIGN = CAMPAIGN
     shared.load_protocol = load_protocol
     os.environ["EE_ENGINE_SELECTION_RUNNER_MODULE"] = RUNNER_MODULE
-    os.environ["EE_ENGINE_SELECTION_CAMPAIGN_SLUG"] = "engine-r2"
+    os.environ["EE_ENGINE_SELECTION_CAMPAIGN_SLUG"] = CAMPAIGN_SLUG
 
 
 def _task_payload(task_name: str) -> dict[str, Any]:
