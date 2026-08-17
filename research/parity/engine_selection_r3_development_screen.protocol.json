@@ -1,0 +1,91 @@
+{
+  "schema_version": "1.0",
+  "campaign": "engine_selection_r3_development_screen",
+  "authority": "FROZEN_BEFORE_ANY_R3_MODEL_CALL",
+  "purpose": "Run all four systems on visible consumed development tasks, establish a reproducible quality signal, and spend no fresh blind task until that signal exists.",
+  "predecessor": {
+    "campaign": "engine_selection_r2_effect_first",
+    "outcome": "INVALID_MECHANICS_OR_ADAPTER",
+    "non_continuation": true
+  },
+  "transport_admission": {
+    "result": "research/results/engine_selection_r2_effect_first/transport_admission.json",
+    "result_sha256": "e8340806e38252f65e351677e21cbdbb641e4fb5068a198763c4eac285e42084",
+    "required_status": "PASS",
+    "attempts_succeeded": 20
+  },
+  "benchmark_policy": {
+    "role": "DEV_REUSE",
+    "fresh_tasks_spent": 0,
+    "development_results_visible": true,
+    "claim_ceiling": "DEVELOPMENT_SIGNAL_ONLY",
+    "signal_required_before_fresh_gate": true
+  },
+  "tasks": [
+    {
+      "task": "pde_heat1d",
+      "class": "PDEHeatEquation1D",
+      "category": "numerical_continuous",
+      "problem_size": 10,
+      "source_sha256": "0be2185cd8b9cf2f69ceceb05ab2e34001a04ab5fca8baae46b9ea3f4f79db2f"
+    },
+    {
+      "task": "convex_hull",
+      "class": "ConvexHullTask",
+      "category": "computational_geometry",
+      "problem_size": 5000,
+      "source_sha256": "3d35210bb394099e84740f7d8db80ea680ec5eb5c0d2e2729d5af478e90a8a30"
+    },
+    {
+      "task": "communicability",
+      "class": "Communicability",
+      "category": "graph_matrix_algorithms",
+      "problem_size": 100,
+      "source_sha256": "9eaebde50200ea7de4a332ad92feab591f9db4e9925ab0c06c8a66a15836bf4f"
+    }
+  ],
+  "arms": ["vanilla", "ada", "shinka", "evox"],
+  "screen": {
+    "repeats": [1],
+    "run_count": 12,
+    "scheduling_unit": "ONE_TASK_ALL_FOUR_ARMS",
+    "stop_stage_on_any_non_success_block": true
+  },
+  "common_conditions": {
+    "model": "gpt-5.6-terra",
+    "reasoning_effort": "high",
+    "provider_executable": "E:/codex-tools/tools/node-global/node_modules/@openai/codex/node_modules/@openai/codex-win32-x64/vendor/x86_64-pc-windows-msvc/bin/codex.exe",
+    "provider_version": "codex-cli 0.147.0",
+    "tools_permission": "read_only_candidate_generation",
+    "max_native_search_iterations": 12,
+    "wall_seconds_per_run": 1800,
+    "wall_grace_seconds": 180,
+    "token_policy": "ACCOUNT_ONLY_NEVER_STOP_ITERATIONS_NEVER_INVALIDATE_RUN",
+    "token_call_launch_ceiling": null,
+    "token_hard_ceiling": null,
+    "equal_model_call_count_required": false,
+    "native_search_mechanism_preserved": true,
+    "development_seeds_per_repeat": 20,
+    "development_repeats": 2,
+    "remote_evaluation_slots": 2,
+    "evaluator_workers_per_active_run": 12,
+    "candidate_retries_or_replacement_samples": false
+  },
+  "observation": {
+    "append_only_per_evaluation": true,
+    "inspect_each_completed_evaluation": true,
+    "user_notification": "MILESTONE_ANOMALY_OR_DECISION_ONLY"
+  },
+  "ranking": {
+    "primary": "mean_final_valid_development_improvement_across_tasks",
+    "stability": ["median_task_improvement", "minimum_task_improvement", "positive_task_count"],
+    "token_role": "accounting and last tie-break only",
+    "formal_winner_permitted": false
+  },
+  "heldout": {
+    "enabled": false,
+    "reason": "Fresh blind budget is opened only after a reproducible public development signal and a separately frozen gate."
+  },
+  "claim_scope": "FOUR_SYSTEM_VISIBLE_DEVELOPMENT_SIGNAL_ON_THREE_CONSUMED_TASKS",
+  "superiority_claim_permitted": false
+}
