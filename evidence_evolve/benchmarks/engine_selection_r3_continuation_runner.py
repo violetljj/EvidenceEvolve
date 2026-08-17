@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import argparse
-import asyncio
 import json
 import os
 import shutil
@@ -32,7 +31,7 @@ def _directory_hash(path: Path) -> str:
     )
 
 
-def load_protocol() -> dict[str, Any]:
+def load_protocol(*, validate_parent: bool = True) -> dict[str, Any]:
     protocol = json.loads(PROTOCOL.read_text(encoding="utf-8"))
     if protocol.get("campaign") != CAMPAIGN:
         raise ValueError("continuation campaign drift")
@@ -48,6 +47,8 @@ def load_protocol() -> dict[str, Any]:
         source = UPSTREAM_ROOT / task["task"] / f"{task['task']}.py"
         if sha256_file(source) != task["source_sha256"]:
             raise ValueError(f"continuation source drift: {task['task']}")
+        if not validate_parent:
+            continue
         for arm in ARMS:
             arm_dir = parent / task["task"] / "repeat_01" / "arms" / arm
             binding = protocol["parent_bindings"][task["task"]][arm]
@@ -73,7 +74,9 @@ def _install_context() -> None:
     base.CAMPAIGN_SLUG = "engine-r3-cont30"
     base.RUNNER_MODULE = RUNNER_MODULE
     base.DEFAULT_RUN_ROOT = DEFAULT_RUN_ROOT
-    base.load_protocol = load_protocol
+    # The AutoDL worker is execution-only and intentionally does not receive the
+    # parent run tree. Parent bindings are verified locally before dispatch.
+    base.load_protocol = lambda: load_protocol(validate_parent=False)
 
 
 def run_remote_evaluator(**kwargs: Any) -> dict[str, Any]:
