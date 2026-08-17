@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0",
+  "authority": "SACRIFICIAL_MECHANICS_AND_BUDGET_ADMISSION_ONLY",
+  "repository_commit": "331a22ec31e5c6bc3871a609b9fc357bc8c592b9",
+  "task": "max_flow_min_cost",
+  "task_consumed_before_admission": true,
+  "remote_evaluator": "AUTODL_EXECUTION_ONLY",
+  "arms": [
+    {
+      "arm": "vanilla",
+      "trajectory_sha256": "e9b0ef62c4fb6ac9bbef62e0ae5c1afecfac49d08295d6ccea6a83fbadcc4574",
+      "checkpoints": 3,
+      "observed_tokens": 83495,
+      "wall_seconds": 259.52,
+      "process_exit_code": 0,
+      "budget_valid_at_600k": true
+    },
+    {
+      "arm": "shinka",
+      "trajectory_sha256": "ebc43a50201b69f04a97646d084163aebdc9ee559a322d0fa00a59805bfa1120",
+      "checkpoints": 3,
+      "observed_tokens": 111998,
+      "wall_seconds": 255.60,
+      "process_exit_code": 0,
+      "budget_valid_at_600k": true
+    },
+    {
+      "arm": "ada",
+      "trajectory_sha256": "78bb7450ba390894840edd2dff0330b03213602337cef2e905c46ed43ae4a114",
+      "checkpoints": 3,
+      "observed_tokens": 86773,
+      "wall_seconds": 152.97,
+      "process_exit_code": 0,
+      "budget_valid_at_600k": true
+    },
+    {
+      "arm": "evidence_evolve",
+      "trajectory_sha256": "79b9ede2322b3fbc2761e912044cce49af9ee30b912cb403f201df7fb5d7c636",
+      "checkpoints": 3,
+      "observed_tokens": 839564,
+      "wall_seconds": 482.37,
+      "process_exit_code": 0,
+      "budget_valid_at_600k": false
+    }
+  ],
+  "mechanics_result": "PASS",
+  "budget_result": "EE_SCHEDULE_REQUIRES_CONSERVATIVE_CAP",
+  "scientific_evidence": false,
+  "superiority_claim_permitted": false
+}

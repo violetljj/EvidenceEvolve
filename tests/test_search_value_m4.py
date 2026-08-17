@@ -52,6 +52,20 @@ def test_m4_v1_replacement_uses_disjoint_sources() -> None:
         assert m4.sha256_file(m4._source_path(task["task"])) == task["source_sha256"]
 
 
+def test_budget_admission_caps_ee_cycles_before_formal_v2() -> None:
+    admission = json.loads(
+        (
+            m4.REPO_ROOT / "research/parity/m4_budget_admission_v2.protocol.json"
+        ).read_text(encoding="utf-8")
+    )
+    conditions = admission["common_conditions"]
+
+    assert conditions["observed_token_ceiling"] == 600_000
+    assert conditions["proposal_calls"] == 3
+    assert conditions["evidence_evolve_cycles"] == 1
+    assert conditions["checkpoint_policy"] == "carry_forward_last_valid_candidate"
+
+
 def test_m4_continue_gate_requires_two_task_wins_and_external_nonloss(
     tmp_path: Path,
 ) -> None:

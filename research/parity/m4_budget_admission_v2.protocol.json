@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0",
+  "campaign": "m4_budget_admission_v2",
+  "authority": "SACRIFICIAL_MECHANICS_ONLY",
+  "ee_policy_checkpoint": "fd53fbadc47a18e5402963b23e0f3bd4ca313aed",
+  "execution_layer_minimum_commit": "331a22ec31e5c6bc3871a609b9fc357bc8c592b9",
+  "upstream": {
+    "repository": "https://github.com/oripress/AlgoTune.git",
+    "commit": "dff9914c10800c7a031c9e8c3d4d1c8cd1b38906"
+  },
+  "tasks": [
+    {
+      "task": "max_flow_min_cost",
+      "class": "MaxFlowMinCost",
+      "category": "consumed_sacrificial_task",
+      "problem_size": 30,
+      "source_sha256": "25fc1054d288b4593e53e7ab8fed7e2eb54dce5f5b130952842305af2f29fe86"
+    }
+  ],
+  "arms": ["vanilla", "shinka", "ada", "evidence_evolve"],
+  "repeats": [1, 2, 3],
+  "common_conditions": {
+    "model": "gpt-5.6-terra",
+    "reasoning_effort": "high",
+    "proposal_calls": 3,
+    "evidence_evolve_cycles": 1,
+    "checkpoint_policy": "carry_forward_last_valid_candidate",
+    "observed_token_ceiling": 600000,
+    "wall_seconds": 2700,
+    "evaluator_workers_per_active_run": 4,
+    "development_seeds_per_repeat": 20,
+    "development_repeats": 2,
+    "heldout_seeds_per_repeat": 30,
+    "heldout_repeats": 3,
+    "all_checkpoint_hashes_locked_before_any_heldout_seed": true,
+    "candidate_retries_or_replacement_samples": false
+  },
+  "ranking": [
+    "valid_final_heldout_improvement",
+    "heldout_anytime_auc",
+    "success",
+    "wall_seconds",
+    "observed_tokens"
+  ],
+  "decision_gate": {
+    "continue": "NOT_APPLICABLE_MECHANICS_ONLY",
+    "simplify": "NOT_APPLICABLE_MECHANICS_ONLY",
+    "stop": "NOT_APPLICABLE_MECHANICS_ONLY"
+  },
+  "claim_scope": "MECHANICS_AND_BUDGET_ADMISSION_ONLY",
+  "superiority_claim_permitted": false,
+  "mechanism_claim_permitted": false
+}

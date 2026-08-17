@@ -315,7 +315,9 @@ def _configure(run_dir: Path, task_name: str, repeat: int) -> dict[str, Any]:
             "EE_ALGOTUNE_DEV_COUNT": str(seed_count),
             "EE_ALGOTUNE_DEV_REPEATS": str(conditions["development_repeats"]),
             "EE_ALGOTUNE_WORKERS": str(conditions["evaluator_workers_per_active_run"]),
-            "EE_HETERO_GENERATIONS": str(conditions["proposal_calls"]),
+            "EE_HETERO_GENERATIONS": str(
+                conditions.get("evidence_evolve_cycles", conditions["proposal_calls"])
+            ),
             "EE_M4_REMOTE_EVALUATOR": "1",
         }
     )
