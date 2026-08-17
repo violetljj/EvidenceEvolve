@@ -823,6 +823,13 @@ def _aggregate(run_root: Path, blocks: list[dict[str, Any]]) -> dict[str, Any]:
 
 def finalize(run_root: Path, max_parallel: int) -> dict[str, Any]:
     lock_portfolio(run_root)
+    # One held-out seed receipt is shared by all four arms in a paired block.
+    # Create the nine immutable receipts before the arm-level worker pool starts
+    # so concurrent readers cannot race through create_once_json.
+    for task in _load_protocol()["tasks"]:
+        task_name = str(task["task"])
+        for repeat in (1, 2, 3):
+            _heldout_seeds(run_root, task_name, repeat)
     work = [
         (str(task["task"]), repeat, arm)
         for task in _load_protocol()["tasks"]

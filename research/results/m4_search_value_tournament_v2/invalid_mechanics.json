@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "campaign": "m4_search_value_tournament_v2",
+  "scientific_outcome": "INVALID_MECHANICS_OR_ADAPTER",
+  "protocol_sha256": "57dd1bddb68f370161382733559b7cb85aa52605bd173f84307844a3ed87d198",
+  "formal_execution_commit": "61d74e3726cde03e913ebf64c2038484337f7f94",
+  "completed_process_statuses_before_abort": {
+    "search_total": 36,
+    "search_succeeded": 36,
+    "heldout_arm_results_written": 31,
+    "heldout_seed_receipts_written": 9
+  },
+  "portfolio_candidate_lock_sha256": "dbd49c69cb736ab7475ea6bb3ad68fe7f0116cfff41c3fb8f5e06bb9d001c67e",
+  "blocking_evidence": [
+    {
+      "classification": "SHARED_HELDOUT_SEED_CREATE_ONCE_RACE",
+      "detail": "Concurrent arm evaluators for one task/repeat raced while creating the same immutable heldout_seeds.json receipt; the winner created the receipt and another worker raised ReceiptAlreadyExistsError."
+    }
+  ],
+  "termination": "Aggregation stopped on the infrastructure exception; no decision result was written.",
+  "retry_or_replacement_within_campaign": false,
+  "task_reuse_permitted": false,
+  "decision_gate_evaluable": false,
+  "superiority_claim_permitted": false
+}

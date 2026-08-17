@@ -186,3 +186,31 @@ def test_run_search_precreates_shared_manifests_before_parallel_arms(
     assert m4.run_search(tmp_path, 4) == []
     manifests = sorted(tmp_path.rglob("m4_manifest.json"))
     assert len(manifests) == 9
+
+
+def test_finalize_precreates_shared_heldout_seeds_before_parallel_arms(
+    monkeypatch, tmp_path: Path
+) -> None:
+    (tmp_path / "portfolio_candidate_lock.json").write_text(
+        "{}", encoding="utf-8"
+    )
+    observed: list[tuple[str, int, str]] = []
+
+    monkeypatch.setattr(m4, "lock_portfolio", lambda _run_root: {})
+
+    def fake_evaluate(
+        run_root: Path, task: str, repeat: int, arm: str
+    ) -> dict[str, object]:
+        seed_path = run_root / task / f"repeat_{repeat:02d}" / "heldout_seeds.json"
+        assert seed_path.exists()
+        observed.append((task, repeat, arm))
+        return _block(task, repeat, arm, 0.1)
+
+    monkeypatch.setattr(m4, "_evaluate_block", fake_evaluate)
+    monkeypatch.setattr(m4, "_aggregate", lambda _root, blocks: {"blocks": blocks})
+
+    result = m4.finalize(tmp_path, 4)
+
+    assert len(observed) == 36
+    assert len(list(tmp_path.rglob("heldout_seeds.json"))) == 9
+    assert len(result["blocks"]) == 36
