@@ -4,7 +4,7 @@ param(
     [ValidateSet("doctor", "bootstrap", "test", "run", "rebuild")]
     [string]$Command = "doctor",
 
-    [ValidateSet("default", "dev", "shinka", "onnx", "algotune")]
+    [ValidateSet("default", "dev", "shinka", "onnx", "algotune", "engine-selection")]
     [string]$Profile = "dev",
 
     [Parameter(Position = 1, ValueFromRemainingArguments = $true)]
@@ -59,6 +59,7 @@ function Get-ProfileArguments {
         "shinka" { return @("--extra", "dev", "--extra", "shinka") }
         "onnx" { return @("--extra", "dev", "--extra", "onnx-canary") }
         "algotune" { return @("--extra", "dev", "--extra", "algotune-portfolio") }
+        "engine-selection" { return @("--extra", "dev", "--extra", "engine-selection-r1") }
     }
 }
 
@@ -69,6 +70,7 @@ function Get-ProfileImports {
         "shinka" { return @("evidence_evolve", "pydantic", "yaml", "pytest", "shinka") }
         "onnx" { return @("evidence_evolve", "pydantic", "yaml", "pytest", "numpy", "onnx", "onnxruntime") }
         "algotune" { return @("evidence_evolve", "pydantic", "yaml", "pytest", "networkx", "numpy", "ortools", "pysat", "scipy") }
+        "engine-selection" { return @("evidence_evolve", "pydantic", "yaml", "pytest", "networkx", "numpy", "ortools", "pysat", "scipy", "shinka", "skydiscover") }
     }
 }
 
@@ -106,7 +108,7 @@ function Get-TestTargets {
 
     switch ($Profile) {
         "default" {
-            throw "USAGE: tests require -Profile dev, shinka, onnx, or algotune."
+            throw "USAGE: tests require -Profile dev, shinka, onnx, algotune, or engine-selection."
         }
         "dev" { }
         "onnx" {
@@ -121,6 +123,14 @@ function Get-TestTargets {
                 throw "ENV_BLOCKED: the AlgoTune suite imports Linux-only pwd/resource/fcntl modules. Run this profile inside WSL/Linux."
             }
             return @("tests")
+        }
+        "engine-selection" {
+            $targets.Add("tests/test_shinka_native.py")
+            $targets.Add("tests/test_shinka_native_semantic_parity.py")
+            $targets.Add("tests/test_engine_selection_r3.py")
+            $targets.Add("tests/test_engine_selection_r3_continuation.py")
+            $targets.Add("tests/test_engine_selection_shinka_postfix.py")
+            $targets.Add("tests/test_shinka_selection_audit.py")
         }
     }
     return $targets.ToArray()

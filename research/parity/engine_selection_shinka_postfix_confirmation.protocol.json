@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.0",
+  "campaign": "engine_selection_shinka_postfix_confirmation",
+  "authority": "FROZEN_BEFORE_ANY_POST_FIX_CONFIRMATION_MODEL_CALL",
+  "purpose": "Confirm that repaired raw-speedup fitness enters Shinka native selection and final candidate retention without rerunning the four-engine tournament.",
+  "predecessor": {
+    "campaign": "engine_selection_r3_continuation_30",
+    "result": "research/results/engine_selection_r3_continuation_30/result.json",
+    "observed_failure": "VALID_HIGH_SPEEDUP_CANDIDATES_RECORDED_WITH_ZERO_COMBINED_SCORE_AND_NOT_RETAINED"
+  },
+  "repair": {
+    "commit": "515544c0ca674ff608c507b3ca390a67b8eba694",
+    "mechanism": "VALID_RAW_SPEEDUP_TO_COMBINED_SCORE",
+    "historical_artifacts_mutated": false
+  },
+  "tasks": [
+    {"task": "pde_heat1d", "class": "PDEHeatEquation1D", "category": "numerical_continuous", "problem_size": 10, "source_sha256": "0be2185cd8b9cf2f69ceceb05ab2e34001a04ab5fca8baae46b9ea3f4f79db2f"},
+    {"task": "convex_hull", "class": "ConvexHullTask", "category": "computational_geometry", "problem_size": 5000, "source_sha256": "3d35210bb394099e84740f7d8db80ea680ec5eb5c0d2e2729d5af478e90a8a30"},
+    {"task": "communicability", "class": "Communicability", "category": "graph_matrix_algorithms", "problem_size": 100, "source_sha256": "9eaebde50200ea7de4a332ad92feab591f9db4e9925ab0c06c8a66a15836bf4f"}
+  ],
+  "confirmation": {
+    "arms": ["shinka"],
+    "repeats": [1, 2],
+    "native_iterations": 12,
+    "run_count": 6,
+    "scheduling_unit": "ONE_TASK_ONE_SHINKA_RUN",
+    "stop_stage_on_any_non_success_run": true
+  },
+  "common_conditions": {
+    "model": "gpt-5.6-terra",
+    "reasoning_effort": "high",
+    "provider_executable": "E:/codex-tools/tools/node-global/node_modules/@openai/codex/node_modules/@openai/codex-win32-x64/vendor/x86_64-pc-windows-msvc/bin/codex.exe",
+    "provider_version": "codex-cli 0.147.0",
+    "max_native_search_iterations": 12,
+    "wall_seconds_per_run": 1800,
+    "wall_grace_seconds": 180,
+    "token_policy": "ACCOUNT_ONLY_NEVER_STOP_ITERATIONS_NEVER_INVALIDATE_RUN",
+    "token_call_launch_ceiling": null,
+    "token_hard_ceiling": null,
+    "development_seeds_per_repeat": 20,
+    "development_repeats": 2,
+    "remote_evaluation_slots": 2,
+    "evaluator_workers_per_active_run": 12,
+    "candidate_retries_or_replacement_samples": false
+  },
+  "mechanics_gates": {
+    "valid_combined_score_equals_raw_speedup": true,
+    "invalid_combined_score_equals_zero": true,
+    "raw_speedup_order_never_inverts_fitness": true,
+    "native_best_matches_simulated_formal_rule": true,
+    "imported_best_matches_native_best": true,
+    "selected_candidate_matches_imported_best": true,
+    "final_return_is_valid_fitness_maximum": true,
+    "no_better_candidate_generated_but_not_promoted": true
+  },
+  "historical_control": {
+    "mode": "READ_ONLY_PRE_FIX_TRAJECTORY",
+    "rerun_other_engines": false,
+    "source": "research/results/engine_selection_r3_continuation_30/result.json"
+  },
+  "implementation_bindings": {
+    "evidence_evolve/benchmarks/algotune_heterogeneous.py": "e542ff09e79adbb13c54e90bea51b5807ce6fb0e3c90cfb702241165f319fad0",
+    "evidence_evolve/benchmarks/shinka_fitness.py": "90429db3e6cd991829a1aa29003484e5739bfce8c7349b23f81b86b9b12be34c",
+    "evidence_evolve/benchmarks/shinka_selection_audit.py": "b7e0d692ff155a4e86e963aaa52c5d6008116bcee93b167f70b8a70d194eb64a",
+    "evidence_evolve/benchmarks/engine_selection_shinka_postfix_runner.py": "67f8e38b84717d26a1dc81f223ae79a7c6ded4bcb0a70216543bbea94cbed01a",
+    "scripts/project.ps1": "4400dcb2b63133deb95816462fc92c5424982ce78fe6770c49f45d9cc6f58038"
+  },
+  "heldout": {"enabled": false},
+  "claim_scope": "DEVELOPMENT_MECHANICS_CONFIRMATION_ONLY",
+  "superiority_claim_permitted": false,
+  "full_30_round_rematch_authorized": false
+}

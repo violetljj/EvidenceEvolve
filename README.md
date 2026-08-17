@@ -211,7 +211,7 @@ pwsh -NoProfile -File scripts/project.ps1 test -Profile dev
 pwsh -NoProfile -File scripts/project.ps1 run -Profile dev -Module evidence_evolve.cli -TargetArguments --help
 ```
 
-Use `-Profile shinka`, `-Profile onnx`, or `-Profile algotune` for their locked optional dependencies. Switching profiles performs an exact `uv sync --locked`; do not install missing packages manually. `.venv` is disposable and `project.ps1 rebuild` is limited to the verified project environment.
+Use `-Profile shinka`, `-Profile onnx`, `-Profile algotune`, or `-Profile engine-selection` for their locked optional dependencies. The engine-selection profile combines the pinned Shinka, SkyDiscover, and AlgoTune dependencies required by the comparison runners. Switching profiles performs an exact `uv sync --locked`; do not install missing packages manually. `.venv` is disposable and `project.ps1 rebuild` is limited to the verified project environment.
 
 On Windows, `test -Profile dev` runs the explicit platform-compatible core suite. It reports, but does not claim to pass, three excluded byte-level checks: two frozen P2-R1 receipt tests whose committed artifact hashes already differ, and one LF-sensitive proposal fixture hash test. Run those checks in their sealed/original environment; the Windows entry point never rewrites the artifacts or weakens the assertions. The Shinka and ONNX profiles add their own test files. AlgoTune imports the Linux-only `pwd`, `resource`, and `fcntl` standard-library modules, so its doctor/bootstrap metadata can be inspected on Windows but its test/runtime profile fails early with `ENV_BLOCKED` and must run in WSL/Linux.
 
