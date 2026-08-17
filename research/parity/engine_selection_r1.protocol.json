@@ -1,0 +1,128 @@
+{
+  "schema_version": "1.0",
+  "campaign": "engine_selection_r1",
+  "authority": "FROZEN_BEFORE_ANY_SCIENTIFIC_RUN",
+  "purpose": "Select the default mature search backend after M4 stopped the EvidenceEvolve search core.",
+  "not_a_continuation_of": "M4_EE_SEARCH_CORE_RESEARCH",
+  "upstream": {
+    "algotune_repository": "https://github.com/oripress/AlgoTune.git",
+    "algotune_commit": "dff9914c10800c7a031c9e8c3d4d1c8cd1b38906",
+    "skydiscover_repository": "https://github.com/skydiscover-ai/skydiscover.git",
+    "skydiscover_commit": "8a840394e19ee4bfb3fb0a62762b902561a7efeb",
+    "shinka_repository": "https://github.com/SakanaAI/ShinkaEvolve.git",
+    "shinka_commit": "c4568adde253cacf185be3a8412c3c2142761ebe"
+  },
+  "consumed_task_boundary": {
+    "source": "m4_search_value_tournament_v0_through_v6",
+    "task_count": 21,
+    "formal_tasks_must_be_disjoint": true,
+    "protocol_sha256": [
+      "98e211930e28182c556f0e2c62595f9c01d7addfd13b706fe484ae8dab303352",
+      "b8f049ce15ea51d62f2059de69511851b77a390c113924a81bcc741c1b5c6ea7",
+      "57dd1bddb68f370161382733559b7cb85aa52605bd173f84307844a3ed87d198",
+      "3e536d0289ccf9e45686ced0f7a07d666601e73c2505861bccbbfad806c52e58",
+      "3d338b78a89b3e0fcaa6401323f0ed4a4679a8c8b2cd8a363b72893fa22b2043",
+      "9565e3ec0ec4b1a7b6b89f74aeea15503378fbb66fcbeaea4ed68d21671816a0",
+      "ddce4122093768622294f024b3d94b25b6565f1baf0611aabe5234fc29227eda"
+    ]
+  },
+  "mechanics_smoke": {
+    "task": "min_weight_assignment",
+    "consumed_task_only": true,
+    "arms": ["vanilla", "ada", "shinka", "evox"],
+    "repeats": 1,
+    "observed_token_ceiling": 30000,
+    "scientific_authority": false,
+    "required_before_formal_search": true
+  },
+  "tasks": [
+    {
+      "task": "job_shop_scheduling",
+      "class": "JobShopScheduling",
+      "category": "combinatorial_optimization",
+      "role": "core",
+      "problem_size": 20,
+      "source_sha256": "10f616b3f6f80a121b9631485181bd5629430aa7136390a06985385a0de2b66a"
+    },
+    {
+      "task": "pde_heat1d",
+      "class": "PDEHeatEquation1D",
+      "category": "numerical_continuous",
+      "role": "core",
+      "problem_size": 10,
+      "source_sha256": "0be2185cd8b9cf2f69ceceb05ab2e34001a04ab5fca8baae46b9ea3f4f79db2f"
+    },
+    {
+      "task": "convex_hull",
+      "class": "ConvexHullTask",
+      "category": "computational_geometry",
+      "role": "core",
+      "problem_size": 5000,
+      "source_sha256": "3d35210bb394099e84740f7d8db80ea680ec5eb5c0d2e2729d5af478e90a8a30"
+    },
+    {
+      "task": "communicability",
+      "class": "Communicability",
+      "category": "graph_matrix_algorithms",
+      "role": "reserve",
+      "problem_size": 100,
+      "source_sha256": "9eaebde50200ea7de4a332ad92feab591f9db4e9925ab0c06c8a66a15836bf4f"
+    }
+  ],
+  "arms": ["vanilla", "ada", "shinka", "evox"],
+  "core_repeats": [1, 2],
+  "reserve_repeats": [1, 2],
+  "common_conditions": {
+    "model": "gpt-5.6-terra",
+    "reasoning_effort": "high",
+    "tools_permission": "read_only_candidate_generation",
+    "max_search_iterations": 50,
+    "token_checkpoints": [50000, 100000, 200000],
+    "observed_token_ceiling": 200000,
+    "wall_seconds": 2700,
+    "evaluator_workers_per_active_run": 4,
+    "development_seeds_per_repeat": 20,
+    "development_repeats": 2,
+    "heldout_seeds_per_repeat": 30,
+    "heldout_repeats": 3,
+    "candidate_at_checkpoint": "BEST_VALID_CANDIDATE_WITH_CUMULATIVE_TOKENS_AT_OR_BELOW_CHECKPOINT_ELSE_CARRY_FORWARD_SEED_OR_PRIOR",
+    "stop_launching_calls_after_observed_ceiling": true,
+    "atomic_call_overshoot": "COUNT_ALL_TOKENS_AND_MARK_RUN_BUDGET_INVALID_IF_TOTAL_EXCEEDS_CEILING",
+    "all_checkpoint_hashes_locked_before_any_heldout_seed": true,
+    "candidate_retries_or_replacement_samples": false
+  },
+  "scoring": {
+    "checkpoint_improvement": "max(0, heldout_raw_speedup - 1) when heldout correct and run budget valid; otherwise 0",
+    "task_repeat_aggregate": "arithmetic_mean_of_two_predeclared_repeats",
+    "primary_endpoint": "task_level_heldout_improvement_at_200000_tokens",
+    "secondary_endpoint": "normalized_trapezoidal_anytime_auc_over_0_50000_100000_200000",
+    "tertiary_order": ["observed_tokens", "wall_seconds", "proposal_valid_rate"],
+    "pairwise_unit": "task_family",
+    "pairwise_score": "Copeland wins minus losses across task families against every other arm",
+    "tie_epsilon": 0.0,
+    "tie_note": "M4 used exact lexicographic comparison and did not freeze a nonzero epsilon; R1 therefore preserves exact equality rather than inventing one."
+  },
+  "decision_gate": {
+    "direct_core_selection": "A unique highest-Copeland arm is selected only if all six core runs are valid. A non-Vanilla arm must also beat Vanilla on at least two of three core task families.",
+    "reserve_triggers": [
+      "highest Copeland score is tied",
+      "the unique non-Vanilla leader beats Vanilla on exactly two of three core tasks",
+      "the unique 100k leader differs from the unique 200k leader"
+    ],
+    "reserve_participant_ranking": [
+      "200k Copeland score descending",
+      "mean task-level 200k improvement descending",
+      "Vanilla before non-Vanilla on exact equality",
+      "arm name descending on remaining exact equality"
+    ],
+    "reserve_participants": "the deterministic top two core arms; if Vanilla is not among them, a non-Vanilla global promotion requiring a fourth Vanilla comparison is not established",
+    "reserve_limit": "two arms times two repeats on the pre-frozen reserve task",
+    "non_vanilla_global_promotion": "requires at least three wins over Vanilla across four fresh task families and all applicable runs valid",
+    "fallback": "retain Vanilla whenever replacement evidence is absent, tied, invalid, or not evaluable"
+  },
+  "outputs": ["CHEAP_DEFAULT_100K", "DEEP_DEFAULT_200K", "GLOBAL_DEFAULT"],
+  "formal_run_count": {"core": 24, "conditional_reserve_max": 4, "total_max": 28},
+  "claim_scope": "FOUR_ENGINE_SELECTION_ON_THREE_FRESH_TASKS_WITH_ONE_PRE_FROZEN_RESERVE",
+  "superiority_claim_permitted": false,
+  "mechanism_claim_permitted": false
+}

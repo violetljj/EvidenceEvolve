@@ -38,6 +38,24 @@ def _append_usage(usage: dict[str, int]) -> None:
         handle.write(json.dumps({"usage": usage}, sort_keys=True) + "\n")
 
 
+def _observed_usage() -> int:
+    configured = os.environ.get("EE_HEADLESS_USAGE_LOG")
+    if not configured or not Path(configured).is_file():
+        return 0
+    total = 0
+    for line in Path(configured).read_text(encoding="utf-8", errors="replace").splitlines():
+        try:
+            payload = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        usage = payload.get("usage") if isinstance(payload, dict) else None
+        if isinstance(usage, dict):
+            total += int(usage.get("inputTokens", 0) or 0)
+            total += int(usage.get("cacheReadTokens", 0) or 0)
+            total += int(usage.get("outputTokens", 0) or 0)
+    return total
+
+
 def _check(executable: str) -> int:
     completed = subprocess.run(
         [executable, "--version"], check=False, capture_output=True, text=True
@@ -65,6 +83,11 @@ def main() -> int:
         return _check(executable)
     if args.agent != "codex" or args.prompt_file is None or args.work_dir is None:
         parser.error("codex, --prompt-file, and --work-dir are required")
+
+    launch_ceiling = os.environ.get("EE_HEADLESS_TOKEN_LAUNCH_CEILING")
+    if launch_ceiling is not None and _observed_usage() >= int(launch_ceiling):
+        sys.stderr.write("ENGINE_SELECTION_TOKEN_BUDGET_EXHAUSTED\n")
+        return 75
 
     prompt = args.prompt_file.read_text(encoding="utf-8")
     with tempfile.TemporaryDirectory(prefix="ee-headless-") as temporary:

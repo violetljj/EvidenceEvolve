@@ -796,6 +796,17 @@ dev = [
     { name = "pytest-cov" },
     { name = "pytest-xdist" },
 ]
+engine-selection-r1 = [
+    { name = "networkx" },
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
+    { name = "numpy", version = "2.5.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "ortools" },
+    { name = "python-sat" },
+    { name = "scipy", version = "1.17.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
+    { name = "scipy", version = "1.18.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "shinka-evolve" },
+    { name = "skydiscover" },
+]
 onnx-canary = [
     { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
     { name = "numpy", version = "2.5.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
@@ -819,27 +830,34 @@ shinka = [
 [package.metadata]
 requires-dist = [
     { name = "networkx", marker = "extra == 'algotune-portfolio'", specifier = ">=3.4,<4" },
+    { name = "networkx", marker = "extra == 'engine-selection-r1'", specifier = ">=3.4,<4" },
     { name = "networkx", marker = "extra == 'search-value-m4'", specifier = ">=3.4,<4" },
     { name = "numpy", marker = "extra == 'algotune-portfolio'", specifier = ">=2.0,<3" },
+    { name = "numpy", marker = "extra == 'engine-selection-r1'", specifier = ">=2.0,<3" },
     { name = "numpy", marker = "extra == 'onnx-canary'", specifier = ">=2.0,<3" },
     { name = "numpy", marker = "extra == 'search-value-m4'", specifier = ">=2.0,<3" },
     { name = "onnx", marker = "extra == 'onnx-canary'", specifier = ">=1.17,<2" },
     { name = "onnxruntime", marker = "extra == 'onnx-canary'", specifier = ">=1.20,<2" },
     { name = "ortools", marker = "extra == 'algotune-portfolio'", specifier = ">=9.11,<9.12" },
+    { name = "ortools", marker = "extra == 'engine-selection-r1'", specifier = ">=9.11,<9.12" },
     { name = "ortools", marker = "extra == 'search-value-m4'", specifier = ">=9.11,<9.12" },
     { name = "pydantic", specifier = ">=2.10,<3" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.3,<10" },
     { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=6,<8" },
     { name = "pytest-xdist", marker = "extra == 'dev'", specifier = ">=3.6,<4" },
     { name = "python-sat", marker = "extra == 'algotune-portfolio'", specifier = "==1.9.dev15" },
+    { name = "python-sat", marker = "extra == 'engine-selection-r1'", specifier = "==1.9.dev15" },
     { name = "pyyaml", specifier = ">=6.0.2,<7" },
     { name = "scipy", marker = "extra == 'algotune-portfolio'", specifier = ">=1.14,<2" },
+    { name = "scipy", marker = "extra == 'engine-selection-r1'", specifier = ">=1.14,<2" },
     { name = "scipy", marker = "extra == 'search-value-m4'", specifier = ">=1.14,<2" },
+    { name = "shinka-evolve", marker = "extra == 'engine-selection-r1'", git = "https://github.com/SakanaAI/ShinkaEvolve.git?rev=c4568adde253cacf185be3a8412c3c2142761ebe" },
     { name = "shinka-evolve", marker = "extra == 'search-value-m4'", git = "https://github.com/SakanaAI/ShinkaEvolve.git?rev=c4568adde253cacf185be3a8412c3c2142761ebe" },
     { name = "shinka-evolve", marker = "extra == 'shinka'", git = "https://github.com/SakanaAI/ShinkaEvolve.git?rev=c4568adde253cacf185be3a8412c3c2142761ebe" },
+    { name = "skydiscover", marker = "extra == 'engine-selection-r1'", git = "https://github.com/skydiscover-ai/skydiscover.git?rev=8a840394e19ee4bfb3fb0a62762b902561a7efeb" },
     { name = "skydiscover", marker = "extra == 'search-value-m4'", git = "https://github.com/skydiscover-ai/skydiscover.git?rev=8a840394e19ee4bfb3fb0a62762b902561a7efeb" },
 ]
-provides-extras = ["dev", "shinka", "onnx-canary", "algotune-portfolio", "search-value-m4"]
+provides-extras = ["dev", "shinka", "onnx-canary", "algotune-portfolio", "search-value-m4", "engine-selection-r1"]
 
 [[package]]
 name = "execnet"

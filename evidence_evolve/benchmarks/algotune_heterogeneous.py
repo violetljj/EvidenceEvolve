@@ -123,7 +123,10 @@ SPEC = OfficialTaskSpec(name={task['task']!r}, class_name={task['class']!r}, pro
 def evaluate(program_path: str):
     start=int(os.environ.get("EE_ALGOTUNE_DEV_START","0")); count=int(os.environ.get("EE_ALGOTUNE_DEV_COUNT","20")); repeats=int(os.environ.get("EE_ALGOTUNE_DEV_REPEATS","3")); workers=int(os.environ.get("EE_ALGOTUNE_WORKERS","4"))
     if os.environ.get("EE_M4_REMOTE_EVALUATOR") == "1":
-        from evidence_evolve.benchmarks.search_value_m4 import remote_development_evaluate
+        if os.environ.get("EE_ALGOTUNE_REMOTE_MODULE") == "engine_selection_r1":
+            from evidence_evolve.benchmarks.engine_selection_r1_runner import remote_development_evaluate
+        else:
+            from evidence_evolve.benchmarks.search_value_m4 import remote_development_evaluate
         wrapped=remote_development_evaluate(program_path,SPEC,workers=workers)
         result={{"correct":wrapped["controls"]["candidate_valid"],"valid_rate":1.0-wrapped["metrics"]["invalid_solution_rate"],"raw_speedup":wrapped["metrics"]["raw_speedup"],"failure":wrapped["error"]}}
     else:

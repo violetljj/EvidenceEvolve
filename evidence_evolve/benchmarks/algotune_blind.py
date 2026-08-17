@@ -386,6 +386,11 @@ class _SkyCodexClient:
     ) -> Any:
         from skydiscover.llm.base import LLMResponse
 
+        launch_ceiling = int(
+            os.environ.get("EE_SEARCH_TOKEN_LAUNCH_CEILING", str(TOKEN_CEILING))
+        )
+        if _token_usage(self.arm_dir) >= launch_ceiling:
+            raise RuntimeError("ENGINE_SELECTION_TOKEN_BUDGET_EXHAUSTED")
         self.call_index += 1
         rendered = "\n\n".join(
             f"{item.get('role', 'user').upper()}: {item.get('content', '')}"
@@ -471,9 +476,11 @@ def run_evox(run_dir: Path) -> dict[str, Any]:
     result_path = arm_dir / "arm_result.json"
     if result_path.is_file():
         return json.loads(result_path.read_text(encoding="utf-8"))
-    _ensure_evox_amendment(run_dir)
+    protocol_native = os.environ.get("EE_EVOX_PROTOCOL_NATIVE") == "1"
+    if not protocol_native:
+        _ensure_evox_amendment(run_dir)
     repair_path = run_dir / "adapter_repair_evox.json"
-    if not repair_path.exists():
+    if not protocol_native and not repair_path.exists():
         amendment = json.loads(
             (run_dir / "protocol_amendment_evox.json").read_text(encoding="utf-8")
         )
@@ -564,11 +571,15 @@ def run_shinka(run_dir: Path) -> dict[str, Any]:
     results_dir = arm_dir / "upstream"
     prior = os.environ.get("SHINKA_HEADLESS_COMMAND")
     prior_usage_log = os.environ.get("EE_HEADLESS_USAGE_LOG")
+    prior_launch_ceiling = os.environ.get("EE_HEADLESS_TOKEN_LAUNCH_CEILING")
     usage_log = arm_dir / "headless_usage.jsonl"
     os.environ["SHINKA_HEADLESS_COMMAND"] = (
         f'"{sys.executable}" "{CODEX_HEADLESS}"'
     )
     os.environ["EE_HEADLESS_USAGE_LOG"] = str(usage_log)
+    os.environ["EE_HEADLESS_TOKEN_LAUNCH_CEILING"] = os.environ.get(
+        "EE_SEARCH_TOKEN_LAUNCH_CEILING", str(TOKEN_CEILING)
+    )
     try:
         receipt = ShinkaNativeEngine().run(
             SearchRunRequest(
@@ -593,6 +604,10 @@ def run_shinka(run_dir: Path) -> dict[str, Any]:
             os.environ.pop("EE_HEADLESS_USAGE_LOG", None)
         else:
             os.environ["EE_HEADLESS_USAGE_LOG"] = prior_usage_log
+        if prior_launch_ceiling is None:
+            os.environ.pop("EE_HEADLESS_TOKEN_LAUNCH_CEILING", None)
+        else:
+            os.environ["EE_HEADLESS_TOKEN_LAUNCH_CEILING"] = prior_launch_ceiling
     connection = sqlite3.connect(results_dir / "programs.sqlite")
     try:
         row = connection.execute(
