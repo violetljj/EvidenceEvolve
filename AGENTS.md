@@ -24,6 +24,21 @@
 - Closed families require externally verified reopen evidence. A candidate's own claim is never sufficient.
 - Do not let multiple live writers operate in one worktree.
 
+## Benchmark reuse and evidence roles
+
+- Do not create or consume a fresh task by default for each research iteration. Old tasks develop the system; fresh tasks adjudicate mature mechanisms.
+- Maintain a long-lived benchmark bank. Each task record should bind at least `task_id`, family, difficulty, consumption level, historical runs, known failure modes, best known score, and whether it remains eligible for blind use.
+- Treat benchmark roles as explicit evidence permissions:
+  - `DEV`: high-frequency reuse is expected, including consumed tasks and frozen states such as Assignment, Eigenvalues, Rotate2D, M4, and Set Cover. Use them to tune controllers, parent selection, operators, budget policy, prompts, and search mechanisms.
+  - `REGRESSION`: near-permanent reuse is expected to detect loss of previously demonstrated capability.
+  - `VALIDATION`: reuse only sparingly across a small number of candidate versions. Once its outcomes influence repeated system changes, downgrade it to consumed validation or `DEV`; it is no longer held-out evidence.
+  - `BLIND_FRESH`: preserve for final generalization tests after a mechanism has shown a clear signal on reused tasks. Ordinary mechanism development may use 100% consumed `DEV` and 0 fresh tasks.
+- Use 70% reused tasks, 20% rotating tasks, and 10% truly fresh/blind tasks as a portfolio planning heuristic, not a mandatory per-round quota. Do not spend the fresh share merely to satisfy a ratio.
+- Prefer paired control-versus-treatment comparisons with the same task, frozen initial state, model/provider version, budget, evaluator, and resource quota. Change only the mechanism under study unless the protocol explicitly declares another factor.
+- Reusing a task changes its evidence role and claim ceiling. Results affected by repeated inspection or tuning cannot support held-out, fresh-generalization, confirmation, or superiority claims.
+- Reuse does not reopen a sealed one-shot campaign or authorize mutation of its protocols, receipts, confirmation assets, or consumed run namespace. Reuse such material only through an explicitly labeled `DEV`/`REGRESSION` protocol or a bound development fixture that preserves the original evidence record.
+- The scheduler should draw from the benchmark bank before requesting a new task. Open a fresh/blind cohort only when a predeclared development gate establishes that the expected information value justifies consuming it.
+
 ## Verification
 
 - On Windows, the repository-owned environment entry point is `pwsh -NoProfile -File scripts/project.ps1 <doctor|bootstrap|test|run|rebuild>`. Run `doctor` first and select the required `-Profile` (`dev`, `shinka`, `onnx`, or `algotune`). Do not use a global Python or ad hoc `pip install`; `.python-version`, `pyproject.toml`, and `uv.lock` are the local authority.
