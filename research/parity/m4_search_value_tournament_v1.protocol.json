@@ -19,21 +19,21 @@
       "class": "MaxFlowMinCost",
       "category": "combinatorial_optimization",
       "problem_size": 30,
-      "source_sha256": "9c01d07b5fc744d8be9eab0a01a86770b7acd6d7ca4639cd9dfe374ed45c7ed1"
+      "source_sha256": "25fc1054d288b4593e53e7ab8fed7e2eb54dce5f5b130952842305af2f29fe86"
     },
     {
       "task": "matrix_multiplication",
       "class": "MatrixMultiplication",
       "category": "linear_algebra",
       "problem_size": 180,
-      "source_sha256": "660fb388a07c6eed3986a69fc97e93f3fad4d41de34c0ed3062de02be1fcb7d1"
+      "source_sha256": "2a24ac12c8347a5c90866131ac760f351ef105bc9f32119e9c3f4019afc3ad2a"
     },
     {
       "task": "gzip_compression",
       "class": "GzipCompression",
       "category": "data_compression",
       "problem_size": 40,
-      "source_sha256": "5b53c77c1e7bb3c5c0e756275fed5f434334199da08e3d7f7f22ed2759e10bda"
+      "source_sha256": "5b33ef2d40dd75a64af7d8e5fb1281f5688ac38cb303b3e77dded420dd56ea30"
     }
   ],
   "arms": ["vanilla", "shinka", "ada", "evidence_evolve"],

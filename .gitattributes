@@ -1,0 +1,3 @@
+tasks/algotune_m4_upstream/AlgoTuneTasks/gzip_compression/*.py text eol=lf
+tasks/algotune_m4_upstream/AlgoTuneTasks/matrix_multiplication/*.py text eol=lf
+tasks/algotune_m4_upstream/AlgoTuneTasks/max_flow_min_cost/*.py text eol=lf
