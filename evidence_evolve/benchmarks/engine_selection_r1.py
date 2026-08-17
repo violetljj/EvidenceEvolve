@@ -52,6 +52,15 @@ def load_protocol() -> dict[str, Any]:
         raise ValueError("Engine Selection token checkpoint drift")
     if protocol["common_conditions"]["observed_token_ceiling"] != 200_000:
         raise ValueError("Engine Selection token ceiling drift")
+    smoke = protocol["mechanics_smoke"]
+    if (
+        smoke["attempt"] != "mechanics_smoke_v2"
+        or smoke["token_call_launch_ceiling"] != 30_000
+        or smoke["observed_token_hard_ceiling"] != 100_000
+        or smoke["max_search_iterations"] != 3
+        or smoke["replacement_for"]["outcome"] != "INVALID_MECHANICS_OR_ADAPTER"
+    ):
+        raise ValueError("Engine Selection smoke amendment drift")
 
     m4_protocols = _m4_protocols()
     expected_hashes = protocol["consumed_task_boundary"]["protocol_sha256"]
@@ -59,6 +68,8 @@ def load_protocol() -> dict[str, Any]:
     if actual_hashes != expected_hashes:
         raise ValueError("M4 consumed-task boundary drift")
     consumed = consumed_m4_tasks()
+    if smoke["task"] not in consumed or not bool(smoke["consumed_task_only"]):
+        raise ValueError("mechanics smoke must use an already-consumed task")
     tasks = protocol["tasks"]
     if len(tasks) != 4:
         raise ValueError("Engine Selection requires three core tasks and one reserve")

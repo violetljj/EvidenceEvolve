@@ -27,11 +27,21 @@
     ]
   },
   "mechanics_smoke": {
+    "attempt": "mechanics_smoke_v2",
+    "replacement_for": {
+      "attempt": "mechanics_smoke_v1",
+      "protocol_sha256": "c7c099c2100ee9f38b0e4d71ad5b5bbf29bc39e1b485e68ed81e504766fbd9b4",
+      "outcome": "INVALID_MECHANICS_OR_ADAPTER",
+      "blocker": "one atomic model call used 48748 to 77077 tokens, so a 30000 hard ceiling was mechanically impossible"
+    },
     "task": "min_weight_assignment",
     "consumed_task_only": true,
     "arms": ["vanilla", "ada", "shinka", "evox"],
     "repeats": 1,
-    "observed_token_ceiling": 30000,
+    "max_search_iterations": 3,
+    "token_call_launch_ceiling": 30000,
+    "observed_token_hard_ceiling": 100000,
+    "receipt": "mechanics_smoke_v2_receipt.json",
     "scientific_authority": false,
     "required_before_formal_search": true
   },
@@ -78,6 +88,7 @@
     "tools_permission": "read_only_candidate_generation",
     "max_search_iterations": 50,
     "token_checkpoints": [50000, 100000, 200000],
+    "token_call_launch_ceiling": 200000,
     "observed_token_ceiling": 200000,
     "wall_seconds": 2700,
     "evaluator_workers_per_active_run": 4,

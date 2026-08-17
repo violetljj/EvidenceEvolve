@@ -71,6 +71,8 @@ def test_protocol_freezes_four_new_exact_upstream_tasks() -> None:
         200_000,
     ]
     assert protocol["scoring"]["tie_epsilon"] == 0.0
+    assert protocol["mechanics_smoke"]["token_call_launch_ceiling"] == 30_000
+    assert protocol["mechanics_smoke"]["observed_token_hard_ceiling"] == 100_000
 
 
 def test_unique_non_vanilla_three_task_win_selects_directly() -> None:
@@ -189,7 +191,8 @@ def test_search_precreates_shared_task_workspaces_before_parallel_arms(
     monkeypatch, tmp_path: Path
 ) -> None:
     monkeypatch.setattr(runner, "_core_items", lambda _root: [])
-    (tmp_path / "mechanics_smoke_receipt.json").write_text(
+    receipt_name = selection.load_protocol()["mechanics_smoke"]["receipt"]
+    (tmp_path / receipt_name).write_text(
         json.dumps(
             {
                 "status": "PASS",

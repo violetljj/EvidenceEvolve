@@ -73,9 +73,10 @@ def _source_path(task_name: str) -> Path:
 def _conditions_for_task(task_name: str) -> dict[str, Any]:
     conditions = dict(load_protocol()["common_conditions"])
     if task_name == SMOKE_TASK:
-        conditions["observed_token_ceiling"] = int(
-            load_protocol()["mechanics_smoke"]["observed_token_ceiling"]
-        )
+        smoke = load_protocol()["mechanics_smoke"]
+        conditions["max_search_iterations"] = int(smoke["max_search_iterations"])
+        conditions["token_call_launch_ceiling"] = int(smoke["token_call_launch_ceiling"])
+        conditions["observed_token_ceiling"] = int(smoke["observed_token_hard_ceiling"])
     return conditions
 
 
@@ -229,7 +230,7 @@ def _configure(run_dir: Path, task_name: str, repeat: int) -> OfficialTaskSpec:
         "EE_HETERO_GENERATIONS": str(conditions["max_search_iterations"]),
         "EE_M4_REMOTE_EVALUATOR": "1",
         "EE_ALGOTUNE_REMOTE_MODULE": "engine_selection_r1",
-        "EE_SEARCH_TOKEN_LAUNCH_CEILING": str(conditions["observed_token_ceiling"]),
+        "EE_SEARCH_TOKEN_LAUNCH_CEILING": str(conditions["token_call_launch_ceiling"]),
         "EE_EVOX_PROTOCOL_NATIVE": "1",
         "EE_ENGINE_EVAL_CONTEXT": f"{task_name}-r{repeat}",
     })
@@ -469,7 +470,7 @@ def _run_item(item: tuple[str, int, str, list[str]], run_root: Path) -> dict[str
 def search_core(run_root: Path, max_parallel: int) -> list[dict[str, Any]]:
     if max_parallel < 1:
         raise ValueError("max_parallel must be positive")
-    smoke_path = run_root / "mechanics_smoke_receipt.json"
+    smoke_path = run_root / str(load_protocol()["mechanics_smoke"]["receipt"])
     if not smoke_path.exists():
         raise ValueError("passing mechanics smoke required before formal core search")
     smoke = json.loads(smoke_path.read_text())
@@ -497,21 +498,24 @@ def search_core(run_root: Path, max_parallel: int) -> list[dict[str, Any]]:
 def run_mechanics_smoke(run_root: Path, max_parallel: int) -> dict[str, Any]:
     if max_parallel < 1:
         raise ValueError("max_parallel must be positive")
-    run_dir = run_root / SMOKE_TASK / "repeat_01"
+    smoke = load_protocol()["mechanics_smoke"]
+    attempt = str(smoke["attempt"])
+    attempt_root = run_root / attempt
+    run_dir = attempt_root / SMOKE_TASK / "repeat_01"
     run_dir.mkdir(parents=True, exist_ok=True)
     _configure(run_dir, SMOKE_TASK, 1)
     _manifest(run_dir, SMOKE_TASK, 1)
     items = [
         (SMOKE_TASK, 1, arm, [
             sys.executable, "-m", "evidence_evolve.benchmarks.engine_selection_r1_runner",
-            "arm", "--run-root", str(run_root), "--task", SMOKE_TASK,
+            "arm", "--run-root", str(attempt_root), "--task", SMOKE_TASK,
             "--repeat", "1", "--arm", arm,
         ])
         for arm in ARMS
     ]
     statuses = []
     with ThreadPoolExecutor(max_workers=max_parallel) as pool:
-        futures = [pool.submit(_run_item, item, run_root) for item in items]
+        futures = [pool.submit(_run_item, item, attempt_root) for item in items]
         for future in as_completed(futures):
             statuses.append(future.result())
     trajectories = []
@@ -534,6 +538,7 @@ def run_mechanics_smoke(run_root: Path, max_parallel: int) -> dict[str, Any]:
     payload = {
         "schema_version": "1.0", "campaign": CAMPAIGN,
         "stage": "MECHANICS_SMOKE", "scientific_authority": False,
+        "attempt": attempt,
         "protocol_sha256": sha256_file(PROTOCOL),
         "task": SMOKE_TASK, "consumed_task_only": True,
         "status": "PASS" if passed else "FAIL",
@@ -545,7 +550,7 @@ def run_mechanics_smoke(run_root: Path, max_parallel: int) -> dict[str, Any]:
             "wall_seconds": item["wall_seconds"],
         } for item in sorted(trajectories, key=lambda item: item["arm"])],
     }
-    blind._write_json(run_root / "mechanics_smoke_receipt.json", payload)
+    blind._write_json(run_root / str(smoke["receipt"]), payload)
     return payload
 
 

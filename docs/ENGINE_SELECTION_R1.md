@@ -6,7 +6,8 @@ superiority claim.
 
 The frozen design is:
 
-- mechanics admission: four arms on one consumed task, 30k observed-token ceiling;
+- mechanics admission: four arms on one consumed task; no new call starts after
+  30k observed tokens, and the already in-flight atomic call has a 100k hard ceiling;
 - core: Vanilla, AdaEvolve, ShinkaEvolve, and EvoX on three fresh tasks, two
   repeats, with 50k/100k/200k token checkpoints from one continuous run;
 - reserve: the deterministic top two core arms on one pre-frozen fourth task,
