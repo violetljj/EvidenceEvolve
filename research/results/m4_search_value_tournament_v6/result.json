@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0",
+  "campaign": "m4_search_value_tournament_v6",
+  "scientific_outcome": "VALID_NEGATIVE",
+  "decision": "STOP_EE_SEARCH_CORE",
+  "formal_execution_commit": "e53a74f",
+  "protocol_sha256": "ddce4122093768622294f024b3d94b25b6565f1baf0611aabe5234fc29227eda",
+  "portfolio_candidate_lock_sha256": "72c9d97d1e7ca1f8d867ba0a64457ef834475bed0aa14e14662bbf20e2ab2bf3",
+  "full_run_result_sha256": "ec80862339dc7f83a0b59e286c00729e4fac4c15c718c7234ec0a4d30d54eb65",
+  "execution_completeness": {
+    "search_runs_succeeded": 36,
+    "search_runs_required": 36,
+    "heldout_blocks_completed": 36,
+    "heldout_blocks_required": 36,
+    "checkpoint_candidates_locked": 108,
+    "budget_valid_blocks": 36,
+    "final_valid_blocks": 36,
+    "successful_improvement_blocks": 35
+  },
+  "decision_gate": {
+    "continue_gate_met": false,
+    "stop_gate_met": true,
+    "task_family_ee_wins_vs_vanilla": {
+      "min_weight_assignment": 2,
+      "eigenvalues_real": 0,
+      "rotate_2d": 1
+    },
+    "pairwise": {
+      "vanilla": {"ee_wins": 3, "comparator_wins": 6, "ties": 0, "comparator_task_family_wins": 2, "ee_nonlosses": 3},
+      "shinka": {"ee_wins": 7, "comparator_wins": 2, "ties": 0, "comparator_task_family_wins": 1, "ee_nonlosses": 7},
+      "ada": {"ee_wins": 4, "comparator_wins": 5, "ties": 0, "comparator_task_family_wins": 2, "ee_nonlosses": 4}
+    }
+  },
+  "arm_aggregates": {
+    "vanilla": {"runs": 9, "tokens_total": 671592, "tokens_max": 78807, "wall_seconds_total": 1357.90, "valid_improvement_mean": 0.416876, "anytime_auc_mean": 0.418283},
+    "shinka": {"runs": 9, "tokens_total": 1146023, "tokens_max": 135370, "wall_seconds_total": 1105.53, "valid_improvement_mean": 0.069665, "anytime_auc_mean": 0.073774},
+    "ada": {"runs": 9, "tokens_total": 988865, "tokens_max": 283173, "wall_seconds_total": 1351.29, "valid_improvement_mean": 0.413290, "anytime_auc_mean": 0.377207},
+    "evidence_evolve": {"runs": 9, "tokens_total": 1478949, "tokens_max": 267372, "wall_seconds_total": 1048.80, "valid_improvement_mean": 0.073786, "anytime_auc_mean": 0.074041}
+  },
+  "budget_interpretation": {
+    "observed_token_ceiling_per_run": 600000,
+    "same_ceiling_for_every_arm": true,
+    "all_runs_within_ceiling": true,
+    "unused_budget_not_backfilled": true
+  },
+  "claim_scope": "THREE_FRESH_TASK_EXISTENTIAL_DECISION_GATE_ONLY",
+  "superiority_claim_permitted": false,
+  "mechanism_claim_permitted": false,
+  "prescribed_action": "Stop developing the EvidenceEvolve search core. Preserve evidence, budget, artifact, and evaluator mechanisms and move future search to a simpler or mature engine."
+}
