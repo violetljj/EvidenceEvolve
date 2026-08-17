@@ -705,7 +705,6 @@ def bootstrap_remote(
                 host,
                 f"mkdir -p {shlex.quote(remote_root)}",
             ],
-            check=True,
         )
         subprocess.run(
             ["scp", "-P", str(port), str(bundle), f"{host}:{remote_bundle}"],
