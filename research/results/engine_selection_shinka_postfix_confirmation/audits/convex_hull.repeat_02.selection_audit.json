@@ -1,0 +1,158 @@
+{
+  "campaign": "engine_selection_shinka_postfix_confirmation",
+  "database": "E:\\EvidenceEvolve\\runs\\engine_selection_shinka_postfix_confirmation\\attempt_04\\convex_hull\\repeat_02\\arms\\shinka\\upstream\\programs.sqlite",
+  "fitness_order_violations": [],
+  "formal_best_program_id": "f2df823e-14d0-46c3-8f2f-f06c4f4115ea",
+  "gates": {
+    "final_return_is_valid_fitness_maximum": true,
+    "imported_best_matches_native_best": true,
+    "invalid_combined_score_equals_zero": true,
+    "native_best_matches_simulated_formal_rule": true,
+    "no_better_candidate_generated_but_not_promoted": true,
+    "raw_speedup_order_never_inverts_fitness": true,
+    "selected_candidate_matches_imported_best": true,
+    "valid_combined_score_equals_raw_speedup": true
+  },
+  "imported_best_program_id": "f2df823e-14d0-46c3-8f2f-f06c4f4115ea",
+  "invalid_mapping_failure_ids": [],
+  "program_count": 13,
+  "repeat": 2,
+  "schema_version": "1.0",
+  "simulated_best_program_id": "f2df823e-14d0-46c3-8f2f-f06c4f4115ea",
+  "status": "PASS",
+  "task": "convex_hull",
+  "trajectory": [
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "ed8c7032-61e8-4c1a-916f-45c560434a64",
+      "candidate_valid": true,
+      "combined_score": 1.0165259818015913,
+      "current_historical_best_candidate_id": "ed8c7032-61e8-4c1a-916f-45c560434a64",
+      "generation": 0,
+      "promoted_candidate_id": "ed8c7032-61e8-4c1a-916f-45c560434a64",
+      "raw_speedup": 1.0165259818015913
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "1a941261-8f54-4ece-acce-d205646c2db3",
+      "candidate_valid": true,
+      "combined_score": 1.0164842462306884,
+      "current_historical_best_candidate_id": "ed8c7032-61e8-4c1a-916f-45c560434a64",
+      "generation": 1,
+      "promoted_candidate_id": null,
+      "raw_speedup": 1.0164842462306884
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "ecbc694c-a864-42be-aa04-7878e08a1109",
+      "candidate_valid": true,
+      "combined_score": 1.012311141246734,
+      "current_historical_best_candidate_id": "ed8c7032-61e8-4c1a-916f-45c560434a64",
+      "generation": 2,
+      "promoted_candidate_id": null,
+      "raw_speedup": 1.012311141246734
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "c26c1dd4-007c-4386-a8a6-1a99c6e6d802",
+      "candidate_valid": true,
+      "combined_score": 1.0080943963433944,
+      "current_historical_best_candidate_id": "ed8c7032-61e8-4c1a-916f-45c560434a64",
+      "generation": 3,
+      "promoted_candidate_id": null,
+      "raw_speedup": 1.0080943963433944
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "518cf5fa-91bb-459d-b5a0-20d087210519",
+      "candidate_valid": true,
+      "combined_score": 1.012873239921538,
+      "current_historical_best_candidate_id": "ed8c7032-61e8-4c1a-916f-45c560434a64",
+      "generation": 4,
+      "promoted_candidate_id": null,
+      "raw_speedup": 1.012873239921538
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "3390faf2-3add-488b-8142-3b24cc0eec78",
+      "candidate_valid": true,
+      "combined_score": 1.0103319276229692,
+      "current_historical_best_candidate_id": "ed8c7032-61e8-4c1a-916f-45c560434a64",
+      "generation": 5,
+      "promoted_candidate_id": null,
+      "raw_speedup": 1.0103319276229692
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "764a744e-d74a-48c5-8c45-184ab3ca60b4",
+      "candidate_valid": true,
+      "combined_score": 1.0139165931215413,
+      "current_historical_best_candidate_id": "ed8c7032-61e8-4c1a-916f-45c560434a64",
+      "generation": 6,
+      "promoted_candidate_id": null,
+      "raw_speedup": 1.0139165931215413
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "ba430975-35ae-4b4a-8fe4-7ad94e9c16e1",
+      "candidate_valid": true,
+      "combined_score": 1.01181586645115,
+      "current_historical_best_candidate_id": "ed8c7032-61e8-4c1a-916f-45c560434a64",
+      "generation": 7,
+      "promoted_candidate_id": null,
+      "raw_speedup": 1.01181586645115
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "db750b37-f209-45bd-b824-a6a9d9484a9a",
+      "candidate_valid": true,
+      "combined_score": 1.0081125587397897,
+      "current_historical_best_candidate_id": "ed8c7032-61e8-4c1a-916f-45c560434a64",
+      "generation": 8,
+      "promoted_candidate_id": null,
+      "raw_speedup": 1.0081125587397897
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "d79089f4-8b0e-4d63-9ba7-f7f24578d995",
+      "candidate_valid": true,
+      "combined_score": 1.0103212196472708,
+      "current_historical_best_candidate_id": "ed8c7032-61e8-4c1a-916f-45c560434a64",
+      "generation": 9,
+      "promoted_candidate_id": null,
+      "raw_speedup": 1.0103212196472708
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "f2df823e-14d0-46c3-8f2f-f06c4f4115ea",
+      "candidate_valid": true,
+      "combined_score": 1.019683042600578,
+      "current_historical_best_candidate_id": "f2df823e-14d0-46c3-8f2f-f06c4f4115ea",
+      "generation": 10,
+      "promoted_candidate_id": "f2df823e-14d0-46c3-8f2f-f06c4f4115ea",
+      "raw_speedup": 1.019683042600578
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "e59cb837-c9e8-4ff1-81ca-8b046e7b42f0",
+      "candidate_valid": true,
+      "combined_score": 1.013906567680498,
+      "current_historical_best_candidate_id": "f2df823e-14d0-46c3-8f2f-f06c4f4115ea",
+      "generation": 11,
+      "promoted_candidate_id": null,
+      "raw_speedup": 1.013906567680498
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "01fdaf2d-eb7d-489a-be1d-1a59a463fa42",
+      "candidate_valid": true,
+      "combined_score": 1.0173520054392804,
+      "current_historical_best_candidate_id": "f2df823e-14d0-46c3-8f2f-f06c4f4115ea",
+      "generation": 12,
+      "promoted_candidate_id": null,
+      "raw_speedup": 1.0173520054392804
+    }
+  ],
+  "valid_mapping_failure_ids": [],
+  "valid_program_count": 13
+}

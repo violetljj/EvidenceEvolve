@@ -1,0 +1,67 @@
+{
+  "all_mechanics_gates_passed": true,
+  "campaign": "engine_selection_shinka_postfix_confirmation",
+  "claim_scope": "DEVELOPMENT_MECHANICS_CONFIRMATION_ONLY",
+  "full_30_round_rematch_authorized": false,
+  "protocol_sha256": "d62193b61832721cfbf1aeeb1322c7e85d1078acddd78998f9b2fd32828fd731",
+  "run_count": 6,
+  "runs": [
+    {
+      "final_raw_speedup": 1.0379805952294496,
+      "formal_best_program_id": "8b08867b-0583-485d-afe8-63eee7657190",
+      "program_count": 13,
+      "repeat": 1,
+      "status": "PASS",
+      "task": "pde_heat1d",
+      "valid_program_count": 1
+    },
+    {
+      "final_raw_speedup": 1.0491792414467402,
+      "formal_best_program_id": "4bb0031b-e457-443a-8045-3dde838637fc",
+      "program_count": 13,
+      "repeat": 2,
+      "status": "PASS",
+      "task": "pde_heat1d",
+      "valid_program_count": 1
+    },
+    {
+      "final_raw_speedup": 1.0290820488408983,
+      "formal_best_program_id": "707a1721-a0f1-4c48-9fb3-e5208d0cfe2a",
+      "program_count": 13,
+      "repeat": 1,
+      "status": "PASS",
+      "task": "convex_hull",
+      "valid_program_count": 12
+    },
+    {
+      "final_raw_speedup": 1.019683042600578,
+      "formal_best_program_id": "f2df823e-14d0-46c3-8f2f-f06c4f4115ea",
+      "program_count": 13,
+      "repeat": 2,
+      "status": "PASS",
+      "task": "convex_hull",
+      "valid_program_count": 13
+    },
+    {
+      "final_raw_speedup": 317.00669549851864,
+      "formal_best_program_id": "daa16076-e729-4876-9fdd-86d81dda6fc3",
+      "program_count": 13,
+      "repeat": 1,
+      "status": "PASS",
+      "task": "communicability",
+      "valid_program_count": 11
+    },
+    {
+      "final_raw_speedup": 314.5827634040064,
+      "formal_best_program_id": "135d1732-a9fe-4651-9c5c-518c7465d3f6",
+      "program_count": 13,
+      "repeat": 2,
+      "status": "PASS",
+      "task": "communicability",
+      "valid_program_count": 12
+    }
+  ],
+  "schema_version": "1.0",
+  "scientific_authority": false,
+  "status": "PASS"
+}

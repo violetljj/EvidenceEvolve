@@ -1,0 +1,158 @@
+{
+  "campaign": "engine_selection_shinka_postfix_confirmation",
+  "database": "E:\\EvidenceEvolve\\runs\\engine_selection_shinka_postfix_confirmation\\attempt_04\\communicability\\repeat_01\\arms\\shinka\\upstream\\programs.sqlite",
+  "fitness_order_violations": [],
+  "formal_best_program_id": "daa16076-e729-4876-9fdd-86d81dda6fc3",
+  "gates": {
+    "final_return_is_valid_fitness_maximum": true,
+    "imported_best_matches_native_best": true,
+    "invalid_combined_score_equals_zero": true,
+    "native_best_matches_simulated_formal_rule": true,
+    "no_better_candidate_generated_but_not_promoted": true,
+    "raw_speedup_order_never_inverts_fitness": true,
+    "selected_candidate_matches_imported_best": true,
+    "valid_combined_score_equals_raw_speedup": true
+  },
+  "imported_best_program_id": "daa16076-e729-4876-9fdd-86d81dda6fc3",
+  "invalid_mapping_failure_ids": [],
+  "program_count": 13,
+  "repeat": 1,
+  "schema_version": "1.0",
+  "simulated_best_program_id": "daa16076-e729-4876-9fdd-86d81dda6fc3",
+  "status": "PASS",
+  "task": "communicability",
+  "trajectory": [
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "60d426e3-00e7-48c5-808c-92da0064031c",
+      "candidate_valid": true,
+      "combined_score": 1.0175490374990408,
+      "current_historical_best_candidate_id": "60d426e3-00e7-48c5-808c-92da0064031c",
+      "generation": 0,
+      "promoted_candidate_id": "60d426e3-00e7-48c5-808c-92da0064031c",
+      "raw_speedup": 1.0175490374990408
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "16184f9c-f727-4d7e-b2bf-b890729ed493",
+      "candidate_valid": true,
+      "combined_score": 209.31159580028375,
+      "current_historical_best_candidate_id": "16184f9c-f727-4d7e-b2bf-b890729ed493",
+      "generation": 1,
+      "promoted_candidate_id": "16184f9c-f727-4d7e-b2bf-b890729ed493",
+      "raw_speedup": 209.31159580028375
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "aa8ab146-f832-43f5-806b-b6bc7e35f209",
+      "candidate_valid": true,
+      "combined_score": 306.0275706741041,
+      "current_historical_best_candidate_id": "aa8ab146-f832-43f5-806b-b6bc7e35f209",
+      "generation": 2,
+      "promoted_candidate_id": "aa8ab146-f832-43f5-806b-b6bc7e35f209",
+      "raw_speedup": 306.0275706741041
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "9e0a175e-869b-4b01-9a05-bfe28d8a9b33",
+      "candidate_valid": true,
+      "combined_score": 312.50084762062306,
+      "current_historical_best_candidate_id": "9e0a175e-869b-4b01-9a05-bfe28d8a9b33",
+      "generation": 3,
+      "promoted_candidate_id": "9e0a175e-869b-4b01-9a05-bfe28d8a9b33",
+      "raw_speedup": 312.50084762062306
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "d6398453-2435-45bf-b1d9-fcef29c53354",
+      "candidate_valid": true,
+      "combined_score": 303.3270877949658,
+      "current_historical_best_candidate_id": "9e0a175e-869b-4b01-9a05-bfe28d8a9b33",
+      "generation": 4,
+      "promoted_candidate_id": null,
+      "raw_speedup": 303.3270877949658
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "7d9b08a6-fd14-4535-b718-5ed14d98b23a",
+      "candidate_valid": true,
+      "combined_score": 302.6310273381704,
+      "current_historical_best_candidate_id": "9e0a175e-869b-4b01-9a05-bfe28d8a9b33",
+      "generation": 5,
+      "promoted_candidate_id": null,
+      "raw_speedup": 302.6310273381704
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "61301929-814a-402f-a174-97cbfa306544",
+      "candidate_valid": true,
+      "combined_score": 295.4626612966452,
+      "current_historical_best_candidate_id": "9e0a175e-869b-4b01-9a05-bfe28d8a9b33",
+      "generation": 6,
+      "promoted_candidate_id": null,
+      "raw_speedup": 295.4626612966452
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "daa16076-e729-4876-9fdd-86d81dda6fc3",
+      "candidate_valid": true,
+      "combined_score": 317.00669549851864,
+      "current_historical_best_candidate_id": "daa16076-e729-4876-9fdd-86d81dda6fc3",
+      "generation": 7,
+      "promoted_candidate_id": "daa16076-e729-4876-9fdd-86d81dda6fc3",
+      "raw_speedup": 317.00669549851864
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "8214c81e-137d-4473-b22b-902649eb363d",
+      "candidate_valid": true,
+      "combined_score": 278.9233030158096,
+      "current_historical_best_candidate_id": "daa16076-e729-4876-9fdd-86d81dda6fc3",
+      "generation": 8,
+      "promoted_candidate_id": null,
+      "raw_speedup": 278.9233030158096
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "991fd738-48bb-4978-897d-8780c956b87f",
+      "candidate_valid": true,
+      "combined_score": 310.9595685113613,
+      "current_historical_best_candidate_id": "daa16076-e729-4876-9fdd-86d81dda6fc3",
+      "generation": 9,
+      "promoted_candidate_id": null,
+      "raw_speedup": 310.9595685113613
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "90848bae-585f-4f4a-9fbf-619c4200e655",
+      "candidate_valid": false,
+      "combined_score": 0.0,
+      "current_historical_best_candidate_id": "daa16076-e729-4876-9fdd-86d81dda6fc3",
+      "generation": 10,
+      "promoted_candidate_id": null,
+      "raw_speedup": 0.0
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "7fa32549-42e4-480c-92f2-8dafe438ff31",
+      "candidate_valid": false,
+      "combined_score": 0.0,
+      "current_historical_best_candidate_id": "daa16076-e729-4876-9fdd-86d81dda6fc3",
+      "generation": 11,
+      "promoted_candidate_id": null,
+      "raw_speedup": 0.0
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "302e3419-ac21-49c5-adee-819608955a1c",
+      "candidate_valid": true,
+      "combined_score": 294.85394576348773,
+      "current_historical_best_candidate_id": "daa16076-e729-4876-9fdd-86d81dda6fc3",
+      "generation": 12,
+      "promoted_candidate_id": null,
+      "raw_speedup": 294.85394576348773
+    }
+  ],
+  "valid_mapping_failure_ids": [],
+  "valid_program_count": 11
+}

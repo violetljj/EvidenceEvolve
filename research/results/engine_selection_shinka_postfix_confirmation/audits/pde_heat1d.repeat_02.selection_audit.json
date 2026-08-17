@@ -1,0 +1,158 @@
+{
+  "campaign": "engine_selection_shinka_postfix_confirmation",
+  "database": "E:\\EvidenceEvolve\\runs\\engine_selection_shinka_postfix_confirmation\\attempt_04\\pde_heat1d\\repeat_02\\arms\\shinka\\upstream\\programs.sqlite",
+  "fitness_order_violations": [],
+  "formal_best_program_id": "4bb0031b-e457-443a-8045-3dde838637fc",
+  "gates": {
+    "final_return_is_valid_fitness_maximum": true,
+    "imported_best_matches_native_best": true,
+    "invalid_combined_score_equals_zero": true,
+    "native_best_matches_simulated_formal_rule": true,
+    "no_better_candidate_generated_but_not_promoted": true,
+    "raw_speedup_order_never_inverts_fitness": true,
+    "selected_candidate_matches_imported_best": true,
+    "valid_combined_score_equals_raw_speedup": true
+  },
+  "imported_best_program_id": "4bb0031b-e457-443a-8045-3dde838637fc",
+  "invalid_mapping_failure_ids": [],
+  "program_count": 13,
+  "repeat": 2,
+  "schema_version": "1.0",
+  "simulated_best_program_id": "4bb0031b-e457-443a-8045-3dde838637fc",
+  "status": "PASS",
+  "task": "pde_heat1d",
+  "trajectory": [
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "4bb0031b-e457-443a-8045-3dde838637fc",
+      "candidate_valid": true,
+      "combined_score": 1.0491792414467402,
+      "current_historical_best_candidate_id": "4bb0031b-e457-443a-8045-3dde838637fc",
+      "generation": 0,
+      "promoted_candidate_id": "4bb0031b-e457-443a-8045-3dde838637fc",
+      "raw_speedup": 1.0491792414467402
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "2c7838e5-ab42-4cb3-998f-033af540e787",
+      "candidate_valid": false,
+      "combined_score": 0.0,
+      "current_historical_best_candidate_id": "4bb0031b-e457-443a-8045-3dde838637fc",
+      "generation": 1,
+      "promoted_candidate_id": null,
+      "raw_speedup": 0.0
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "43b2c0f6-06a2-4550-aeee-d282cbd14a60",
+      "candidate_valid": false,
+      "combined_score": 0.0,
+      "current_historical_best_candidate_id": "4bb0031b-e457-443a-8045-3dde838637fc",
+      "generation": 2,
+      "promoted_candidate_id": null,
+      "raw_speedup": 0.0
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "157220e2-0c58-46e8-a0ad-3a9ee85647a5",
+      "candidate_valid": false,
+      "combined_score": 0.0,
+      "current_historical_best_candidate_id": "4bb0031b-e457-443a-8045-3dde838637fc",
+      "generation": 3,
+      "promoted_candidate_id": null,
+      "raw_speedup": 0.0
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "f46dc2ca-d3ea-4885-962f-c38d95206794",
+      "candidate_valid": false,
+      "combined_score": 0.0,
+      "current_historical_best_candidate_id": "4bb0031b-e457-443a-8045-3dde838637fc",
+      "generation": 4,
+      "promoted_candidate_id": null,
+      "raw_speedup": 0.0
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "7b8cd4d0-5e81-4b5e-85d3-7b39905180a7",
+      "candidate_valid": false,
+      "combined_score": 0.0,
+      "current_historical_best_candidate_id": "4bb0031b-e457-443a-8045-3dde838637fc",
+      "generation": 5,
+      "promoted_candidate_id": null,
+      "raw_speedup": 0.0
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "ce1db056-a0aa-4e73-96f9-5a39184b803c",
+      "candidate_valid": false,
+      "combined_score": 0.0,
+      "current_historical_best_candidate_id": "4bb0031b-e457-443a-8045-3dde838637fc",
+      "generation": 6,
+      "promoted_candidate_id": null,
+      "raw_speedup": 0.0
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "2c7ee83f-59a2-45ff-b09b-73b252d814f2",
+      "candidate_valid": false,
+      "combined_score": 0.0,
+      "current_historical_best_candidate_id": "4bb0031b-e457-443a-8045-3dde838637fc",
+      "generation": 7,
+      "promoted_candidate_id": null,
+      "raw_speedup": 0.0
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "db63ff31-3d51-4432-bf0e-a0cc8b90fc49",
+      "candidate_valid": false,
+      "combined_score": 0.0,
+      "current_historical_best_candidate_id": "4bb0031b-e457-443a-8045-3dde838637fc",
+      "generation": 8,
+      "promoted_candidate_id": null,
+      "raw_speedup": 0.0
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "af2456dd-c2fc-489f-892a-2f7ba64e997d",
+      "candidate_valid": false,
+      "combined_score": 0.0,
+      "current_historical_best_candidate_id": "4bb0031b-e457-443a-8045-3dde838637fc",
+      "generation": 9,
+      "promoted_candidate_id": null,
+      "raw_speedup": 0.0
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "a0453112-832b-4e71-9671-fd803c8ffbdf",
+      "candidate_valid": false,
+      "combined_score": 0.0,
+      "current_historical_best_candidate_id": "4bb0031b-e457-443a-8045-3dde838637fc",
+      "generation": 10,
+      "promoted_candidate_id": null,
+      "raw_speedup": 0.0
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "1734e37f-a482-4966-9801-167032c52d91",
+      "candidate_valid": false,
+      "combined_score": 0.0,
+      "current_historical_best_candidate_id": "4bb0031b-e457-443a-8045-3dde838637fc",
+      "generation": 11,
+      "promoted_candidate_id": null,
+      "raw_speedup": 0.0
+    },
+    {
+      "better_candidate_generated_but_not_promoted": false,
+      "candidate_id": "8ab1861e-a136-4f0b-ba6c-8d55c2b256f4",
+      "candidate_valid": false,
+      "combined_score": 0.0,
+      "current_historical_best_candidate_id": "4bb0031b-e457-443a-8045-3dde838637fc",
+      "generation": 12,
+      "promoted_candidate_id": null,
+      "raw_speedup": 0.0
+    }
+  ],
+  "valid_mapping_failure_ids": [],
+  "valid_program_count": 1
+}
