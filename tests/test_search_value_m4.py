@@ -66,6 +66,31 @@ def test_budget_admission_caps_ee_cycles_before_formal_v2() -> None:
     assert conditions["checkpoint_policy"] == "carry_forward_last_valid_candidate"
 
 
+def test_m4_v2_uses_fresh_sources_and_admitted_budget_schedule() -> None:
+    v0 = m4._load_protocol()
+    v1 = json.loads(
+        (
+            m4.REPO_ROOT
+            / "research/parity/m4_search_value_tournament_v1.protocol.json"
+        ).read_text(encoding="utf-8")
+    )
+    v2 = json.loads(
+        (
+            m4.REPO_ROOT
+            / "research/parity/m4_search_value_tournament_v2.protocol.json"
+        ).read_text(encoding="utf-8")
+    )
+    consumed = {item["task"] for protocol in (v0, v1) for item in protocol["tasks"]}
+    fresh = {item["task"] for item in v2["tasks"]}
+
+    assert consumed.isdisjoint(fresh)
+    assert v2["common_conditions"]["observed_token_ceiling"] == 600_000
+    assert v2["common_conditions"]["evidence_evolve_cycles"] == 1
+    assert v2["budget_interpretation"]["same_ceiling_for_every_arm"] is True
+    for task in v2["tasks"]:
+        assert m4.sha256_file(m4._source_path(task["task"])) == task["source_sha256"]
+
+
 def test_m4_continue_gate_requires_two_task_wins_and_external_nonloss(
     tmp_path: Path,
 ) -> None:

@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "authority": "SACRIFICIAL_BUDGET_ADMISSION_ONLY",
+  "repository_commit": "989fb6a91ea483dd78279b2ebfc8d9dcc97f9e02",
+  "task": "max_flow_min_cost",
+  "task_consumed_before_admission": true,
+  "arm": "evidence_evolve",
+  "schedule": {
+    "research_cycles": 1,
+    "reported_checkpoints": 3,
+    "checkpoint_policy": "carry_forward_last_valid_candidate",
+    "observed_token_ceiling": 600000
+  },
+  "result": {
+    "process_exit_code": 0,
+    "trajectory_sha256": "0f68778bcc35ce01c5f1dfc036d862913ea1a091223758fce1a58b3d2997ffc8",
+    "observed_tokens": 220808,
+    "wall_seconds": 152.4721441,
+    "budget_violation": false,
+    "checkpoints": 3,
+    "selected_generations": [1, 1, 1],
+    "candidate_sha256": "3c29c431d30df41dfcaf043b981c14bada89daf08bc1b569eb3054e3672a2aeb"
+  },
+  "scientific_evidence": false,
+  "superiority_claim_permitted": false
+}
