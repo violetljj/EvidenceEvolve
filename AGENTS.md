@@ -38,6 +38,7 @@
 - Reusing a task changes its evidence role and claim ceiling. Results affected by repeated inspection or tuning cannot support held-out, fresh-generalization, confirmation, or superiority claims.
 - Reuse does not reopen a sealed one-shot campaign or authorize mutation of its protocols, receipts, confirmation assets, or consumed run namespace. Reuse such material only through an explicitly labeled `DEV`/`REGRESSION` protocol or a bound development fixture that preserves the original evidence record.
 - The scheduler should draw from the benchmark bank before requesting a new task. Open a fresh/blind cohort only when a predeclared development gate establishes that the expected information value justifies consuming it.
+- `benchmark_bank/manifest.v1.yaml` is the canonical Core-12 registry. Validate its content lock and local asset hashes before selection; `CATALOG_ONLY` entries are planning references, not executable cases, and any task outside the bank requires an explicit manifest amendment or a predeclared fresh-gate exception.
 
 ## Verification
 

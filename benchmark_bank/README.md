@@ -1,0 +1,91 @@
+# EvidenceEvolve Benchmark Bank v1
+
+This directory is the canonical long-lived task inventory for EvidenceEvolve.
+The default is to reuse this bank. A new task or blind cohort requires the fresh
+gate in `manifest.v1.yaml`; it is not a routine per-iteration dependency.
+
+## Current authority
+
+`manifest.v1.yaml` freezes the Core-12 catalog, evidence roles, difficulty tiers,
+source references, selection templates, and claim ceilings. It does **not** claim
+that all official instances have been downloaded or that the bank is execution
+ready. The manifest status is deliberately
+`CATALOG_FROZEN_ASSETS_PARTIALLY_MATERIALIZED`.
+
+Only three existing repository adapters/evaluators currently have local SHA-256
+bindings. Every official archive or verifier that has not been downloaded and
+hashed is `CATALOG_ONLY`. Catalog entries cannot be scheduled as executable cases.
+No v1 asset is blind: historical PACE public/private data and public MiniZinc or
+DIMACS data remain public benchmark evidence.
+
+Validate the catalog and its local bindings with:
+
+```powershell
+.venv\Scripts\python.exe -m evidence_evolve.benchmark_bank --repo . validate benchmark_bank/manifest.v1.yaml
+```
+
+Create a deterministic family-level development plan with:
+
+```powershell
+.venv\Scripts\python.exe -m evidence_evolve.benchmark_bank --repo . select benchmark_bank/manifest.v1.yaml --template routine_dev_3x3 --seed 170817
+```
+
+Selections are planning-only until every selected family has a frozen instance
+manifest. They carry `NO_SCIENTIFIC_CLAIM` authority.
+
+## Core-12
+
+| Tier | Families | Maximum authority in this public bank |
+| --- | --- | --- |
+| L0 | Assignment, Knapsack | Screening only |
+| L1 | Set Cover, Graph Coloring, Steiner Tree, CVRP, Flexible Job Shop | Screening only |
+| L2 | Cluster Editing, Directed Feedback Vertex Set | Development comparison only |
+| L3 | Twinwidth | Research-value evaluation eligible |
+| L4 | Dominating Set | Research-value evaluation eligible |
+| L5 | Maximum Agreement Forest | Research-value evaluation eligible |
+
+“Eligible” is a ceiling, not a result. L3–L5 results still require valid paired
+execution, frozen evaluators and budgets, complete receipts, and an appropriate
+protocol. Public bank results never establish blind generalization or superiority.
+
+## Selection policy
+
+- `routine_dev_3x3`: three reusable/regression families and three instances per
+  family. This is the default mechanism-development shape.
+- `signal_validation_8x5`: eight public benchmark families and five instances per
+  family, opened only after a development signal.
+- `milestone_core12`: five instances from every Core-12 family.
+- The 70/20/10 reuse/rotation/fresh split is a portfolio heuristic, not a quota.
+  Daily development can and usually should spend zero fresh tasks.
+
+Use the same task, initial state, model/provider version, evaluator, budget and
+resource quota for paired control/treatment comparisons. Once validation feedback
+changes the system, downgrade that evidence to consumed validation or DEV.
+
+## Materializing a family
+
+Materialization is a separate evidence-producing change:
+
+1. Review the source's redistribution and use terms. `REVIEW_REQUIRED_BEFORE_DOWNLOAD`
+   blocks silent ingestion.
+2. Pin an immutable upstream revision or archive URL; download into the declared
+   repository-owned asset location.
+3. Compute SHA-256 for the archive, verifier, scorer, and every instance inventory
+   manifest. Never infer or copy an unverified hash.
+4. Record stable instance IDs, difficulty bands, role, provenance, known optimum or
+   bound status, and verifier command in a family-specific instance manifest.
+5. Change assets to `MATERIALIZED_LOCAL`, add the instance manifest path, update the
+   bank content lock, and rerun validation and focused tests.
+
+Formal one-shot campaign namespaces remain closed. Reusing their task structure
+requires a separately labeled DEV/REGRESSION fixture and never mutates old receipts.
+
+## Verified official references
+
+- [MiniZinc Challenge problem catalog](https://www.minizinc.org/challenge/globals/)
+- [PACE 2018 Steiner Tree](https://pacechallenge.org/2018/steiner-tree/)
+- [PACE 2021 Cluster Editing](https://pacechallenge.org/2021/)
+- [PACE 2022 Directed Feedback Vertex Set](https://pacechallenge.org/2022/tracks/)
+- [PACE 2023 Twinwidth](https://pacechallenge.org/2023/)
+- [PACE 2025 Dominating Set](https://pacechallenge.org/2025/ds/)
+- [PACE 2026 Maximum Agreement Forest and STRIDE](https://pacechallenge.org/2026/)

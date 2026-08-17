@@ -1,0 +1,389 @@
+schema_version: "1.0"
+bank_id: EVIDENCE_EVOLVE_BENCHMARK_BANK_V1
+status: CATALOG_FROZEN_ASSETS_PARTIALLY_MATERIALIZED
+verified_on: "2026-08-17"
+core_family_ids:
+  - assignment
+  - knapsack
+  - set_cover
+  - graph_coloring
+  - steiner_tree
+  - cvrp
+  - flexible_job_shop
+  - cluster_editing
+  - directed_feedback_vertex_set
+  - twinwidth
+  - dominating_set
+  - maximum_agreement_forest
+families:
+  - task_id: assignment
+    display_name: Minimum Weight Assignment
+    difficulty: L0
+    problem_domain: bipartite optimization
+    optimization_modes: [EXACT_RUNTIME]
+    algorithmic_routes: [HUNGARIAN, LINEAR_ASSIGNMENT, PREPROCESSING]
+    default_role: REGRESSION
+    allowed_roles: [DEV_REUSE, REGRESSION, BENCHMARK]
+    claim_ceiling: SCREENING_ONLY
+    assets:
+      - asset_id: assignment_algotune_adapter
+        kind: LOCAL_ADAPTER
+        state: MATERIALIZED_LOCAL
+        authority: EvidenceEvolve pinned AlgoTune task snapshot
+        local_path: tasks/algotune_m4_upstream/AlgoTuneTasks/min_weight_assignment/min_weight_assignment.py
+        sha256: db07366a56a5ac4974b3ee5a2705bd7500675c0cd2a96b6774183f2f95c72ead
+        license_status: REPOSITORY_APACHE_2_0
+        public_visibility: true
+        notes: Existing consumed task implementation; no frozen Bank v1 instance inventory yet.
+    instance_manifest_paths: []
+    known_failure_modes: [WRAPPER_OVERHEAD_DOMINATES, NUMERICAL_OR_SHAPE_ERROR]
+    notes: Permanent fast regression only; success cannot establish research value.
+
+  - task_id: knapsack
+    display_name: 0/1 Knapsack
+    difficulty: L0
+    problem_domain: combinatorial optimization
+    optimization_modes: [EXACT_RUNTIME, MEMORY]
+    algorithmic_routes: [DYNAMIC_PROGRAMMING, BITSET, BRANCH_AND_BOUND]
+    default_role: BENCHMARK
+    allowed_roles: [DEV_REUSE, REGRESSION, BENCHMARK]
+    claim_ceiling: SCREENING_ONLY
+    assets:
+      - asset_id: minizinc_multi_knapsack_catalog
+        kind: INSTANCE_SOURCE
+        state: CATALOG_ONLY
+        authority: MiniZinc Challenge problem catalog
+        source_url: https://www.minizinc.org/challenge/globals/
+        source_revision: verified-2026-08-17
+        license_status: REVIEW_REQUIRED_BEFORE_DOWNLOAD
+        public_visibility: true
+        notes: Catalog confirms multi-knapsack usage; archive and license must be pinned before materialization.
+    instance_manifest_paths: []
+    known_failure_modes: [PSEUDOPOLYNOMIAL_SCALING, VALUE_OVERFLOW]
+    notes: L0 screening family; not yet executable from the bank.
+
+  - task_id: set_cover
+    display_name: Set Cover
+    difficulty: L1
+    problem_domain: set optimization
+    optimization_modes: [EXACT_RUNTIME, ANYTIME]
+    algorithmic_routes: [GREEDY, REDUCTION, BRANCH_AND_BOUND, SAT_ILP]
+    default_role: DEV_REUSE
+    allowed_roles: [DEV_REUSE, REGRESSION, BENCHMARK]
+    claim_ceiling: SCREENING_ONLY
+    assets:
+      - asset_id: set_cover_evaluator
+        kind: SCORER
+        state: MATERIALIZED_LOCAL
+        authority: EvidenceEvolve frozen local evaluator
+        local_path: tasks/algotune_set_cover/evaluator.py
+        sha256: 4b9952172eed97ab3d81249723b1d9dce54b01ad4f77a42cdc1da6a05e511914
+        license_status: REPOSITORY_APACHE_2_0
+        public_visibility: true
+        notes: Existing consumed development evaluator; formal historical run namespaces remain closed.
+    instance_manifest_paths: []
+    known_failure_modes: [INVALID_COVER, DENSE_INSTANCE_TIMEOUT, OVERFIT_TO_SEED_SCALE]
+    notes: High-frequency paired development family; no blind authority.
+
+  - task_id: graph_coloring
+    display_name: Graph Coloring
+    difficulty: L1
+    problem_domain: graph optimization
+    optimization_modes: [EXACT_RUNTIME, HEURISTIC, ANYTIME]
+    algorithmic_routes: [DSATUR, BRANCH_AND_BOUND, SAT_ILP, LOCAL_SEARCH]
+    default_role: DEV_REUSE
+    allowed_roles: [DEV_REUSE, REGRESSION, BENCHMARK]
+    claim_ceiling: SCREENING_ONLY
+    assets:
+      - asset_id: graph_coloring_evaluator
+        kind: SCORER
+        state: MATERIALIZED_LOCAL
+        authority: EvidenceEvolve frozen local evaluator
+        local_path: tasks/graph_coloring/evaluator.py
+        sha256: 8d42c060385da7fb4cb493649a7f0b1418d0d4a863e6411a28578198cec61619
+        license_status: REPOSITORY_APACHE_2_0
+        public_visibility: true
+        notes: Existing public development evaluator; locked graph-coloring protocols retain separate authority.
+      - asset_id: dimacs_coloring_catalog
+        kind: INSTANCE_SOURCE
+        state: CATALOG_ONLY
+        authority: Carnegie Mellon University DIMACS coloring archive
+        source_url: https://mat.tepper.cmu.edu/COLOR/instances.html
+        source_revision: verified-2026-08-17
+        license_status: REVIEW_REQUIRED_BEFORE_DOWNLOAD
+        public_visibility: true
+        notes: Standard instance catalog; individual files and licenses require a materialization receipt.
+    instance_manifest_paths: []
+    known_failure_modes: [EDGE_CONFLICT, NONDETERMINISTIC_COLOR_COUNT, INSTANCE_MEMORIZATION]
+    notes: High-frequency paired development family; L1 results are screening evidence only.
+
+  - task_id: steiner_tree
+    display_name: Steiner Tree
+    difficulty: L1
+    problem_domain: graph optimization
+    optimization_modes: [EXACT_RUNTIME, HEURISTIC, ANYTIME]
+    algorithmic_routes: [DYNAMIC_PROGRAMMING, REDUCTION, BRANCH_AND_BOUND, LOCAL_SEARCH]
+    default_role: BENCHMARK
+    allowed_roles: [DEV_REUSE, REGRESSION, BENCHMARK]
+    claim_ceiling: SCREENING_ONLY
+    assets:
+      - asset_id: pace2018_steiner_catalog
+        kind: INSTANCE_SOURCE
+        state: CATALOG_ONLY
+        authority: PACE Challenge 2018
+        source_url: https://pacechallenge.org/2018/steiner-tree/
+        source_revision: verified-2026-08-17
+        license_status: REVIEW_REQUIRED_BEFORE_DOWNLOAD
+        public_visibility: true
+        notes: Official page links historical public and hidden instances now exposed on GitHub.
+      - asset_id: pace2018_steiner_verifier
+        kind: VERIFIER
+        state: CATALOG_ONLY
+        authority: PACE Challenge 2018
+        source_url: https://pacechallenge.org/2018/steiner-tree/
+        source_revision: verified-2026-08-17
+        license_status: REVIEW_REQUIRED_BEFORE_DOWNLOAD
+        public_visibility: true
+        notes: Official validity checker reference; exact commit and hash remain to be pinned.
+    instance_manifest_paths: []
+    known_failure_modes: [DISCONNECTED_TERMINALS, INVALID_TREE_WEIGHT, SUBOPTIMAL_EXACT_OUTPUT]
+    notes: Public historical competition data cannot serve as locked evidence.
+
+  - task_id: cvrp
+    display_name: Capacitated Vehicle Routing
+    difficulty: L1
+    problem_domain: routing optimization
+    optimization_modes: [EXACT_RUNTIME, HEURISTIC, ANYTIME]
+    algorithmic_routes: [BRANCH_AND_CUT, CONSTRAINT_PROGRAMMING, LOCAL_SEARCH, HYBRID]
+    default_role: BENCHMARK
+    allowed_roles: [DEV_REUSE, REGRESSION, BENCHMARK]
+    claim_ceiling: SCREENING_ONLY
+    assets:
+      - asset_id: minizinc_cvrp_catalog
+        kind: INSTANCE_SOURCE
+        state: CATALOG_ONLY
+        authority: MiniZinc Challenge problem catalog
+        source_url: https://www.minizinc.org/challenge/globals/
+        source_revision: verified-2026-08-17
+        license_status: REVIEW_REQUIRED_BEFORE_DOWNLOAD
+        public_visibility: true
+        notes: Official catalog records CVRP; model, data and MiniZinc version must be pinned together.
+    instance_manifest_paths: []
+    known_failure_modes: [CAPACITY_VIOLATION, ROUTE_OMISSION, TIME_LIMIT_NO_SOLUTION]
+    notes: Routing diversity family; not yet executable from the bank.
+
+  - task_id: flexible_job_shop
+    display_name: Flexible Job Shop Scheduling
+    difficulty: L1
+    problem_domain: scheduling optimization
+    optimization_modes: [EXACT_RUNTIME, HEURISTIC, ANYTIME]
+    algorithmic_routes: [CONSTRAINT_PROGRAMMING, DISJUNCTIVE_SEARCH, MILP, LOCAL_SEARCH]
+    default_role: BENCHMARK
+    allowed_roles: [DEV_REUSE, REGRESSION, BENCHMARK]
+    claim_ceiling: SCREENING_ONLY
+    assets:
+      - asset_id: minizinc_fjsp_catalog
+        kind: INSTANCE_SOURCE
+        state: CATALOG_ONLY
+        authority: MiniZinc Challenge problem catalog
+        source_url: https://www.minizinc.org/challenge/globals/
+        source_revision: verified-2026-08-17
+        license_status: REVIEW_REQUIRED_BEFORE_DOWNLOAD
+        public_visibility: true
+        notes: Official catalog records FJSP; model, instances and runtime stack remain to be pinned.
+    instance_manifest_paths: []
+    known_failure_modes: [RESOURCE_OVERLAP, INFEASIBLE_SCHEDULE, MAKESPAN_SCORING_ERROR]
+    notes: Scheduling diversity family; not yet executable from the bank.
+
+  - task_id: cluster_editing
+    display_name: Cluster Editing
+    difficulty: L2
+    problem_domain: graph modification
+    optimization_modes: [EXACT_RUNTIME, HEURISTIC, KERNELIZATION]
+    algorithmic_routes: [REDUCTION, KERNELIZATION, BRANCH_AND_BOUND, LOCAL_SEARCH]
+    default_role: BENCHMARK
+    allowed_roles: [DEV_REUSE, REGRESSION, BENCHMARK]
+    claim_ceiling: DEVELOPMENT_COMPARISON_ONLY
+    assets:
+      - asset_id: pace2021_cluster_editing_catalog
+        kind: INSTANCE_SOURCE
+        state: CATALOG_ONLY
+        authority: PACE Challenge 2021
+        source_url: https://pacechallenge.org/2021/
+        source_revision: verified-2026-08-17
+        license_status: REVIEW_REQUIRED_BEFORE_DOWNLOAD
+        public_visibility: true
+        notes: Official Exact, Heuristic and Kernelization tracks; instance archives require pinning.
+    instance_manifest_paths: []
+    known_failure_modes: [INVALID_CLUSTER_GRAPH, NON_EQUIVALENT_KERNEL, OBJECTIVE_MISCOUNT]
+    notes: L2 mechanism evidence only; public outcomes do not establish generalization.
+
+  - task_id: directed_feedback_vertex_set
+    display_name: Directed Feedback Vertex Set
+    difficulty: L2
+    problem_domain: directed graph optimization
+    optimization_modes: [EXACT_RUNTIME, HEURISTIC, ANYTIME]
+    algorithmic_routes: [REDUCTION, BRANCH_AND_BOUND, FPT, SAT_ILP]
+    default_role: BENCHMARK
+    allowed_roles: [DEV_REUSE, REGRESSION, BENCHMARK]
+    claim_ceiling: DEVELOPMENT_COMPARISON_ONLY
+    assets:
+      - asset_id: pace2022_dfvs_catalog
+        kind: INSTANCE_SOURCE
+        state: CATALOG_ONLY
+        authority: PACE Challenge 2022
+        source_url: https://pacechallenge.org/2022/tracks/
+        source_revision: verified-2026-08-17
+        license_status: REVIEW_REQUIRED_BEFORE_DOWNLOAD
+        public_visibility: true
+        notes: Official page exposes public and historical private archives for exact and heuristic tracks.
+      - asset_id: pace2022_dfvs_verifier
+        kind: VERIFIER
+        state: CATALOG_ONLY
+        authority: PACE Challenge 2022
+        source_url: https://pacechallenge.org/2022/tracks/
+        source_revision: verified-2026-08-17
+        license_status: REVIEW_REQUIRED_BEFORE_DOWNLOAD
+        public_visibility: true
+        notes: Official verifier checks feasibility but not exact optimality; pin before use.
+    instance_manifest_paths: []
+    known_failure_modes: [REMAINDER_STILL_CYCLIC, DUPLICATE_VERTEX, SUBOPTIMAL_EXACT_OUTPUT]
+    notes: L2 structural-development family; all referenced data is public.
+
+  - task_id: twinwidth
+    display_name: Twinwidth
+    difficulty: L3
+    problem_domain: graph contraction
+    optimization_modes: [EXACT_RUNTIME, HEURISTIC, ANYTIME]
+    algorithmic_routes: [CONTRACTION_SEARCH, BRANCH_AND_BOUND, LOCAL_SEARCH, SAT_ILP]
+    default_role: BENCHMARK
+    allowed_roles: [DEV_REUSE, REGRESSION, BENCHMARK]
+    claim_ceiling: RESEARCH_VALUE_EVALUATION_ELIGIBLE
+    assets:
+      - asset_id: pace2023_twinwidth_catalog
+        kind: INSTANCE_SOURCE
+        state: CATALOG_ONLY
+        authority: PACE Challenge 2023
+        source_url: https://pacechallenge.org/2023/
+        source_revision: verified-2026-08-17
+        license_status: REVIEW_REQUIRED_BEFORE_DOWNLOAD
+        public_visibility: true
+        notes: Official competition source; instance archive and exact snapshot remain to be pinned.
+      - asset_id: pace2023_twinwidth_verifier
+        kind: VERIFIER
+        state: CATALOG_ONLY
+        authority: PACE Challenge 2023
+        source_url: https://pacechallenge.org/2023/io/
+        source_revision: verifier-page-2023-04-01
+        license_status: REVIEW_REQUIRED_BEFORE_DOWNLOAD
+        public_visibility: true
+        notes: Official Python verifier reports contraction-sequence width; commit and hash remain unbound.
+    instance_manifest_paths: []
+    known_failure_modes: [INVALID_CONTRACTION_SEQUENCE, WIDTH_MISCOMPUTATION, MEMORY_BLOWUP]
+    notes: First Core-12 tier eligible for research-value evaluation, never by itself a superiority verdict.
+
+  - task_id: dominating_set
+    display_name: Dominating Set
+    difficulty: L4
+    problem_domain: graph optimization
+    optimization_modes: [EXACT_RUNTIME, HEURISTIC, ANYTIME]
+    algorithmic_routes: [REDUCTION, BRANCH_AND_BOUND, FPT, SAT_ILP, LOCAL_SEARCH]
+    default_role: BENCHMARK
+    allowed_roles: [DEV_REUSE, REGRESSION, BENCHMARK]
+    claim_ceiling: RESEARCH_VALUE_EVALUATION_ELIGIBLE
+    assets:
+      - asset_id: pace2025_dominating_set_catalog
+        kind: INSTANCE_SOURCE
+        state: CATALOG_ONLY
+        authority: PACE Challenge 2025
+        source_url: https://pacechallenge.org/2025/ds/
+        source_revision: verified-2026-08-17
+        license_status: REVIEW_REQUIRED_BEFORE_DOWNLOAD
+        public_visibility: true
+        notes: Official page links 100 public instances; historical private evaluation is not blind once exposed.
+      - asset_id: pace2025_dominating_set_verifier
+        kind: VERIFIER
+        state: CATALOG_ONLY
+        authority: PACE Challenge 2025
+        source_url: https://pacechallenge.org/2025/ds/
+        source_revision: verified-2026-08-17
+        license_status: REVIEW_REQUIRED_BEFORE_DOWNLOAD
+        public_visibility: true
+        notes: Official verifier and tiny test set are linked from the task page; exact commit is unbound.
+    instance_manifest_paths: []
+    known_failure_modes: [UNDOMINATED_VERTEX, SUBOPTIMAL_EXACT_OUTPUT, TIME_LIMIT_NO_SOLUTION]
+    notes: Frontier public benchmark; PACE 2025 winner solved 81 exact instances.
+
+  - task_id: maximum_agreement_forest
+    display_name: Maximum Agreement Forest
+    difficulty: L5
+    problem_domain: phylogenetic optimization
+    optimization_modes: [EXACT_RUNTIME, HEURISTIC, LOWER_BOUND, ANYTIME]
+    algorithmic_routes: [REDUCTION, BRANCH_AND_BOUND, FPT, HYBRID]
+    default_role: BENCHMARK
+    allowed_roles: [DEV_REUSE, REGRESSION, BENCHMARK]
+    claim_ceiling: RESEARCH_VALUE_EVALUATION_ELIGIBLE
+    assets:
+      - asset_id: pace2026_maf_catalog
+        kind: INSTANCE_SOURCE
+        state: CATALOG_ONLY
+        authority: PACE Challenge 2026
+        source_url: https://pacechallenge.org/2026/
+        source_revision: verified-2026-08-17
+        license_status: REVIEW_REQUIRED_BEFORE_DOWNLOAD
+        public_visibility: true
+        notes: Official page exposes Exact, Heuristic and Lower-bound archives; all links are treated as public.
+      - asset_id: pace2026_stride
+        kind: VERIFIER
+        state: CATALOG_ONLY
+        authority: PACE Challenge 2026 STRIDE
+        source_url: https://github.com/manpen/pace26stride
+        source_revision: unpinned
+        license_status: REVIEW_REQUIRED_BEFORE_DOWNLOAD
+        public_visibility: true
+        notes: Officially recommended runner, resource monitor, verifier and machine-readable summary tool.
+    instance_manifest_paths: []
+    known_failure_modes: [INFEASIBLE_FOREST, LOWER_BOUND_CONTRACT_VIOLATION, RESOURCE_LIMIT_BREACH]
+    notes: Highest Core-12 tier; 2026 results page was still labeled preliminary when verified.
+
+selection_templates:
+  - template_id: routine_dev_3x3
+    purpose: ROUTINE_DEVELOPMENT
+    family_count: 3
+    instances_per_family: 3
+    allowed_roles: [DEV_REUSE, REGRESSION]
+    minimum_difficulty: L0
+    require_all_core_families: false
+    claim_ceiling: SCREENING_ONLY
+  - template_id: signal_validation_8x5
+    purpose: SIGNAL_VALIDATION
+    family_count: 8
+    instances_per_family: 5
+    allowed_roles: [BENCHMARK]
+    minimum_difficulty: L1
+    require_all_core_families: false
+    claim_ceiling: RESEARCH_VALUE_EVALUATION_ELIGIBLE
+  - template_id: milestone_core12
+    purpose: MILESTONE
+    instances_per_family: 5
+    allowed_roles: [DEV_REUSE, REGRESSION, BENCHMARK]
+    minimum_difficulty: L0
+    require_all_core_families: true
+    claim_ceiling: RESEARCH_VALUE_EVALUATION_ELIGIBLE
+portfolio_policy:
+  reused_percent: 70
+  rotating_percent: 20
+  fresh_blind_percent: 10
+  mandatory_per_round: false
+  fresh_may_be_zero_during_development: true
+fresh_gate:
+  default_action: REUSE_BANK
+  require_predeclared_signal_gate: true
+  require_candidate_hash_lock: true
+  require_budget_and_evaluator_lock: true
+  require_new_unexposed_instances: true
+  downgrade_after_feedback: CONSUMED_VALIDATION_OR_DEV
+locked_registry: []
+lock:
+  algorithm: sha256
+  content_sha256: 95bc1f050c7dacbc0395cd440bd87c6ffb7644ad67d1df1def6427acfbd2ec51
