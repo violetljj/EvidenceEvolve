@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "campaign": "m4_search_value_tournament_v6",
+  "authority": "FROZEN_BEFORE_FORMAL_SEARCH",
+  "replacement_for": [
+    {"campaign": "m4_search_value_tournament_v0", "outcome": "INVALID_MECHANICS_OR_ADAPTER"},
+    {"campaign": "m4_search_value_tournament_v1", "outcome": "INVALID_MECHANICS_OR_ADAPTER"},
+    {"campaign": "m4_search_value_tournament_v2", "outcome": "INVALID_MECHANICS_OR_ADAPTER"},
+    {"campaign": "m4_search_value_tournament_v3", "outcome": "INVALID_MECHANICS_OR_ADAPTER"},
+    {"campaign": "m4_search_value_tournament_v4", "outcome": "INVALID_MECHANICS_OR_ADAPTER"},
+    {"campaign": "m4_search_value_tournament_v5", "outcome": "INVALID_MECHANICS_OR_ADAPTER"}
+  ],
+  "admission_receipts": [
+    "research/results/m4_four_arm_admission_331a22e/receipt.json",
+    "research/results/m4_budget_admission_v2/receipt.json",
+    "runs/remote_results/m4-v5-context-tests-68d865b/receipt.json"
+  ],
+  "ee_policy_checkpoint": "fd53fbadc47a18e5402963b23e0f3bd4ca313aed",
+  "execution_layer_minimum_commit": "68d865b778e4c26150d3f91856d1bacc97106caf",
+  "upstream": {"repository": "https://github.com/oripress/AlgoTune.git", "commit": "dff9914c10800c7a031c9e8c3d4d1c8cd1b38906"},
+  "tasks": [
+    {"task": "min_weight_assignment", "class": "MinWeightAssignment", "category": "combinatorial_optimization", "problem_size": 200, "source_sha256": "db07366a56a5ac4974b3ee5a2705bd7500675c0cd2a96b6774183f2f95c72ead"},
+    {"task": "eigenvalues_real", "class": "EigenvaluesReal", "category": "linear_algebra", "problem_size": 180, "source_sha256": "eab8f646d179beaa0977a87337174fe3876d438f2bb2b9b598d1eddb06bd01c8"},
+    {"task": "rotate_2d", "class": "Rotate2D", "category": "image_processing", "problem_size": 512, "source_sha256": "1b76828cd8c4769886dd7722d53cbde858c43a880bcf1b80c30801f62391aa31"}
+  ],
+  "arms": ["vanilla", "shinka", "ada", "evidence_evolve"],
+  "repeats": [1, 2, 3],
+  "common_conditions": {
+    "model": "gpt-5.6-terra", "reasoning_effort": "high", "proposal_calls": 3,
+    "evidence_evolve_cycles": 1, "checkpoint_policy": "carry_forward_last_valid_candidate",
+    "observed_token_ceiling": 600000, "wall_seconds": 2700,
+    "evaluator_workers_per_active_run": 4, "development_seeds_per_repeat": 20,
+    "development_repeats": 2, "heldout_seeds_per_repeat": 30, "heldout_repeats": 3,
+    "all_checkpoint_hashes_locked_before_any_heldout_seed": true,
+    "candidate_retries_or_replacement_samples": false
+  },
+  "budget_interpretation": {"ceilings_are_maxima_not_targets": true, "same_ceiling_for_every_arm": true, "over_budget_candidates_are_ineligible": true, "unused_budget_is_not_backfilled": true},
+  "ranking": ["valid_final_heldout_improvement", "heldout_anytime_auc", "success", "wall_seconds", "observed_tokens"],
+  "decision_gate": {
+    "continue": "EE beats Vanilla in at least two task families by at least 2 of 3 paired repeats and is non-losing in at least 5 of 9 blocks against each of Shinka and Ada.",
+    "simplify": "The continue and stop predicates are both false.",
+    "stop": "Vanilla, Shinka, or Ada beats EE in at least 6 of 9 paired blocks across at least two task families."
+  },
+  "claim_scope": "THREE_FRESH_TASK_EXISTENTIAL_DECISION_GATE_ONLY",
+  "superiority_claim_permitted": false,
+  "mechanism_claim_permitted": false
+}
