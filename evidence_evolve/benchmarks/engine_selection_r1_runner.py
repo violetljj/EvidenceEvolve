@@ -33,6 +33,7 @@ from evidence_evolve.benchmarks.algotune_official import (
     evaluate_official_candidate_cold,
 )
 from evidence_evolve.hashing import sha256_file
+from evidence_evolve.persistent_remote import persistent_evaluate
 from evidence_evolve.remote_cpu import (
     RemoteEntrypoint,
     create_job_request,
@@ -124,6 +125,19 @@ def _remote_evaluate(
         ["git", "rev-parse", "HEAD"], cwd=REPO_ROOT, check=True,
         capture_output=True, text=True,
     ).stdout.strip()
+    if os.environ.get("EE_REMOTE_PERSISTENT_RPC") == "1":
+        return persistent_evaluate(
+            candidate=candidate,
+            task=spec.name,
+            seeds=seeds,
+            repeats=repeats,
+            workers=workers,
+            cold=cold,
+            context=context,
+            runner_module=runner_module,
+            repository_commit=repository_commit,
+            protocol_sha256=sha256_file(PROTOCOL),
+        )
     key = hashlib.sha256(json.dumps({
         "repository_commit": repository_commit,
         "protocol": sha256_file(PROTOCOL),

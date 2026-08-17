@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "campaign": "engine_selection_r3_development_screen",
+  "authority": "MECHANICS_REPAIR_AFTER_INVALID_TRANSPORT_ATTEMPTS_BEFORE_SUCCESSOR_ATTEMPT",
+  "invalid_attempts": ["attempt_03", "attempt_04"],
+  "failure": "PER_EVALUATION_SSH_SESSION_CHURN_CAUSED_REPEATED_AUTODL_GATEWAY_TIMEOUTS",
+  "repair": "ONE_PERSISTENT_SSH_STDIO_RPC_CHANNEL_PER_ARM",
+  "scientific_semantics_changed": false,
+  "model_changed": false,
+  "tasks_or_seeds_changed": false,
+  "token_stop_enabled": false,
+  "heldout_existed_at_repair": false,
+  "claim_authority": "DEVELOPMENT_MECHANICS_ONLY"
+}

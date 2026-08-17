@@ -72,6 +72,11 @@ def _install_context() -> None:
     base.load_protocol = load_protocol
 
 
+def run_remote_evaluator(**kwargs: Any) -> dict[str, Any]:
+    _install_context()
+    return base.run_remote_evaluator(**kwargs)
+
+
 def run_arm(run_root: Path, task: str, repeat: int, arm: str) -> dict[str, Any]:
     if repeat != 1:
         raise ValueError("Engine Selection R3 development screen only permits repeat 1")

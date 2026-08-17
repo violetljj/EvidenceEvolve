@@ -265,6 +265,7 @@ def _configure(run_dir: Path, task_name: str, repeat: int) -> OfficialTaskSpec:
         "EE_ALGOTUNE_WORKERS": str(conditions["evaluator_workers_per_active_run"]),
         "EE_HETERO_GENERATIONS": str(conditions["max_native_search_iterations"]),
         "EE_M4_REMOTE_EVALUATOR": "1",
+        "EE_REMOTE_PERSISTENT_RPC": "1",
         "EE_ALGOTUNE_REMOTE_MODULE": "engine_selection_r2",
         "EE_SEARCH_TOKEN_LAUNCH_CEILING": str(NO_TOKEN_STOP),
         "EE_EVOX_PROTOCOL_NATIVE": "1",
