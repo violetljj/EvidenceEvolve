@@ -148,9 +148,17 @@ def _remote_evaluate(
     cold: bool,
 ) -> dict[str, Any]:
     context = os.environ.get("EE_M4_EVAL_CONTEXT", "unscoped")
+    repository_commit = subprocess.run(
+        ("git", "rev-parse", "HEAD"),
+        cwd=REPO_ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
     key = hashlib.sha256(
         json.dumps(
             {
+                "repository_commit": repository_commit,
                 "task": spec.name,
                 "candidate": sha256_file(candidate),
                 "seeds": seeds,
