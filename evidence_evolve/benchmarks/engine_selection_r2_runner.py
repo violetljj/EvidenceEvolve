@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import contextlib
 import json
 import os
 import secrets
@@ -98,6 +99,55 @@ def _validate_provider() -> Path:
     return executable
 
 
+@contextlib.contextmanager
+def _remote_dispatch_slot():
+    slot_count = int(load_protocol()["common_conditions"]["remote_evaluation_slots"])
+    slot_root = DEFAULT_RUN_ROOT / ".remote_dispatch_slots"
+    slot_root.mkdir(parents=True, exist_ok=True)
+    handles = []
+    deadline = time.monotonic() + 3600.0
+    try:
+        while time.monotonic() < deadline:
+            for index in range(slot_count):
+                handle = (slot_root / f"slot_{index}.lock").open("a+b")
+                handle.seek(0, os.SEEK_END)
+                if handle.tell() == 0:
+                    handle.write(b"0")
+                    handle.flush()
+                handle.seek(0)
+                try:
+                    if os.name == "nt":
+                        import msvcrt
+
+                        msvcrt.locking(handle.fileno(), msvcrt.LK_NBLCK, 1)
+                    else:
+                        import fcntl
+
+                        fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+                except OSError:
+                    handle.close()
+                    continue
+                handles.append(handle)
+                yield index
+                return
+            time.sleep(0.25)
+        raise TimeoutError("timed out waiting for an AutoDL dispatch slot")
+    finally:
+        for handle in handles:
+            try:
+                handle.seek(0)
+                if os.name == "nt":
+                    import msvcrt
+
+                    msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
+                else:
+                    import fcntl
+
+                    fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
+            finally:
+                handle.close()
+
+
 def run_remote_evaluator(
     *, task_name: str, candidate: Path, seeds_path: Path, repeats: int,
     workers: int, cold: bool, output: Path,
@@ -125,13 +175,14 @@ def remote_development_evaluate(
     conditions = _conditions(spec.name)
     start = int(os.environ.get("EE_ALGOTUNE_DEV_START", "0"))
     count = int(os.environ.get("EE_ALGOTUNE_DEV_COUNT", "20"))
-    raw = shared._remote_evaluate(
-        Path(candidate), spec, list(range(start, start + count)),
-        repeats=int(os.environ.get("EE_ALGOTUNE_DEV_REPEATS", "2")),
-        workers=workers or int(conditions["evaluator_workers_per_active_run"]),
-        cold=False,
-        context=os.environ.get("EE_ENGINE_EVAL_CONTEXT", "unscoped-development"),
-    )
+    with _remote_dispatch_slot():
+        raw = shared._remote_evaluate(
+            Path(candidate), spec, list(range(start, start + count)),
+            repeats=int(os.environ.get("EE_ALGOTUNE_DEV_REPEATS", "2")),
+            workers=workers or int(conditions["evaluator_workers_per_active_run"]),
+            cold=False,
+            context=os.environ.get("EE_ENGINE_EVAL_CONTEXT", "unscoped-development"),
+        )
     return {
         "mechanics_status": "PASS",
         "metrics": {
@@ -452,15 +503,16 @@ def _evaluate_block(run_root: Path, task: str, repeat: int, arm: str, stage: str
     _install_shared_context()
     shared._task_payload = _task_payload
     shared._source_path = _source_path
-    heldout = shared._remote_evaluate(
-        candidate,
-        _task_spec(_task_payload(task)),
-        _heldout_seeds(run_root, task, repeat, stage),
-        repeats=int(load_protocol()["common_conditions"]["heldout_repeats"]),
-        workers=int(load_protocol()["common_conditions"]["evaluator_workers_per_active_run"]),
-        cold=True,
-        context=f"{CAMPAIGN}-{stage}-{task}-r{repeat}-{arm}",
-    )
+    with _remote_dispatch_slot():
+        heldout = shared._remote_evaluate(
+            candidate,
+            _task_spec(_task_payload(task)),
+            _heldout_seeds(run_root, task, repeat, stage),
+            repeats=int(load_protocol()["common_conditions"]["heldout_repeats"]),
+            workers=int(load_protocol()["common_conditions"]["evaluator_workers_per_active_run"]),
+            cold=True,
+            context=f"{CAMPAIGN}-{stage}-{task}-r{repeat}-{arm}",
+        )
     payload = {
         "task": task,
         "repeat": repeat,

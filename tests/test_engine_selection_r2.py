@@ -32,6 +32,8 @@ def test_protocol_makes_tokens_account_only() -> None:
     assert runner.NO_TOKEN_STOP > 10**18
     assert runner.RUNNER_MODULE != "__main__"
     assert protocol["common_conditions"]["provider_version"].startswith("codex-cli ")
+    assert protocol["common_conditions"]["remote_evaluation_slots"] == 2
+    assert protocol["common_conditions"]["evaluator_workers_per_active_run"] == 12
 
 
 def test_round_one_advances_higher_quality_despite_far_more_tokens() -> None:

@@ -18,12 +18,12 @@
     "shinka_commit": "c4568adde253cacf185be3a8412c3c2142761ebe"
   },
   "mechanics_smoke": {
-    "attempt": "mechanics_smoke_v4",
+    "attempt": "mechanics_smoke_v5",
     "replacement_for": {
-      "attempt": "mechanics_smoke_v3",
-      "receipt_sha256": "0af39f4e5b3edec068ecd4a632d606ee9129b930bf90d743648af73320d4c2ec",
+      "attempt": "mechanics_smoke_v4",
+      "evidence_root": "runs/engine_selection_r2_effect_first/mechanics_smoke_v4",
       "scientific_authority": false,
-      "blocker": "concurrent create-once of the shared manifest rejected one arm even though the winning manifest had identical frozen content"
+      "blocker": "four concurrent SSH dispatches stalled before remote worker execution while another AutoDL Codex session was active; admission was stopped without deleting evidence"
     },
     "task": "min_weight_assignment",
     "consumed_task_only": true,
@@ -31,7 +31,7 @@
     "repeat": 1,
     "max_search_iterations": 1,
     "wall_seconds": 1200,
-    "receipt": "mechanics_smoke_v4_receipt.json",
+    "receipt": "mechanics_smoke_v5_receipt.json",
     "scientific_authority": false,
     "required_before_round_1": true
   },
@@ -88,7 +88,8 @@
     "development_repeats": 2,
     "heldout_seeds_per_repeat": 30,
     "heldout_repeats": 3,
-    "evaluator_workers_per_active_run": 4,
+    "remote_evaluation_slots": 2,
+    "evaluator_workers_per_active_run": 12,
     "all_final_candidate_hashes_locked_before_any_stage_heldout_seed": true,
     "candidate_retries_or_replacement_samples": false
   },
