@@ -495,6 +495,8 @@ def _run_subprocess_trial(
         with stdout_path.open("w", encoding="utf-8") as stdout, stderr_path.open(
             "w", encoding="utf-8"
         ) as stderr:
+            environment = os.environ.copy()
+            environment["PYTHONUTF8"] = "1"
             completed = subprocess.run(
                 command,
                 cwd=REPO_ROOT,
@@ -502,7 +504,7 @@ def _run_subprocess_trial(
                 stdout=stdout,
                 stderr=stderr,
                 timeout=float(_conditions()["wall_seconds"]) + 60.0,
-                env=os.environ.copy(),
+                env=environment,
             )
         returncode = completed.returncode
         state = "SUCCEEDED" if returncode == 0 else "FAILED"

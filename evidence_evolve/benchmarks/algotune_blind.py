@@ -41,6 +41,7 @@ from tasks.algotune_set_cover.common import evaluate_candidate
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 TASK_ROOT = REPO_ROOT / "tasks" / "algotune_set_cover"
+CODEX_HEADLESS = TASK_ROOT / "codex_headless.py"
 INITIAL = TASK_ROOT / "initial.py"
 TASK_PROMPT = (
     "Optimize the exact set-cover solver below for runtime on deterministic "
@@ -565,7 +566,7 @@ def run_shinka(run_dir: Path) -> dict[str, Any]:
     prior_usage_log = os.environ.get("EE_HEADLESS_USAGE_LOG")
     usage_log = arm_dir / "headless_usage.jsonl"
     os.environ["SHINKA_HEADLESS_COMMAND"] = (
-        f'"{sys.executable}" "{TASK_ROOT / "codex_headless.py"}"'
+        f'"{sys.executable}" "{CODEX_HEADLESS}"'
     )
     os.environ["EE_HEADLESS_USAGE_LOG"] = str(usage_log)
     try:
