@@ -1,0 +1,71 @@
+schema_version: "1.0"
+authority: PUBLIC_REGRESSION_SMOKE_ONLY
+cases:
+  - task_id: assignment
+    instance_id: assignment_smoke_3x3
+    role: REGRESSION
+    instance: {costs: [[4, 1, 3], [2, 0, 5], [3, 2, 2]]}
+    solution: {assignment: [1, 0, 2], objective: 5}
+  - task_id: knapsack
+    instance_id: knapsack_smoke_4
+    role: REGRESSION
+    instance: {weights: [2, 3, 4, 5], values: [3, 4, 5, 6], capacity: 5}
+    solution: {selected: [0, 1], objective: 7}
+  - task_id: set_cover
+    instance_id: set_cover_smoke_4
+    role: REGRESSION
+    instance: {universe: [0, 1, 2, 3], sets: [[0, 1], [1, 2], [2, 3], [0, 3]]}
+    solution: {selected: [0, 2], objective: 2}
+  - task_id: graph_coloring
+    instance_id: graph_coloring_smoke_triangle
+    role: REGRESSION
+    instance: {vertex_count: 3, edges: [[0, 1], [1, 2], [0, 2]]}
+    solution: {colors: [0, 1, 2], objective: 3}
+  - task_id: steiner_tree
+    instance_id: steiner_tree_smoke_4
+    role: REGRESSION
+    instance:
+      vertex_count: 4
+      terminals: [0, 2, 3]
+      edges: [[0, 1, 1], [1, 2, 1], [1, 3, 2], [0, 3, 5], [2, 3, 4]]
+    solution: {selected_edges: [[0, 1], [1, 2], [1, 3]], objective: 4}
+  - task_id: cvrp
+    instance_id: cvrp_smoke_4
+    role: REGRESSION
+    instance: {coordinates: [[0, 0], [1, 0], [0, 1], [2, 0]], demands: [0, 2, 2, 1], capacity: 3, depot: 0}
+    solution: {routes: [[0, 1, 3, 0], [0, 2, 0]], objective: 6}
+  - task_id: flexible_job_shop
+    instance_id: flexible_job_shop_smoke_2x2
+    role: REGRESSION
+    instance:
+      jobs:
+        - [[[0, 2], [1, 3]], [[1, 2]]]
+        - [[[1, 1]], [[0, 1], [1, 3]]]
+    solution:
+      operations: [[0, 0, 0, 0, 2], [0, 1, 1, 2, 2], [1, 0, 1, 0, 1], [1, 1, 0, 2, 1]]
+      objective: 4
+  - task_id: cluster_editing
+    instance_id: cluster_editing_smoke_4
+    role: REGRESSION
+    instance: {vertex_count: 4, edges: [[0, 1], [1, 2], [0, 2], [2, 3]]}
+    solution: {edits: [[2, 3]], objective: 1}
+  - task_id: directed_feedback_vertex_set
+    instance_id: dfvs_smoke_4
+    role: REGRESSION
+    instance: {vertex_count: 4, arcs: [[0, 1], [1, 2], [2, 0], [2, 3]]}
+    solution: {removed: [0], objective: 1}
+  - task_id: twinwidth
+    instance_id: twinwidth_smoke_edgeless_3
+    role: REGRESSION
+    instance: {vertex_count: 3, edges: []}
+    solution: {contractions: [[0, 1], [0, 2]], objective: 0}
+  - task_id: dominating_set
+    instance_id: dominating_set_smoke_path3
+    role: REGRESSION
+    instance: {vertex_count: 3, edges: [[0, 1], [1, 2]]}
+    solution: {selected: [1], objective: 1}
+  - task_id: maximum_agreement_forest
+    instance_id: maf_smoke_identical
+    role: REGRESSION
+    instance: {trees: ["(a,(b,c));", "(a,(b,c));"]}
+    solution: {forest: ["(a,(b,c));"], objective: 1}

@@ -7,21 +7,30 @@ gate in `manifest.v1.yaml`; it is not a routine per-iteration dependency.
 ## Current authority
 
 `manifest.v1.yaml` freezes the Core-12 catalog, evidence roles, difficulty tiers,
-source references, selection templates, and claim ceilings. It does **not** claim
-that all official instances have been downloaded or that the bank is execution
-ready. The manifest status is deliberately
-`CATALOG_FROZEN_ASSETS_PARTIALLY_MATERIALIZED`.
+source references, selection templates, and claim ceilings. All 12 families have
+a tracked regression smoke case and passed the repository verifier. Official
+source cohorts and verifiers are cached under the ignored `assets.local/` tree;
+`materialization_receipt.v1.yaml` binds each cache file to its source revision,
+byte length, and SHA-256 without committing hundreds of megabytes to Git.
 
-Only three existing repository adapters/evaluators currently have local SHA-256
-bindings. Every official archive or verifier that has not been downloaded and
-hashed is `CATALOG_ONLY`. Catalog entries cannot be scheduled as executable cases.
-No v1 asset is blind: historical PACE public/private data and public MiniZinc or
-DIMACS data remain public benchmark evidence.
+The status `CORE12_MATERIALIZED_SMOKE_ADMITTED` means format, feasibility, and
+objective recomputation work for one frozen tiny case per family. It does **not**
+mean every family has a production-scale runner, that every public instance has
+been executed, or that any scientific comparison passed. No v1 asset is blind:
+historical PACE public/private data and public MiniZinc or DIMACS data remain
+public benchmark evidence.
 
 Validate the catalog and its local bindings with:
 
 ```powershell
 .venv\Scripts\python.exe -m evidence_evolve.benchmark_bank --repo . validate benchmark_bank/manifest.v1.yaml
+```
+
+Deep-check every cached archive (SHA-256, size, safe member names, and ZIP CRC or
+full TAR payload readability) with:
+
+```powershell
+.venv\Scripts\python.exe scripts/verify_benchmark_bank_assets.py --repo . --receipt benchmark_bank/materialization_receipt.v1.yaml --deep
 ```
 
 Create a deterministic family-level development plan with:
@@ -30,8 +39,9 @@ Create a deterministic family-level development plan with:
 .venv\Scripts\python.exe -m evidence_evolve.benchmark_bank --repo . select benchmark_bank/manifest.v1.yaml --template routine_dev_3x3 --seed 170817
 ```
 
-Selections are planning-only until every selected family has a frozen instance
-manifest. They carry `NO_SCIENTIFIC_CLAIM` authority.
+Selections carry `NO_SCIENTIFIC_CLAIM` authority. Smoke admission is only the
+minimum mechanics gate before a selected family receives a frozen runner,
+budget, resource policy, and experiment-specific instance inventory.
 
 ## Core-12
 
@@ -62,20 +72,26 @@ Use the same task, initial state, model/provider version, evaluator, budget and
 resource quota for paired control/treatment comparisons. Once validation feedback
 changes the system, downgrade that evidence to consumed validation or DEV.
 
-## Materializing a family
+## Local materialization
 
-Materialization is a separate evidence-producing change:
+Large upstream assets are intentionally not redistributed through this Git
+repository. To audit the current machine, run the validation command above. A
+missing ignored cache produces `RECEIPT_ASSET_NOT_LOCAL`; a present file with the
+wrong length or SHA-256 fails closed.
 
-1. Review the source's redistribution and use terms. `REVIEW_REQUIRED_BEFORE_DOWNLOAD`
-   blocks silent ingestion.
+Adding or refreshing an upstream cohort is a separate evidence-producing change:
+
+1. Review source use terms. The receipt's
+   `LOCAL_CACHE_NO_REDISTRIBUTION_CLAIM` deliberately makes no redistribution
+   claim.
 2. Pin an immutable upstream revision or archive URL; download into the declared
    repository-owned asset location.
 3. Compute SHA-256 for the archive, verifier, scorer, and every instance inventory
    manifest. Never infer or copy an unverified hash.
-4. Record stable instance IDs, difficulty bands, role, provenance, known optimum or
-   bound status, and verifier command in a family-specific instance manifest.
-5. Change assets to `MATERIALIZED_LOCAL`, add the instance manifest path, update the
-   bank content lock, and rerun validation and focused tests.
+4. Record stable instance IDs, roles, provenance, known optimum or bound status,
+   and verifier command in an experiment-specific inventory.
+5. Bind the asset through the receipt, update the bank content lock, and rerun
+   validation and focused tests.
 
 Formal one-shot campaign namespaces remain closed. Reusing their task structure
 requires a separately labeled DEV/REGRESSION fixture and never mutates old receipts.

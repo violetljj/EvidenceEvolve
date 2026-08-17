@@ -12,6 +12,10 @@ import yaml
 from pydantic import Field, field_validator, model_validator
 
 from evidence_evolve.hashing import sha256_file, sha256_object
+from evidence_evolve.benchmark_bank_smoke import (
+    load_smoke_inventory,
+    validate_smoke_inventory,
+)
 from evidence_evolve.models import StrictModel
 
 
@@ -57,12 +61,14 @@ class ClaimCeiling(StrEnum):
 class AssetState(StrEnum):
     CATALOG_ONLY = "CATALOG_ONLY"
     MATERIALIZED_LOCAL = "MATERIALIZED_LOCAL"
+    MATERIALIZED_BY_RECEIPT = "MATERIALIZED_BY_RECEIPT"
 
 
 class LicenseStatus(StrEnum):
     REPOSITORY_APACHE_2_0 = "REPOSITORY_APACHE_2_0"
     OFFICIAL_OPEN_SOURCE = "OFFICIAL_OPEN_SOURCE"
     REVIEW_REQUIRED_BEFORE_DOWNLOAD = "REVIEW_REQUIRED_BEFORE_DOWNLOAD"
+    LOCAL_CACHE_NO_REDISTRIBUTION_CLAIM = "LOCAL_CACHE_NO_REDISTRIBUTION_CLAIM"
 
 
 class BankAsset(StrictModel):
@@ -74,6 +80,7 @@ class BankAsset(StrictModel):
     source_revision: str | None = None
     local_path: str | None = None
     sha256: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
+    receipt_asset_id: str | None = None
     license_status: LicenseStatus
     public_visibility: Literal[True] = True
     notes: str = Field(min_length=1)
@@ -101,10 +108,62 @@ class BankAsset(StrictModel):
         if self.state is AssetState.MATERIALIZED_LOCAL:
             if self.local_path is None or self.sha256 is None:
                 raise ValueError("materialized assets require local_path and sha256")
-        elif self.local_path is not None or self.sha256 is not None:
+            if self.receipt_asset_id is not None:
+                raise ValueError("tracked materialized assets cannot use a receipt")
+        elif self.state is AssetState.MATERIALIZED_BY_RECEIPT:
+            if self.receipt_asset_id is None:
+                raise ValueError("receipt-bound assets require receipt_asset_id")
+            if self.local_path is not None or self.sha256 is not None:
+                raise ValueError("receipt-bound paths and hashes belong in the receipt")
+        elif (
+            self.local_path is not None
+            or self.sha256 is not None
+            or self.receipt_asset_id is not None
+        ):
             raise ValueError("catalog-only assets cannot claim a local path or hash")
         if self.source_url is None and self.local_path is None:
             raise ValueError("asset requires a source_url or a local_path")
+        return self
+
+
+class MaterializedAssetReceipt(StrictModel):
+    asset_id: str = Field(pattern=r"^[a-z0-9][a-z0-9_.-]{1,127}$")
+    local_path: str
+    bytes: int = Field(gt=0)
+    sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    source_url: str
+    source_revision: str
+
+    @field_validator("local_path")
+    @classmethod
+    def repository_relative_path(cls, value: str) -> str:
+        normalized = value.replace("\\", "/")
+        path = Path(normalized)
+        if path.is_absolute() or ".." in path.parts or normalized.startswith("/"):
+            raise ValueError("materialized asset receipt path must stay in repository")
+        return normalized
+
+    @field_validator("source_url")
+    @classmethod
+    def require_https(cls, value: str) -> str:
+        if not value.startswith("https://"):
+            raise ValueError("materialized source URLs must use HTTPS")
+        return value
+
+
+class MaterializationReceipt(StrictModel):
+    schema_version: Literal["1.0"]
+    generated_on: str = Field(pattern=r"^20[0-9]{2}-[0-9]{2}-[0-9]{2}$")
+    assets: list[MaterializedAssetReceipt] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def unique_assets(self) -> "MaterializationReceipt":
+        ids = [asset.asset_id for asset in self.assets]
+        paths = [asset.local_path for asset in self.assets]
+        if len(ids) != len(set(ids)):
+            raise ValueError("materialization receipt asset ids must be unique")
+        if len(paths) != len(set(paths)):
+            raise ValueError("materialization receipt paths must be unique")
         return self
 
 
@@ -206,7 +265,7 @@ class BenchmarkBankManifest(StrictModel):
     bank_id: Literal["EVIDENCE_EVOLVE_BENCHMARK_BANK_V1"] = (
         "EVIDENCE_EVOLVE_BENCHMARK_BANK_V1"
     )
-    status: Literal["CATALOG_FROZEN_ASSETS_PARTIALLY_MATERIALIZED"]
+    status: Literal["CORE12_MATERIALIZED_SMOKE_ADMITTED"]
     verified_on: str = Field(pattern=r"^20[0-9]{2}-[0-9]{2}-[0-9]{2}$")
     core_family_ids: list[str]
     families: list[BenchmarkFamily]
@@ -214,6 +273,8 @@ class BenchmarkBankManifest(StrictModel):
     portfolio_policy: PortfolioPolicy
     fresh_gate: FreshGate
     locked_registry: list[str] = Field(default_factory=list)
+    materialization_receipt_path: str
+    materialization_receipt_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     lock: BankLock
 
     @model_validator(mode="after")
@@ -241,6 +302,8 @@ class BankValidation(StrictModel):
     materialized_asset_count: int = Field(ge=0)
     catalog_only_asset_count: int = Field(ge=0)
     executable_family_count: int = Field(ge=0)
+    smoke_admitted_family_count: int = Field(ge=0)
+    locally_available_receipt_asset_count: int = Field(ge=0)
 
 
 class FamilySelection(StrictModel):
@@ -259,6 +322,12 @@ def load_bank_manifest(path: Path) -> BenchmarkBankManifest:
         else:
             payload = yaml.safe_load(stream)
     return BenchmarkBankManifest.model_validate(payload or {})
+
+
+def load_materialization_receipt(path: Path) -> MaterializationReceipt:
+    with path.open("r", encoding="utf-8") as stream:
+        payload = yaml.safe_load(stream)
+    return MaterializationReceipt.model_validate(payload or {})
 
 
 def bank_content_hash(manifest: BenchmarkBankManifest) -> str:
@@ -281,11 +350,31 @@ class BenchmarkBankValidator:
         issues: list[str] = []
         warnings: list[str] = [
             "PUBLIC_BENCHMARKS_ARE_NOT_BLIND",
-            "CATALOG_ENTRIES_ARE_NOT_EXECUTABLE_INSTANCES",
+            "SMOKE_ADMISSION_IS_NOT_FULL_RUNNER_ADMISSION",
         ]
         materialized = 0
         catalog_only = 0
         executable_families = 0
+        smoke_admitted: set[str] = set()
+        loaded_manifests: dict[str, set[str]] = {}
+        locally_available_receipts = 0
+        receipt_assets: dict[str, MaterializedAssetReceipt] = {}
+        try:
+            receipt_path = self._repo_path(manifest.materialization_receipt_path)
+            if sha256_file(receipt_path) != manifest.materialization_receipt_sha256:
+                raise ValueError("materialization receipt hash mismatch")
+            receipt = load_materialization_receipt(receipt_path)
+            receipt_assets = {asset.asset_id: asset for asset in receipt.assets}
+            for asset in receipt.assets:
+                path = self._repo_path(asset.local_path)
+                if not path.is_file():
+                    warnings.append(f"RECEIPT_ASSET_NOT_LOCAL:{asset.asset_id}")
+                elif path.stat().st_size != asset.bytes or sha256_file(path) != asset.sha256:
+                    issues.append(f"RECEIPT_ASSET_HASH_MISMATCH:{asset.asset_id}")
+                else:
+                    locally_available_receipts += 1
+        except (FileNotFoundError, ValueError) as exc:
+            issues.append(f"MATERIALIZATION_RECEIPT_INVALID:{type(exc).__name__}")
         for family in manifest.families:
             local_assets_valid = True
             for asset in family.assets:
@@ -293,6 +382,14 @@ class BenchmarkBankValidator:
                     catalog_only += 1
                     continue
                 materialized += 1
+                if asset.state is AssetState.MATERIALIZED_BY_RECEIPT:
+                    assert asset.receipt_asset_id is not None
+                    if asset.receipt_asset_id not in receipt_assets:
+                        issues.append(
+                            f"RECEIPT_BINDING_MISSING:{family.task_id}:{asset.asset_id}"
+                        )
+                        local_assets_valid = False
+                    continue
                 assert asset.local_path is not None
                 assert asset.sha256 is not None
                 path = self._repo_path(asset.local_path)
@@ -306,16 +403,32 @@ class BenchmarkBankValidator:
                     local_assets_valid = False
             manifests_valid = bool(family.instance_manifest_paths)
             for relative in family.instance_manifest_paths:
-                if not self._repo_path(relative).is_file():
+                manifest_path = self._repo_path(relative)
+                if not manifest_path.is_file():
                     issues.append(f"INSTANCE_MANIFEST_MISSING:{family.task_id}:{relative}")
+                    manifests_valid = False
+                    continue
+                if relative not in loaded_manifests:
+                    try:
+                        inventory = load_smoke_inventory(manifest_path)
+                        results = validate_smoke_inventory(inventory, CORE_12_TASK_IDS)
+                        loaded_manifests[relative] = set(results)
+                        smoke_admitted.update(results)
+                    except (AssertionError, KeyError, TypeError, ValueError) as exc:
+                        issues.append(
+                            f"SMOKE_INVENTORY_INVALID:{relative}:{type(exc).__name__}"
+                        )
+                        loaded_manifests[relative] = set()
+                if family.task_id not in loaded_manifests[relative]:
+                    issues.append(
+                        f"FAMILY_SMOKE_CASE_MISSING:{family.task_id}:{relative}"
+                    )
                     manifests_valid = False
             if local_assets_valid and manifests_valid:
                 executable_families += 1
         content_hash = bank_content_hash(manifest)
         if manifest.lock.content_sha256 != content_hash:
             issues.append("BENCHMARK_BANK_CONTENT_HASH_MISMATCH")
-        if executable_families == 0:
-            warnings.append("NO_CORE_FAMILY_HAS_FROZEN_INSTANCE_INVENTORY")
         return BankValidation(
             valid=not issues,
             issues=sorted(set(issues)),
@@ -324,6 +437,8 @@ class BenchmarkBankValidator:
             materialized_asset_count=materialized,
             catalog_only_asset_count=catalog_only,
             executable_family_count=executable_families,
+            smoke_admitted_family_count=len(smoke_admitted),
+            locally_available_receipt_asset_count=locally_available_receipts,
         )
 
     def assert_valid(self, manifest: BenchmarkBankManifest) -> BankValidation:

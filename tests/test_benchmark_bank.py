@@ -13,7 +13,12 @@ from evidence_evolve.benchmark_bank import (
     DifficultyLevel,
     EvidenceRole,
     load_bank_manifest,
+    load_materialization_receipt,
     select_families,
+)
+from evidence_evolve.benchmark_bank_smoke import (
+    load_smoke_inventory,
+    validate_smoke_inventory,
 )
 
 
@@ -27,12 +32,28 @@ def test_core12_catalog_lock_and_local_assets_validate() -> None:
 
     assert report.valid
     assert tuple(manifest.core_family_ids) == CORE_12_TASK_IDS
-    assert report.materialized_asset_count == 3
-    assert report.catalog_only_asset_count == 15
-    assert report.executable_family_count == 0
+    assert report.materialized_asset_count == 18
+    assert report.catalog_only_asset_count == 0
+    assert report.executable_family_count == 12
+    assert report.smoke_admitted_family_count == 12
+    receipt = load_materialization_receipt(
+        REPO_ROOT / manifest.materialization_receipt_path
+    )
+    assert len(receipt.assets) == 17
+    assert 0 <= report.locally_available_receipt_asset_count <= len(receipt.assets)
     assert "PUBLIC_BENCHMARKS_ARE_NOT_BLIND" in report.warnings
-    assert "NO_CORE_FAMILY_HAS_FROZEN_INSTANCE_INVENTORY" in report.warnings
+    assert "SMOKE_ADMISSION_IS_NOT_FULL_RUNNER_ADMISSION" in report.warnings
     assert manifest.locked_registry == []
+
+
+def test_every_core12_family_passes_frozen_smoke_validation() -> None:
+    inventory = load_smoke_inventory(
+        REPO_ROOT / "benchmark_bank" / "core12_smoke.v1.yaml"
+    )
+
+    results = validate_smoke_inventory(inventory, CORE_12_TASK_IDS)
+
+    assert results == {task_id: "PASS" for task_id in CORE_12_TASK_IDS}
 
 
 def test_evidence_tiers_and_public_roles_are_claim_bounded() -> None:

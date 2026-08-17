@@ -1,0 +1,105 @@
+schema_version: "1.0"
+generated_on: "2026-08-17"
+assets:
+  - asset_id: minizinc_core3
+    local_path: benchmark_bank/assets.local/downloads/minizinc_core3_a8448864.tar
+    bytes: 112640
+    sha256: 0940d0a5faeff552192470919daa2491080d92a210915f0dc7682a1f6362ec64
+    source_url: https://github.com/MiniZinc/mzn-challenge
+    source_revision: a8448864fc56162583f24aaf9c25653d93f83765
+  - asset_id: graph_coloring_dimacs
+    local_path: benchmark_bank/assets.local/downloads/graph_coloring_dimacs.tar
+    bytes: 3907584
+    sha256: cf71468f3d56f9d6871c7d59e54d2b9661c26e27cb4555d318062775b98fa388
+    source_url: https://mat.tepper.cmu.edu/COLOR/instances/instances.tar
+    source_revision: official-archive-retrieved-2026-08-17
+  - asset_id: pace2018_steiner
+    local_path: benchmark_bank/assets.local/downloads/pace2018_steiner_4df73cea.tar
+    bytes: 223139840
+    sha256: c61c837db9860aed0f804056e1a2e83d55a1d9460825bc97d78c164b97976f32
+    source_url: https://github.com/PACE-challenge/SteinerTree-PACE-2018-instances
+    source_revision: 4df73cea9c311faea7d03e6d6bffa8733c34a1aa
+  - asset_id: pace2021_cluster_exact
+    local_path: benchmark_bank/assets.local/downloads/cluster_editing_exact.tar.gz
+    bytes: 2003723
+    sha256: b6b64ff52b651793fc73d87955d619396cb59d92834e692afd6220a569fd765e
+    source_url: https://fpt.akt.tu-berlin.de/pace2021/exact.tar.gz
+    source_revision: official-exact-archive-retrieved-2026-08-17
+  - asset_id: pace2021_cluster_heuristic
+    local_path: benchmark_bank/assets.local/downloads/cluster_editing_heuristic.tar.gz
+    bytes: 114857966
+    sha256: 7fa6fbbdc0427fd99ea64d0ba2c95e160220889e988de99f57e9333241c42bff
+    source_url: https://fpt.akt.tu-berlin.de/pace2021/heur.tar.gz
+    source_revision: official-heuristic-archive-retrieved-2026-08-17
+  - asset_id: pace2021_cluster_verifier
+    local_path: benchmark_bank/assets.local/downloads/cluster_editing_verifier.zip
+    bytes: 3521
+    sha256: 7d3a3483cab300dea9426e4d66755c9c417b6c5cc6d7e945631d8568354f9120
+    source_url: https://pacechallenge.org/2021/verifier.zip
+    source_revision: official-verifier-retrieved-2026-08-17
+  - asset_id: pace2022_dfvs_exact
+    local_path: benchmark_bank/assets.local/downloads/dfvs_exact_all.tar.gz
+    bytes: 30672872
+    sha256: eb143849aaf8b0f5ecb046bcce9b12455b14f2dd05c30b4e02ca3b191ca76f6e
+    source_url: https://heibox.uni-heidelberg.de/f/75c18a4d83b642db9a58/?dl=1
+    source_revision: official-exact-all-archive-retrieved-2026-08-17
+  - asset_id: pace2022_dfvs_heuristic
+    local_path: benchmark_bank/assets.local/downloads/dfvs_heuristic_all.tar.gz
+    bytes: 316139603
+    sha256: 710dee4011aceac4ce65ee700ab2f30b84923ae2d446cb5eb6916e5330d0c4b7
+    source_url: https://heibox.uni-heidelberg.de/f/97634323e3cb4aab8291/?dl=1
+    source_revision: official-heuristic-all-archive-retrieved-2026-08-17
+  - asset_id: pace2022_dfvs_verifier
+    local_path: benchmark_bank/assets.local/downloads/dfvs_verifier.tar.gz
+    bytes: 2146
+    sha256: f693fab5bd7ba8abb2879a5e2b303455d2889a8fe1dd015f424255aae560f32f
+    source_url: https://pacechallenge.org/2022/verifier.tar.gz
+    source_revision: official-verifier-retrieved-2026-08-17
+  - asset_id: pace2023_twinwidth_tiny
+    local_path: benchmark_bank/assets.local/downloads/twinwidth_tiny.zip
+    bytes: 2449
+    sha256: c4ad6b77bd418ac8c065e40f615b0fa8660855c10a36556b74f36db7b5a5f105
+    source_url: https://pacechallenge.org/2023/tiny-set.zip
+    source_revision: official-tiny-set-retrieved-2026-08-17
+  - asset_id: pace2023_twinwidth_tiny_solutions
+    local_path: benchmark_bank/assets.local/downloads/twinwidth_tiny_solutions.zip
+    bytes: 2506
+    sha256: dec24fb67a268897e3bfbc854fefb5342c6d519942d4d6ef9f9ffa0db93e071e
+    source_url: https://pacechallenge.org/2023/tiny-set-sol.zip
+    source_revision: official-tiny-solutions-retrieved-2026-08-17
+  - asset_id: pace2023_twinwidth_verifier
+    local_path: benchmark_bank/assets.local/downloads/twinwidth_verifier.py
+    bytes: 5434
+    sha256: 15ebcc1636b5c16647db68895d2ed4bc2f4ee07e6ddaf883abbeefdd90ba8a73
+    source_url: https://pacechallenge.org/2023/verifier.py
+    source_revision: official-version-2023-04-01
+  - asset_id: pace2025_ds_verifier_and_testset
+    local_path: benchmark_bank/assets.local/downloads/pace2025_ds_verifier_bc221039.tar
+    bytes: 112640
+    sha256: e580b5a6f7c206d382e7658aa36614f254677f618f03792554d871fc541692fe
+    source_url: https://github.com/MarioGrobler/ds_verifier
+    source_revision: bc2210399378649dc14371e0127561f1d36bc01e
+  - asset_id: pace2026_maf_exact
+    local_path: benchmark_bank/assets.local/downloads/maf_exact_public.tar.gz
+    bytes: 754727
+    sha256: 34f8ced35f8ee3bc430da81a12782bce1809ccb1920e26b4dd6c9708cb6cb9b8
+    source_url: https://pace2026.imada.sdu.dk/datasets/pace26_exact_pub_v2.tar.gz
+    source_revision: official-exact-public-archive-retrieved-2026-08-17
+  - asset_id: pace2026_maf_heuristic
+    local_path: benchmark_bank/assets.local/downloads/maf_heuristic_public.tar.gz
+    bytes: 3262005
+    sha256: abd5e9f70b46403099698929d066bac3db22d72ee63a154619757429bef01cbc
+    source_url: https://pace2026.imada.sdu.dk/datasets/pace26_heuristic_pub_v2.tar.gz
+    source_revision: official-heuristic-public-archive-retrieved-2026-08-17
+  - asset_id: pace2026_maf_lower_bound
+    local_path: benchmark_bank/assets.local/downloads/maf_lower_public.tar.gz
+    bytes: 2134896
+    sha256: c860a95bb4bf59a09c74320e70a60c0398138db1141c612036ba4e5466d08925
+    source_url: https://pace2026.imada.sdu.dk/datasets/pace26_lower_pub_v3.tar.gz
+    source_revision: official-lower-bound-public-archive-retrieved-2026-08-17
+  - asset_id: pace2026_stride
+    local_path: benchmark_bank/assets.local/downloads/pace2026_stride_0ada1705.tar
+    bytes: 839680
+    sha256: a4f14c47dd30d5a567b6d8eaba7ee66cb246c09cdadf2fefd190fcbf9bb552b2
+    source_url: https://github.com/manpen/pace26stride
+    source_revision: 0ada17055962302bf3957319dfe101743897091c

@@ -1,6 +1,6 @@
 schema_version: "1.0"
 bank_id: EVIDENCE_EVOLVE_BENCHMARK_BANK_V1
-status: CATALOG_FROZEN_ASSETS_PARTIALLY_MATERIALIZED
+status: CORE12_MATERIALIZED_SMOKE_ADMITTED
 verified_on: "2026-08-17"
 core_family_ids:
   - assignment
@@ -34,8 +34,8 @@ families:
         sha256: db07366a56a5ac4974b3ee5a2705bd7500675c0cd2a96b6774183f2f95c72ead
         license_status: REPOSITORY_APACHE_2_0
         public_visibility: true
-        notes: Existing consumed task implementation; no frozen Bank v1 instance inventory yet.
-    instance_manifest_paths: []
+        notes: Existing consumed task implementation plus a frozen Bank v1 regression smoke case.
+    instance_manifest_paths: [benchmark_bank/core12_smoke.v1.yaml]
     known_failure_modes: [WRAPPER_OVERHEAD_DOMINATES, NUMERICAL_OR_SHAPE_ERROR]
     notes: Permanent fast regression only; success cannot establish research value.
 
@@ -51,16 +51,17 @@ families:
     assets:
       - asset_id: minizinc_multi_knapsack_catalog
         kind: INSTANCE_SOURCE
-        state: CATALOG_ONLY
+        state: MATERIALIZED_BY_RECEIPT
         authority: MiniZinc Challenge problem catalog
         source_url: https://www.minizinc.org/challenge/globals/
         source_revision: verified-2026-08-17
-        license_status: REVIEW_REQUIRED_BEFORE_DOWNLOAD
+        receipt_asset_id: minizinc_core3
+        license_status: LOCAL_CACHE_NO_REDISTRIBUTION_CLAIM
         public_visibility: true
-        notes: Catalog confirms multi-knapsack usage; archive and license must be pinned before materialization.
-    instance_manifest_paths: []
+        notes: Pinned MiniZinc source archive is bound by the local materialization receipt.
+    instance_manifest_paths: [benchmark_bank/core12_smoke.v1.yaml]
     known_failure_modes: [PSEUDOPOLYNOMIAL_SCALING, VALUE_OVERFLOW]
-    notes: L0 screening family; not yet executable from the bank.
+    notes: L0 screening family; admitted for regression smoke only.
 
   - task_id: set_cover
     display_name: Set Cover
@@ -81,7 +82,7 @@ families:
         license_status: REPOSITORY_APACHE_2_0
         public_visibility: true
         notes: Existing consumed development evaluator; formal historical run namespaces remain closed.
-    instance_manifest_paths: []
+    instance_manifest_paths: [benchmark_bank/core12_smoke.v1.yaml]
     known_failure_modes: [INVALID_COVER, DENSE_INSTANCE_TIMEOUT, OVERFIT_TO_SEED_SCALE]
     notes: High-frequency paired development family; no blind authority.
 
@@ -106,14 +107,15 @@ families:
         notes: Existing public development evaluator; locked graph-coloring protocols retain separate authority.
       - asset_id: dimacs_coloring_catalog
         kind: INSTANCE_SOURCE
-        state: CATALOG_ONLY
+        state: MATERIALIZED_BY_RECEIPT
         authority: Carnegie Mellon University DIMACS coloring archive
         source_url: https://mat.tepper.cmu.edu/COLOR/instances.html
         source_revision: verified-2026-08-17
-        license_status: REVIEW_REQUIRED_BEFORE_DOWNLOAD
+        receipt_asset_id: graph_coloring_dimacs
+        license_status: LOCAL_CACHE_NO_REDISTRIBUTION_CLAIM
         public_visibility: true
         notes: Standard instance catalog; individual files and licenses require a materialization receipt.
-    instance_manifest_paths: []
+    instance_manifest_paths: [benchmark_bank/core12_smoke.v1.yaml]
     known_failure_modes: [EDGE_CONFLICT, NONDETERMINISTIC_COLOR_COUNT, INSTANCE_MEMORIZATION]
     notes: High-frequency paired development family; L1 results are screening evidence only.
 
@@ -129,23 +131,25 @@ families:
     assets:
       - asset_id: pace2018_steiner_catalog
         kind: INSTANCE_SOURCE
-        state: CATALOG_ONLY
+        state: MATERIALIZED_BY_RECEIPT
         authority: PACE Challenge 2018
         source_url: https://pacechallenge.org/2018/steiner-tree/
         source_revision: verified-2026-08-17
-        license_status: REVIEW_REQUIRED_BEFORE_DOWNLOAD
+        receipt_asset_id: pace2018_steiner
+        license_status: LOCAL_CACHE_NO_REDISTRIBUTION_CLAIM
         public_visibility: true
         notes: Official page links historical public and hidden instances now exposed on GitHub.
       - asset_id: pace2018_steiner_verifier
         kind: VERIFIER
-        state: CATALOG_ONLY
+        state: MATERIALIZED_BY_RECEIPT
         authority: PACE Challenge 2018
         source_url: https://pacechallenge.org/2018/steiner-tree/
         source_revision: verified-2026-08-17
-        license_status: REVIEW_REQUIRED_BEFORE_DOWNLOAD
+        receipt_asset_id: pace2018_steiner
+        license_status: LOCAL_CACHE_NO_REDISTRIBUTION_CLAIM
         public_visibility: true
-        notes: Official validity checker reference; exact commit and hash remain to be pinned.
-    instance_manifest_paths: []
+        notes: Official repository snapshot is pinned and hash-bound in the materialization receipt.
+    instance_manifest_paths: [benchmark_bank/core12_smoke.v1.yaml]
     known_failure_modes: [DISCONNECTED_TERMINALS, INVALID_TREE_WEIGHT, SUBOPTIMAL_EXACT_OUTPUT]
     notes: Public historical competition data cannot serve as locked evidence.
 
@@ -161,16 +165,17 @@ families:
     assets:
       - asset_id: minizinc_cvrp_catalog
         kind: INSTANCE_SOURCE
-        state: CATALOG_ONLY
+        state: MATERIALIZED_BY_RECEIPT
         authority: MiniZinc Challenge problem catalog
         source_url: https://www.minizinc.org/challenge/globals/
         source_revision: verified-2026-08-17
-        license_status: REVIEW_REQUIRED_BEFORE_DOWNLOAD
+        receipt_asset_id: minizinc_core3
+        license_status: LOCAL_CACHE_NO_REDISTRIBUTION_CLAIM
         public_visibility: true
         notes: Official catalog records CVRP; model, data and MiniZinc version must be pinned together.
-    instance_manifest_paths: []
+    instance_manifest_paths: [benchmark_bank/core12_smoke.v1.yaml]
     known_failure_modes: [CAPACITY_VIOLATION, ROUTE_OMISSION, TIME_LIMIT_NO_SOLUTION]
-    notes: Routing diversity family; not yet executable from the bank.
+    notes: Routing diversity family; admitted for regression smoke only.
 
   - task_id: flexible_job_shop
     display_name: Flexible Job Shop Scheduling
@@ -184,16 +189,17 @@ families:
     assets:
       - asset_id: minizinc_fjsp_catalog
         kind: INSTANCE_SOURCE
-        state: CATALOG_ONLY
+        state: MATERIALIZED_BY_RECEIPT
         authority: MiniZinc Challenge problem catalog
         source_url: https://www.minizinc.org/challenge/globals/
         source_revision: verified-2026-08-17
-        license_status: REVIEW_REQUIRED_BEFORE_DOWNLOAD
+        receipt_asset_id: minizinc_core3
+        license_status: LOCAL_CACHE_NO_REDISTRIBUTION_CLAIM
         public_visibility: true
-        notes: Official catalog records FJSP; model, instances and runtime stack remain to be pinned.
-    instance_manifest_paths: []
+        notes: Official model and data snapshot is pinned; a full runtime stack remains experiment-specific.
+    instance_manifest_paths: [benchmark_bank/core12_smoke.v1.yaml]
     known_failure_modes: [RESOURCE_OVERLAP, INFEASIBLE_SCHEDULE, MAKESPAN_SCORING_ERROR]
-    notes: Scheduling diversity family; not yet executable from the bank.
+    notes: Scheduling diversity family; admitted for regression smoke only.
 
   - task_id: cluster_editing
     display_name: Cluster Editing
@@ -207,14 +213,15 @@ families:
     assets:
       - asset_id: pace2021_cluster_editing_catalog
         kind: INSTANCE_SOURCE
-        state: CATALOG_ONLY
+        state: MATERIALIZED_BY_RECEIPT
         authority: PACE Challenge 2021
         source_url: https://pacechallenge.org/2021/
         source_revision: verified-2026-08-17
-        license_status: REVIEW_REQUIRED_BEFORE_DOWNLOAD
+        receipt_asset_id: pace2021_cluster_exact
+        license_status: LOCAL_CACHE_NO_REDISTRIBUTION_CLAIM
         public_visibility: true
-        notes: Official Exact, Heuristic and Kernelization tracks; instance archives require pinning.
-    instance_manifest_paths: []
+        notes: Exact and heuristic archives plus the verifier are hash-bound in the receipt.
+    instance_manifest_paths: [benchmark_bank/core12_smoke.v1.yaml]
     known_failure_modes: [INVALID_CLUSTER_GRAPH, NON_EQUIVALENT_KERNEL, OBJECTIVE_MISCOUNT]
     notes: L2 mechanism evidence only; public outcomes do not establish generalization.
 
@@ -230,23 +237,25 @@ families:
     assets:
       - asset_id: pace2022_dfvs_catalog
         kind: INSTANCE_SOURCE
-        state: CATALOG_ONLY
+        state: MATERIALIZED_BY_RECEIPT
         authority: PACE Challenge 2022
         source_url: https://pacechallenge.org/2022/tracks/
         source_revision: verified-2026-08-17
-        license_status: REVIEW_REQUIRED_BEFORE_DOWNLOAD
+        receipt_asset_id: pace2022_dfvs_exact
+        license_status: LOCAL_CACHE_NO_REDISTRIBUTION_CLAIM
         public_visibility: true
         notes: Official page exposes public and historical private archives for exact and heuristic tracks.
       - asset_id: pace2022_dfvs_verifier
         kind: VERIFIER
-        state: CATALOG_ONLY
+        state: MATERIALIZED_BY_RECEIPT
         authority: PACE Challenge 2022
         source_url: https://pacechallenge.org/2022/tracks/
         source_revision: verified-2026-08-17
-        license_status: REVIEW_REQUIRED_BEFORE_DOWNLOAD
+        receipt_asset_id: pace2022_dfvs_verifier
+        license_status: LOCAL_CACHE_NO_REDISTRIBUTION_CLAIM
         public_visibility: true
-        notes: Official verifier checks feasibility but not exact optimality; pin before use.
-    instance_manifest_paths: []
+        notes: Hash-bound official verifier checks feasibility but not exact optimality.
+    instance_manifest_paths: [benchmark_bank/core12_smoke.v1.yaml]
     known_failure_modes: [REMAINDER_STILL_CYCLIC, DUPLICATE_VERTEX, SUBOPTIMAL_EXACT_OUTPUT]
     notes: L2 structural-development family; all referenced data is public.
 
@@ -262,23 +271,25 @@ families:
     assets:
       - asset_id: pace2023_twinwidth_catalog
         kind: INSTANCE_SOURCE
-        state: CATALOG_ONLY
+        state: MATERIALIZED_BY_RECEIPT
         authority: PACE Challenge 2023
         source_url: https://pacechallenge.org/2023/
         source_revision: verified-2026-08-17
-        license_status: REVIEW_REQUIRED_BEFORE_DOWNLOAD
+        receipt_asset_id: pace2023_twinwidth_tiny
+        license_status: LOCAL_CACHE_NO_REDISTRIBUTION_CLAIM
         public_visibility: true
-        notes: Official competition source; instance archive and exact snapshot remain to be pinned.
+        notes: Official tiny instance and solution cohorts are hash-bound for mechanics admission.
       - asset_id: pace2023_twinwidth_verifier
         kind: VERIFIER
-        state: CATALOG_ONLY
+        state: MATERIALIZED_BY_RECEIPT
         authority: PACE Challenge 2023
         source_url: https://pacechallenge.org/2023/io/
         source_revision: verifier-page-2023-04-01
-        license_status: REVIEW_REQUIRED_BEFORE_DOWNLOAD
+        receipt_asset_id: pace2023_twinwidth_verifier
+        license_status: LOCAL_CACHE_NO_REDISTRIBUTION_CLAIM
         public_visibility: true
-        notes: Official Python verifier reports contraction-sequence width; commit and hash remain unbound.
-    instance_manifest_paths: []
+        notes: Official 2023-04-01 Python verifier is hash-bound in the receipt.
+    instance_manifest_paths: [benchmark_bank/core12_smoke.v1.yaml]
     known_failure_modes: [INVALID_CONTRACTION_SEQUENCE, WIDTH_MISCOMPUTATION, MEMORY_BLOWUP]
     notes: First Core-12 tier eligible for research-value evaluation, never by itself a superiority verdict.
 
@@ -294,23 +305,25 @@ families:
     assets:
       - asset_id: pace2025_dominating_set_catalog
         kind: INSTANCE_SOURCE
-        state: CATALOG_ONLY
+        state: MATERIALIZED_BY_RECEIPT
         authority: PACE Challenge 2025
         source_url: https://pacechallenge.org/2025/ds/
         source_revision: verified-2026-08-17
-        license_status: REVIEW_REQUIRED_BEFORE_DOWNLOAD
+        receipt_asset_id: pace2025_ds_verifier_and_testset
+        license_status: LOCAL_CACHE_NO_REDISTRIBUTION_CLAIM
         public_visibility: true
         notes: Official page links 100 public instances; historical private evaluation is not blind once exposed.
       - asset_id: pace2025_dominating_set_verifier
         kind: VERIFIER
-        state: CATALOG_ONLY
+        state: MATERIALIZED_BY_RECEIPT
         authority: PACE Challenge 2025
         source_url: https://pacechallenge.org/2025/ds/
         source_revision: verified-2026-08-17
-        license_status: REVIEW_REQUIRED_BEFORE_DOWNLOAD
+        receipt_asset_id: pace2025_ds_verifier_and_testset
+        license_status: LOCAL_CACHE_NO_REDISTRIBUTION_CLAIM
         public_visibility: true
-        notes: Official verifier and tiny test set are linked from the task page; exact commit is unbound.
-    instance_manifest_paths: []
+        notes: Official verifier and tiny test set are pinned to commit bc221039 and hash-bound.
+    instance_manifest_paths: [benchmark_bank/core12_smoke.v1.yaml]
     known_failure_modes: [UNDOMINATED_VERTEX, SUBOPTIMAL_EXACT_OUTPUT, TIME_LIMIT_NO_SOLUTION]
     notes: Frontier public benchmark; PACE 2025 winner solved 81 exact instances.
 
@@ -326,23 +339,25 @@ families:
     assets:
       - asset_id: pace2026_maf_catalog
         kind: INSTANCE_SOURCE
-        state: CATALOG_ONLY
+        state: MATERIALIZED_BY_RECEIPT
         authority: PACE Challenge 2026
         source_url: https://pacechallenge.org/2026/
         source_revision: verified-2026-08-17
-        license_status: REVIEW_REQUIRED_BEFORE_DOWNLOAD
+        receipt_asset_id: pace2026_maf_exact
+        license_status: LOCAL_CACHE_NO_REDISTRIBUTION_CLAIM
         public_visibility: true
         notes: Official page exposes Exact, Heuristic and Lower-bound archives; all links are treated as public.
       - asset_id: pace2026_stride
         kind: VERIFIER
-        state: CATALOG_ONLY
+        state: MATERIALIZED_BY_RECEIPT
         authority: PACE Challenge 2026 STRIDE
         source_url: https://github.com/manpen/pace26stride
         source_revision: unpinned
-        license_status: REVIEW_REQUIRED_BEFORE_DOWNLOAD
+        receipt_asset_id: pace2026_stride
+        license_status: LOCAL_CACHE_NO_REDISTRIBUTION_CLAIM
         public_visibility: true
         notes: Officially recommended runner, resource monitor, verifier and machine-readable summary tool.
-    instance_manifest_paths: []
+    instance_manifest_paths: [benchmark_bank/core12_smoke.v1.yaml]
     known_failure_modes: [INFEASIBLE_FOREST, LOWER_BOUND_CONTRACT_VIOLATION, RESOURCE_LIMIT_BREACH]
     notes: Highest Core-12 tier; 2026 results page was still labeled preliminary when verified.
 
@@ -384,6 +399,8 @@ fresh_gate:
   require_new_unexposed_instances: true
   downgrade_after_feedback: CONSUMED_VALIDATION_OR_DEV
 locked_registry: []
+materialization_receipt_path: benchmark_bank/materialization_receipt.v1.yaml
+materialization_receipt_sha256: c113087cab6176523b003429ed93142956ec77680efaa00fa21c2d64e8eafe4e
 lock:
   algorithm: sha256
-  content_sha256: 41928dbface74b9ab53953f0dc02a985d3c1a889779420e0182097aeba932cef
+  content_sha256: 87c9611917d9f2ec0ef63e3e6110b6cd199e75a20e9696972cdd1118d7bd575b

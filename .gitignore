@@ -6,6 +6,6 @@ __pycache__/
 htmlcov/
 *.egg-info/
 .evolve-worktrees/
+benchmark_bank/assets.local/
 runs/*
 !runs/.gitkeep
-
